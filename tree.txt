@@ -73,6 +73,6 @@ TechShop/
 │       └── access.log                 # Nhật ký truy cập (admin, user)
 │
 ├── database/                          # Cấu trúc và dữ liệu cơ sở dữ liệu
-│   └── gearshop.sql                   # File SQL tạo bảng và dữ liệu mẫu
+│   └── techshop.sql                   # File SQL tạo bảng và dữ liệu mẫu
 │
 └── .htaccess                          # Cấu hình Apache (rewrite URL, bảo mật)
