@@ -1,0 +1,78 @@
+gearshop/
+│
+├── public/                            # Giao diện hiển thị (frontend cho cả user và admin)
+│   ├── user/                          # Trang dành cho khách hàng
+│   │   ├── index.php                  # Trang chủ hiển thị sản phẩm nổi bật
+│   │   ├── product.php                # Danh sách sản phẩm
+│   │   ├── product_detail.php         # Chi tiết sản phẩm (ảnh, giá, mô tả)
+│   │   ├── cart.php                   # Giỏ hàng của người dùng
+│   │   ├── checkout.php               # Trang thanh toán đơn hàng
+│   │   ├── login.php                  # Đăng nhập tài khoản người dùng
+│   │   └── register.php               # Đăng ký tài khoản mới
+│   │
+│   ├── admin/                         # Trang dành cho quản trị viên
+│   │   ├── index.php                  # Trang dashboard thống kê tổng quan
+│   │   ├── products.php               # Trang quản lý sản phẩm (CRUD)
+│   │   ├── orders.php                 # Trang quản lý đơn hàng
+│   │   ├── users.php                  # Trang quản lý người dùng
+│   │   └── login.php                  # Đăng nhập tài khoản admin
+│   │
+│   ├── includes/                      # Thành phần giao diện tái sử dụng
+│   │   ├── header.php                 # Phần đầu HTML, link CSS, meta
+│   │   ├── navbar.php                 # Thanh menu chính, logo, tìm kiếm
+│   │   ├── footer.php                 # Chân trang (liên hệ, bản quyền)
+│   │   └── sidebar.php                # Thanh bên hiển thị danh mục / bộ lọc
+│   │
+│   └── assets/                        # Tài nguyên tĩnh: CSS, JS, hình ảnh
+│       ├── css/
+│       │   ├── main.css               # Giao diện phần người dùng
+│       │   └── admin.css              # Giao diện phần quản trị
+│       ├── js/
+│       │   ├── main.js                # Xử lý sự kiện, fetch API cho user
+│       │   └── admin.js               # Xử lý sự kiện, CRUD qua API cho admin
+│       ├── images/                    # Hình ảnh sản phẩm, banner, logo
+│       └── vendor/                    # Thư viện ngoài (Bootstrap, FontAwesome, Chart.js)
+│
+├── app/                               # Xử lý logic backend (PHP)
+│   ├── config/
+│   │   ├── database.php               # File kết nối MySQL
+│   │   └── constants.php              # Định nghĩa hằng số (BASE_URL, PATH,...)
+│   │
+│   ├── controllers/                   # Điều khiển luồng xử lý giữa view và model
+│   │   ├── ProductController.php      # Xử lý sản phẩm (lấy danh sách, chi tiết, CRUD)
+│   │   ├── CartController.php         # Xử lý giỏ hàng (thêm, xóa, cập nhật)
+│   │   ├── OrderController.php        # Xử lý đơn hàng và thanh toán
+│   │   ├── UserController.php         # Xử lý người dùng (đăng ký, đăng nhập)
+│   │   └── AdminController.php        # Xử lý quản trị viên (đăng nhập, thống kê)
+│   │
+│   ├── models/                        # Các lớp tương tác với cơ sở dữ liệu
+│   │   ├── Product.php                # Model bảng products
+│   │   ├── Order.php                  # Model bảng orders
+│   │   ├── User.php                   # Model bảng users
+│   │   └── Category.php               # Model bảng categories
+│   │
+│   ├── helpers/                       # Hàm tiện ích dùng chung
+│   │   ├── auth.php                   # Kiểm tra đăng nhập, quyền truy cập
+│   │   ├── format.php                 # Định dạng dữ liệu (tiền, ngày, text)
+│   │   └── validation.php             # Kiểm tra dữ liệu nhập hợp lệ
+│   │
+│   └── api/                           # Endpoint PHP trả dữ liệu JSON cho frontend
+│       ├── get_products.php           # Lấy danh sách sản phẩm
+│       ├── add_to_cart.php            # Thêm sản phẩm vào giỏ hàng
+│       ├── checkout.php               # Xử lý thanh toán và tạo đơn hàng
+│       ├── register_user.php          # Đăng ký tài khoản mới
+│       ├── login_user.php             # Đăng nhập người dùng
+│       └── admin_api.php              # Các hành động quản trị (CRUD sản phẩm, user,...)
+│
+├── storage/                           # Lưu file tải lên và nhật ký hệ thống
+│   ├── uploads/
+│   │   ├── products/                  # Ảnh sản phẩm
+│   │   └── banners/                   # Ảnh banner quảng cáo
+│   └── logs/
+│       ├── error.log                  # Ghi lỗi hệ thống (PHP, SQL,...)
+│       └── access.log                 # Nhật ký truy cập (admin, user)
+│
+├── database/                          # Cấu trúc và dữ liệu cơ sở dữ liệu
+│   └── gearshop.sql                   # File SQL tạo bảng và dữ liệu mẫu
+│
+└── .htaccess                          # Cấu hình Apache (rewrite URL, bảo mật)
