@@ -5,9 +5,9 @@ git push
 /.
 Nếu là lần đầu
 git init
-git remote add origin https://github.com/Dchong1211/TechShop.git
-git add .
+git add README.md
 git commit -m "Initial commit"
-git push origin master
-git push --set-upstream origin master
+git branch -M main
+git remote add origin https://github.com/Dchong1211/TechShop.git
+git push -u origin main
 ./
