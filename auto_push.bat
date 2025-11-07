@@ -14,4 +14,4 @@ git pull origin main --rebase
 :: Bước 5: Push code lên GitHub
 git push origin main
 
-echo PUSH SUCCESSFULLY!
+echo PUSH COMPLETE!
