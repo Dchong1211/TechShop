@@ -11,7 +11,7 @@ git add .
 
 :: Bước 3: Commit với thời gian tự động
 set datetime=%date% %time%
-git commit -m "Auto push on %datetime%"
+git commit -m "Push on %datetime%"
 
 :: Bước 4: Kéo code mới nhất về (tránh lỗi conflict)
 git pull origin main --rebase
