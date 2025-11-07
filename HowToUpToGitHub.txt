@@ -12,4 +12,4 @@ git remote add origin https://github.com/Dchong1211/TechShop.git
 git push -u origin main
 ./
 
-Hoặc nhấn file auto_push.bat cho lẹ
+Hoặc chạy file auto_push.bat cho lẹ
