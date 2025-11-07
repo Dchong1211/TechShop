@@ -1,0 +1,1 @@
+set datetime=%date% %time%

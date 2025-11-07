@@ -1,6 +1,17 @@
--------------Muốn update code lên github-------------
+-------------Lần đầu lấy code từ Github-------------
+1. Clone repo về máy
+    Mở terminal và chạy:
+        git clone https://github.com/Dchong1211/TechShop.git
+        cd TechShop
+2. Cấu hình Git (làm 1 lần duy nhất)
+    git config --global user.name "Tên của tụi mày"
+    git config --global user.email "email của tụi mày"
+3. Lấy code mới nhất trước khi sửa
+    git pull origin main
+
+-------------Muốn update code lên Github-------------
 git add .
 git commit -m "Initial commit"
 git push
 
-Hoặc chạy file auto_push.bat cho lẹ.
+Hoặc chạy file auto_push.bat để update cho lẹ
