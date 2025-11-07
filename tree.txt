@@ -1,4 +1,4 @@
-gearshop/
+TechShop/
 │
 ├── public/                            # Giao diện hiển thị (frontend cho cả user và admin)
 │   ├── user/                          # Trang dành cho khách hàng
