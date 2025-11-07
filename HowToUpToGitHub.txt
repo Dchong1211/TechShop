@@ -11,3 +11,4 @@ git branch -M main
 git remote add origin https://github.com/Dchong1211/TechShop.git
 git push -u origin main
 ./
+nhấn auto
