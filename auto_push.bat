@@ -9,7 +9,7 @@ set datetime=%date% %time%
 git commit -m "Push on %datetime%"
 
 :: Bước 4: Kéo code mới nhất về (tránh lỗi conflict)
-git pull origin main --rebase
+:: git pull origin main --rebase
 
 :: Bước 5: Push code lên GitHub
 git push origin main
