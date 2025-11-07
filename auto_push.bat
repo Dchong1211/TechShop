@@ -1,8 +1,3 @@
-@echo off
-echo ==============================
-echo 🚀 AUTO PUSH TO GITHUB START
-echo ==============================
-
 :: Bước 1: Di chuyển đến thư mục project (sửa lại nếu khác)
 cd /d C:\xampp\htdocs\TechShop
 
@@ -19,7 +14,4 @@ git pull origin main --rebase
 :: Bước 5: Push code lên GitHub
 git push origin main
 
-echo ==============================
-echo ✅ PUSH SUCCESSFULLY!
-echo ==============================
-pause
+echo PUSH SUCCESSFULLY!

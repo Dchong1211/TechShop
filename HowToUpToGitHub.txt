@@ -3,4 +3,4 @@ git add .
 git commit -m "Initial commit"
 git push
 
-Hoặc chạy file auto_push.bat cho lẹ
+Hoặc chạy file auto_push.bat cho lẹ.
