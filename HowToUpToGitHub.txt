@@ -1,6 +1,6 @@
-
 -------------Muốn update code lên github-------------
 git add .
 git commit -m "Initial commit"
 git push
+
 Hoặc chạy file auto_push.bat cho lẹ
