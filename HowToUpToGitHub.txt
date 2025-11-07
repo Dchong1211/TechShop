@@ -1,15 +1,6 @@
+
+-------------Muốn update code lên github-------------
 git add .
 git commit -m "Initial commit"
 git push
-
-/.
-Nếu là lần đầu
-git init
-git add README.md
-git commit -m "Initial commit"
-git branch -M main
-git remote add origin https://github.com/Dchong1211/TechShop.git
-git push -u origin main
-./
-
 Hoặc chạy file auto_push.bat cho lẹ
