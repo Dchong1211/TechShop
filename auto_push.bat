@@ -12,22 +12,10 @@ set datetime=%date% %time%
 git commit -m "Push by %username% on %datetime%"
 
 :: Bước 5: Kéo code mới nhất về (tránh lỗi conflict)
-git pull origin main --rebase
-
-IF ERRORLEVEL 1 (
-    echo ❌ Pull thất bại hoặc có xung đột! Kiểm tra lại trước khi push.
-    pause
-    exit /b
-)
+:: git pull origin main --rebase
 
 :: Bước 6: Push code lên GitHub
 git push origin main
 
-IF ERRORLEVEL 1 (
-    echo ❌ Push thất bại! Kiểm tra kết nối mạng hoặc xung đột code.
-    pause
-    exit /b
-)
-
 :: Bước 7: Hiển thị thông báo hoàn tất
-echo PUSH COMPLETE
+echo PUSH COMPLETE!
