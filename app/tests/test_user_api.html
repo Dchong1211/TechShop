@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>🧪 Test API User - TechShop (MySQLi)</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f9fafb;
+      padding: 20px;
+      color: #222;
+    }
+    h2 { margin-bottom: 10px; }
+    .box {
+      background: #fff;
+      border-radius: 10px;
+      padding: 15px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      max-width: 500px;
+      margin-bottom: 25px;
+    }
+    input {
+      width: 95%;
+      padding: 8px;
+      margin: 6px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+    button {
+      background: #ffd54f;
+      border: none;
+      color: #222;
+      font-weight: 600;
+      padding: 9px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-right: 8px;
+      transition: 0.25s;
+    }
+    button:hover { background: #ffeb80; }
+    pre {
+      background: #272822;
+      color: #fff;
+      padding: 10px;
+      border-radius: 8px;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+  </style>
+</head>
+<body>
+  <h2>🧪 Test API User (MySQLi + Role + Forgot Password)</h2>
+
+  <!-- ==== REGISTER ==== -->
+  <div class="box">
+    <h3>Đăng ký tài khoản mới</h3>
+    <input type="text" id="regName" placeholder="Tên người dùng">
+    <input type="email" id="regEmail" placeholder="Email">
+    <input type="password" id="regPassword" placeholder="Mật khẩu (có chữ hoa, thường, số)">
+    <button onclick="registerUser()">Đăng ký</button>
+  </div>
+
+  <!-- ==== LOGIN ==== -->
+  <div class="box">
+    <h3>Đăng nhập (Chung cho user & admin)</h3>
+    <input type="email" id="loginEmail" placeholder="Email">
+    <input type="password" id="loginPassword" placeholder="Mật khẩu">
+    <button onclick="loginUser()">Đăng nhập</button>
+    <button onclick="logoutUser()">Đăng xuất</button>
+  </div>
+
+  <!-- ==== FORGOT PASSWORD ==== -->
+  <div class="box">
+    <h3>Quên mật khẩu</h3>
+    <input type="email" id="forgotEmail" placeholder="Nhập email đã đăng ký">
+    <button onclick="forgotPassword()">Gửi mật khẩu mới</button>
+  </div>
+
+  <h3>Kết quả:</h3>
+  <pre id="output">{}</pre>
+
+  <script>
+    const apiBase = "http://localhost/TechShop/app/api";
+
+    function show(data) {
+      document.getElementById("output").textContent = JSON.stringify(data, null, 2);
+    }
+
+    // ==== Đăng ký ====
+    async function registerUser() {
+      const name = document.getElementById("regName").value.trim();
+      const email = document.getElementById("regEmail").value.trim();
+      const password = document.getElementById("regPassword").value.trim();
+
+      if (!name || !email || !password) {
+        alert("Vui lòng nhập đầy đủ thông tin!");
+        return;
+      }
+
+      try {
+        const res = await fetch(`${apiBase}/register_user.php`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name, email, password })
+        });
+        const data = await res.json();
+        show(data);
+        alert(data.message);
+      } catch (err) {
+        show({ error: err.message });
+      }
+    }
+
+    // ==== Đăng nhập ====
+    async function loginUser() {
+      const email = document.getElementById("loginEmail").value.trim();
+      const password = document.getElementById("loginPassword").value.trim();
+
+      if (!email || !password) {
+        alert("Vui lòng nhập email và mật khẩu!");
+        return;
+      }
+
+      try {
+        const res = await fetch(`${apiBase}/login_user.php`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password })
+        });
+        const data = await res.json();
+        show(data);
+
+        if (data.success) {
+          const role = data.user?.role ?? "user";
+          alert(`Đăng nhập thành công dưới vai trò: ${role}`);
+
+          // 🚀 Chuyển hướng giả định
+          if (role === "admin") {
+            // window.location.href = "/TechShop/public/admin/index.php";
+          } else {
+            // window.location.href = "/TechShop/public/user/index.php";
+          }
+        } else {
+          alert(data.message);
+        }
+      } catch (err) {
+        show({ error: err.message });
+      }
+    }
+
+    // ==== Đăng xuất ====
+    async function logoutUser() {
+      try {
+        const res = await fetch(`${apiBase}/logout.php`);
+        const data = await res.json();
+        show(data);
+        alert(data.message);
+      } catch (err) {
+        show({ error: err.message });
+      }
+    }
+
+    // ==== Quên mật khẩu ====
+    async function forgotPassword() {
+      const email = document.getElementById("forgotEmail").value.trim();
+      if (!email) {
+        alert("Vui lòng nhập email đã đăng ký!");
+        return;
+      }
+
+      try {
+        const res = await fetch(`${apiBase}/reset_password.php`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email })
+        });
+        const data = await res.json();
+        show(data);
+        alert(data.message);
+      } catch (err) {
+        show({ error: err.message });
+      }
+    }
+  </script>
+</body>
+</html>

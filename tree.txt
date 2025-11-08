@@ -59,9 +59,9 @@ TechShop/
 │   └── api/                           # Endpoint PHP trả dữ liệu JSON cho frontend
 │       ├── get_products.php           # Lấy danh sách sản phẩm
 │       ├── add_to_cart.php            # Thêm sản phẩm vào giỏ hàng
-│       ├── checkout.php               # Xử lý thanh toán và tạo đơn hàng
+│       ├── logout.php               # Xử lý thanh toán và tạo đơn hàng
 │       ├── register_user.php          # Đăng ký tài khoản mới
-│       ├── login_user.php             # Đăng nhập người dùng
+│       ├── login.php             # Đăng nhập người dùng
 │       └── admin_api.php              # Các hành động quản trị (CRUD sản phẩm, user,...)
 │
 ├── storage/                           # Lưu file tải lên và nhật ký hệ thống
