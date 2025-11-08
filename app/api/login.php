@@ -19,7 +19,7 @@ if (empty($email) || empty($password)) {
 // Gọi Controller xử lý login
 $response = $controller->login($email, $password);
 
-// Nếu đăng nhập thành công → thêm trường redirect
+// Nếu đăng nhập thành công
 if ($response['success']) {
     $role = $response['role'] ?? 'user';
     

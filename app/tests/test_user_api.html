@@ -161,27 +161,27 @@
       }
     }
 
-    // ==== Quên mật khẩu ====
-    async function forgotPassword() {
-      const email = document.getElementById("forgotEmail").value.trim();
-      if (!email) {
-        alert("Vui lòng nhập email đã đăng ký!");
-        return;
-      }
+  //   // ==== Quên mật khẩu ====
+  //   async function forgotPassword() {
+  //     const email = document.getElementById("forgotEmail").value.trim();
+  //     if (!email) {
+  //       alert("Vui lòng nhập email đã đăng ký!");
+  //       return;
+  //     }
 
-      try {
-        const res = await fetch(`${apiBase}/reset_password.php`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email })
-        });
-        const data = await res.json();
-        show(data);
-        alert(data.message);
-      } catch (err) {
-        show({ error: err.message });
-      }
-    }
-  </script>
+  //     try {
+  //       const res = await fetch(`${apiBase}/reset_password.php`, {
+  //         method: "POST",
+  //         headers: { "Content-Type": "application/json" },
+  //         body: JSON.stringify({ email })
+  //       });
+  //       const data = await res.json();
+  //       show(data);
+  //       alert(data.message);
+  //     } catch (err) {
+  //       show({ error: err.message });
+  //     }
+  //   }
+  // </script>
 </body>
 </html>
