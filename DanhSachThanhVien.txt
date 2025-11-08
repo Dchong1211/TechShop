@@ -2,5 +2,5 @@
 1. Võ Đình Trọng (BE)
 2. Hàng Minh Châu (BE)
 3. Trần Duy Khánh (DB)
-4. Nguyễn Minh Hùng (FE)
+4. Nguyễn Minh Hùng LOz (FE)
 5. Nguyễn Trọng Thời (FE)
