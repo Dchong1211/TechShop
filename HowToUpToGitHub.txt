@@ -2,8 +2,8 @@
 Khi tạo token, bạn chỉ cần chọn đúng 2 phần sau là đủ:
 Trong phần “Scopes”
 Bật các checkbox này:
-repo → (quan trọng nhất, cho phép đọc & ghi repo private/public)
-workflow → (đề phòng repo có GitHub Actions)
+    repo → (quan trọng nhất, cho phép đọc & ghi repo private/public)
+    workflow → (đề phòng repo có GitHub Actions)
 -------------Muốn update code lên Github-------------
 git add .
 git commit -m "Initial commit"
@@ -13,3 +13,18 @@ Hoặc chạy file auto_push.bat để update cho lẹ
 
 -------------Muốn lấy code thằng khác update về Github-------------
 git pull origin main --rebase
+
+-------------Sửa lỗi khi code bị kẹt khi up lên GitHub-------------
+1. Gõ lệnh sau trong terminal: 
+        git rebase --continue
+1.1. Nếu Git báo không có thay đổi, gõ thêm: 
+        git rebase --skip
+1.2. Lặp lại --continue hoặc --skip cho đến khi Git báo: 
+        Successfully rebased and updated refs/heads/main.
+2. Khi xong, kiểm tra lại: 
+        git status
+2.2. Phải thấy:
+        On branch main
+        nothing to commit, working tree clean
+3. Rồi push lại:
+        git push origin main
