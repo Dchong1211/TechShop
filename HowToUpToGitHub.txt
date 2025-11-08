@@ -1,15 +1,9 @@
 -------------Lần đầu lấy code từ Github-------------
-<<<<<<< HEAD
 
-=======
-Khi tạo token, chỉ cần chọn đúng 2 phần sau là đủ:
-🔸 Trong phần “Scopes”
-Bật các checkbox này:
-✅ repo → (quan trọng nhất, cho phép đọc & ghi repo private/public)
-✅ workflow → (đề phòng repo có GitHub Actions)
-Bật folder cần lưu và chuột phải chọn Git Bash và dán:
-    git clone https://"Tên tài khoản":"link token"@github.com/Dchong1211/TechShop.git
->>>>>>> dc150a3 (Push by Dchong1211 on 08/11/25 13:32:37.65)
 
 -------------Muốn update code lên Github-------------
-Chạy file auto_push.bat để update
+git add .
+git commit -m "Initial commit"
+git push
+
+Hoặc chạy file auto_push.bat để update cho lẹ
