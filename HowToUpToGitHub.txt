@@ -1,6 +1,9 @@
 -------------Lần đầu lấy code từ Github-------------
-
-
+Khi tạo token, bạn chỉ cần chọn đúng 2 phần sau là đủ:
+🔸 Trong phần “Scopes”
+Bật các checkbox này:
+✅ repo → (quan trọng nhất, cho phép đọc & ghi repo private/public)
+✅ workflow → (đề phòng repo có GitHub Actions)
 -------------Muốn update code lên Github-------------
 git add .
 git commit -m "Initial commit"
