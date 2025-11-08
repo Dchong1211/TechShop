@@ -10,3 +10,6 @@ git commit -m "Initial commit"
 git push
 
 Hoặc chạy file auto_push.bat để update cho lẹ
+
+-------------Muốn lấy code thằng khác update về Github-------------
+git pull origin main --rebase
