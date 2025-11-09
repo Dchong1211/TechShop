@@ -5,10 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Techshop | Trang chủ</title>
 
-  <!-- Base để mọi đường dẫn tương đối bám theo /TechShop/ -->
   <base href="/TechShop/">
-
-  <!-- CSS -->
   <link rel="stylesheet" href="public/assets/css/user.css?v=6">
 </head>
 <body>
@@ -25,18 +22,17 @@
         <a href="#">📞 Hotline</a>
         <a href="public/user/orders.php">📦 Đơn hàng</a>
         <a href="public/user/cart.php">🛒 Giỏ hàng</a>
-        <a href="public/user/login.php">👤 Đăng nhập</a>
       </div>
     </div>
 
     <nav class="main-nav">
       <div class="nav-inner">
-        <a href="public/user/products.php?cate=pc">Mua PC</a>
-        <a href="public/user/products.php?cate=hot">Hot Deal</a>
-        <a href="public/user/products.php?cate=laptop">Laptop</a>
-        <a href="public/user/products.php?cate=monitor">Màn hình</a>
-        <a href="public/user/products.php?cate=gear">Bàn phím - Chuột</a>
-        <a href="public/user/products.php?cate=accessories">Phụ kiện</a>
+        <a href="public/user/product.php?cate=pc">Mua PC</a>
+        <a href="public/user/product.php?cate=hot">Hot Deal</a>
+        <a href="public/user/product.php?cate=laptop">Laptop</a>
+        <a href="public/user/product.php?cate=monitor">Màn hình</a>
+        <a href="public/user/product.php?cate=gear">Bàn phím - Chuột</a>
+        <a href="public/user/product.php?cate=accessories">Phụ kiện</a>
       </div>
     </nav>
   </header>
@@ -46,56 +42,71 @@
       <aside class="category-sidebar">
         <h3>Danh mục</h3>
         <ul>
-          <li><a href="public/user/products.php?cate=pc">PC Gaming</a></li>
-          <li><a href="public/user/products.php?cate=laptop">Laptop</a></li>
-          <li><a href="public/user/products.php?cate=monitor">Màn hình</a></li>
-          <li><a href="public/user/products.php?cate=gear">Gaming Gear</a></li>
-          <li><a href="public/user/products.php?cate=audio">Âm thanh</a></li>
-          <li><a href="public/user/products.php?cate=accessories">Phụ kiện</a></li>
+          <li><a href="public/user/product.php?cate=pc">PC Gaming</a></li>
+          <li><a href="public/user/product.php?cate=laptop">Laptop</a></li>
+          <li><a href="public/user/product.php?cate=monitor">Màn hình</a></li>
+          <li><a href="public/user/product.php?cate=gear">Gaming Gear</a></li>
+          <li><a href="public/user/product.php?cate=audio">Âm thanh</a></li>
+          <li><a href="public/user/product.php?cate=accessories">Phụ kiện</a></li>
         </ul>
       </aside>
 
       <section class="banner-area">
         <div class="main-banner">
-          <img src="https://via.placeholder.com/900x260/4aa3ff/ffffff?text=Techshop+Banner" alt="">
+          <a href="public/user/product.php?cate=hot">
+            <img src="https://via.placeholder.com/900x260/4aa3ff/ffffff?text=Techshop+Banner" alt="">
+          </a>
         </div>
         <div class="sub-banners">
-          <img src="https://via.placeholder.com/280x120/ffb347/ffffff?text=PC+Gaming" alt="">
-          <img src="https://via.placeholder.com/280x120/ff6f69/ffffff?text=Keyboard+Sale" alt="">
-          <img src="https://via.placeholder.com/280x120/96ceb4/ffffff?text=Monitor+Deal" alt="">
+          <a href="public/user/product.php?cate=pc">
+            <img src="https://via.placeholder.com/280x120/ffb347/ffffff?text=PC+Gaming" alt="">
+          </a>
+          <a href="public/user/product.php?cate=gear">
+            <img src="https://via.placeholder.com/280x120/ff6f69/ffffff?text=Keyboard+Sale" alt="">
+          </a>
+          <a href="public/user/product.php?cate=monitor">
+            <img src="https://via.placeholder.com/280x120/96ceb4/ffffff?text=Monitor+Deal" alt="">
+          </a>
         </div>
       </section>
 
       <aside class="right-banners">
-        <img src="https://via.placeholder.com/180x260/e74c3c/ffffff?text=Deal+hot" alt="">
-        <img src="https://via.placeholder.com/180x160/2ecc71/ffffff?text=Giảm+giá" alt="">
+        <a href="public/user/product.php?cate=hot">
+          <img src="https://via.placeholder.com/180x260/e74c3c/ffffff?text=Deal+hot" alt="">
+        </a>
+        <a href="public/user/product.php?cate=accessories">
+          <img src="https://via.placeholder.com/180x160/2ecc71/ffffff?text=Giảm+giá" alt="">
+        </a>
       </aside>
     </div>
 
+    <!-- PC -->
     <section class="product-section">
       <div class="section-head">
-        <h2>PC bán chạy</h2>
-        <a href="public/user/products.php?cate=pc">Xem tất cả</a>
+        <h2><a href="public/user/product.php?cate=pc">PC bán chạy</a></h2>
+        <a class="view-all" href="public/user/product.php?cate=pc">Xem tất cả</a>
       </div>
       <div class="products" id="pc-hot">
         <p>Không có sản phẩm.</p>
       </div>
     </section>
 
+    <!-- Laptop -->
     <section class="product-section">
       <div class="section-head">
-        <h2>Laptop bán chạy</h2>
-        <a href="public/user/products.php?cate=laptop">Xem tất cả</a>
+        <h2><a href="public/user/product.php?cate=laptop">Laptop bán chạy</a></h2>
+        <a class="view-all" href="public/user/product.php?cate=laptop">Xem tất cả</a>
       </div>
       <div class="products" id="laptop-hot">
         <p>Không có sản phẩm.</p>
       </div>
     </section>
 
+    <!-- Gear -->
     <section class="product-section">
       <div class="section-head">
-        <h2>Gear gaming</h2>
-        <a href="public/user/products.php?cate=gear">Xem tất cả</a>
+        <h2><a href="public/user/product.php?cate=gear">Gear gaming</a></h2>
+        <a class="view-all" href="public/user/product.php?cate=gear">Xem tất cả</a>
       </div>
       <div class="products" id="gear-hot">
         <p>Không có sản phẩm.</p>
@@ -107,7 +118,6 @@
     © <?= date('Y') ?> Techshop
   </footer>
 
-  <!-- JS -->
   <script src="public/assets/js/user.js?v=6"></script>
 </body>
 </html>
