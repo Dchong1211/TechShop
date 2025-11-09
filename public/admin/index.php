@@ -14,7 +14,7 @@
         <a href="products.php">Quản lý Sản phẩm</a>
         <a href="orders.php">Quản lý Đơn hàng</a>
         <a href="users.php">Quản lý Người dùng</a>
-        <a href="login.php" style="margin-top: 50px;">➡️ Đăng xuất</a>
+        <a href="login.php" style="margin-top: 50px;">Đăng xuất</a>
     </div>
 
     <div class="main-content">
