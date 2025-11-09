@@ -52,7 +52,7 @@
 
         <section class="reports">
             <h2>Báo Cáo Doanh Thu 7 Ngày Gần Nhất</h2>
-            <div style="height: 300px; background-color: white; border-radius: 8px; padding: 20px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+            <div style="height: 300px; background-color: white; padding: 20px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
                 <p style="text-align: center; color: #7f8c8d;">[Vị trí đặt Biểu đồ Doanh thu/Truy cập]</p>
             </div>
         </section>
@@ -63,7 +63,6 @@
             <a href="products.php?action=add" class="action-link">Thêm Sản Phẩm Mới</a>
             <a href="orders.php?status=pending" class="action-link">Xử Lý Đơn Hàng Chờ</a>
             <a href="users.php?role=admin" class="action-link">Quản Lý Quyền Admin</a>
-            <a href="settings.php" class="action-link">Cài Đặt Chung</a>
         </section>
 
     </div>
