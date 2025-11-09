@@ -6,14 +6,14 @@ TechShop/
 │   │   ├── product.php                # Danh sách sản phẩm
 │   │   ├── product_detail.php         # Chi tiết sản phẩm (ảnh, giá, mô tả)
 │   │   ├── cart.php                   # Giỏ hàng của người dùng
-│   │   ├── checkout.php               # Trang thanh toán đơn hàng
+│   │   └── checkout.php               # Trang thanh toán đơn hàng
 │   │
 │   ├── admin/                         # Trang dành cho quản trị viên
 │   │   ├── index.php                  # Trang dashboard thống kê tổng quan
 │   │   ├── products.php               # Trang quản lý sản phẩm (CRUD)
 │   │   ├── orders.php                 # Trang quản lý đơn hàng
 │   │   ├── users.php                  # Trang quản lý người dùng
-│   │   └── login.php                  # Đăng nhập tài khoản
+│   │   ├── login.php                  # Đăng nhập tài khoản
 │   │   └── register.php               # Đăng ký tài khoản mới
 │   │
 │   ├── includes/                      # Thành phần giao diện tái sử dụng
@@ -24,8 +24,13 @@ TechShop/
 │   │
 │   └── assets/                        # Tài nguyên tĩnh: CSS, JS, hình ảnh
 │       ├── css/
-│       │   ├── main.css               # Giao diện phần người dùng
-│       │   └── admin.css              # Giao diện phần quản trị
+│       │   ├── cssAdmin/
+│       │   │   ├── mainAdmin.css      # Giao diện chính người quản trị
+│       │   │   └── admin.css          # Giao diện phần quản trị
+│       │   │
+│       │   └── cssUser/
+│       │       ├── mainUser.css       # Giao diện chính phần người dùng
+│       │       └── admin.css          # Giao diện phần quản trị
 │       ├── js/
 │       │   ├── main.js                # Xử lý sự kiện, fetch API cho user
 │       │   └── admin.js               # Xử lý sự kiện, CRUD qua API cho admin
