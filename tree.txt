@@ -7,15 +7,14 @@ TechShop/
 │   │   ├── product_detail.php         # Chi tiết sản phẩm (ảnh, giá, mô tả)
 │   │   ├── cart.php                   # Giỏ hàng của người dùng
 │   │   ├── checkout.php               # Trang thanh toán đơn hàng
-│   │   ├── login.php                  # Đăng nhập tài khoản người dùng
-│   │   └── register.php               # Đăng ký tài khoản mới
 │   │
 │   ├── admin/                         # Trang dành cho quản trị viên
 │   │   ├── index.php                  # Trang dashboard thống kê tổng quan
 │   │   ├── products.php               # Trang quản lý sản phẩm (CRUD)
 │   │   ├── orders.php                 # Trang quản lý đơn hàng
 │   │   ├── users.php                  # Trang quản lý người dùng
-│   │   └── login.php                  # Đăng nhập tài khoản admin
+│   │   └── login.php                  # Đăng nhập tài khoản
+│   │   └── register.php               # Đăng ký tài khoản mới
 │   │
 │   ├── includes/                      # Thành phần giao diện tái sử dụng
 │   │   ├── header.php                 # Phần đầu HTML, link CSS, meta
