@@ -2,31 +2,68 @@
     --primary-color: #3498db;
     --accent-color: #2ecc71;
     --text-color: #34495e;
+    --light-bg: #ecf0f1;
+    --dark-bg: #2c3e50;
     --box-bg: #ffffff;
-    --bg-gradient: linear-gradient(135deg, #7f8c8d 0%, #bdc3c7 100%);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0;
+    min-height: 100vh;
+}
+
+.split-page-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+.techshop-slogan {
+    flex: 0 0 60%;
+    background-image: url(/public/assets/images/TechShop);
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 40px;
+    z-index: 1;
+}
+
+.techshop-slogan h1 {
+    font-size: 5rem;
+    margin-bottom: 10px;
+    color: #ffffff;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.techshop-slogan p {
+    font-size: 1.2rem;
+    color: #bdc3c7;
+    font-style: italic;
+}
+
+
+.login-container {
+    flex: 0 0 40%;
+    background-color: var(--light-bg);
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
-    background: var(--bg-gradient);
-}
-
-.login-container {
-    width: 100%;
-    max-width: 400px;
     padding: 20px;
 }
 
 .login-box {
+    width: 100%;
+    max-width: 400px;
     background-color: var(--box-bg);
     padding: 40px;
-    border-radius: 12px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
     text-align: center;
 }
 
@@ -55,14 +92,12 @@ body {
     width: 100%;
     padding: 12px;
     border: 1px solid #dcdfe1;
-    border-radius: 6px;
     font-size: 1rem;
     transition: border-color 0.3s, box-shadow 0.3s;
 }
 
 .input-group input:focus {
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
     outline: none;
 }
 
@@ -70,11 +105,9 @@ body {
     width: 100%;
     padding: 12px;
     border: none;
-    background-color: var(--accent-color);
     color: white;
     font-size: 1.1rem;
     font-weight: bold;
-    border-radius: 6px;
     cursor: pointer;
     transition: background-color 0.3s, transform 0.1s;
     margin-top: 10px;
