@@ -1,0 +1,88 @@
+:root {
+    --primary-color: #3498db;
+    --sidebar-bg: #2c3e50;
+    --text-color: #34495e;
+    --light-bg: #ecf0f1;
+    --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--light-bg);
+    color: var(--text-color);
+    display: flex;
+}
+
+hr {
+    display: none;
+}
+
+.sidebar {
+    width: 250px;
+    background-color: var(--sidebar-bg);
+    color: white;
+    height: 100vh;
+    position: fixed;
+    padding: 20px 0;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    padding: 0 20px;
+    color: #ecf0f1;
+    font-size: 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 15px;
+}
+
+.sidebar a {
+    display: block;
+    padding: 12px 20px;
+    text-decoration: none;
+    color: #bdc3c7;
+    font-size: 1rem;
+    transition: background-color 0.3s, color 0.3s, border-left 0.3s;
+    border-left: 5px solid transparent;
+}
+
+.sidebar a:hover {
+    background-color: #34495e;
+    color: white;
+}
+
+.sidebar a.active {
+    background-color: var(--primary-color);
+    border-left-color: #f1c40f;
+    color: white;
+    font-weight: bold;
+}
+
+.sidebar a[style*="margin-top"] {
+    margin-top: 50px;
+    color: #e74c3c;
+    border-left-color: #e74c3c;
+}
+.sidebar a[style*="margin-top"]:hover {
+    background-color: #c0392b;
+    color: white;
+}
+
+.main-content {
+    margin-left: 250px;
+    padding: 30px;
+    width: calc(100% - 250px);
+}
+
+.header h1 {
+    font-size: 2rem;
+    color: var(--text-color);
+    margin-bottom: 10px;
+}
