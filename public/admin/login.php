@@ -16,7 +16,7 @@
 
         <div class="login-container">
             <div class="login-box">
-                <h2>Đăng Nhập Quản Trị Viên</h2>
+                <h2>Đăng Nhập</h2>
                 <form action="index.php" method="POST">
                     <div class="input-group">
                         <label for="username">Tên người dùng / Email</label>
@@ -31,7 +31,10 @@
                     <button type="submit" class="login-button">Đăng Nhập</button>
                 </form>
                 
-                <p class="forgot-password"><a href="#">Quên mật khẩu?</a></p>
+                <div class="function">
+                    <p class="forgot-password"><a href="/public/admin/forgotPassword.php">Quên mật khẩu?</a></p>
+                    <p class="register"><a href="/public/admin/register.php">Đăng kí</a></p>
+                </div>
             </div>
         </div>
         
