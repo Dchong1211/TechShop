@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đăng Nhập</title>
+    <title>Đăng Kí - TechShop</title>
     <link rel="stylesheet" href="/public/assets/css/cssAdmin/register.css"> 
 </head>
 <body>
@@ -17,10 +17,16 @@
         <div class="register-container">
             <div class="register-box">
                 <h2>Đăng kí</h2>
-                <form action="index.php" method="POST">
+                <form action="register_handler.php" method="POST"> 
+                    
                     <div class="input-group">
-                        <label for="username">Tên người dùng / Email</label>
-                        <input type="text" id="username" name="username" required>
+                        <label for="username">Tên đăng nhập</label>
+                        <input type="text" id="username" name="username" required> 
+                    </div>
+
+                    <div class="input-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required>
                     </div>
                     
                     <div class="input-group">
@@ -29,8 +35,8 @@
                     </div>
 
                     <div class="input-group">
-                        <label for="password">Nhập lại mật khẩu</label>
-                        <input type="password" id="password" name="password" required>
+                        <label for="confirm_password">Nhập lại mật khẩu</label>
+                        <input type="password" id="confirm_password" name="confirm_password" required> 
                     </div>
 
                     <button type="submit" class="register-button">Đăng Ký</button>
