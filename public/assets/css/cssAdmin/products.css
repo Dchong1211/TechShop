@@ -1,0 +1,140 @@
+:root {
+    --primary-color: #3498db;
+    --success-color: #2ecc71;
+    --warning-color: #f39c12;
+    --danger-color: #e74c3c;
+    --border-color: #dcdfe1;
+    --light-bg: #ecf0f1;
+}
+
+.top-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.btn {
+    padding: 8px 15px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #2980b9;
+}
+
+.btn-edit {
+    background-color: var(--warning-color);
+    color: white;
+    margin-right: 5px;
+}
+
+.btn-delete {
+    background-color: var(--danger-color);
+    color: white;
+}
+
+.search-box input {
+    padding: 8px;
+    border: 1px solid var(--border-color);
+    outline: none;
+}
+
+.btn-search {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 9px 15px;
+    margin-left: -5px;
+}
+
+.product-table-container {
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    overflow-x: auto;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    font-size: 0.95rem;
+}
+
+.data-table th, .data-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.data-table th {
+    background-color: var(--light-bg);
+    font-weight: 600;
+    color: var(--text-color);
+    text-transform: uppercase;
+}
+
+.data-table tbody tr:hover {
+    background-color: #f9f9f9;
+}
+
+.status-active, .status-inactive {
+    padding: 4px 8px;
+    font-weight: bold;
+    font-size: 0.85rem;
+}
+
+.status-active {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.status-inactive {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.action-buttons {
+    min-width: 120px;
+}
+
+.pagination {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 25px;
+    gap: 5px;
+}
+
+.page-link {
+    display: inline-block;
+    padding: 8px 12px;
+    text-decoration: none;
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.page-link:hover:not(.active):not(.disabled) {
+    background-color: var(--light-bg);
+}
+
+.page-link.active {
+    background-color: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+    font-weight: bold;
+}
+
+.page-link.disabled {
+    color: #bdc3c7;
+    cursor: not-allowed;
+}
