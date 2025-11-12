@@ -17,7 +17,7 @@
         <div class="login-container">
             <div class="login-box">
                 <h2>Đăng Nhập</h2>
-                <form action="index.php" method="POST">
+                <form action="login.php" method="POST">
                     <div class="input-group">
                         <label for="username">Tên người dùng / Email</label>
                         <input type="text" id="username" name="username" required>
@@ -32,7 +32,7 @@
                 </form>
                 
                 <div class="function">
-                    <p class="forgot-password"><a href="/public/admin/forgotPassword.php">Quên mật khẩu?</a></p>
+                    <p class="forgot-password"><a href="/public/admin/forgot_password.php">Quên mật khẩu?</a></p>
                     <p class="register"><a href="/public/admin/register.php">Đăng kí</a></p>
                 </div>
             </div>

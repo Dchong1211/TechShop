@@ -43,7 +43,7 @@
 
                     <div class="function">
                         <p class="login"><a href="/public/admin/login.php">Đăng nhập</a></p>
-                        <p class="forgot-password"><a href="/public/admin/forgotPassword.php">Quên mật khẩu?</a></p>
+                        <p class="forgot-password"><a href="/public/admin/forgot_password.php">Quên mật khẩu?</a></p>
                     </div>
 
                 </form>
