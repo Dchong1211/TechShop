@@ -10,7 +10,7 @@
 <body>
 
     <div class="sidebar">
-        <h2>Admin Panel</h2>
+        <h2>Tech Shop</h2>
         <a href="index.php">Dashboard</a>
         <a href="products.php" class="active">Quản lý Sản phẩm</a>
         <a href="orders.php">Quản lý Đơn hàng</a>
@@ -20,11 +20,11 @@
 
     <div class="main-content">
         <header class="header">
-            <h1>📦 Quản lý Sản phẩm</h1>
+            <h1>Quản lý Sản phẩm</h1>
         </header>
 
         <div class="top-actions">
-            <a href="products.php?action=add" class="btn btn-primary">Thêm Sản phẩm Mới</a>
+            <a href="add_products.php?action=add" class="btn btn-primary">Thêm Sản phẩm Mới</a>
             <div class="search-box">
                 <input type="text" placeholder="Tìm kiếm sản phẩm...">
                 <button class="btn btn-search">Tìm</button>
@@ -53,24 +53,16 @@
                         <td>0</td>
                         <td><span class="status-inactive">Hết hàng</span></td>
                         <td class="action-buttons">
-                            <a href="edit-products.php?action=edit&id=102" class="btn btn-edit">Sửa</a>
+                            <a href="edit_products.php?action=edit" class="btn btn-edit">Sửa</a>
                             <form method="POST" action="products.php" style="display:inline;">
                                 <input type="hidden" name="product_id" value="102">
                                 <button type="submit" name="action" value="delete" class="btn btn-delete">Xóa</button>
                             </form>
-                            <a href="add-products.php?action=edit&id=102" class="btn btn-edit">Thêm</a>
+                            <a href="detail_products.php" class="btn btn-detail">Xem</a>
                         </td>
                     </tr>
                     </tbody>
             </table>
-        </div>
-
-        <div class="pagination">
-            <a href="#" class="page-link disabled">❮ Trước</a>
-            <a href="#" class="page-link active">1</a>
-            <a href="#" class="page-link">2</a>
-            <a href="#" class="page-link">3</a>
-            <a href="#" class="page-link">Sau ❯</a>
         </div>
 
     </div>

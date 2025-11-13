@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đăng Kí - TechShop</title>
+    <title>Đăng Kí</title>
     <link rel="stylesheet" href="/public/assets/css/cssAdmin/register.css"> 
 </head>
 <body>

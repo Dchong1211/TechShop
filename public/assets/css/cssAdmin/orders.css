@@ -1,10 +1,12 @@
 :root {
     --primary-color: #3498db;
-    --success-color: #2ecc71;
-    --warning-color: #f39c12;
-    --danger-color: #e74c3c;
+    --text-color: #34495e;
     --border-color: #dcdfe1;
     --light-bg: #ecf0f1;
+    --pending-color: #f39c12;
+    --shipping-color: #3498db;
+    --completed-color: #2ecc71;
+    --cancelled-color: #e74c3c;
 }
 
 .top-actions {
@@ -14,37 +16,17 @@
     margin-bottom: 20px;
 }
 
-.btn {
-    padding: 8px 15px;
-    cursor: pointer;
-    font-size: 0.9rem;
-    text-decoration: none;
-    transition: background-color 0.3s;
+.filter-group label {
+    font-weight: 600;
+    margin-right: 10px;
 }
 
-.btn-primary {
-    background-color: var(--primary-color);
-    color: white;
+.filter-group select {
+    padding: 8px 10px;
+    border: 1px solid var(--border-color);
+    font-size: 0.95rem;
 }
 
-.btn-primary:hover {
-    background-color: #2980b9;
-}
-
-.btn-edit {
-    background-color: var(--warning-color);
-    color: white;
-    margin-right: 5px;
-}
-
-.btn-delete {
-    background-color: var(--danger-color);
-    color: white;
-}
-
-.btn-detail{
-    background-color: var(--primary-color);
-}
 .search-box input {
     padding: 8px;
     border: 1px solid var(--border-color);
@@ -55,10 +37,12 @@
     background-color: var(--primary-color);
     color: white;
     padding: 9px 15px;
+    border: none;
     margin-left: -5px;
+    cursor: pointer;
 }
 
-.product-table-container {
+.order-table-container {
     background-color: white;
     padding: 20px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
@@ -89,24 +73,69 @@
     background-color: #f9f9f9;
 }
 
-.status-active, .status-inactive {
-    padding: 4px 8px;
+.status {
+    padding: 5px 10px;
     font-weight: bold;
     font-size: 0.85rem;
+    color: white;
 }
 
-.status-active {
-    background-color: #d4edda;
-    color: #155724;
+.status-pending {
+    background-color: var(--pending-color);
 }
-
-.status-inactive {
-    background-color: #f8d7da;
-    color: #721c24;
+.status-shipping {
+    background-color: var(--shipping-color);
+}
+.status-completed {
+    background-color: var(--completed-color);
+}
+.status-cancelled {
+    background-color: var(--cancelled-color);
 }
 
 .action-buttons {
-    min-width: 120px;
+    min-width: 180px;
+}
+.action-buttons .btn {
+    padding: 7px 12px;
+    border: none;
+    cursor: pointer;
+    font-size: 0.85rem;
+    text-decoration: none;
+    transition: background-color 0.3s;
+    margin-right: 5px;
+    color: white;
+}
+
+.btn-detail {
+    background-color: #7f8c8d;
+}
+.btn-detail:hover {
+    background-color: #95a5a6;
+}
+.btn-process {
+    background-color: var(--pending-color);
+}
+.btn-process:hover {
+    background-color: #e67e22;
+}
+.btn-update {
+    background-color: var(--shipping-color);
+}
+.btn-update:hover {
+    background-color: #2980b9;
+}
+.btn-print {
+    background-color: #2c3e50;
+}
+.btn-print:hover {
+    background-color: #34495e;
+}
+.btn-delete {
+    background-color: var(--cancelled-color);
+}
+.btn-delete:hover {
+    background-color: #c0392b;
 }
 
 .pagination {

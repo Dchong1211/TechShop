@@ -10,7 +10,7 @@
 <body>
 
     <div class="sidebar">
-        <h2>Admin Panel</h2>
+        <h2>Tech Shop</h2>
         <a href="index.php" class="active">Dashboard</a>
         <a href="products.php">Quản lý Sản phẩm</a>
         <a href="orders.php">Quản lý Đơn hàng</a>
@@ -26,7 +26,7 @@
         <section class="stats-cards">
             <div class="card">
                 <h3>Đơn Hàng Mới (24h)</h3>
-                <p>12</p>
+                <p>36</p>
                 <a href="">Xem chi tiết</a>
             </div>
 
@@ -44,8 +44,8 @@
 
             <div class="card">
                 <h3>Tổng Tài Khoản</h3>
-                <p>6969</p>
-                <span>Người dùng mới: 69</span>
+                <p>3636</p>
+                <span>Người dùng mới: 36</span>
             </div>
         </section>
 
