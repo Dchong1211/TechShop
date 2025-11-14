@@ -22,7 +22,9 @@ class Mailer {
             $mail->Password   = env("MAIL_PASSWORD");
             $mail->SMTPSecure = env("MAIL_SECURE");
             $mail->Port       = env("MAIL_PORT");
-
+            $mail->CharSet = 'UTF-8';
+            $mail->Encoding = 'base64';
+            
             $mail->setFrom(env("MAIL_FROM"), env("MAIL_FROM_NAME"));
             $mail->addAddress($to);
 

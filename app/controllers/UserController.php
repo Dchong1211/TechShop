@@ -17,63 +17,38 @@ class UserController {
         }
     }
 
-    // Đăng ký + gửi OTP email
+    // ===================== REGISTER =====================
     public function register($name, $email, $password) {
-    $result = $this->userModel->register($name, $email, $password);
-    if (!$result['success']) return $result;
+        $result = $this->userModel->register($name, $email, $password);
 
-    // gửi mail OTP
-    $subject = "TechShop - Mã OTP";
-    $body = "<h3>Mã của bạn: {$result['otp']}</h3>";
+        if (!$result['success']) 
+            return $result;
 
-    Mailer::send($email, $subject, $body);
+        // gửi OTP email
+        $subject = "TechShop - Mã OTP";
+        $body = "<h3>Mã OTP của bạn: <b>{$result['otp']}</b></h3>";
+        Mailer::send($email, $subject, $body);
 
-    return [
-        'success' => true,
-        'message' => "OTP đã được gửi!",
-        'email' => $email  // FE cần để verify
-    ];
-}
-
-
-
-
-    // tạo user sau khi verify otp
-    public function createUserAfterVerify($email, $otp) {
-
-        if (!isset($_SESSION['register_data'])) {
-            return ['success' => false, 'message' => 'Không có dữ liệu đăng ký!'];
-        }
-
-        $data = $_SESSION['register_data'];
-
-        if ($data['email'] !== $email)
-            return ['success' => false, 'message' => 'Email không trùng với đăng ký!'];
-
-        if ($data['otp'] != $otp)
-            return ['success' => false, 'message' => 'Mã OTP không đúng!'];
-
-        if (strtotime($data['expires']) < time())
-            return ['success' => false, 'message' => 'Mã OTP đã hết hạn!'];
-
-        $stmt = $this->userModel->conn->prepare("
-            INSERT INTO users (name, email, password, email_verified, email_verified_at, status)
-            VALUES (?, ?, ?, 1, NOW(), 1)
-        ");
-        $stmt->bind_param("sss", $data['name'], $data['email'], $data['password']);
-        $stmt->execute();
-
-        unset($_SESSION['register_data']);
-
-        return ['success' => true, 'message' => 'Tạo tài khoản thành công!'];
+        return [
+            'success' => true,
+            'message' => 'OTP đã được gửi!',
+            'email'   => $email
+        ];
     }
 
-    // đăng nhập
+    // ===================== VERIFY EMAIL =====================
+    public function verifyEmail($email, $otp) {
+        return $this->userModel->verifyEmail($email, $otp);
+    }
+
+    // ===================== LOGIN =====================
     public function login($email, $password) {
         $result = $this->userModel->login($email, $password);
         if (!$result['success']) return $result;
 
         $user = $result['user'];
+
+        // set session
         $_SESSION['user'] = [
             'id'     => $user['id'],
             'name'   => $user['name'],
@@ -84,12 +59,27 @@ class UserController {
 
         return [
             'success' => true,
-            'message' => $result['message'],
+            'message' => 'Đăng nhập thành công!',
             'user'    => $_SESSION['user']
         ];
     }
 
-    // gửi mail reset
+    // ===================== GET CURRENT USER =====================
+    public function get_current_user() {
+        if (!isset($_SESSION['user'])) {
+            return [
+                'success' => false,
+                'message' => 'Người dùng chưa đăng nhập!'
+            ];
+        }
+
+        return [
+            'success' => true,
+            'user'    => $_SESSION['user']
+        ];
+    }
+
+    // ===================== FORGOT PASSWORD =====================
     public function forgotPassword($email) {
         if (!filter_var($email, FILTER_VALIDATE_EMAIL))
             return ['success' => false, 'message' => 'Email không hợp lệ!'];
@@ -114,7 +104,7 @@ class UserController {
         return ['success' => true, 'message' => 'Link reset mật khẩu đã được gửi!'];
     }
 
-    // reset mật khẩu
+    // ===================== RESET PASSWORD =====================
     public function resetPassword($token, $newPassword, $confirmPassword) {
 
         if ($newPassword !== $confirmPassword)
@@ -125,7 +115,7 @@ class UserController {
 
         $user = $this->userModel->getByResetToken($token);
         if (!$user)
-            return ['success' => false, 'message' => 'Token không hợp lệ hoặc hết hạn!'];
+            return ['success' => false, 'message' => 'Token không hợp lệ hoặc đã hết hạn!'];
 
         $hashed = password_hash($newPassword, PASSWORD_DEFAULT);
         $this->userModel->updatePassword($user['id'], $hashed);
@@ -133,7 +123,7 @@ class UserController {
         return ['success' => true, 'message' => 'Đổi mật khẩu thành công!'];
     }
 
-    // logout
+    // ===================== LOGOUT =====================
     public function logout() {
         $_SESSION = [];
         if (ini_get("session.use_cookies")) {
@@ -144,19 +134,14 @@ class UserController {
         return ['success' => true, 'message' => 'Đã đăng xuất!'];
     }
 
-    // lấy user hiện tại
-    public function getCurrentUser() {
-        return $_SESSION['user'] ?? null;
-    }
-
-    // admin lấy list user
+    // ===================== ADMIN =====================
     public function adminListUsers() {
         return ['success' => true, 'data' => $this->userModel->getAll()];
     }
 
-    // admin khóa/mở user
     public function adminToggleStatus($id) {
         $ok = $this->userModel->toggleStatus($id);
+
         return [
             'success' => $ok,
             'message' => $ok ? 'Cập nhật thành công!' : 'Cập nhật thất bại!'

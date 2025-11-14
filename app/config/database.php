@@ -17,7 +17,7 @@ class Database {
             die("Database error");
         }
 
-        $this->conn->set_charset("utf8mb4");
+        $this->conn->set_charset("utf8");
     }
 
     public function prepare($query) {
