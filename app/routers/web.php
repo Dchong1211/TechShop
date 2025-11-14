@@ -4,6 +4,7 @@ require_once __DIR__ . '/../helpers/auth.php';
 require_once __DIR__ . '/../helpers/CSRF.php';
 require_once __DIR__ . '/../controllers/UserController.php';
 
+
 // ========= VIEW PAGES =========
 
 // view login
@@ -18,7 +19,7 @@ $router->get("/verify-email", [UserController::class, "verifyEmailPage"]);
 
 // ========= API AUTH =========
 
-// api gửi otp
+// api gửi otp đăng ký
 $router->post("/register", function () {
     CSRF::requireToken();
     $c = new UserController();
@@ -28,7 +29,7 @@ $router->post("/register", function () {
     );
 });
 
-// api verify otp
+// api verify otp đăng ký
 $router->post("/verify-email", function () {
     CSRF::requireToken();
     $c = new UserController();
@@ -68,6 +69,48 @@ $router->get("/profile", function () {
         JSON_UNESCAPED_UNICODE
     );
 });
+
+
+
+/* =====================================================
+    🔥 THÊM MỚI — RESET PASSWORD BẰNG OTP
+   ===================================================== */
+
+// 1) Gửi OTP quên mật khẩu
+$router->post("/forgot-password", function () {
+    CSRF::requireToken(); // bắt buộc có token
+    $c = new UserController();
+    echo json_encode(
+        $c->forgotPasswordOTP($_POST['email']),
+        JSON_UNESCAPED_UNICODE
+    );
+});
+
+// 2) Xác minh OTP quên mật khẩu
+$router->post("/verify-reset-otp", function () {
+    CSRF::requireToken();
+    $c = new UserController();
+    echo json_encode(
+        $c->verifyResetOTP($_POST['email'], $_POST['otp']),
+        JSON_UNESCAPED_UNICODE
+    );
+});
+
+// 3) Đặt lại mật khẩu sau khi xác minh OTP
+$router->post("/reset-password-otp", function () {
+    CSRF::requireToken();
+    $c = new UserController();
+    echo json_encode(
+        $c->resetPasswordByOTP(
+            $_POST['user_id'],
+            $_POST['new_password'],
+            $_POST['confirm_password']
+        ),
+        JSON_UNESCAPED_UNICODE
+    );
+});
+
+
 
 
 // ========= ADMIN =========
