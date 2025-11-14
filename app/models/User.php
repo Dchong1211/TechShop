@@ -8,121 +8,185 @@ class User {
         $this->conn = $dbConn;
     }
 
-    //Đăng ký tài khoản
+    // Register -> trả OTP cho FE, chưa lưu vào DB
     public function register($name, $email, $password) {
-        //Kiểm tra dữ liệu đầu vào
-        if (empty($name) || empty($email) || empty($password)) {
+
+        if (!$name || !$email || !$password)
             return ['success' => false, 'message' => 'Vui lòng nhập đầy đủ thông tin!'];
-        }
 
-        //Kiểm tra định dạng email
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            return ['success' => false, 'message' => 'Email không hợp lệ!'];
-        }
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL))
+            return ['success' => false, 'message' => 'Email sai định dạng!'];
 
-        //Kiểm tra độ mạnh của mật khẩu
-        if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/', $password)) {
-            return ['success' => false, 'message' => 'Mật khẩu phải có ít nhất 8 ký tự, gồm chữ hoa, chữ thường và số!'];
-        }
-
-        //Kiểm tra tên và email trùng
-        $check = $this->conn->prepare("SELECT id, name, email FROM users WHERE email = ? OR name = ?");
-        $check->bind_param("ss", $email, $name);
+        // check email tồn tại
+        $check = $this->conn->prepare("SELECT id FROM users WHERE email=? LIMIT 1");
+        $check->bind_param("s", $email);
         $check->execute();
-        $result = $check->get_result();
+        $exists = $check->get_result()->fetch_assoc();
 
-        if ($result->num_rows > 0) {
-            $existing = $result->fetch_assoc();
-            $check->close();
+        if ($exists)
+            return ['success' => false, 'message' => 'Email đã tồn tại!'];
 
-            if ($existing['email'] === $email) {
-                return ['success' => false, 'message' => 'Email đã được sử dụng!'];
-            } elseif ($existing['name'] === $name) {
-                return ['success' => false, 'message' => 'Tên người dùng đã tồn tại!'];
-            }
-        }
-        $check->close();
-
-        //Mã hóa mật khẩu
+        // hash pass + tạo OTP
         $hashed = password_hash($password, PASSWORD_DEFAULT);
+        $otp = rand(100000, 999999);
+        $expires = date("Y-m-d H:i:s", time() + 300);
 
-        //Thêm người dùng mới
-        $stmt = $this->conn->prepare("INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, 'user')");
-        $stmt->bind_param("sss", $name, $email, $hashed);
-        $success = $stmt->execute();
-        $stmt->close();
-
-        if ($success) {
-            return ['success' => true, 'message' => 'Đăng ký thành công!'];
-        }
-
-        return ['success' => false, 'message' => 'Lỗi khi đăng ký tài khoản!'];
-    }
-
-    //Đăng nhập
-    public function login($email, $password) {
-        if (empty($email) || empty($password)) {
-            return ['success' => false, 'message' => 'Vui lòng nhập email và mật khẩu!'];
-        }
-
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            return ['success' => false, 'message' => 'Email không hợp lệ!'];
-        }
-
-        $stmt = $this->conn->prepare("SELECT * FROM users WHERE email = ? LIMIT 1");
-        $stmt->bind_param("s", $email);
+        // INSERT user vào DB (email_verified=0)
+        $stmt = $this->conn->prepare("
+            INSERT INTO users (name, email, password, otp, otp_expires_at, email_verified, status)
+            VALUES (?, ?, ?, ?, ?, 0, 1)
+        ");
+        $stmt->bind_param("sssis", $name, $email, $hashed, $otp, $expires);
         $stmt->execute();
-        $result = $stmt->get_result();
-        $user = $result->fetch_assoc();
-        $stmt->close();
-
-        if (!$user || !password_verify($password, $user['password'])) {
-            return ['success' => false, 'message' => 'Sai email hoặc mật khẩu!'];
-        }
 
         return [
             'success' => true,
-            'message' => 'Đăng nhập thành công!',
-            'user' => $user
+            'message' => 'OtpSent',
+            'otp'     => $otp
         ];
     }
-    // //Quên mật khẩu - gửi mật khẩu mới random
-    // public function resetPassword($email) {
-    //     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    //         return ['success' => false, 'message' => 'Email không hợp lệ!'];
-    //     }
 
-    //     // Kiểm tra email tồn tại
-    //     $stmt = $this->conn->prepare("SELECT id FROM users WHERE email = ?");
-    //     $stmt->bind_param("s", $email);
-    //     $stmt->execute();
-    //     $result = $stmt->get_result();
-    //     if ($result->num_rows === 0) {
-    //         $stmt->close();
-    //         return ['success' => false, 'message' => 'Email không tồn tại!'];
-    //     }
-    //     $user = $result->fetch_assoc();
-    //     $stmt->close();
 
-    //     // Tạo mật khẩu ngẫu nhiên (8 ký tự)
-    //     $newPass = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'), 0, 8);
-    //     $hashed = password_hash($newPass, PASSWORD_DEFAULT);
+    // Lưu tài khoản sau khi user nhập đúng OTP
+    public function saveVerifiedUser($data) {
+        $stmt = $this->conn->prepare("
+            INSERT INTO users (name, email, password, otp, otp_expires_at)
+            VALUES (?, ?, ?, ?, ?)
+        ");
+        $stmt->bind_param("sssss",
+            $data['name'],
+            $data['email'],
+            $data['password'],
+            $data['otp'],
+            $data['expires']
+        );
+        return $stmt->execute();
+    }
 
-    //     // Cập nhật mật khẩu mới
-    //     $update = $this->conn->prepare("UPDATE users SET password = ? WHERE id = ?");
-    //     $update->bind_param("si", $hashed, $user['id']);
-    //     $update->execute();
-    //     $update->close();
+    // Verify OTP để kích hoạt tài khoản
+    public function verifyEmail($email, $otp) {
 
-    //     // Gửi email
-    //     $subject = "TechShop - Mật khẩu mới của bạn";
-    //     $message = "Xin chào!\n\nMật khẩu mới của bạn là: {$newPass}\nVui lòng đăng nhập và đổi lại mật khẩu ngay sau khi vào hệ thống.";
-    //     $headers = "From: no-reply@techshop.com";
+        $stmt = $this->conn->prepare("SELECT * FROM users WHERE email=? LIMIT 1");
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $user = $stmt->get_result()->fetch_assoc();
 
-    //     //Gửi mail thật bằng hàm mail() (chỉ hoạt động nếu PHP có SMTP)
-    //     @mail($email, $subject, $message, $headers);
+        if (!$user)
+            return ['success' => false, 'message' => 'Email không tồn tại!'];
 
-    //     return ['success' => true, 'message' => 'Mật khẩu mới đã được gửi tới email của bạn!'];
-    // }
+        if ($user['email_verified'] == 1)
+            return ['success' => false, 'message' => 'Email đã được xác minh!'];
+
+        if ($user['otp'] != $otp)
+            return ['success' => false, 'message' => 'Mã OTP không đúng!'];
+
+        if (strtotime($user['otp_expires_at']) < time())
+            return ['success' => false, 'message' => 'Mã OTP đã hết hạn!'];
+
+        $update = $this->conn->prepare("
+            UPDATE users
+            SET email_verified=1,
+                email_verified_at=NOW(),
+                otp=NULL,
+                otp_expires_at=NULL
+            WHERE id=?
+        ");
+        $update->bind_param("i", $user['id']);
+        $update->execute();
+
+        return ['success' => true, 'message' => 'Xác minh email thành công!'];
+    }
+
+    // Login user 
+    public function login($email, $password) {
+
+        if (!$email || !$password)
+            return ['success' => false, 'message' => 'Thiếu email hoặc mật khẩu!'];
+
+        $stmt = $this->conn->prepare("SELECT * FROM users WHERE email=?");
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $user = $stmt->get_result()->fetch_assoc();
+
+        if (!$user)
+            return ['success' => false, 'message' => 'Email không tồn tại!'];
+
+        if (!password_verify($password, $user['password']))
+            return ['success' => false, 'message' => 'Mật khẩu sai!'];
+
+        if ($user['email_verified'] == 0)
+            return ['success' => false, 'message' => 'Email chưa xác minh!'];
+
+        if ((int)$user['status'] !== 1)
+            return ['success' => false, 'message' => 'Tài khoản đã bị khóa!'];
+
+        return ['success' => true, 'message' => 'Đăng nhập thành công!', 'user' => $user];
+    }
+
+    // Get user by email
+    public function getByEmail($email) {
+        $stmt = $this->conn->prepare("SELECT * FROM users WHERE email=? LIMIT 1");
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        return $stmt->get_result()->fetch_assoc() ?: null;
+    }
+
+    // Get user by id
+    public function getById($id) {
+        $stmt = $this->conn->prepare("SELECT * FROM users WHERE id=? LIMIT 1");
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        return $stmt->get_result()->fetch_assoc() ?: null;
+    }
+
+    // List all users
+    public function getAll() {
+        return $this->conn->query("SELECT * FROM users ORDER BY id DESC")->fetch_all(MYSQLI_ASSOC);
+    }
+
+    // Save reset token
+    public function saveResetToken($email, $token, $expires) {
+        $stmt = $this->conn->prepare("
+            UPDATE users SET reset_token=?, reset_expires_at=? WHERE email=?
+        ");
+        $stmt->bind_param("sss", $token, $expires, $email);
+        return $stmt->execute();
+    }
+
+    // Get by token
+    public function getByResetToken($token) {
+        $now = date("Y-m-d H:i:s");
+        $stmt = $this->conn->prepare("
+            SELECT * FROM users WHERE reset_token=? AND reset_expires_at >= ? LIMIT 1
+        ");
+        $stmt->bind_param("ss", $token, $now);
+        $stmt->execute();
+        return $stmt->get_result()->fetch_assoc() ?: null;
+    }
+
+    // Update password
+    public function updatePassword($id, $hashedPassword) {
+        $stmt = $this->conn->prepare("
+            UPDATE users SET password=?, reset_token=NULL, reset_expires_at=NULL WHERE id=?
+        ");
+        $stmt->bind_param("si", $hashedPassword, $id);
+        return $stmt->execute();
+    }
+
+    // Update user (admin)
+    public function updateUser($id, $name, $role, $status) {
+        $stmt = $this->conn->prepare("UPDATE users SET name=?, role=?, status=? WHERE id=?");
+        $stmt->bind_param("ssii", $name, $role, $status, $id);
+        return $stmt->execute();
+    }
+
+    // Toggle status
+    public function toggleStatus($id) {
+        $stmt = $this->conn->prepare("
+            UPDATE users SET status = IF(status=1,0,1) WHERE id=?
+        ");
+        $stmt->bind_param("i", $id);
+        return $stmt->execute();
+    }
 }
 ?>
