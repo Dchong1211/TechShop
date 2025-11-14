@@ -1,0 +1,12 @@
+RewriteEngine On
+
+# Thư mục hiện tại là /public
+RewriteBase /TechShop/public/
+
+# Nếu file không tồn tại
+RewriteCond %{REQUEST_FILENAME} !-f
+# Nếu thư mục không tồn tại
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Forward tất cả về index.php
+RewriteRule ^ index.php [QSA,L]

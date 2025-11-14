@@ -1,21 +1,30 @@
 <?php
+require_once __DIR__ . "/env.php";
+
 class Database {
-    private $host = "localhost";
-    private $user = "root"; // user mặc định của XAMPP
-    private $pass = ""; // nếu bạn có mật khẩu MySQL thì thêm vào đây
-    private $dbname = "techshop";
     public $conn;
 
-    public function getConnection() {
-        $this->conn = new mysqli($this->host, $this->user, $this->pass, $this->dbname);
+    public function __construct() {
+        $this->conn = new mysqli(
+            env("DB_HOST"),
+            env("DB_USER"),
+            env("DB_PASS"),
+            env("DB_NAME")
+        );
 
         if ($this->conn->connect_error) {
-            die("Kết nối thất bại: " . $this->conn->connect_error);
+            error_log("DB ERROR: " . $this->conn->connect_error);
+            die("Database error");
         }
 
-        // Đảm bảo dữ liệu hiển thị đúng tiếng Việt
         $this->conn->set_charset("utf8mb4");
+    }
 
+    public function prepare($query) {
+        return $this->conn->prepare($query);
+    }
+
+    public function getConnection() {
         return $this->conn;
     }
 }

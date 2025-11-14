@@ -123,7 +123,7 @@
       }
 
       try {
-        const res = await fetch(`${apiBase}/login_user.php`, {
+        const res = await fetch(`${apiBase}/login.php`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email, password })
@@ -137,9 +137,9 @@
 
           // 🚀 Chuyển hướng giả định
           if (role === "admin") {
-            // window.location.href = "/TechShop/public/admin/index.php";
+            window.location.href = "/TechShop/app/tests/admin-page.html";
           } else {
-            // window.location.href = "/TechShop/public/user/index.php";
+            window.location.href = "/TechShop/app/tests/user-page.html";
           }
         } else {
           alert(data.message);

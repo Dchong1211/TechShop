@@ -1,6 +1,9 @@
 TechShop/
 │
 ├── public/                            # Giao diện hiển thị (frontend cho cả user và admin)
+│   │
+│   ├── index.php                      # Entry point — load router + chạy app
+│   │
 │   ├── user/                          # Trang dành cho khách hàng
 │   │   ├── index.php                  # Trang chủ hiển thị sản phẩm nổi bật
 │   │   ├── product.php                # Danh sách sản phẩm
@@ -40,7 +43,15 @@ TechShop/
 ├── app/                               # Xử lý logic backend (PHP)
 │   ├── config/
 │   │   ├── database.php               # File kết nối MySQL
-│   │   └── constants.php              # Định nghĩa hằng số (BASE_URL, PATH,...)
+│   │   ├── env.php                    # Hàm env() đọc file .env
+│   │   └── .env                       # Thông tin nhạy cảm (không public)
+│   │
+│   ├── routers/
+│   │   ├── web.php                    # File đăng ký route (GET/POST)
+│   ├── core/
+│   │   ├── autoload.php               # Tự động load models, controllers, helpers
+│   │   └── router.php                 # Class Router xử lý request
+│   │
 │   │
 │   ├── controllers/                   # Điều khiển luồng xử lý giữa view và model
 │   │   ├── ProductController.php      # Xử lý sản phẩm (lấy danh sách, chi tiết, CRUD)
@@ -58,16 +69,19 @@ TechShop/
 │   ├── helpers/                       # Hàm tiện ích dùng chung
 │   │   ├── auth.php                   # Kiểm tra đăng nhập, quyền truy cập
 │   │   ├── format.php                 # Định dạng dữ liệu (tiền, ngày, text)
+│   │   ├── csrf.php                   # CSRF token + verify
 │   │   └── validation.php             # Kiểm tra dữ liệu nhập hợp lệ
 │   │
-│   └── api/                           # Endpoint PHP trả dữ liệu JSON cho frontend
-│       ├── get_products.php           # Lấy danh sách sản phẩm
-│       ├── add_to_cart.php            # Thêm sản phẩm vào giỏ hàng
-│       ├── logout.php                 # Xử lý thanh toán và tạo đơn hàng
-│       ├── register_user.php          # Đăng ký tài khoản mới
-│       ├── login.php                  # Đăng nhập người dùng
-│       ├── reset_password.php         # Đặt lại mật khẩu
-│       └── admin_api.php              # Các hành động quản trị (CRUD sản phẩm, user,...)
+│   ├── api/                           # Endpoint PHP trả dữ liệu JSON cho frontend
+│   │    ├── get_products.php          # Lấy danh sách sản phẩm
+│   │    ├── add_to_cart.php           # Thêm sản phẩm vào giỏ hàng
+│   │    ├── logout.php                # Xử lý thanh toán và tạo đơn hàng
+│   │    ├── register_user.php         # Đăng ký tài khoản mới
+│   │    ├── login.php                 # Đăng nhập người dùng
+│   │    ├── reset_password.php        # Đặt lại mật khẩu
+│   │    └── admin_api.php             # Các hành động quản trị (CRUD sản phẩm, user,...)
+│   │ 
+│   └── .htaccess                      # Cấu hình Apache (Deny from all)
 │
 ├── storage/                           # Lưu file tải lên và nhật ký hệ thống
 │   ├── uploads/
