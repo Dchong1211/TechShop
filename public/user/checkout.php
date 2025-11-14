@@ -1,6 +1,8 @@
 <?php
 declare(strict_types=1);
 session_start();
+define('BASE_PATH', dirname(__DIR__));
+
 if (!isset($_SESSION['cart'])) $_SESSION['cart'] = [];
 $cart = $_SESSION['cart'];
 if (empty($cart)) {
@@ -46,15 +48,11 @@ if ($_SERVER['REQUEST_METHOD']==='POST') {
     $done = true;
   }
 }
+
+$PAGE_TITLE = 'Thanh toán';
+
+ob_start();
 ?>
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Thanh toán | Techshop</title>
-  <base href="/TechShop/">
-  <link rel="stylesheet" href="public/assets/css/cssUser/user.css?v=7">
   <style>
     .page{max-width:1200px;margin:24px auto;padding:0 16px;display:grid;grid-template-columns:1fr 380px;gap:24px}
     .card{background:#fff;border:1px solid #eee;border-radius:10px;padding:16px}
@@ -72,33 +70,16 @@ if ($_SERVER['REQUEST_METHOD']==='POST') {
     .success{max-width:720px;margin:40px auto}
     .ok{font-size:20px;font-weight:700;margin:8px 0}
   </style>
-</head>
-<body>
-  <header class="main-header">
-    <div class="header-inner">
-      <a href="public/user/index.php" class="logo">Techshop</a>
-      <div class="header-actions">
-        <a href="tel:19001234">📞 Hotline</a>
-        <a href="public/user/orders.php">📦 Đơn hàng</a>
-        <a href="public/user/cart.php">🛒 Giỏ hàng</a>
-      </div>
-    </div>
-    <nav class="main-nav">
-      <div class="nav-inner">
-        <a href="public/user/product.php?cate=pc">Mua PC</a>
-        <a href="public/user/product.php?cate=hot">Hot Deal</a>
-        <a href="public/user/product.php?cate=laptop">Laptop</a>
-        <a href="public/user/product.php?cate=monitor">Màn hình</a>
-        <a href="public/user/product.php?cate=gear">Bàn phím - Chuột</a>
-        <a href="public/user/product.php?cate=accessories">Phụ kiện</a>
-      </div>
-    </nav>
-  </header>
+<?php
+$ADDITIONAL_HEAD_CONTENT = ob_get_clean();
+
+include BASE_PATH . '/includes/header.php';
+?>
 
   <?php if ($done): ?>
     <main class="success">
       <div class="card" style="text-align:center">
-        <div>✅ Đặt hàng thành công</div>
+        <div>Đặt hàng thành công</div>
         <div class="ok">Mã đơn: <?= htmlspecialchars($orderId,ENT_QUOTES) ?></div>
         <p>Chúng tôi đã nhận đơn hàng của bạn.</p>
         <div style="display:flex;gap:12px;justify-content:center;margin-top:12px">
@@ -171,6 +152,6 @@ if ($_SERVER['REQUEST_METHOD']==='POST') {
     </main>
   <?php endif; ?>
 
-  <footer>© <?= date('Y') ?> Techshop</footer>
-</body>
-</html>
+<?php
+include BASE_PATH . '/includes/footer.php';
+?>

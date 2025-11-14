@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 session_start();
+define('BASE_PATH', dirname(__DIR__));
 
 if (!isset($_SESSION['cart'])) $_SESSION['cart'] = [];
 
@@ -58,15 +59,11 @@ $discount = 0;
 $total    = max(0, $subtotal + $shipping - $discount);
 
 $BACK_URL = 'public/user/index.php';
+
+$PAGE_TITLE = 'Giỏ hàng';
+
+ob_start();
 ?>
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Giỏ hàng | Techshop</title>
-  <base href="/TechShop/">
-  <link rel="stylesheet" href="public/assets/css/cssUser/user.css?v=7">
   <style>
     .cart-page{max-width:1200px;margin:24px auto;padding:0 16px;display:grid;grid-template-columns:1fr 320px;gap:24px}
     .cart-table{width:100%;border-collapse:collapse;background:#fff;border:1px solid #eee}
@@ -86,34 +83,17 @@ $BACK_URL = 'public/user/index.php';
     .empty-box{background:#fff;border:1px dashed #ddd;padding:24px;text-align:center;border-radius:8px}
     .price{white-space:nowrap}
   </style>
-</head>
-<body>
-  <header class="main-header">
-    <div class="header-inner">
-      <a href="public/user/index.php" class="logo">Techshop</a>
-      <div class="header-actions">
-        <a href="tel:19001234">📞 Hotline</a>
-        <a href="public/user/orders.php">📦 Đơn hàng</a>
-        <a href="public/user/cart.php">🛒 Giỏ hàng</a>
-      </div>
-    </div>
-    <nav class="main-nav">
-      <div class="nav-inner">
-        <a href="public/user/product.php?cate=pc">Mua PC</a>
-        <a href="public/user/product.php?cate=hot">Hot Deal</a>
-        <a href="public/user/product.php?cate=laptop">Laptop</a>
-        <a href="public/user/product.php?cate=monitor">Màn hình</a>
-        <a href="public/user/product.php?cate=gear">Bàn phím - Chuột</a>
-        <a href="public/user/product.php?cate=accessories">Phụ kiện</a>
-      </div>
-    </nav>
-  </header>
+<?php
+$ADDITIONAL_HEAD_CONTENT = ob_get_clean();
+
+include BASE_PATH . '/includes/header.php';
+?>
 
   <main class="cart-page">
     <section>
       <div class="cart-header-actions">
         <a class="btn secondary" href="<?= $BACK_URL ?>">← Tiếp tục mua sắm</a>
-        <a class="btn secondary" href="public/user/cart.php?action=clear" onclick="return confirm('Xoá toàn bộ giỏ hàng?')">🗑 Xoá giỏ</a>
+        <a class="btn secondary" href="public/user/cart.php?action=clear" onclick="return confirm('Xoá toàn bộ giỏ hàng?')">Xoá giỏ</a>
       </div>
 
       <?php if (empty($cart)): ?>
@@ -165,7 +145,7 @@ $BACK_URL = 'public/user/index.php';
           </table>
 
           <div style="margin-top:12px; display:flex; gap:12px;">
-            <button class="btn" type="submit">🔄 Cập nhật giỏ</button>
+            <button class="btn" type="submit">Cập nhật giỏ</button>
             <a class="btn secondary" href="<?= $BACK_URL ?>">+ Thêm sản phẩm</a>
           </div>
         </form>
@@ -179,12 +159,12 @@ $BACK_URL = 'public/user/index.php';
       <div class="row"><span>Giảm giá</span><span><?= $discount === 0 ? '0 ₫' : ('- ' . number_format($discount, 0, ',', '.') . ' ₫') ?></span></div>
       <div class="row total"><span>Tổng cộng</span><span class="price"><?= number_format($total, 0, ',', '.') ?> ₫</span></div>
       <div style="margin-top:12px;display:flex;flex-direction:column;gap:8px">
-        <a class="btn" href="public/user/checkout.php">✅ Thanh toán</a>
+        <a class="btn" href="public/user/checkout.php">Thanh toán</a>
         <a class="btn secondary" href="<?= $BACK_URL ?>">← Tiếp tục mua</a>
       </div>
     </aside>
   </main>
 
-  <footer>© <?= date('Y') ?> Techshop</footer>
-</body>
-</html>
+<?php
+include BASE_PATH . '/includes/footer.php';
+?>

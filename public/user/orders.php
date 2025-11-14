@@ -1,6 +1,8 @@
 <?php
 declare(strict_types=1);
 session_start();
+define('BASE_PATH', dirname(__DIR__));
+
 $orders = $_SESSION['orders'] ?? [];
 function money_vn($v){ return number_format((float)$v,0,',','.').' ₫'; }
 $viewId = $_GET['id'] ?? '';
@@ -8,15 +10,11 @@ $view = null;
 if ($viewId) {
   foreach ($orders as $o) if ($o['id']===$viewId) {$view=$o;break;}
 }
+
+$PAGE_TITLE = 'Đơn hàng';
+
+ob_start();
 ?>
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Đơn hàng | Techshop</title>
-  <base href="/TechShop/">
-  <link rel="stylesheet" href="public/assets/css/cssUser/user.css?v=7">
   <style>
     .page{max-width:1200px;margin:24px auto;padding:0 16px;display:grid;grid-template-columns:1fr 360px;gap:24px}
     .card{background:#fff;border:1px solid #eee;border-radius:10px;padding:16px}
@@ -29,28 +27,11 @@ if ($viewId) {
     .row{display:flex;justify-content:space-between;margin:6px 0}
     .total{font-weight:700}
   </style>
-</head>
-<body>
-  <header class="main-header">
-    <div class="header-inner">
-      <a href="public/user/index.php" class="logo">Techshop</a>
-      <div class="header-actions">
-        <a href="tel:19001234">📞 Hotline</a>
-        <a href="public/user/orders.php">📦 Đơn hàng</a>
-        <a href="public/user/cart.php">🛒 Giỏ hàng</a>
-      </div>
-    </div>
-    <nav class="main-nav">
-      <div class="nav-inner">
-        <a href="public/user/product.php?cate=pc">Mua PC</a>
-        <a href="public/user/product.php?cate=hot">Hot Deal</a>
-        <a href="public/user/product.php?cate=laptop">Laptop</a>
-        <a href="public/user/product.php?cate=monitor">Màn hình</a>
-        <a href="public/user/product.php?cate=gear">Bàn phím - Chuột</a>
-        <a href="public/user/product.php?cate=accessories">Phụ kiện</a>
-      </div>
-    </nav>
-  </header>
+<?php
+$ADDITIONAL_HEAD_CONTENT = ob_get_clean();
+
+include BASE_PATH . '/includes/header.php';
+?>
 
   <?php if ($view): ?>
     <main class="page">
@@ -117,6 +98,6 @@ if ($viewId) {
     </main>
   <?php endif; ?>
 
-  <footer>© <?= date('Y') ?> Techshop</footer>
-</body>
-</html>
+<?php
+include BASE_PATH . '/includes/footer.php';
+?>

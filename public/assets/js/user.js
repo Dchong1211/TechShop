@@ -5,6 +5,31 @@ document.addEventListener('DOMContentLoaded', async () => {
   renderByCategory(allProducts, 'pc', 'pc-hot', 5);
   renderByCategory(allProducts, 'laptop', 'laptop-hot', 5);
   renderByCategory(allProducts, 'gear', 'gear-hot', 5);
+
+  const toggleBtn = document.getElementById('sidebar-toggle-btn');
+  const overlay = document.getElementById('sidebar-overlay');
+
+  if (toggleBtn) {
+    toggleBtn.addEventListener('click', () => {
+      document.body.classList.add('sidebar-open');
+    });
+  }
+
+  if (overlay) {
+    overlay.addEventListener('click', () => {
+      document.body.classList.remove('sidebar-open');
+    });
+  }
+
+  const submenuToggles = document.querySelectorAll('.category-sidebar .sidebar-item-with-submenu > a');
+
+  submenuToggles.forEach(toggle => {
+    toggle.addEventListener('click', (event) => {
+      event.preventDefault();
+      const parentLi = toggle.parentElement;
+      parentLi.classList.toggle('submenu-open');
+    });
+  });
 });
 
 async function fetchProducts() {

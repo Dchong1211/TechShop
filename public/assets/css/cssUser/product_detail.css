@@ -1,0 +1,72 @@
+.pdp-page {
+  max-width: 1200px;
+  margin: 24px auto;
+  padding: 24px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+.pdp-image img {
+  max-width: 100%;
+  border-radius: var(--radius);
+  border: 1px solid #eee;
+}
+.pdp-info h1 {
+  font-size: 28px;
+  margin-bottom: 12px;
+  font-weight: 700;
+}
+.pdp-price {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--main-red);
+  margin-bottom: 20px;
+}
+.pdp-desc {
+  margin-bottom: 20px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+.pdp-form label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+.pdp-form input[type="number"] {
+  width: 80px;
+  padding: 8px;
+  font-size: 16px;
+  margin-right: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+.pdp-form .btn {
+  background: var(--main-red);
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background .2s ease;
+}
+.pdp-form .btn:hover {
+  background: #a00010;
+}
+@media (max-width: 768px) {
+  .pdp-page {
+    grid-template-columns: 1fr;
+    padding: 16px;
+    gap: 20px;
+  }
+  .pdp-info h1 {
+    font-size: 22px;
+  }
+  .pdp-price {
+    font-size: 20px;
+  }
+}
