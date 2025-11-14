@@ -2,39 +2,43 @@
 
 class CSRF {
 
+    // Tạo token
     public static function token() {
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
 
-        if (empty($_SESSION['csrf'])) {
+        // Token cố định 1 phiên làm việc
+        if (!isset($_SESSION['csrf']) || empty($_SESSION['csrf'])) {
             $_SESSION['csrf'] = bin2hex(random_bytes(32));
         }
+
         return $_SESSION['csrf'];
     }
 
+    // Kiểm tra token
     public static function check($token) {
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
 
-        // Không có token → reject
-        if (!$token || !isset($_SESSION['csrf'])) {
+        if (!isset($_SESSION['csrf']) || !$token) {
             return false;
         }
 
-        // So sánh thời gian bảo mật
-        $valid = hash_equals($_SESSION['csrf'], $token);
-
-        // Tự động tạo token mới (chống replay attack)
-        $_SESSION['csrf'] = bin2hex(random_bytes(32));
-
-        return $valid;
+        return hash_equals($_SESSION['csrf'], $token);
     }
 
-    // middleware: chặn request nếu sai token
+    // Dùng cho các route POST
     public static function requireToken() {
-        $token = $_POST['csrf'] ?? null;
+        if ($_SERVER['REQUEST_METHOD'] === "GET") {
+            return; // GET không cần token
+        }
+
+        // Lấy token từ body hoặc header
+        $token = $_POST['csrf']
+            ?? ($_SERVER['HTTP_X_CSRF_TOKEN'] ?? null);
+
         if (!self::check($token)) {
             http_response_code(403);
             echo json_encode([

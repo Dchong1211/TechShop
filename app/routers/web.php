@@ -2,49 +2,72 @@
 
 require_once __DIR__ . '/../helpers/auth.php';
 require_once __DIR__ . '/../helpers/CSRF.php';
+require_once __DIR__ . '/../controllers/UserController.php';
 
-// ==================== AUTH PAGES ====================
-
+// view login
 $router->get("/login", [UserController::class, "loginPage"]);
-$router->post("/login", function () {
-    CSRF::requireToken();                 //  Chống CSRF
-    $c = new UserController();
-    echo json_encode($c->login($_POST['email'], $_POST['password']));
-});
 
+// view register
 $router->get("/register", [UserController::class, "registerPage"]);
+
+// view nhập otp
+$router->get("/verify-email", [UserController::class, "verifyEmailPage"]);
+
+// api gửi otp
 $router->post("/register", function () {
-    CSRF::requireToken();                 // Chống CSRF
+    CSRF::requireToken();
     $c = new UserController();
     echo json_encode($c->register($_POST['name'], $_POST['email'], $_POST['password']));
 });
 
+// api verify otp
+$router->post("/verify-email", function () {
+    CSRF::requireToken();
+    $c = new UserController();
+    echo json_encode(
+        $c->createUserAfterVerify($_POST['email'], $_POST['otp'])
+    );
+});
+
+// api login
+$router->post("/login", function () {
+    CSRF::requireToken();
+    $c = new UserController();
+    echo json_encode($c->login($_POST['email'], $_POST['password']));
+});
+
+// api logout
 $router->post("/logout", function () {
-    requireLogin();                       // Chỉ user login mới được logout
+    requireLogin();
+    CSRF::requireToken();
     $c = new UserController();
     echo json_encode($c->logout());
 });
 
-// ==================== USER PROTECTED AREA ====================
-
-$router->get('/profile', function () {
-    requireLogin();                       // Chỉ user đăng nhập mới truy cập
+// api profile
+$router->get("/profile", function () {
+    requireLogin();
     $c = new UserController();
     echo json_encode($c->getCurrentUser());
 });
 
-// Test route kiểm tra session
-$router->get('/user-test', function () {
-    $c = new UserController();
-    echo "<pre>";
-    print_r($c->getCurrentUser());
-    echo "</pre>";
+// admin dashboard
+$router->get("/admin/dashboard", function () {
+    requireAdmin();
+    echo "Admin Dashboard";
 });
 
+// admin list user
+$router->get("/admin/users/json", function () {
+    requireAdmin();
+    $c = new UserController();
+    echo json_encode($c->adminListUsers());
+});
 
-// ==================== ADMIN PROTECTED AREA ====================
-
-$router->get('/admin/dashboard', function () {
-    requireAdmin();                       // Chỉ admin mới vào được
-    echo "Admin Dashboard";
+// admin toggle user
+$router->post("/admin/users/toggle-status", function () {
+    requireAdmin();
+    CSRF::requireToken();
+    $c = new UserController();
+    echo json_encode($c->adminToggleStatus($_POST['id']));
 });
