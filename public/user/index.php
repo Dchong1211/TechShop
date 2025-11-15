@@ -18,71 +18,80 @@ $ADDITIONAL_BODY_END_CONTENT = ob_get_clean();
 include BASE_PATH . '/includes/header.php';
 ?>
 
-  <main class="homepage" role="main">
+<div class="sticky-banner-container-left">
+  <a href="#">
+    <img loading="lazy" src="public/assets/images/banner_doc_1.jpg" alt="Banner dọc 1">
+  </a>
+</div>
+<div class="sticky-banner-container-right">
+  <a href="#">
+    <img loading="lazy" src="public/assets/images/banner_doc_2.jpg" alt="Banner dọc 2">
+  </a>
+</div>
+<main class="homepage" role="main">
     
     <div class="main-content">
       <div class="row">
 
         <div class="col-xl-3 col-lg-3 col-left-sidebar">
-          <?php include BASE_PATH . '/includes/sidebar.php'; ?>
           
-          <div class="left-banner-promo">
-            <a href="#">
-              <img loading="lazy" src="https://via.placeholder.com/270x400/cccccc/ffffff?text=Banner+dọc" alt="Banner dọc 1">
-            </a>
-          </div>
-          <div class="left-banner-promo">
-            <a href="#">
-              <img loading="lazy" src="https://via.placeholder.com/270x400/cccccc/ffffff?text=Banner+dọc+2" alt="Banner dọc 2">
-            </a>
-          </div>
-        </div>
+          <?php include BASE_PATH . '/includes/sidebar.php'; ?>
 
+          <div class="sidebar-megamenu-container">
+            <?php 
+              $megamenu_panel_file = BASE_PATH . '/includes/megamenu_panels.php';
+              if (file_exists($megamenu_panel_file)) {
+                  include $megamenu_panel_file;
+              }
+            ?>
+          </div>
+
+        </div>
         <div class="col-xl-9 col-lg-9 col-main-content">
           
           <div class="top-banners">
             <div class="banner-item">
               <a href="#">
-                <img loading="lazy" src="https://via.placeholder.com/420x150/ffb347/ffffff?text=Top+Banner+1" alt="Top Banner 1">
+                <img loading="lazy" src="public/assets/images/main_banner1.jpg" alt="Top Banner 1">
               </a>
             </div>
             <div class="banner-item">
               <a href="#">
-                <img loading="lazy" src="https://via.placeholder.com/420x150/ff6f69/ffffff?text=Top+Banner+2" alt="Top Banner 2">
+                <img loading="lazy" src="public/assets/images/main_banner2.jpg" alt="Top Banner 2">
               </a>
             </div>
             <div class="banner-item">
               <a href="#">
-                <img loading="lazy" src="https://via.placeholder.com/420x150/96ceb4/ffffff?text=Top+Banner+3" alt="Top Banner 3">
+                <img loading="lazy" src="public/assets/images/main_banner3.jpg" alt="Top Banner 3">
               </a>
             </div>
           </div>
 
           <div class="main-slider-banner">
             <a href="#">
-              <img loading="lazy" src="https://via.placeholder.com/870x300/4aa3ff/ffffff?text=Main+Slider+Banner" alt="Main Banner">
+              <img loading="lazy" src="public/assets/images/main_banner1.jpg" alt="Main Slider Banner">
             </a>
           </div>
 
           <div class="deal-banners">
             <div class="banner-item">
               <a href="#">
-                <img loading="lazy" src="https://via.placeholder.com/210x210/e74c3c/ffffff?text=Deal+1" alt="Deal 1">
+                <img loading="lazy" src="public/assets/images/deal1.jpg" alt="Deal 1">
               </a>
             </div>
             <div class="banner-item">
               <a href="#">
-                <img loading="lazy" src="https://via.placeholder.com/210x210/2ecc71/ffffff?text=Deal+2" alt="Deal 2">
+                <img loading="lazy" src="public/assets/images/deal2.jpg" alt="Deal 2">
               </a>
             </div>
             <div class="banner-item">
               <a href="#">
-                <img loading="lazy" src="https://via.placeholder.com/210x210/3498db/ffffff?text=Deal+3" alt="Deal 3">
+                <img loading="lazy" src="public/assets/images/deal3.jpg" alt="Deal 3">
               </a>
             </div>
             <div class="banner-item">
               <a href="#">
-                <img loading="lazy" src="https://via.placeholder.com/210x210/f1c40f/ffffff?text=Deal+4" alt="Deal 4">
+                <img loading="lazy" src="public/assets/images/deal4.jpg" alt="Deal 4">
               </a>
             </div>
           </div>
@@ -132,8 +141,9 @@ include BASE_PATH . '/includes/header.php';
               <div class="brand-item"><a href="#"><img loading="lazy" src="https://via.placeholder.com/120x60/f0f0f0/000?text=LENOVO" alt="LENOVO"></a></div>
             </div>
           </section>
-          </div>
-      </div>
+        </div>
+
+        </div>
     </div>
   </main>
 

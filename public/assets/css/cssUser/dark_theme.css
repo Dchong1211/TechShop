@@ -1,0 +1,234 @@
+/* TẠO FILE MỚI: public/assets/css/cssUser/dark_theme.css */
+
+/* Ghi đè các biến CSS gốc khi ở dark mode */
+html[data-theme="dark"] {
+  /* ===== BACKGROUND ===== */
+  --c-bg-dark: #111a2b;
+  --c-bg-darker: #0d1322;
+  --c-bg-page: radial-gradient(circle at top right, #0a0e1a 30%, #111a2b 100%);
+
+  /* ===== TEXT ===== */
+  --c-text: #e6f7ff;
+  --c-text-dim: rgba(230, 247, 255, 0.7);
+
+  /* ===== ACCENT ===== */
+  --c-neon: #00eaff;
+  --c-purple: #7f5eff;
+
+  /* ===== BORDERS & SHADOW ===== */
+  --c-border: rgba(0, 234, 255, 0.35);
+  --c-border-soft: rgba(0, 234, 255, 0.15);
+  --c-glow: 0 0 20px rgba(0, 234, 255, 0.25);
+  --c-glow-soft: 0 0 12px rgba(127, 94, 255, 0.3);
+
+  /* ===== TITLE ===== */
+  --c-title-gradient: linear-gradient(90deg, #00eaff, #7f5eff);
+  --c-title-shadow: 0 0 12px rgba(127, 94, 255, 0.6);
+
+  /* ===== BUTTON ===== */
+  --c-btn-bg: linear-gradient(90deg, #00eaff, #7f5eff);
+  --c-btn-text: #111a2b;
+  --c-btn-hover: brightness(1.25);
+
+  /* ===== INPUT ===== */
+  --c-input-bg: #0a0e1a;
+  --c-input-border: rgba(0, 234, 255, 0.35);
+  --c-input-shadow: 0 0 8px rgba(0, 234, 255, 0.18);
+  
+  /* Ghi đè biến của user.css */
+  --bg: var(--c-bg-darker);
+  --white: var(--c-bg-dark);
+  --text: var(--c-text);
+  --muted: var(--c-text-dim);
+  --main-red: var(--c-neon);
+  --shadow: var(--c-glow-soft);
+}
+
+/* Áp dụng các biến dark mode */
+html[data-theme="dark"] body {
+  background: var(--bg);
+  color: var(--text);
+}
+
+html[data-theme="dark"] .main-header,
+html[data-theme="dark"] .main-nav,
+html[data-theme="dark"] .main-footer {
+  background: var(--white);
+  color: var(--muted);
+  border-bottom: 1px solid var(--c-border-soft);
+}
+
+html[data-theme="dark"] .header-inner {
+  border-bottom: none;
+}
+
+html[data-theme="dark"] .category-sidebar,
+html[data-theme="dark"] .main-content {
+  background: var(--c-bg-page);
+}
+
+html[data-theme="dark"] .category-sidebar {
+  border-right: 1px solid var(--c-border-soft);
+  box-shadow: var(--c-glow-soft);
+}
+
+html[data-theme="dark"] .category-sidebar h3 {
+  background: var(--c-title-gradient);
+  background-clip: text;
+  color: transparent;
+  text-shadow: var(--c-title-shadow);
+  border-bottom: 1px solid var(--c-border-soft);
+}
+
+
+/* ======================================= */
+/* PHẦN ĐÃ SỬA LỖI CHÓI NÚT */
+/* ======================================= */
+
+/* --- Style cho sidebar và footer --- */
+html[data-theme="dark"] .category-sidebar a,
+html[data-theme="dark"] .main-footer a {
+  color: var(--muted);
+}
+
+html[data-theme="dark"] .category-sidebar li a:hover,
+html[data-theme="dark"] .main-footer a:hover {
+  color: var(--c-neon);
+  background: rgba(0,234,255,0.1);
+}
+
+/* --- Style RIÊNG cho nút header (FIX) --- */
+html[data-theme="dark"] .header-actions a {
+  background: transparent;                /* 1. Xóa nền trắng #f1f1f1 */
+  border: 1px solid var(--c-border-soft); /* 2. Thêm viền mờ cho đẹp */
+  color: var(--muted);                    /* 3. Chữ màu sáng */
+}
+
+html[data-theme="dark"] .header-actions a:hover {
+  color: var(--c-neon);                 /* Chữ sáng rực khi hover */
+  background: rgba(0,234,255,0.1);    /* Nền mờ khi hover */
+  border-color: var(--c-border);      /* Viền sáng rực khi hover */
+}
+/* ======================================= */
+/* KẾT THÚC PHẦN SỬA */
+/* ======================================= */
+
+
+/* Đăng xuất */
+html[data-theme="dark"] .header-actions a[href*="logout"] {
+  color: #ff4d4f;
+  border-color: rgba(255, 77, 79, 0.3); /* Thêm viền đỏ mờ */
+}
+html[data-theme="dark"] .header-actions a[href*="logout"]:hover {
+  color: #ff4d4f;
+  background: rgba(255, 77, 79, 0.1);
+  border-color: rgba(255, 77, 79, 0.6); /* Viền đỏ rõ hơn */
+}
+
+/* Nút gạt theme */
+html[data-theme="dark"] .theme-toggle {
+  background: var(--c-input-bg);
+  border-color: var(--c-input-border);
+  color: var(--c-text);
+}
+html[data-theme="dark"] .theme-toggle:hover {
+  background: var(--c-input-bg);
+  border-color: var(--c-border);
+  color: var(--c-neon);
+}
+
+html[data-theme="dark"] .logo {
+  background: var(--c-title-gradient);
+  background-clip: text;
+  color: transparent;
+  text-shadow: var(--c-title-shadow);
+}
+
+html[data-theme="dark"] .search-box {
+  border-color: var(--c-border);
+}
+
+html[data-theme="dark"] .search-box input {
+  background: var(--c-input-bg);
+  color: var(--c-text);
+}
+
+html[data-theme="dark"] .search-box button {
+  background: var(--c-btn-bg);
+  color: var(--c-btn-text);
+}
+html[data-theme="dark"] .search-box button:hover {
+  filter: var(--c-btn-hover);
+}
+
+html[data-theme="dark"] .product-section,
+html[data-theme="dark"] .brand-item {
+  background: var(--c-bg-dark);
+  border: 1px solid var(--c-border-soft);
+  box-shadow: var(--c-glow);
+}
+
+html[data-theme="dark"] .section-head h2 a,
+html[data-theme="dark"] .product-card h3,
+html[data-theme="dark"] .product-card a {
+  color: var(--c-text);
+}
+html[data-theme="dark"] .product-card a {
+  background: var(--c-input-bg);
+  border: 1px solid var(--c-border-soft);
+}
+html[data-theme="dark"] .product-card a:hover {
+  color: var(--c-neon);
+  background: var(--c-input-bg);
+  border-color: var(--c-border);
+}
+
+html[data-theme="dark"] .section-head a,
+html[data-theme="dark"] .product-card .price {
+  color: var(--c-neon);
+}
+
+html[data-theme="dark"] .brand-section {
+  background: none;
+  border: none;
+  box-shadow: none;
+}
+
+/*
+================================================
+CSS CHO TRANG PRODUCT DETAIL (product_detail.css)
+================================================
+*/
+html[data-theme="dark"] .pdp-page {
+  background: var(--c-bg-dark);
+  border: 1px solid var(--c-border-soft);
+  box-shadow: var(--c-glow);
+}
+
+html[data-theme="dark"] .pdp-info h1 {
+  color: var(--c-text);
+}
+html[data-theme="dark"] .pdp-desc {
+  color: var(--c-text-dim);
+}
+
+html[data-theme="dark"] .pdp-price {
+  color: var(--c-neon);
+}
+
+html[data-theme="dark"] .pdp-form input[type="number"] {
+  background: var(--c-input-bg);
+  border: 1px solid var(--c-input-border);
+  box-shadow: var(--c-input-shadow);
+  color: var(--c-text);
+}
+
+html[data-theme="dark"] .pdp-form .btn {
+  background: var(--c-btn-bg);
+  color: var(--c-btn-text);
+}
+
+html[data-theme="dark"] .pdp-form .btn:hover {
+  filter: var(--c-btn-hover);
+  background: var(--c-btn-bg); /* Ngăn user.css ghi đè */
+}
