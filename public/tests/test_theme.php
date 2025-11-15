@@ -4,168 +4,278 @@
   <meta charset="UTF-8" />
   <title>Neon Pulse Tech Theme 💠</title>
   <style>
-    :root {
-      --bg-color: #f3f6fa;
-      --bg-elevated: #ffffff;
-      --text-color: #1a1a1a;
-      --text-muted: #6b7280;
-      --btn-bg: linear-gradient(90deg, #0099ff, #0066ff);
-      --btn-border: #005fcc;
-      --btn-glow: 0 0 12px rgba(0,153,255,0.4), 0 0 20px rgba(0,153,255,0.3);
-      --btn-text: #ffffff;
-      --border-color: #dce3ec;
-    }
+  :root {
+    /* ===== BACKGROUND ===== */
+    --c-bg-dark: #111a2b;
+    --c-bg-darker: #0d1322;
+    --c-bg-page: radial-gradient(circle at top right, #0a0e1a 30%, #111a2b 100%);
 
-    [data-theme="dark"] {
-      --bg-color: #070c15;
-      --bg-elevated: #0f172a;
-      --text-color: #e5e7eb;
-      --text-muted: #9ca3af;
-      --btn-bg: linear-gradient(90deg, #00ffff, #00b3ff);
-      --btn-border: #00e5ff;
-      --btn-glow: 0 0 20px rgba(0,255,255,0.8), 0 0 40px rgba(0,153,255,0.6);
-      --btn-text: #0a0f1a;
-      --border-color: #1e293b;
-    }
+    /* ===== TEXT ===== */
+    --c-text: #e6f7ff;
+    --c-text-dim: rgba(230, 247, 255, 0.7);
 
-    body {
-      margin: 0;
-      font-family: "Segoe UI", sans-serif;
-      background: var(--bg-color);
-      color: var(--text-color);
-      transition: background 0.4s ease, color 0.4s ease;
-      padding: 24px;
-    }
+    /* ===== ACCENT ===== */
+    --c-neon: #00eaff;
+    --c-purple: #7f5eff;
 
-    .navbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: var(--bg-elevated);
-      padding: 12px 18px;
-      border-radius: 12px;
-      border: 1px solid var(--border-color);
-      box-shadow: 0 4px 14px rgba(0,0,0,0.1);
-    }
+    /* ===== BORDERS & SHADOW ===== */
+    --c-border: rgba(0,234,255,0.35);
+    --c-border-soft: rgba(0,234,255,0.15);
+    --c-glow: 0 0 20px rgba(0,234,255,0.25);
+    --c-glow-soft: 0 0 12px rgba(127,94,255,0.3);
 
-    .logo {
-      font-weight: 700;
-      font-size: 18px;
-      background: linear-gradient(90deg, #00b4ff, #00ffff);
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
+    /* ===== TITLE ===== */
+    --c-title-gradient: linear-gradient(90deg, #00eaff, #7f5eff);
+    --c-title-shadow: 0 0 12px rgba(127,94,255,0.6);
 
-    [data-theme="dark"] .logo {
-      background: linear-gradient(90deg, #00ffff, #00b4ff);
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
+    /* ===== BUTTON ===== */
+    --c-btn-bg: linear-gradient(90deg, #00eaff, #7f5eff);
+    --c-btn-text: #111a2b;
+    --c-btn-hover: brightness(1.25);
 
-    .theme-toggle {
-      cursor: pointer;
-      border: 1px solid var(--border-color);
-      background: var(--bg-elevated);
-      border-radius: 50%;
-      width: 44px;
-      height: 44px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
-      transition: all 0.25s ease;
-    }
+    /* ===== INPUT ===== */
+    --c-input-bg: #0a0e1a;
+    --c-input-border: rgba(0,234,255,0.35);
+    --c-input-shadow: 0 0 8px rgba(0,234,255,0.18);
+  }
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: var(--c-bg-darker);
+    color: var(--c-text);
+    height: 100vh;
+    display: flex;
+  }
 
-    .theme-toggle:hover {
-      border-color: #00b4ff;
-      box-shadow: 0 0 12px rgba(0,180,255,0.6);
-      transform: scale(1.08);
-    }
+  /* LEFT SIDE */
+  .left-panel {
+    flex: 1;
+    background: var(--c-bg-page);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 30px;
+    box-shadow: inset 0 0 60px rgba(0, 234, 255, 0.08);
+  }
 
-    .hero {
-      margin-top: 40px;
-      background: var(--bg-elevated);
-      border: 1px solid var(--border-color);
-      border-radius: 16px;
-      padding: 32px;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.08);
-    }
+  .left-panel h1 {
+    font-size: 70px;
+    background: var(--c-title-gradient);
+    background-clip: text;
+    color: transparent;
+    text-shadow: var(--c-title-shadow);
+  }
 
-    h1 {
-      font-size: 28px;
-      font-weight: 700;
-      margin-bottom: 12px;
-    }
+  .left-panel p {
+    font-size: 18px;
+    opacity: 0.75;
+    max-width: 430px;
+    text-align: center;
+  }
 
-    p {
-      color: var(--text-muted);
-      font-size: 15px;
-      margin-bottom: 28px;
-    }
+  /* RIGHT SIDE */
+  .right-panel {
+    width: 520px;
+    background: var(--c-bg-dark);
+    padding: 40px;
+    box-shadow: -6px 0 30px rgba(0, 0, 0, 0.25);
+    overflow-y: auto;
+  }
 
-    .btn-primary {
-      padding: 12px 26px;
-      border-radius: 999px;
-      border: 2px solid var(--btn-border);
-      background: var(--btn-bg);
-      color: var(--btn-text);
-      font-weight: 600;
-      font-size: 15px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: var(--btn-glow);
-      position: relative;
-      overflow: hidden;
-      animation: pulse 2.2s infinite alternate;
-    }
+  h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 26px;
+    font-weight: 700;
+    background: var(--c-title-gradient);
+    background-clip: text;
+    color: transparent;
+    text-shadow: var(--c-glow-soft);
+  }
 
-    @keyframes pulse {
-      0% { box-shadow: var(--btn-glow); }
-      100% { box-shadow: 0 0 24px rgba(0,180,255,0.6), 0 0 48px rgba(0,153,255,0.4); }
-    }
+  .box {
+    background: var(--c-bg-darker);
+    border: 1px solid var(--c-border-soft);
+    border-radius: 12px;
+    padding: 18px;
+    margin-bottom: 25px;
+    box-shadow: var(--c-glow);
+  }
 
-    [data-theme="dark"] .btn-primary {
-      animation: pulseDark 2.2s infinite alternate;
-    }
+  .box h3 {
+    margin-top: 0;
+    font-size: 18px;
+    color: var(--c-purple);
+  }
 
-    @keyframes pulseDark {
-      0% { box-shadow: var(--btn-glow); }
-      100% { box-shadow: 0 0 28px rgba(0,255,255,0.9), 0 0 60px rgba(0,153,255,0.6); }
-    }
+  input {
+    width: 100%;
+    padding: 10px;
+    margin: 6px 0 12px 0;
+    border: 1px solid var(--c-input-border);
+    border-radius: 6px;
+    background: var(--c-input-bg);
+    color: var(--c-text);
+    font-size: 14px;
+    box-shadow: var(--c-input-shadow);
+  }
 
-    .btn-primary:hover {
-      transform: scale(1.05);
-      filter: brightness(1.2);
-    }
+  button {
+    background: var(--c-btn-bg);
+    border: none;
+    padding: 10px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--c-btn-text);
+    transition: 0.25s;
+  }
+
+  button:hover {
+    filter: var(--c-btn-hover);
+    transform: scale(1.03);
+  }
+
+  pre {
+    background: var(--c-input-bg);
+    border: 1px solid var(--c-border-soft);
+    padding: 14px;
+    border-radius: 10px;
+    max-height: 280px;
+    overflow-y: auto;
+    font-size: 13px;
+    color: var(--c-neon);
+  }
+
   </style>
 </head>
 <body>
-  <div class="navbar">
-    <div class="logo">⚡ NeonPulse UI</div>
-    <div class="theme-toggle" id="toggle">🌙</div>
+  <!-- LEFT -->
+  <div class="left-panel">
+    <h1>TechShop</h1>
+    <p>Trang test API người dùng — kiểm tra Register, Login, Verify OTP, Reset Password bằng UI trực quan.</p>
   </div>
 
-  <section class="hero">
-    <h1>Neon Blue Pulse 💠</h1>
-    <p>Button neon tự đổi màu khi chuyển theme — sáng mạnh trong dark mode, rõ nét trong light mode.  
-    Hiệu ứng glow “mạch đập” tạo cảm giác giao diện sống động kiểu tech-futuristic.</p>
-    <button class="btn-primary">Trải nghiệm ngay 🚀</button>
-  </section>
+  <!-- RIGHT -->
+  <div class="right-panel">
+
+    <h2>🧪 Test API User</h2>
+
+    <!-- REGISTER -->
+    <div class="box">
+      <h3>Đăng ký tài khoản</h3>
+      <input type="text" id="regName" placeholder="Tên người dùng">
+      <input type="email" id="regEmail" placeholder="Email">
+      <input type="password" id="regPassword" placeholder="Mật khẩu">
+      <button onclick="registerUser()">Đăng ký</button>
+    </div>
+
+    <!-- VERIFY -->
+    <div class="box">
+      <h3>Xác minh Email (OTP)</h3>
+      <input type="email" id="verifyEmail" placeholder="Email">
+      <input type="text" id="verifyOtp" placeholder="OTP 6 số">
+      <button onclick="verifyEmail()">Xác minh</button>
+    </div>
+
+    <!-- LOGIN -->
+    <div class="box">
+      <h3>Đăng nhập</h3>
+      <input type="email" id="loginEmail" placeholder="Email">
+      <input type="password" id="loginPassword" placeholder="Mật khẩu">
+      <button onclick="loginUser()">Đăng nhập</button>
+      <button onclick="logoutUser()">Đăng xuất</button>
+    </div>
+
+    <!-- FORGOT -->
+    <div class="box">
+      <h3>Quên mật khẩu</h3>
+      <input type="email" id="forgotEmail" placeholder="Email">
+      <button onclick="forgotPassword()">Gửi link reset</button>
+    </div>
+
+    <!-- RESET -->
+    <div class="box">
+      <h3>Đặt lại mật khẩu</h3>
+      <input type="text" id="resetToken" placeholder="Token reset">
+      <input type="password" id="newPass" placeholder="Mật khẩu mới">
+      <input type="password" id="newPass2" placeholder="Nhập lại mật khẩu">
+      <button onclick="resetPassword()">Đổi mật khẩu</button>
+    </div>
+
+    <h3 style="color:#00eaff">Kết quả:</h3>
+    <pre id="output">{}</pre>
+
+  </div>
 
   <script>
-    const toggle = document.getElementById("toggle");
-    const root = document.documentElement;
-    const savedTheme = localStorage.getItem("theme");
+    const apiBase = "http://localhost/TechShop/public";
 
-    if (savedTheme) root.setAttribute("data-theme", savedTheme);
-    toggle.textContent = savedTheme === "dark" ? "☀️" : "🌙";
+    function show(data) {
+      document.getElementById("output").textContent =
+        JSON.stringify(data, null, 2);
+    }
 
-    toggle.addEventListener("click", () => {
-      const current = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
-      root.setAttribute("data-theme", current);
-      localStorage.setItem("theme", current);
-      toggle.textContent = current === "dark" ? "☀️" : "🌙";
-    });
+    async function post(url, body = {}) {
+      const res = await fetch(apiBase + url, {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams(body)
+      });
+      return await res.json();
+    }
+
+    async function registerUser() {
+      const data = await post("/register", {
+        name: regName.value,
+        email: regEmail.value,
+        password: regPassword.value,
+        csrf: "123"
+      });
+      show(data);
+    }
+
+    async function verifyEmail() {
+      const data = await post("/verify-email", {
+        email: verifyEmail.value,
+        otp: verifyOtp.value,
+        csrf: "123"
+      });
+      show(data);
+    }
+
+    async function loginUser() {
+      const data = await post("/login", {
+        email: loginEmail.value,
+        password: loginPassword.value,
+        csrf: "123"
+      });
+      show(data);
+    }
+
+    async function logoutUser() {
+      const data = await post("/logout", { csrf: "123" });
+      show(data);
+    }
+
+    async function forgotPassword() {
+      const data = await post("/forgot-password", {
+        email: forgotEmail.value,
+        csrf: "123"
+      });
+      show(data);
+    }
+
+    async function resetPassword() {
+      const data = await post("/reset-password", {
+        token: resetToken.value,
+        password: newPass.value,
+        password_confirm: newPass2.value,
+        csrf: "123"
+      });
+      show(data);
+    }
   </script>
 </body>
 </html>
