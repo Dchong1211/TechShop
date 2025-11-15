@@ -6,67 +6,168 @@
     <title>Dashboard | Trang Quản Trị</title>
     <link rel="stylesheet" href="/public/assets/css/cssAdmin/main_admin.css">
     <link rel="stylesheet" href="/public/assets/css/cssAdmin/index.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 </head>
 <body>
+    
+    <div class="app-wrapper">
+        
+        <nav class="top-navbar">
+            <div class="navbar-left">
+                <a href="index.php" class="navbar-brand">TechShop</a>
+                <button class="sidebar-toggle" type="button">☰</button> </div>
+            <div class="navbar-search">
+                <input type="text" placeholder="Search...">
+            </div>
+            <div class="navbar-right">
+                <a href="#" class="nav-icon"><i class="bi bi-bell" style="color: #5e6e82"></i></a>
+                <a href="#" class="nav-icon"><i class="bi bi-gear" style="color: #5e6e82"></i></a>
+                <a href="#" class="nav-icon user-avatar">[User]</a>
+            </div>
+        </nav>
 
-    <div class="sidebar">
-        <h2>Tech Shop</h2>
-        <a href="index.php" class="active">Dashboard</a>
-        <a href="products.php">Quản lý Sản phẩm</a>
-        <a href="orders.php">Quản lý Đơn hàng</a>
-        <a href="users.php">Quản lý Người dùng</a>
-        <a href="login.php" style="margin-top: 50px;">Đăng xuất</a>
+        <aside class="sidebar">
+            <nav class="sidebar-nav">
+                <ul>
+                    <li>
+                        <a href="index.php" class="active">
+                            <span class="icon"><i class="bi bi-house" style="color: #5e6e82"></i></span>
+                            <span class="title">Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="products.php">
+                            <span class="icon"><i class="bi bi-box" style="color: #5e6e82"></i></span>
+                            <span class="title">Quản lý Sản phẩm</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="orders.php">
+                            <span class="icon"><i class="bi bi-cart" style="color: #5e6e82"></i></span>
+                            <span class="title">Quản lý Đơn hàng</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="users.php">
+                            <span class="icon"><i class="bi bi-people" style="color: #5e6e82"></i></span>
+                            <span class="title">Quản lý Người dùng</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-logout">
+                        <a href="login.php">
+                            <span class="icon"><i class="bi bi-box-arrow-right" style="color: #5e6e82"></i></span>
+                            <span class="title">Đăng xuất</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            
+            <div class="dashboard-grid">
+
+                <div class="card card-span-1">
+                    <div class="card-header">
+                        <h5 class="card-title">Weekly Sales</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="stat-main">
+                            <div class="stat-number">$47K</div>
+                            <div class="stat-change positive">+3.5%</div>
+                        </div>
+                        <div class="stat-chart-small">[Biểu đồ cột nhỏ]</div>
+                    </div>
+                </div>
+
+                <div class="card card-span-1">
+                    <div class="card-header">
+                        <h5 class="card-title">Total Order</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="stat-main">
+                            <div class="stat-number">58.4K</div>
+                            <div class="stat-change negative">-13.6%</div>
+                        </div>
+                        <div class="stat-chart-small">[Biểu đồ đường nhỏ]</div>
+                    </div>
+                </div>
+
+                <div class="card card-span-1">
+                    <div class="card-header">
+                        <h5 class="card-title">Market Share</h5>
+                    </div>
+                    <div class="card-body card-market-share">
+                        <ul>
+                            <li><span>Samsung</span> <span>33%</span></li>
+                            <li><span>Huawei</span> <span>29%</span></li>
+                            <li><span>Apple</span> <span>20%</span></li>
+                        </ul>
+                        <div class="stat-chart-donut">[Biểu đồ tròn]</div>
+                    </div>
+                </div>
+
+                <div class="card card-span-1 card-weather">
+                    <div class="card-header">
+                        <h5 class="card-title">Weather</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="weather-icon">[☀️]</div>
+                        <div class="weather-info">
+                            <div class="weather-city">New York City</div>
+                            <div class="weather-status">Sunny</div>
+                        </div>
+                        <div class="weather-temp">
+                            31°
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card card-span-2"> <div class="card-header">
+                        <h5 class="card-title">Running Projects</h5>
+                    </div>
+                    <div class="card-body">
+                        <table class="projects-table">
+                            <thead>
+                                <tr>
+                                    <th>Project</th>
+                                    <th>Progress</th>
+                                    <th>Time</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Falcon</td>
+                                    <td><span class="progress-bar" style="width: 38%;"></span> 38%</td>
+                                    <td>12:50:00</td>
+                                </tr>
+                                <tr>
+                                    <td>Reign</td>
+                                    <td><span class="progress-bar" style="width: 78%;"></span> 78%</td>
+                                    <td>25:20:00</td>
+                                </tr>
+                                <tr>
+                                    <td>Boots4</td>
+                                    <td><span class="progress-bar" style="width: 50%;"></span> 50%</td>
+                                    <td>58:20:00</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="card card-span-2"> <div class="card-header">
+                        <h5 class="card-title">Total Sales</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-main-placeholder">
+                            [Vị trí đặt Biểu đồ Doanh thu 7 Ngày Gần Nhất]
+                        </div>
+                    </div>
+                </div>
+
+        </main>
     </div>
-
-    <div class="main-content">
-        <header class="header">
-            <h1>Chào mừng trở lại, Admin!</h1>
-        </header>
-
-        <section class="stats-cards">
-            <div class="card">
-                <h3>Đơn Hàng Mới (24h)</h3>
-                <p>36</p>
-                <a href="">Xem chi tiết</a>
-            </div>
-
-            <div class="card">
-                <h3>Tổng Doanh Thu</h3>
-                <p>50 củ VNĐ</p>
-                <span>Tăng n% so với tháng trước</span>
-            </div>
-
-            <div class="card">
-                <h3>Sản Phẩm Cần Nhập</h3>
-                <p>n</p>
-                <a href="">Xem kho</a>
-            </div>
-
-            <div class="card">
-                <h3>Tổng Tài Khoản</h3>
-                <p>3636</p>
-                <span>Người dùng mới: 36</span>
-            </div>
-        </section>
-
-        <hr>
-
-        <section class="reports">
-            <h2>Báo Cáo Doanh Thu 7 Ngày Gần Nhất</h2>
-            <div style="height: 300px; background-color: white; padding: 20px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
-                <p style="text-align: center; color: #7f8c8d;">[Vị trí đặt Biểu đồ Doanh thu/Truy cập]</p>
-            </div>
-        </section>
-
-        <hr>
-
-        <section class="quick-actions">
-            <a href="products.php?action=add" class="action-link">Thêm Sản Phẩm Mới</a>
-            <a href="orders.php?status=pending" class="action-link">Xử Lý Đơn Hàng Chờ</a>
-            <a href="users.php?role=admin" class="action-link">Quản Lý Quyền Admin</a>
-        </section>
-
-    </div>
-
+    <script src="/public/assets/js/admin.js"></script>
 </body>
 </html>

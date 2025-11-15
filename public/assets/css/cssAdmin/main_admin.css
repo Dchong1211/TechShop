@@ -1,88 +1,206 @@
+/* ========================================================= */
+/* 1. BIẾN & CẤU HÌNH CHUNG (VARIABLES & RESET) */
+/* ========================================================= */
 :root {
-    --primary-color: #3498db;
-    --sidebar-bg: #2c3e50;
-    --text-color: #34495e;
-    --light-bg: #ecf0f1;
-    --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    --primary-color: #3874ff;
+    --sidebar-bg: #ffffff;
+    --top-nav-bg: #ffffff;
+    --content-bg: #f4f7f9;
+    --card-bg: #ffffff;
+    --text-color: #58687a;
+    --text-light: #5e6e82;
+    --text-muted: #6c757d;
+    --border-color: #e0e6ed;
+
+    --sidebar-width: 250px;
+    --top-nav-height: 60px;
 }
 
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: var(--light-bg);
+    background-color: var(--content-bg);
     color: var(--text-color);
-    display: flex;
 }
 
-hr {
-    display: none;
-}
-
-.sidebar {
-    width: 250px;
-    background-color: var(--sidebar-bg);
-    color: white;
-    height: 100vh;
-    position: fixed;
-    padding: 20px 0;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-}
-
-.sidebar h2 {
-    text-align: center;
-    margin-bottom: 30px;
-    padding: 0 20px;
-    color: #ecf0f1;
-    font-size: 1.5rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    padding-bottom: 15px;
-}
-
-.sidebar a {
-    display: block;
-    padding: 12px 20px;
+a {
     text-decoration: none;
-    color: #bdc3c7;
-    font-size: 1rem;
-    transition: background-color 0.3s, color 0.3s, border-left 0.3s;
-    border-left: 5px solid transparent;
+    color: var(--primary-color);
 }
 
-.sidebar a:hover {
-    background-color: #34495e;
-    color: white;
-}
-
-.sidebar a.active {
-    background-color: var(--primary-color);
-    border-left-color: #f1c40f;
-    color: white;
-    font-weight: bold;
-}
-
-.sidebar a[style*="margin-top"] {
-    margin-top: 50px;
-    color: #e74c3c;
-    border-left-color: #e74c3c;
-}
-.sidebar a[style*="margin-top"]:hover {
-    background-color: #c0392b;
-    color: white;
+.app-wrapper {
+    padding-top: var(--top-nav-height);
+    padding-left: var(--sidebar-width);
 }
 
 .main-content {
-    margin-left: 250px;
-    padding: 30px;
-    width: calc(100% - 250px);
+    padding: 20px;
+    flex-grow: 1;
+    min-height: calc(100vh - var(--top-nav-height));
 }
 
-.header h1 {
-    font-size: 2rem;
+/* ========================================================= */
+/* 3. TOP NAVBAR */
+/* ========================================================= */
+.top-navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: var(--top-nav-height);
+    width: 100%;
+    background-color: var(--top-nav-bg);
+    border-bottom: 1px solid var(--border-color);
+    padding: 0 20px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.navbar-left {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-brand {
+    font-size: 24px;
+    font-weight: 700;
     color: var(--text-color);
-    margin-bottom: 10px;
+    margin-right: 20px;
+}
+
+.sidebar-toggle {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.navbar-search input {
+    width: 300px;
+    padding: 8px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 25px;
+    background-color: var(--content-bg);
+}
+
+.navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.nav-icon {
+    font-size: 18px;
+    color: var(--text-muted);
+}
+
+.user-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+/* ========================================================= */
+/* 4. LEFT SIDEBAR */
+/* ========================================================= */
+.sidebar {
+    width: var(--sidebar-width);
+    background-color: var(--sidebar-bg);
+    position: fixed;
+    left: 0;
+    top: var(--top-nav-height);
+    bottom: 0;
+    padding: 20px 0;
+    overflow-y: auto;
+    z-index: 900;
+    overflow-x: hidden;
+}
+
+.sidebar-nav ul {
+    list-style: none;
+}
+
+.sidebar-nav li a {
+    display: flex;
+    align-items: center;
+    color: var(--text-light);
+    padding: 12px 20px;
+    font-size: 15px;
+    transition: background-color 0.3s, color 0.3s;
+    white-space: nowrap;
+}
+
+.sidebar-nav li a .icon {
+    margin-right: 15px;
+    font-size: 16px;
+    width: 20px;
+    text-align: center;
+}
+
+.sidebar-nav li a.active {
+    background-color: var(--primary-color);
+    color: white;
+    font-weight: 500;
+    border-left: 4px solid white;
+    padding-left: 16px;
+}
+
+.sidebar-logout {
+    margin-top: 30px;
+}
+
+/* ========================================================= */
+/* 5. STYLE THU GỌN SIDEBAR (COLLAPSED) */
+/* ========================================================= */
+
+.app-wrapper {
+    transition: padding-left 0.3s ease-in-out;
+}
+
+.sidebar {
+    transition: width 0.3s ease-in-out;
+}
+
+.sidebar-nav li a .title {
+    opacity: 1;
+}
+
+.app-wrapper.sidebar-collapsed .sidebar {
+    width: 70px;
+}
+
+.app-wrapper.sidebar-collapsed {
+    padding-left: 70px;
+}
+
+.app-wrapper.sidebar-collapsed .sidebar-nav li a {
+    justify-content: left;
+}
+
+.app-wrapper.sidebar-collapsed .sidebar-nav li a .title {
+    opacity: 0;
+    display: none;
+}
+
+.app-wrapper.sidebar-collapsed .sidebar-nav li a .icon {
+    margin-right: 0;
+}
+
+.app-wrapper.sidebar-collapsed .sidebar-nav li a.active {
+    border-left: none;
+    padding-left: 20px;
 }
