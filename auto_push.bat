@@ -12,7 +12,7 @@ set datetime=%date% %time%
 git commit -m "Push by %username% on %datetime%"
 
 :: Bước 5: Kéo code mới nhất về (tránh lỗi conflict)
-:: git pull origin main --rebase
+git pull origin main --rebase
 
 :: Bước 6: Push code lên GitHub
 git push origin main
