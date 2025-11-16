@@ -1,27 +1,86 @@
-/* 1. BIẾN & CẤU HÌNH CHUNG (VARIABLES & RESET) */
+/* 1. BIẾN HỆ THỐNG */
 :root {
-    --primary-color: #00eaff;
-    
+
     --light-gradient: linear-gradient(90deg, #7F7FD5 0%, #86A8E7 50%, #91EAE4 100%);
     --dark-gradient: linear-gradient(90deg, #00eaff 0%, #7f5eff 100%);
 
-    --sidebar-bg: #ffffff; 
-    --top-nav-bg: #ffffff;
-    
-    --content-bg: #f4f7f9;
-    --card-bg: #ffffff;
-    --text-color: #58687a;
-    --text-light: #5e6e82; 
-    
-    --text-muted: #6c757d;
-    --border-color: #e0e6ed;
-    --neon-glow-soft: 0 0 8px rgba(127, 94, 255, 0.25);
-    --neon-glow-card: 0 0 10px rgba(0, 234, 255, 0.15);
-    --light-shadow-card: 0 4px 10px rgba(134, 168, 231, 0.1);
+    --c-neon-cyan: #00eaff;
+    --c-neon-purple: #7f5eff;
+    --c-neon-border: rgba(0, 234, 255, 0.3);
+
+    --c-white: #ffffff;
+    --c-light-bg: #f4f7f9;
+    --c-light-border: #e0e6ed;
+    --c-light-text: #58687a;
+    --c-light-text-sidebar: #5e6e82;
+    --c-light-text-muted: #6c757d;
+    --c-light-hover: #f0f4f8;
+
+    --c-dark-bg: #0d1322;
+    --c-dark-surface: #111a2b;
+    --c-dark-text: #e6f7ff;
+    --c-dark-text-sidebar: rgba(230, 247, 255, 0.9);
+    --c-dark-text-muted: rgba(230, 247, 255, 0.7);
+    --c-dark-hover: rgba(0, 234, 255, 0.1);
 
     --sidebar-width: 250px;
+    --sidebar-width-collapsed: 70px;
     --top-nav-height: 60px;
+    --content-padding: 20px;
+
+    --border-radius-card: 8px;
+    --border-radius-input: 25px;
+    --border-radius-button: 6px;
+
+    --transition-speed-fast: 0.2s;
+    --transition-speed-normal: 0.3s;
+    --transition-ease: ease;
+
+    --sidebar-bg: var(--c-white);
+    --top-nav-bg: var(--c-white);
+    --content-bg: var(--c-light-bg);
+    --card-bg: var(--c-white);
+    --sidebar-hover-bg: var(--c-light-hover);
+
+    --text-color: var(--c-light-text);
+    --text-light: var(--c-light-text-sidebar);
+    --text-muted: var(--c-light-text-muted);
+    --sidebar-hover-text: var(--c-light-text);
+
+    --border-color: var(--c-light-border);
+
+    --primary-color: var(--c-neon-cyan);
+    --gradient-active: var(--light-gradient);
+    --gradient-avatar: var(--light-gradient);
+
+    --shadow-card: 0 4px 10px rgba(134, 168, 231, 0.1);
+    --shadow-input-focus: 0 0 8px rgba(134, 168, 231, 0.5);
 }
+
+/* 2. GHI ĐÈ CHO DARK MODE */
+
+body.dark-mode {
+    --sidebar-bg: var(--c-dark-surface);
+    --top-nav-bg: var(--c-dark-surface);
+    --content-bg: var(--c-dark-bg);
+    --card-bg: var(--c-dark-surface);
+    --sidebar-hover-bg: var(--c-dark-hover);
+
+    --text-color: var(--c-dark-text);
+    --text-light: var(--c-dark-text-sidebar);
+    --text-muted: var(--c-dark-text-muted);
+    --sidebar-hover-text: var(--c-white);
+
+    --border-color: var(--c-neon-border);
+
+    --gradient-active: var(--dark-gradient);
+    --gradient-avatar: var(--dark-gradient);
+
+    --shadow-card: 0 0 10px rgba(0, 234, 255, 0.15);
+    --shadow-input-focus: 0 0 10px rgba(0, 234, 255, 0.5);
+}
+
+/* 3. RESET & STYLES CƠ BẢN */
 
 * {
     box-sizing: border-box;
@@ -33,7 +92,8 @@
 body {
     background-color: var(--content-bg);
     color: var(--text-color);
-    transition: background-color 0.3s ease, color 0.3s ease;
+    transition: background-color var(--transition-speed-normal) var(--transition-ease),
+        color var(--transition-speed-normal) var(--transition-ease);
 }
 
 a {
@@ -41,20 +101,21 @@ a {
     color: var(--primary-color);
 }
 
-/* 2. LAYOUT KHUNG SƯỜN */
+/* 4. LAYOUT KHUNG SƯỜN */
 
 .app-wrapper {
     padding-top: var(--top-nav-height);
     padding-left: var(--sidebar-width);
+    transition: padding-left var(--transition-speed-normal) var(--transition-ease);
 }
 
 .main-content {
-    padding: 20px;
+    padding: var(--content-padding);
     flex-grow: 1;
     min-height: calc(100vh - var(--top-nav-height));
 }
 
-/* 3. TOP NAVBAR */
+/* 5. TOP NAVBAR */
 
 .top-navbar {
     display: flex;
@@ -64,13 +125,14 @@ a {
     width: 100%;
     background: var(--top-nav-bg);
     border-bottom: 1px solid var(--border-color);
-    padding: 0 20px;
+    padding: 0 var(--content-padding);
     position: fixed;
     top: 0;
     left: 0;
     z-index: 1000;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    transition: background var(--transition-speed-normal) var(--transition-ease),
+        border-color var(--transition-speed-normal) var(--transition-ease);
 }
 
 .navbar-left {
@@ -81,9 +143,12 @@ a {
 .navbar-brand {
     font-size: 24px;
     font-weight: 700;
-    color: var(--text-color); 
+    color: var(--text-color);
     margin-right: 20px;
-    transition: color 0.3s ease, text-shadow 0.3s ease, background 0.3s ease, -webkit-background-clip 0.3s ease;
+    transition: color var(--transition-speed-normal) var(--transition-ease),
+        text-shadow var(--transition-speed-normal) var(--transition-ease),
+        background var(--transition-speed-normal) var(--transition-ease),
+        -webkit-background-clip var(--transition-speed-normal) var(--transition-ease);
 }
 
 .sidebar-toggle {
@@ -92,21 +157,25 @@ a {
     font-size: 20px;
     cursor: pointer;
     color: var(--text-muted);
-    transition: color 0.3s ease;
+    transition: color var(--transition-speed-normal) var(--transition-ease);
 }
 
 .navbar-search input {
     width: 300px;
     padding: 8px 12px;
     border: 1px solid var(--border-color);
-    border-radius: 25px;
+    border-radius: var(--border-radius-input);
     background-color: var(--content-bg);
     color: var(--text-color);
-    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+    transition: background-color var(--transition-speed-normal) var(--transition-ease),
+        border-color var(--transition-speed-normal) var(--transition-ease),
+        color var(--transition-speed-normal) var(--transition-ease),
+        box-shadow var(--transition-speed-normal) var(--transition-ease);
 }
+
 .navbar-search input:focus {
-    border-color: #86A8E7;
-    box-shadow: 0 0 8px rgba(134, 168, 231, 0.5);
+    border-color: var(--border-color);
+    box-shadow: var(--shadow-input-focus);
 }
 
 .navbar-right {
@@ -118,23 +187,25 @@ a {
 .nav-icon {
     font-size: 18px;
     color: var(--text-muted);
-    transition: color 0.3s ease;
+    transition: color var(--transition-speed-normal) var(--transition-ease);
 }
 
 .user-avatar {
     width: 32px;
     height: 32px;
     border-radius: 50%;
-    background: var(--light-gradient); 
+    background: var(--gradient-avatar);
     color: white;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 14px;
     font-weight: bold;
+    transition: background var(--transition-speed-normal) var(--transition-ease);
 }
 
-/* 4. LEFT SIDEBAR */
+/* 6. LEFT SIDEBAR */
+
 .sidebar {
     width: var(--sidebar-width);
     background: var(--sidebar-bg);
@@ -142,11 +213,12 @@ a {
     left: 0;
     top: var(--top-nav-height);
     bottom: 0;
-    padding: 20px 0;
+    padding: var(--content-padding) 0;
     overflow-y: auto;
     z-index: 900;
     overflow-x: hidden;
-    transition: width 0.3s ease-in-out, background 0.3s ease;
+    transition: width var(--transition-speed-normal) var(--transition-ease),
+        background var(--transition-speed-normal) var(--transition-ease);
 }
 
 .sidebar-nav ul {
@@ -157,9 +229,10 @@ a {
     display: flex;
     align-items: center;
     color: var(--text-light);
-    padding: 12px 20px;
+    padding: 12px var(--content-padding);
     font-size: 15px;
-    transition: background 0.3s ease, color 0.3s ease;
+    transition: background var(--transition-speed-normal) var(--transition-ease),
+        color var(--transition-speed-normal) var(--transition-ease);
     white-space: nowrap;
 }
 
@@ -171,115 +244,95 @@ a {
 }
 
 .sidebar-nav li a.active {
-    background: var(--light-gradient); 
+    background: var(--gradient-active);
     color: white;
     font-weight: 500;
     border-left: none;
-    padding-left: 20px;
+    padding-left: var(--content-padding);
 }
 
 .sidebar-nav li a:not(.active):hover {
-    background-color: #f0f4f8;
-    color: var(--text-color);
+    background-color: var(--sidebar-hover-bg);
+    color: var(--sidebar-hover-text);
 }
 
 .sidebar-logout {
     margin-top: 30px;
 }
 
-/* 5. STYLE THU GỌN SIDEBAR */
+/* 7. STYLE THU GỌN SIDEBAR */
 
-.app-wrapper {
-    transition: padding-left 0.3s ease-in-out;
-}
 .sidebar-nav li a .title {
     opacity: 1;
-    transition: opacity 0.2s 0s ease-in-out;
+    transition: opacity var(--transition-speed-fast) var(--transition-ease);
 }
+
 .app-wrapper.sidebar-collapsed .sidebar {
-    width: 70px;
+    width: var(--sidebar-width-collapsed);
 }
+
 .app-wrapper.sidebar-collapsed {
-    padding-left: 70px;
+    padding-left: var(--sidebar-width-collapsed);
 }
+
 .app-wrapper.sidebar-collapsed .sidebar-nav li a {
     justify-content: center;
 }
+
 .app-wrapper.sidebar-collapsed .sidebar-nav li a .title {
     opacity: 0;
     display: none;
 }
+
 .app-wrapper.sidebar-collapsed .sidebar-nav li a .icon {
     margin-right: 0;
 }
+
 .app-wrapper.sidebar-collapsed .sidebar-nav li a.active {
     border-left: none;
-    padding-left: 20px;
+    padding-left: var(--content-padding);
 }
 
-/* 6. DARK MODE */
-
-body.dark-mode {
-    --sidebar-bg: #111a2b; 
-    --top-nav-bg: #111a2b; 
-    --card-bg: #111a2b; 
-    --content-bg: #0d1322; 
-    --text-color: #e6f7ff; 
-    --text-light: rgba(230, 247, 255, 0.9); 
-    --text-muted: rgba(230, 247, 255, 0.7); 
-    --border-color: rgba(0, 234, 255, 0.3); 
-}
+/* 8. DARK MODE */
 
 body.dark-mode .navbar-brand {
-    background: var(--dark-gradient); 
-    -webkit-background-clip: text; 
+    background: var(--dark-gradient);
+    -webkit-background-clip: text;
     background-clip: text;
-    color: transparent; 
-    text-shadow: 0 0 12px rgba(127, 94, 255, 0.6); 
+    color: transparent;
+    text-shadow: 0 0 12px rgba(127, 94, 255, 0.6);
 }
 
 .card {
     background-color: var(--card-bg);
     border: 1px solid var(--border-color);
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: var(--light-shadow-card);
-    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    border-radius: var(--border-radius-card);
+    padding: var(--content-padding);
+    box-shadow: var(--shadow-card);
+    transition: background-color var(--transition-speed-normal) var(--transition-ease),
+        border-color var(--transition-speed-normal) var(--transition-ease),
+        box-shadow var(--transition-speed-normal) var(--transition-ease),
+        border-image var(--transition-speed-normal) var(--transition-ease);
 }
 
 body.dark-mode .card {
-    border: 1px solid; 
-    border-image: var(--dark-gradient) 1; 
-    box-shadow: var(--neon-glow-card);
-    background-color: var(--card-bg); 
-    transition: background-color 0.3s ease, border-image 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid;
+    border-image: var(--dark-gradient) 1;
+    box-shadow: var(--shadow-card);
 }
 
 body.dark-mode .navbar-search input {
-    background-color: #0a0e1a; 
-    border-color: rgba(0, 234, 255, 0.35); 
-    box-shadow: 0 0 8px rgba(0, 234, 255, 0.18); 
+    background-color: #0a0e1a;
+    border-color: rgba(0, 234, 255, 0.35);
+    box-shadow: 0 0 8px rgba(0, 234, 255, 0.18);
 }
 
 body.dark-mode .navbar-search input:focus {
     border-color: var(--primary-color);
-    box-shadow: 0 0 10px rgba(0, 234, 255, 0.5); 
+    box-shadow: var(--shadow-input-focus);
 }
 
-body.dark-mode .user-avatar {
-    background: var(--dark-gradient);
-}
-
-body.dark-mode .sidebar-nav li a.active {
-    background: var(--dark-gradient);
-    color: white;
-}
-
-body.dark-mode .sidebar-nav li a:not(.active):hover {
-    background-color: rgba(0, 234, 255, 0.1); 
-    color: white;
-}
-
+/* 9. NÚT CHUYỂN ĐỔI THEME */
 .theme-toggle {
     background: none;
     border: none;
@@ -287,9 +340,10 @@ body.dark-mode .sidebar-nav li a:not(.active):hover {
     color: var(--text-muted);
     font-size: 18px;
     padding: 0;
-    margin-right: 15px; 
-    transition: color 0.3s ease;
+    margin-right: 15px;
+    transition: color var(--transition-speed-normal) var(--transition-ease);
 }
+
 .theme-toggle:hover {
     color: var(--primary-color);
 }
@@ -301,42 +355,52 @@ body.dark-mode .sidebar-nav li a:not(.active):hover {
 body.dark-mode .theme-toggle .icon-sun {
     display: none;
 }
+
 body.dark-mode .theme-toggle .icon-moon {
     display: inline;
 }
 
-/* 7. CARD SPECIFIC STYLES */
+/* 10. CARD CONTENT STYLES */
 .card-header {
     margin-bottom: 15px;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
+
 .card-title {
     font-size: 18px;
     font-weight: 600;
     color: var(--text-color);
-    transition: color 0.3s ease;
+    transition: color var(--transition-speed-normal) var(--transition-ease);
 }
+
+/* Dark mode overrides cho nội dung card */
 body.dark-mode .card-title {
-    color: var(--text-color); 
+    color: var(--text-color);
 }
+
 body.dark-mode .stat-number {
-    color: var(--primary-color); 
+    color: var(--primary-color);
 }
+
 body.dark-mode .stat-change {
     color: var(--text-muted);
 }
+
 body.dark-mode .card-market-share li span {
     color: var(--text-color);
 }
+
 body.dark-mode .projects-table th,
 body.dark-mode .projects-table td {
     color: var(--text-muted);
 }
+
 body.dark-mode .projects-table th {
     color: var(--text-color);
 }
+
 body.dark-mode .progress-bar {
-    background: var(--dark-gradient); 
+    background: var(--dark-gradient);
 }
