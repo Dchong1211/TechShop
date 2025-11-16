@@ -20,8 +20,12 @@
                 <input type="text" placeholder="Search...">
             </div>
             <div class="navbar-right">
-                <a href="#" class="nav-icon"><i class="bi bi-bell" style="color: #5e6e82"></i></a>
-                <a href="#" class="nav-icon"><i class="bi bi-gear" style="color: #5e6e82"></i></a>
+                <button class="theme-toggle" id="theme-toggle" type="button" title="Chuyển đổi Sáng/Tối">
+                    <span class="icon-sun">[☀️]</span>
+                    <span class="icon-moon">[🌙]</span>
+                </button>
+                <a href="#" class="nav-icon">[🔔]</a>
+                <a href="#" class="nav-icon">[⚙️]</a>
                 <a href="#" class="nav-icon user-avatar">[User]</a>
             </div>
         </nav>

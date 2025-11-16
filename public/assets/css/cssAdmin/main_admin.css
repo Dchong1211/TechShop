@@ -204,3 +204,53 @@ a {
     border-left: none;
     padding-left: 20px;
 }
+
+/* ========================================================= */
+/* 6. DARK MODE (CHẾ ĐỘ TỐI) */
+/* ========================================================= */
+
+/* --- 6a. Định nghĩa các biến màu khi ở Dark Mode --- */
+/* Khi thẻ <body> có class "dark-mode" */
+body.dark-mode {
+    --sidebar-bg: #1a2942;
+    --top-nav-bg: #1a2942;
+    --content-bg: #0f172a;  /* Nền chính (rất tối) */
+    --card-bg: #1a2942;     /* Nền thẻ (tối vừa) */
+    --text-color: #f8f9fa;   /* Chữ chính (trắng) */
+    --text-muted: #94a3b8;   /* Chữ mờ (xám nhạt) */
+    --border-color: #334155; /* Đường viền */
+}
+
+/* LƯU Ý: 
+  Tất cả các thành phần khác (.card, .sidebar) 
+  sẽ tự động đổi màu vì chúng dùng chung biến CSS này.
+*/
+
+
+/* --- 6b. Style cho nút bấm chuyển đổi --- */
+.theme-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-muted); /* Màu icon lấy theo màu chữ mờ */
+    font-size: 18px;
+    padding: 0;
+    /* (Tùy chọn) Thêm khoảng cách */
+    margin-right: 15px; 
+}
+.theme-toggle:hover {
+    color: var(--primary-color); /* Đổi màu khi hover */
+}
+
+/* Mặc định, ẩn icon Mặt trăng (vì đang ở Light Mode) */
+.theme-toggle .icon-moon {
+    display: none;
+}
+
+/* Khi có .dark-mode, ẩn Mặt trời, hiện Mặt trăng */
+body.dark-mode .theme-toggle .icon-sun {
+    display: none;
+}
+body.dark-mode .theme-toggle .icon-moon {
+    display: inline;
+}
