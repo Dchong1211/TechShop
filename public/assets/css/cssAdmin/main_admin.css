@@ -1,16 +1,23 @@
-/* ========================================================= */
 /* 1. BIẾN & CẤU HÌNH CHUNG (VARIABLES & RESET) */
-/* ========================================================= */
 :root {
-    --primary-color: #3874ff;
-    --sidebar-bg: #ffffff;
+    --primary-color: #00eaff;
+    
+    --light-gradient: linear-gradient(90deg, #7F7FD5 0%, #86A8E7 50%, #91EAE4 100%);
+    --dark-gradient: linear-gradient(90deg, #00eaff 0%, #7f5eff 100%);
+
+    --sidebar-bg: #ffffff; 
     --top-nav-bg: #ffffff;
+    
     --content-bg: #f4f7f9;
     --card-bg: #ffffff;
     --text-color: #58687a;
-    --text-light: #5e6e82;
+    --text-light: #5e6e82; 
+    
     --text-muted: #6c757d;
     --border-color: #e0e6ed;
+    --neon-glow-soft: 0 0 8px rgba(127, 94, 255, 0.25);
+    --neon-glow-card: 0 0 10px rgba(0, 234, 255, 0.15);
+    --light-shadow-card: 0 4px 10px rgba(134, 168, 231, 0.1);
 
     --sidebar-width: 250px;
     --top-nav-height: 60px;
@@ -26,12 +33,15 @@
 body {
     background-color: var(--content-bg);
     color: var(--text-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 a {
     text-decoration: none;
     color: var(--primary-color);
 }
+
+/* 2. LAYOUT KHUNG SƯỜN */
 
 .app-wrapper {
     padding-top: var(--top-nav-height);
@@ -44,16 +54,15 @@ a {
     min-height: calc(100vh - var(--top-nav-height));
 }
 
-/* ========================================================= */
 /* 3. TOP NAVBAR */
-/* ========================================================= */
+
 .top-navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
     height: var(--top-nav-height);
     width: 100%;
-    background-color: var(--top-nav-bg);
+    background: var(--top-nav-bg);
     border-bottom: 1px solid var(--border-color);
     padding: 0 20px;
     position: fixed;
@@ -61,6 +70,7 @@ a {
     left: 0;
     z-index: 1000;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .navbar-left {
@@ -71,8 +81,9 @@ a {
 .navbar-brand {
     font-size: 24px;
     font-weight: 700;
-    color: var(--text-color);
+    color: var(--text-color); 
     margin-right: 20px;
+    transition: color 0.3s ease, text-shadow 0.3s ease, background 0.3s ease, -webkit-background-clip 0.3s ease;
 }
 
 .sidebar-toggle {
@@ -80,6 +91,8 @@ a {
     border: none;
     font-size: 20px;
     cursor: pointer;
+    color: var(--text-muted);
+    transition: color 0.3s ease;
 }
 
 .navbar-search input {
@@ -88,6 +101,12 @@ a {
     border: 1px solid var(--border-color);
     border-radius: 25px;
     background-color: var(--content-bg);
+    color: var(--text-color);
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+}
+.navbar-search input:focus {
+    border-color: #86A8E7;
+    box-shadow: 0 0 8px rgba(134, 168, 231, 0.5);
 }
 
 .navbar-right {
@@ -99,13 +118,14 @@ a {
 .nav-icon {
     font-size: 18px;
     color: var(--text-muted);
+    transition: color 0.3s ease;
 }
 
 .user-avatar {
     width: 32px;
     height: 32px;
     border-radius: 50%;
-    background-color: var(--primary-color);
+    background: var(--light-gradient); 
     color: white;
     display: flex;
     align-items: center;
@@ -114,12 +134,10 @@ a {
     font-weight: bold;
 }
 
-/* ========================================================= */
 /* 4. LEFT SIDEBAR */
-/* ========================================================= */
 .sidebar {
     width: var(--sidebar-width);
-    background-color: var(--sidebar-bg);
+    background: var(--sidebar-bg);
     position: fixed;
     left: 0;
     top: var(--top-nav-height);
@@ -128,6 +146,7 @@ a {
     overflow-y: auto;
     z-index: 900;
     overflow-x: hidden;
+    transition: width 0.3s ease-in-out, background 0.3s ease;
 }
 
 .sidebar-nav ul {
@@ -140,7 +159,7 @@ a {
     color: var(--text-light);
     padding: 12px 20px;
     font-size: 15px;
-    transition: background-color 0.3s, color 0.3s;
+    transition: background 0.3s ease, color 0.3s ease;
     white-space: nowrap;
 }
 
@@ -152,105 +171,172 @@ a {
 }
 
 .sidebar-nav li a.active {
-    background-color: var(--primary-color);
+    background: var(--light-gradient); 
     color: white;
     font-weight: 500;
-    border-left: 4px solid white;
-    padding-left: 16px;
+    border-left: none;
+    padding-left: 20px;
+}
+
+.sidebar-nav li a:not(.active):hover {
+    background-color: #f0f4f8;
+    color: var(--text-color);
 }
 
 .sidebar-logout {
     margin-top: 30px;
 }
 
-/* ========================================================= */
-/* 5. STYLE THU GỌN SIDEBAR (COLLAPSED) */
-/* ========================================================= */
+/* 5. STYLE THU GỌN SIDEBAR */
 
 .app-wrapper {
     transition: padding-left 0.3s ease-in-out;
 }
-
-.sidebar {
-    transition: width 0.3s ease-in-out;
-}
-
 .sidebar-nav li a .title {
     opacity: 1;
+    transition: opacity 0.2s 0s ease-in-out;
 }
-
 .app-wrapper.sidebar-collapsed .sidebar {
     width: 70px;
 }
-
 .app-wrapper.sidebar-collapsed {
     padding-left: 70px;
 }
-
 .app-wrapper.sidebar-collapsed .sidebar-nav li a {
-    justify-content: left;
+    justify-content: center;
 }
-
 .app-wrapper.sidebar-collapsed .sidebar-nav li a .title {
     opacity: 0;
     display: none;
 }
-
 .app-wrapper.sidebar-collapsed .sidebar-nav li a .icon {
     margin-right: 0;
 }
-
 .app-wrapper.sidebar-collapsed .sidebar-nav li a.active {
     border-left: none;
     padding-left: 20px;
 }
 
-/* ========================================================= */
-/* 6. DARK MODE (CHẾ ĐỘ TỐI) */
-/* ========================================================= */
+/* 6. DARK MODE */
 
-/* --- 6a. Định nghĩa các biến màu khi ở Dark Mode --- */
-/* Khi thẻ <body> có class "dark-mode" */
 body.dark-mode {
-    --sidebar-bg: #1a2942;
-    --top-nav-bg: #1a2942;
-    --content-bg: #0f172a;  /* Nền chính (rất tối) */
-    --card-bg: #1a2942;     /* Nền thẻ (tối vừa) */
-    --text-color: #f8f9fa;   /* Chữ chính (trắng) */
-    --text-muted: #94a3b8;   /* Chữ mờ (xám nhạt) */
-    --border-color: #334155; /* Đường viền */
+    --sidebar-bg: #111a2b; 
+    --top-nav-bg: #111a2b; 
+    --card-bg: #111a2b; 
+    --content-bg: #0d1322; 
+    --text-color: #e6f7ff; 
+    --text-light: rgba(230, 247, 255, 0.9); 
+    --text-muted: rgba(230, 247, 255, 0.7); 
+    --border-color: rgba(0, 234, 255, 0.3); 
 }
 
-/* LƯU Ý: 
-  Tất cả các thành phần khác (.card, .sidebar) 
-  sẽ tự động đổi màu vì chúng dùng chung biến CSS này.
-*/
+body.dark-mode .navbar-brand {
+    background: var(--dark-gradient); 
+    -webkit-background-clip: text; 
+    background-clip: text;
+    color: transparent; 
+    text-shadow: 0 0 12px rgba(127, 94, 255, 0.6); 
+}
 
+.card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: var(--light-shadow-card);
+    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
 
-/* --- 6b. Style cho nút bấm chuyển đổi --- */
+body.dark-mode .card {
+    border: 1px solid; 
+    border-image: var(--dark-gradient) 1; 
+    box-shadow: var(--neon-glow-card);
+    background-color: var(--card-bg); 
+    transition: background-color 0.3s ease, border-image 0.3s ease, box-shadow 0.3s ease;
+}
+
+body.dark-mode .navbar-search input {
+    background-color: #0a0e1a; 
+    border-color: rgba(0, 234, 255, 0.35); 
+    box-shadow: 0 0 8px rgba(0, 234, 255, 0.18); 
+}
+
+body.dark-mode .navbar-search input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 10px rgba(0, 234, 255, 0.5); 
+}
+
+body.dark-mode .user-avatar {
+    background: var(--dark-gradient);
+}
+
+body.dark-mode .sidebar-nav li a.active {
+    background: var(--dark-gradient);
+    color: white;
+}
+
+body.dark-mode .sidebar-nav li a:not(.active):hover {
+    background-color: rgba(0, 234, 255, 0.1); 
+    color: white;
+}
+
 .theme-toggle {
     background: none;
     border: none;
     cursor: pointer;
-    color: var(--text-muted); /* Màu icon lấy theo màu chữ mờ */
+    color: var(--text-muted);
     font-size: 18px;
     padding: 0;
-    /* (Tùy chọn) Thêm khoảng cách */
     margin-right: 15px; 
+    transition: color 0.3s ease;
 }
 .theme-toggle:hover {
-    color: var(--primary-color); /* Đổi màu khi hover */
+    color: var(--primary-color);
 }
 
-/* Mặc định, ẩn icon Mặt trăng (vì đang ở Light Mode) */
 .theme-toggle .icon-moon {
     display: none;
 }
 
-/* Khi có .dark-mode, ẩn Mặt trời, hiện Mặt trăng */
 body.dark-mode .theme-toggle .icon-sun {
     display: none;
 }
 body.dark-mode .theme-toggle .icon-moon {
     display: inline;
+}
+
+/* 7. CARD SPECIFIC STYLES */
+.card-header {
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.card-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-color);
+    transition: color 0.3s ease;
+}
+body.dark-mode .card-title {
+    color: var(--text-color); 
+}
+body.dark-mode .stat-number {
+    color: var(--primary-color); 
+}
+body.dark-mode .stat-change {
+    color: var(--text-muted);
+}
+body.dark-mode .card-market-share li span {
+    color: var(--text-color);
+}
+body.dark-mode .projects-table th,
+body.dark-mode .projects-table td {
+    color: var(--text-muted);
+}
+body.dark-mode .projects-table th {
+    color: var(--text-color);
+}
+body.dark-mode .progress-bar {
+    background: var(--dark-gradient); 
 }
