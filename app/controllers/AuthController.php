@@ -27,7 +27,7 @@ class AuthController {
         }
     }
 
-    // ===================== REGISTER =====================
+ // ===================== REGISTER =====================
     // Hàm xử lý đăng ký tài khoản
     public function register($name, $email, $password) {
         // Gọi model để xử lý đăng ký
@@ -50,14 +50,14 @@ class AuthController {
         ];
     }
 
-    // ===================== VERIFY EMAIL =====================
+// ===================== VERIFY EMAIL =====================
     // Hàm xác minh email bằng OTP
     public function verifyEmail($email, $otp) {
         // Gọi model để verify
         return $this->userModel->verifyEmail($email, $otp);
     }
 
-    // ===================== LOGIN =====================
+// ===================== LOGIN =====================
     // Hàm đăng nhập
     public function login($email, $password) {
         // Gọi model để kiểm tra đăng nhập
@@ -252,41 +252,16 @@ class AuthController {
         return ['success' => true, 'message' => 'Đổi mật khẩu thành công!'];
     }
 
-    // ===================== LOGOUT =====================
-    // Hàm đăng xuất
+// ===================== LOGOUT =====================
+    //Hàm đăng xuất
     public function logout() {
+        unset($_SESSION['user']);
 
-    // Xóa sạch session hiện tại
-    $_SESSION = [];
-
-    // Hủy cookie session
-    if (ini_get("session.use_cookies")) {
-        $params = session_get_cookie_params();
-        setcookie(
-            session_name(),
-            '',
-            time() - 42000,
-            $params["path"],
-            $params["domain"],
-            $params["secure"],
-            $params["httponly"]
-        );
+        return [
+            "success" => true,
+            "message" => "Đã đăng xuất!"
+        ];
     }
-
-    // Hủy session hoàn toàn
-    session_destroy();
-
-    // BẮT ĐẦU 1 SESSION MỚI NGAY LẬP TỨC
-    session_start();
-
-    // TẠO LẠI CSRF TOKEN MỚI (rất quan trọng)
-    $_SESSION['csrf'] = bin2hex(random_bytes(32));
-
-    return [
-        'success' => true,
-        'message' => 'Đã đăng xuất!'
-    ];
-}
 
     // ===================== ADMIN =====================
     // Admin: lấy danh sách user
