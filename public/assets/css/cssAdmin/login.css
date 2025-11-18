@@ -25,7 +25,7 @@ body {
 
 .techshop-slogan {
     flex: 0 0 60%;
-    background-image: url(/public/assets/images/TechShop);
+    background-image: url(/TechShop/public/assets/images/TechShop.jpg);
     background-size: cover;
     display: flex;
     flex-direction: column;

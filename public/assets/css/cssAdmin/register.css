@@ -25,7 +25,7 @@ body {
 
 .techshop-slogan {
     flex: 0 0 60%;
-    background-image: url(/public/assets/images/TechShop);
+    background-image: url(/TechShop/public/assets/images/TechShop.jpg);
     background-size: cover;
     display: flex;
     flex-direction: column;
@@ -149,4 +149,43 @@ body {
     margin-top: 0; 
     font-size: 1em;
     text-align: right; 
+}
+.hidden {
+    display: none;
+}
+
+.message-box {
+    margin-bottom: 15px;
+    padding: 10px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+    text-align: center;
+}
+
+.message-box.error {
+    background-color: #ffebee;
+    color: #c62828;
+    border: 1px solid #ef9a9a;
+}
+
+.message-box.success {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    border: 1px solid #a5d6a7;
+}
+.otp-inputs {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+.otp-inputs input {
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    font-size: 1.2rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
 }
