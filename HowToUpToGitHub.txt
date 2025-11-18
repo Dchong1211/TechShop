@@ -4,6 +4,9 @@ Trong phần “Scopes”
 Bật các checkbox này:
     repo → (quan trọng nhất, cho phép đọc & ghi repo private/public)
     workflow → (đề phòng repo có GitHub Actions)
+Sau đó chạy link sau: 
+vd: git clone https://TranDuyKhanh191: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@github.com/Dchong1211/TechShop.git
+
 -------------Muốn update code lên Github-------------
 git add .
 git commit -m "Initial commit"
