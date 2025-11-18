@@ -29,14 +29,14 @@ TechShop/
 │       ├── css/
 │       │   ├── cssAdmin/
 │       │   │   ├── mainAdmin.css      # Giao diện chính người quản trị
-│       │   │   └── admin.css          # Giao diện phần quản trị
+│       │   │   └── admin.css          # Style bổ sung dành riêng cho admin
 │       │   │
 │       │   └── cssUser/
 │       │       ├── mainUser.css       # Giao diện chính phần người dùng
-│       │       └── admin.css          # Giao diện phần quản trị
+│       │       └── admin.css          # (Có vẻ nhầm tên) — style phụ dùng chung user/admin
 │       ├── js/
-│       │   ├── main.js                # Xử lý sự kiện, fetch API cho user
-│       │   └── admin.js               # Xử lý sự kiện, CRUD qua API cho admin
+│       │   ├── main.js                # Xử lý sự kiện, fetch API cho user (giỏ hàng, login,...)
+│       │   └── admin.js               # Xử lý sự kiện CRUD trong trang admin
 │       ├── images/                    # Hình ảnh sản phẩm, banner, logo
 │       └── vendor/                    # Thư viện ngoài (Bootstrap, FontAwesome, Chart.js)
 │
@@ -44,54 +44,58 @@ TechShop/
 │   ├── config/
 │   │   ├── database.php               # File kết nối MySQL
 │   │   ├── env.php                    # Hàm env() đọc file .env
-│   │   └── .env                       # Thông tin nhạy cảm (không public)
+│   │   └── .env                       # Thông tin nhạy cảm (DB, SMTP) — không commit
 │   │
 │   ├── routers/
-│   │   ├── web.php                    # File đăng ký route (GET/POST)
-│   ├── core/
-│   │   ├── autoload.php               # Tự động load models, controllers, helpers
-│   │   └── router.php                 # Class Router xử lý request
+│   │   ├── web.php                    # File đăng ký route (GET/POST) cho toàn bộ website
 │   │
+│   ├── core/
+│   │   ├── autoload.php               # Tự động load controllers/models/helpers
+│   │   └── router.php                 # Class Router xử lý request + middleware
 │   │
 │   ├── controllers/                   # Điều khiển luồng xử lý giữa view và model
 │   │   ├── ProductController.php      # Xử lý sản phẩm (lấy danh sách, chi tiết, CRUD)
 │   │   ├── CartController.php         # Xử lý giỏ hàng (thêm, xóa, cập nhật)
-│   │   ├── OrderController.php        # Xử lý đơn hàng và thanh toán
-│   │   ├── UserController.php         # Xử lý người dùng (đăng ký, đăng nhập)
-│   │   └── AdminController.php        # Xử lý quản trị viên (đăng nhập, thống kê)
+│   │   ├── AuthController.php         # Đăng ký, đăng nhập, OTP, reset pass, session
+│   │   ├── UserController.php         # (Tuỳ chọn) quản lý user dành cho admin
+│   │   ├── OrderController.php        # Tạo đơn hàng, xem đơn hàng, trạng thái đơn
+│   │   ├── AddressController.php      # CRUD địa chỉ giao hàng của user
+│   │   ├── WishListController.php     # Xử lý danh sách yêu thích
+│   │   └── CategoryController.php     # CRUD danh mục sản phẩm
 │   │
 │   ├── models/                        # Các lớp tương tác với cơ sở dữ liệu
-│   │   ├── Product.php                # Model bảng products
-│   │   ├── Order.php                  # Model bảng orders
-│   │   ├── User.php                   # Model bảng users
-│   │   └── Category.php               # Model bảng categories
+│   │   ├── product.php                # Model bảng products
+│   │   ├── order.php                  # Model bảng orders
+│   │   ├── user.php                   # Model bảng users (CRUD user)
+│   │   ├── address.php                # Model bảng address (nhiều địa chỉ/user)
+│   │   ├── auth.php                   # Model xử lý đăng ký, đăng nhập, OTP
+│   │   ├── cart.php                   # Model bảng cart_items
+│   │   ├── wishlist.php               # Model bảng wishlist
+│   │   └── category.php               # Model bảng categories
 │   │
 │   ├── helpers/                       # Hàm tiện ích dùng chung
-│   │   ├── auth.php                   # Kiểm tra đăng nhập, quyền truy cập
-│   │   ├── format.php                 # Định dạng dữ liệu (tiền, ngày, text)
+│   │   ├── PHPMaiLer/                 # Thư viện gửi mail
+│   │   │   ├── Exception.php
+│   │   │   ├── PHPMailer.php
+│   │   │   └── SMTP.php
+│   │   │
+│   │   ├── auth.php                   # Middleware kiểm tra login/role
+│   │   ├── format.php                 # Định dạng tiền, ngày, chuỗi
 │   │   ├── csrf.php                   # CSRF token + verify
+│   │   ├── mailer.php                 # Wrapper gửi mail dùng PHPMailer
 │   │   └── validation.php             # Kiểm tra dữ liệu nhập hợp lệ
-│   │
-│   ├── api/                           # Endpoint PHP trả dữ liệu JSON cho frontend
-│   │    ├── get_products.php          # Lấy danh sách sản phẩm
-│   │    ├── add_to_cart.php           # Thêm sản phẩm vào giỏ hàng
-│   │    ├── logout.php                # Xử lý thanh toán và tạo đơn hàng
-│   │    ├── register_user.php         # Đăng ký tài khoản mới
-│   │    ├── login.php                 # Đăng nhập người dùng
-│   │    ├── reset_password.php        # Đặt lại mật khẩu
-│   │    └── admin_api.php             # Các hành động quản trị (CRUD sản phẩm, user,...)
 │   │ 
-│   └── .htaccess                      # Cấu hình Apache (Deny from all)
+│   └── .htaccess                      # Chặn truy cập trực tiếp vào /app (Deny from all)
 │
-├── storage/                           # Lưu file tải lên và nhật ký hệ thống
+├── storage/                           # Lưu file tải lên và log
 │   ├── uploads/
-│   │   ├── products/                  # Ảnh sản phẩm
+│   │   ├── products/                  # Ảnh sản phẩm upload
 │   │   └── banners/                   # Ảnh banner quảng cáo
 │   └── logs/
-│       ├── error.log                  # Ghi lỗi hệ thống (PHP, SQL,...)
-│       └── access.log                 # Nhật ký truy cập (admin, user)
+│       ├── error.log                  # Ghi lỗi PHP/MySQL
+│       └── access.log                 # Lịch sử thao tác admin/user
 │
-├── database/                          # Cấu trúc và dữ liệu cơ sở dữ liệu
-│   └── techshop.sql                   # File SQL tạo bảng và dữ liệu mẫu
+├── database/                          # Lưu file SQL
+│   └── techshop.sql                   # File tạo bảng + dữ liệu mẫu
 │
-└── .htaccess                          # Cấu hình Apache (rewrite URL, bảo mật)
+└── .htaccess                          # Rewrite URL → public/index.php, cấu hình bảo mật
