@@ -1,6 +1,6 @@
 <?php
 // Nạp model User
-require_once __DIR__ . '/../models/User.php';
+require_once __DIR__ . '/../models/auth.php';
 // Nạp file kết nối database
 require_once __DIR__ . '/../config/database.php';
 // Nạp helper gửi mail
@@ -8,10 +8,10 @@ require_once __DIR__ . '/../helpers/mailer.php';
 // Nạp hàm env() để lấy biến môi trường
 require_once __DIR__ . '/../config/env.php';
 
-// Khai báo class UserController
-class UserController {
+// Khai báo class AuthController
+class AuthController {
 
-    // Thuộc tính lưu instance của model User
+    // Thuộc tính lưu instance của model Auth
     private $userModel;
 
     // Hàm khởi tạo
@@ -255,28 +255,38 @@ class UserController {
     // ===================== LOGOUT =====================
     // Hàm đăng xuất
     public function logout() {
-        // Xóa toàn bộ dữ liệu trong session
-        $_SESSION = [];
-        // Nếu đang dùng cookie session
-        if (ini_get("session.use_cookies")) {
-            // Lấy thông tin cookie hiện tại
-            $p = session_get_cookie_params();
-            // Set cookie hết hạn
-            setcookie(
-                session_name(),    // tên session
-                '',                // giá trị rỗng
-                time() - 42000,    // thời gian hết hạn trong quá khứ
-                $p["path"],        // path
-                $p["domain"],      // domain
-                $p["secure"],      // secure
-                $p["httponly"]     // httponly
-            );
-        }
-        // Hủy session
-        session_destroy();
-        // Trả kết quả OK
-        return ['success' => true, 'message' => 'Đã đăng xuất!'];
+
+    // Xóa sạch session hiện tại
+    $_SESSION = [];
+
+    // Hủy cookie session
+    if (ini_get("session.use_cookies")) {
+        $params = session_get_cookie_params();
+        setcookie(
+            session_name(),
+            '',
+            time() - 42000,
+            $params["path"],
+            $params["domain"],
+            $params["secure"],
+            $params["httponly"]
+        );
     }
+
+    // Hủy session hoàn toàn
+    session_destroy();
+
+    // BẮT ĐẦU 1 SESSION MỚI NGAY LẬP TỨC
+    session_start();
+
+    // TẠO LẠI CSRF TOKEN MỚI (rất quan trọng)
+    $_SESSION['csrf'] = bin2hex(random_bytes(32));
+
+    return [
+        'success' => true,
+        'message' => 'Đã đăng xuất!'
+    ];
+}
 
     // ===================== ADMIN =====================
     // Admin: lấy danh sách user

@@ -1,9 +1,10 @@
 <?php
 header("Content-Type: application/json");
-require_once __DIR__ . '/../controllers/UserController.php';
+
+require_once __DIR__ . '/../controllers/AuthController.php';
 
 // Khởi tạo controller
-$controller = new UserController();
+$controller = new AuthController();
 
 // Nhận dữ liệu từ JSON hoặc form
 $input = json_decode(file_get_contents("php://input"), true);

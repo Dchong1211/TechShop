@@ -1,173 +1,142 @@
 <?php
-session_start();
 require_once __DIR__ . '/../../app/helpers/CSRF.php';
 $csrf = CSRF::token();
 ?>
-
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <title>Test API Giỏ Hàng - TechShop</title>
-
-    <style>
-        body { 
-            font-family: Segoe UI, sans-serif; 
-            padding: 25px; 
-            background: #f6f7fb;
-        }
-        h1 { color: #333; }
-        h2 { margin-top: 30px; color: #444; }
-        .box {
-            background: #fff;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            box-shadow: 0px 2px 8px rgba(0,0,0,0.1);
-        }
-        input {
-            padding: 6px 8px;
-            width: 200px;
-            border-radius: 6px;
-            border: 1px solid #ddd;
-        }
-        button {
-            padding: 8px 15px;
-            background: #4a90e2;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-        button:hover {
-            background: #357ab8;
-        }
-        pre {
-            background: #1e1e1e;
-            padding: 15px;
-            border-radius: 8px;
-            color: #00eaff;
-            max-height: 400px;
-            overflow-y: auto;
-        }
-    </style>
-
-    <script>
-        async function sendAPI(url, method, formId = null) {
-            let options = { method: method };
-
-            if (formId !== null) {
-                options.body = new FormData(document.getElementById(formId));
-            }
-
-            const response = await fetch(url, options);
-            const text = await response.text();
-
-            try {
-                const json = JSON.parse(text);
-                document.getElementById("result").textContent =
-                    JSON.stringify(json, null, 4);
-            } catch (e) {
-                document.getElementById("result").textContent = text;
-            }
-        }
-    </script>
+<meta charset="UTF-8">
+<title>Test Giỏ Hàng</title>
+<style>
+    body { font-family: Arial; padding: 20px; background: #fafafa; }
+    h2 { margin-top: 40px; }
+    button {
+        width: 100%;
+        padding: 12px;
+        background: royalblue;
+        color: white;
+        font-weight: bold;
+        border: none;
+        margin: 10px 0;
+        cursor: pointer;
+    }
+    input { width: 100%; padding: 10px; margin: 5px 0; }
+    #result, #authStatus {
+        background: #000;
+        color: #0f0;
+        padding: 10px;
+        min-height: 40px;
+        margin-top: 10px;
+        white-space: pre-wrap;
+    }
+</style>
 </head>
 
 <body>
 
-<h1>🔥 Test API Giỏ Hàng TechShop</h1>
-<p><b>Lưu ý:</b> Bạn phải đăng nhập trước tại <code>/login</code>.</p>
+<h1>🛒 TEST GIỎ HÀNG (THEO PHÂN QUYỀN)</h1>
 
-<!-- ======================================= -->
-<!-- 🟦 LẤY GIỎ HÀNG -->
-<!-- ======================================= -->
-<div class="box">
-    <h2>🛒 Lấy giỏ hàng</h2>
-    <button onclick="sendAPI('/TechShop/public/api/cart', 'GET')">Gửi Request</button>
-</div>
+<!-- ========================== -->
+<!-- LOGIN / LOGOUT -->
+<!-- ========================== -->
 
-<!-- ======================================= -->
-<!-- 🟩 THÊM SẢN PHẨM -->
-<!-- ======================================= -->
-<div class="box">
-    <h2>➕ Thêm vào giỏ</h2>
+<h2>Đăng nhập để test quyền</h2>
 
-    <form id="addForm">
-        <input type="hidden" name="csrf" value="<?= $csrf ?>">
+<input type="email" id="email" placeholder="Email">
+<input type="password" id="password" placeholder="Password">
+<input type="hidden" id="csrf" value="<?= $csrf ?>">
 
-        <label>Product ID:</label><br>
-        <input type="number" name="product_id" value="1"><br><br>
+<button onclick="login()">Đăng nhập</button>
+<button onclick="logout()">Đăng xuất</button>
 
-        <label>Quantity:</label><br>
-        <input type="number" name="quantity" value="1"><br><br>
-    </form>
+<div id="authStatus">Chưa kiểm tra...</div>
 
-    <button onclick="sendAPI('/TechShop/public/api/cart/add', 'POST', 'addForm')">
-        Thêm vào giỏ
-    </button>
-</div>
+<hr>
 
-<!-- ======================================= -->
-<!-- 🟨 UPDATE SỐ LƯỢNG -->
-<!-- ======================================= -->
-<div class="box">
-    <h2>🔄 Cập nhật số lượng</h2>
+<h2>Test API Giỏ hàng</h2>
 
-    <form id="updateForm">
-        <input type="hidden" name="csrf" value="<?= $csrf ?>">
+<!-- GET CART -->
+<button onclick="api('/api/cart', 'GET')">GET /api/cart</button>
 
-        <label>Product ID:</label><br>
-        <input type="number" name="product_id" value="1"><br><br>
+<input id="add_product" placeholder="Product ID">
+<input id="add_qty" placeholder="Số lượng">
 
-        <label>Số lượng mới:</label><br>
-        <input type="number" name="quantity" value="3"><br><br>
-    </form>
+<button onclick="addCart()">POST /api/cart/add</button>
 
-    <button onclick="sendAPI('/TechShop/public/api/cart/update', 'POST', 'updateForm')">
-        Update
-    </button>
-</div>
+<input id="update_product" placeholder="Product ID">
+<input id="update_qty" placeholder="Số lượng mới">
 
-<!-- ======================================= -->
-<!-- 🟥 XOÁ 1 SẢN PHẨM -->
-<!-- ======================================= -->
-<div class="box">
-    <h2>❌ Xoá sản phẩm khỏi giỏ</h2>
+<button onclick="updateCart()">POST /api/cart/update</button>
 
-    <form id="removeForm">
-        <input type="hidden" name="csrf" value="<?= $csrf ?>">
-        <label>Product ID:</label><br>
-        <input type="number" name="product_id" value="1">
-    </form>
+<input id="remove_product" placeholder="Product ID">
 
-    <br>
-    <button onclick="sendAPI('/TechShop/public/api/cart/remove', 'POST', 'removeForm')">Xoá</button>
-</div>
+<button onclick="removeCart()">POST /api/cart/remove</button>
 
-<!-- ======================================= -->
-<!-- ⚫ XÓA TOÀN BỘ GIỎ -->
-<!-- ======================================= -->
-<div class="box">
-    <h2>🧹 Xóa toàn bộ giỏ</h2>
+<button onclick="clearCart()">POST /api/cart/clear</button>
 
-    <form id="clearForm">
-        <input type="hidden" name="csrf" value="<?= $csrf ?>">
-    </form>
+<div id="result"></div>
 
-    <button onclick="sendAPI('/TechShop/public/api/cart/clear', 'POST', 'clearForm')">
-        Clear
-    </button>
-</div>
+<script>
+async function login() {
+    let res = await fetch("/TechShop/public/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: `email=${email.value}&password=${password.value}&csrf=${csrf.value}`
+    });
+    let json = await res.text();
+    authStatus.textContent = json;
+}
 
-<!-- ======================================= -->
-<!-- 📦 KẾT QUẢ -->
-<!-- ======================================= -->
-<div class="box">
-    <h2>📦 Kết quả API</h2>
-    <pre id="result">...</pre>
-</div>
+async function logout() {
+    let res = await fetch("/TechShop/public/logout", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: `csrf=${csrf.value}`
+    });
+    authStatus.textContent = await res.text();
+}
+
+async function api(url, method) {
+    let res = await fetch("/TechShop/public" + url);
+    result.textContent = await res.text();
+}
+
+async function addCart() {
+    let res = await fetch("/TechShop/public/api/cart/add", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: `product_id=${add_product.value}&quantity=${add_qty.value}&csrf=${csrf.value}`
+    });
+    result.textContent = await res.text();
+}
+
+async function updateCart() {
+    let res = await fetch("/TechShop/public/api/cart/update", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: `product_id=${update_product.value}&quantity=${update_qty.value}&csrf=${csrf.value}`
+    });
+    result.textContent = await res.text();
+}
+
+async function removeCart() {
+    let res = await fetch("/TechShop/public/api/cart/remove", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: `product_id=${remove_product.value}&csrf=${csrf.value}`
+    });
+    result.textContent = await res.text();
+}
+
+async function clearCart() {
+    let res = await fetch("/TechShop/public/api/cart/clear", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: `csrf=${csrf.value}`
+    });
+    result.textContent = await res.text();
+}
+</script>
 
 </body>
 </html>

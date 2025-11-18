@@ -1,84 +1,119 @@
 <?php
-require_once __DIR__ . '/../config/database.php';
+
 require_once __DIR__ . '/../models/Cart.php';
+require_once __DIR__ . '/../helpers/auth.php';
 
 class CartController {
-    private $conn;
-    private $cart;
+    private $model;
+    private $user_id;
 
     public function __construct() {
-        $db = new Database();
-        $this->conn = $db->getConnection();
-        $this->cart = new Cart($this->conn);
+        $this->model = new Cart();
+
+        if (isset($_SESSION['user'])) {
+            $this->user_id = $_SESSION['user']['id'];
+        }
     }
 
-    private function getCurrentUserId() {
-        return $_SESSION['user']['id'] ?? null;
+    /* Chặn admin */
+    private function blockAdmin() {
+        if (!isset($_SESSION['user'])) {
+            return ["success" => false, "message" => "Bạn chưa đăng nhập!"];
+        }
+
+        if ($_SESSION['user']['role'] === 'admin') {
+            return ["success" => false, "message" => "Admin không thể sử dụng giỏ hàng!"];
+        }
+
+        return null;
     }
 
+    /* -------------------------------------------------
+        GET /api/cart – Lấy toàn bộ giỏ hàng
+    --------------------------------------------------*/
     public function getCart() {
-        $userId = $this->getCurrentUserId();
-        if (!$userId) {
-            return ['success' => false, 'message' => 'Bạn chưa đăng nhập!'];
-        }
+        if ($block = $this->blockAdmin()) return $block;
 
-        $items = $this->cart->getCartByUser($userId);
-        return ['success' => true, 'data' => $items];
+        $items = $this->model->getUserCart($this->user_id);
+
+        return [
+            "success" => true,
+            "cart" => $items
+        ];
     }
 
+    /* -------------------------------------------------
+        POST /api/cart/add – Thêm vào giỏ
+    --------------------------------------------------*/
     public function add() {
-        $userId = $this->getCurrentUserId();
-        if (!$userId)
-            return ['success' => false, 'message' => 'Bạn chưa đăng nhập!'];
+        if ($block = $this->blockAdmin()) return $block;
 
-        $productId = intval($_POST['product_id'] ?? 0);
-        $quantity  = intval($_POST['quantity'] ?? 1);
+        $product_id = $_POST["product_id"] ?? 0;
+        $quantity = $_POST["quantity"] ?? 1;
 
-        if ($productId <= 0 || $quantity <= 0) {
-            return ['success' => false, 'message' => 'Dữ liệu không hợp lệ!'];
+        if ($quantity < 1) {
+            return ["success" => false, "message" => "Số lượng không hợp lệ!"];
         }
 
-        $ok = $this->cart->addToCart($userId, $productId, $quantity);
-        return ['success' => $ok];
+        if (!$this->model->checkProductExists($product_id)) {
+            return ["success" => false, "message" => "Sản phẩm không tồn tại!"];
+        }
+
+        // Kiểm tra item đã có trong giỏ chưa
+        $exists = $this->model->findCartItem($this->user_id, $product_id);
+
+        if ($exists) {
+            $new_qty = $exists["quantity"] + $quantity;
+            $this->model->updateItem($exists["id"], $this->user_id, $new_qty);
+        } else {
+            $this->model->insertItem($this->user_id, $product_id, $quantity);
+        }
+
+        return ["success" => true, "message" => "Đã thêm vào giỏ hàng!"];
     }
 
+    /* -------------------------------------------------
+        POST /api/cart/update – Cập nhật số lượng
+    --------------------------------------------------*/
     public function update() {
-        $userId = $this->getCurrentUserId();
-        if (!$userId)
-            return ['success' => false, 'message' => 'Bạn chưa đăng nhập!'];
+        if ($block = $this->blockAdmin()) return $block;
 
-        $productId = intval($_POST['product_id'] ?? 0);
-        $quantity  = intval($_POST['quantity'] ?? 1);
+        $cart_id = $_POST["cart_id"] ?? 0;
+        $quantity = $_POST["quantity"] ?? 0;
 
-        if ($productId <= 0 || $quantity <= 0) {
-            return ['success' => false, 'message' => 'Dữ liệu không hợp lệ!'];
+        if ($quantity < 1) {
+            return ["success" => false, "message" => "Số lượng không hợp lệ!"];
         }
 
-        $ok = $this->cart->updateQuantity($userId, $productId, $quantity);
-        return ['success' => $ok];
+        $ok = $this->model->updateItem($cart_id, $this->user_id, $quantity);
+
+        if (!$ok) {
+            return ["success" => false, "message" => "Không thể cập nhật số lượng!"];
+        }
+
+        return ["success" => true, "message" => "Đã cập nhật giỏ hàng!"];
     }
 
+    /* -------------------------------------------------
+        POST /api/cart/remove – Xóa 1 item
+    --------------------------------------------------*/
     public function remove() {
-        $userId = $this->getCurrentUserId();
-        if (!$userId)
-            return ['success' => false, 'message' => 'Bạn chưa đăng nhập!'];
+        if ($block = $this->blockAdmin()) return $block;
 
-        $productId = intval($_POST['product_id'] ?? 0);
+        $cart_id = $_POST["cart_id"] ?? 0;
+        $this->model->deleteItem($cart_id, $this->user_id);
 
-        if ($productId <= 0) {
-            return ['success' => false, 'message' => 'Dữ liệu không hợp lệ!'];
-        }
-
-        $ok = $this->cart->removeItem($userId, $productId);
-        return ['success' => $ok];
+        return ["success" => true, "message" => "Đã xóa sản phẩm!"];
     }
 
+    /* -------------------------------------------------
+        POST /api/cart/clear – Xóa toàn bộ giỏ
+    --------------------------------------------------*/
     public function clear() {
-        $userId = $this->getCurrentUserId();
-        if (!$userId)
-            return ['success' => false, 'message' => 'Bạn chưa đăng nhập!'];
+        if ($block = $this->blockAdmin()) return $block;
 
-        $ok = $this->cart->clearCart($userId);
-        return ['success' => $ok];
+        $this->model->clearCart($this->user_id);
+
+        return ["success" => true, "message" => "Đã xóa toàn bộ giỏ hàng!"];
     }
 }
