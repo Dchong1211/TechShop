@@ -262,25 +262,5 @@ class AuthController {
             "message" => "Đã đăng xuất!"
         ];
     }
-
-    // ===================== ADMIN =====================
-    // Admin: lấy danh sách user
-    public function adminListUsers() {
-        // Gọi model lấy tất cả user
-        return ['success' => true, 'data' => $this->userModel->getAll()];
-    }
-
-    // Admin: bật / tắt trạng thái user
-    public function adminToggleStatus($id) {
-        // Gọi model để đổi status
-        $ok = $this->userModel->toggleStatus($id);
-
-        // Trả kết quả theo trạng thái
-        return [
-            'success' => $ok,
-            'message' => $ok ? 'Cập nhật thành công!' : 'Cập nhật thất bại!'
-        ];
-    }
 }
-// Kết thúc file UserController
 ?>

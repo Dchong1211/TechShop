@@ -125,22 +125,3 @@ $router->post("/admin/products/delete", function () {
     CSRF::requireToken();
     echo json_encode((new ProductController())->delete(), JSON_UNESCAPED_UNICODE);
 }, ["admin"]);
-
-
-/* ===================== ADMIN PAGE ===================== */
-// dashboard admin
-$router->get("/admin/dashboard", function () {
-    echo "Admin Dashboard";
-}, ["admin"]);
-
-// admin xem danh sách user
-$router->get("/admin/users/json", function () {
-    echo json_encode((new AuthController())->adminListUsers(), JSON_UNESCAPED_UNICODE);
-}, ["admin"]);
-
-// admin khoá/mở user
-$router->post("/admin/users/toggle-status", function () {
-    CSRF::requireToken();
-    echo json_encode((new AuthController())->adminToggleStatus($_POST['id']), JSON_UNESCAPED_UNICODE);
-}, ["admin"]);
-
