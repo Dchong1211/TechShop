@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quản lý Đơn hàng</title>
-    <link rel="stylesheet" href="/public/assets/css/cssAdmin/main_admin.css"> 
-    <link rel="stylesheet" href="/public/assets/css/cssAdmin/orders.css"> 
+    <base href="/TechShop/">
+    <link rel="stylesheet" href="public/assets/css/cssAdmin/main_admin.css"> 
+    <link rel="stylesheet" href="public/assets/css/cssAdmin/orders.css"> 
 </head>
 <body>
 
@@ -73,6 +74,8 @@
         </div>
 
     </div>
+
+    <script src="public/assets/js/admin.js"></script>
 
 </body>
 </html>

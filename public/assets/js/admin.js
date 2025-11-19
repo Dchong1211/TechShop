@@ -30,4 +30,40 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    const logoutLinks = document.querySelectorAll('a[href*="login.php"], a[href*="logout"]');
+    
+    logoutLinks.forEach(link => {
+        // Chỉ xử lý link có chữ "Đăng xuất" hoặc class logout
+        if (link.textContent.includes('Đăng xuất') || link.classList.contains('sidebar-logout')) {
+            link.addEventListener('click', async function(e) {
+                e.preventDefault();
+                
+                if (!confirm('Bạn có chắc chắn muốn đăng xuất?')) return;
+
+                try {
+                    const formData = new FormData();
+                    // Lấy CSRF token từ meta tag (sẽ thêm vào head) hoặc input hidden
+                    const csrf = document.querySelector('meta[name="csrf-token"]')?.content || '';
+                    formData.append('csrf', csrf);
+
+                    const res = await fetch('/TechShop/public/logout', {
+                        method: 'POST',
+                        body: formData
+                    });
+                    const data = await res.json();
+
+                    if (data.success) {
+                        window.location.href = '/TechShop/public/admin/login.php';
+                    } else {
+                        alert('Lỗi: ' + data.message);
+                    }
+                } catch (err) {
+                    console.error(err);
+                    // Fallback nếu API lỗi
+                    window.location.href = '/TechShop/public/admin/login.php'; 
+                }
+            });
+        }
+    });
+
 });

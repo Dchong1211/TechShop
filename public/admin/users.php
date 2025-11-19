@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quản lý Người dùng</title>
-    <link rel="stylesheet" href="/public/assets/css/cssAdmin/main_admin.css"> 
-    <link rel="stylesheet" href="/public/assets/css/cssAdmin/users.css"> 
+    <base href="/TechShop/">
+    <link rel="stylesheet" href="public/assets/css/cssAdmin/main_admin.css"> 
+    <link rel="stylesheet" href="public/assets/css/cssAdmin/users.css"> 
 </head>
 <body>
 
@@ -63,6 +64,8 @@
         </div>
 
     </div>
+
+    <script src="public/assets/js/admin.js"></script>
 
 </body>
 </html>

@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard | Trang Quản Trị</title>
-    <link rel="stylesheet" href="/public/assets/css/cssAdmin/main_admin.css">
-    <link rel="stylesheet" href="/public/assets/css/cssAdmin/index.css">
+    <base href="/TechShop/">
+    <link rel="stylesheet" href="public/assets/css/cssAdmin/main_admin.css">
+    <link rel="stylesheet" href="public/assets/css/cssAdmin/index.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 </head>
 <body>
@@ -172,6 +173,6 @@
 
         </main>
     </div>
-    <script src="/public/assets/js/admin.js"></script>
+    <script src="public/assets/js/admin.js"></script>
 </body>
 </html>
