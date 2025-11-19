@@ -346,68 +346,348 @@
 
 
 <div class="sidebar-megamenu-panel" id="megamenu-mouse">
-  <div class="megamenu-grid-container" style="grid-template-columns: repeat(3, 1fr);">
+  <div class="megamenu-grid-container" style="grid-template-columns: repeat(5, 1fr);">
+    
     <div class="megamenu-grid-column">
-      <h4>Chuột (Chưa có ảnh)</h4>
-      <ul><li><a href="#">Mục 1</a></li><li><a href="#">Mục 2</a></li></ul>
+      <h4>Thương hiệu chuột</h4>
+      <ul>
+        <li><a href="#">Logitech</a></li>
+        <li><a href="#">Razer</a></li>
+        <li><a href="#">Corsair</a></li>
+        <li><a href="#">Pulsar</a></li>
+        <li><a href="#">Microsoft</a></li>
+        <li><a href="#">Dare U</a></li>
+      </ul>
+      <h4 style="margin-top: 15px;">Thương hiệu lót chuột</h4>
+      <ul>
+        <li><a href="#">GEARVN</a></li>
+        <li><a href="#">ASUS</a></li>
+        <li><a href="#">Steelseries</a></li>
+        <li><a href="#">Dare-U</a></li>
+        <li><a href="#">Razer</a></li>
+      </ul>
+    </div>
+
+    <div class="megamenu-grid-column">
+      <h4>Thương hiệu chuột</h4>
+      <ul>
+        <li><a href="#">ASUS</a></li>
+        <li><a href="#">Steelseries</a></li>
+        <li><a href="#">Glorious</a></li>
+        <li><a href="#">Rapoo</a></li>
+        <li><a href="#">HyperX</a></li>
+        <li><a href="#">ATK</a></li>
+      </ul>
+      <h4 style="margin-top: 15px;">Các loại lót chuột</h4>
+      <ul>
+        <li><a href="#">Mềm</a></li>
+        <li><a href="#">Cứng</a></li>
+        <li><a href="#">Dày</a></li>
+        <li><a href="#">Mỏng</a></li>
+        <li><a href="#">Viền có led</a></li>
+      </ul>
+    </div>
+
+    <div class="megamenu-grid-column">
+      <h4>Chuột theo giá tiền</h4>
+      <ul>
+        <li><a href="#">Dưới 500 nghìn</a></li>
+        <li><a href="#">Từ 500 nghìn - 1 triệu</a></li>
+        <li><a href="#">Từ 1 triệu - 2 triệu</a></li>
+        <li><a href="#">Trên 2 triệu - 3 triệu</a></li>
+        <li><a href="#">Trên 3 triệu</a></li>
+      </ul>
+      <h4 style="margin-top: 15px;">Lót chuột theo size</h4>
+      <ul>
+        <li><a href="#">Nhỏ</a></li>
+        <li><a href="#">Vừa</a></li>
+        <li><a href="#">Lớn</a></li>
+      </ul>
+    </div>
+
+    <div class="megamenu-grid-column">
+      <h4>Loại Chuột</h4>
+      <ul>
+        <li><a href="#">Chuột chơi game</a></li>
+        <li><a href="#">Chuột văn phòng</a></li>
+      </ul>
+    </div>
+
+    <div class="megamenu-grid-column">
+      <h4>Logitech</h4>
+      <ul>
+        <li><a href="#">Logitech Gaming</a></li>
+        <li><a href="#">Logitech Văn phòng</a></li>
+      </ul>
     </div>
   </div>
 </div>
 
 <div class="sidebar-megamenu-panel" id="megamenu-headset">
-  <div class="megamenu-grid-container" style="grid-template-columns: repeat(3, 1fr);">
+  <div class="megamenu-grid-container" style="grid-template-columns: repeat(5, 1fr);">
+    
     <div class="megamenu-grid-column">
-      <h4>Tai Nghe (Chưa có ảnh)</h4>
-      <ul><li><a href="#">Mục 1</a></li><li><a href="#">Mục 2</a></li></ul>
+      <h4>Thương hiệu tai nghe</h4>
+      <ul>
+        <li><a href="#">ASUS</a></li>
+        <li><a href="#">HyperX</a></li>
+        <li><a href="#">Corsair</a></li>
+        <li><a href="#">Razer</a></li>
+        <li><a href="#">ONIKUMA</a></li>
+      </ul>
     </div>
+
+    <div class="megamenu-grid-column">
+      <h4>Thương hiệu tai nghe</h4>
+      <ul>
+        <li><a href="#">Steelseries</a></li>
+        <li><a href="#">Rapoo</a></li>
+        <li><a href="#">Logitech</a></li>
+        <li><a href="#">Edifier</a></li>
+      </ul>
+    </div>
+
+    <div class="megamenu-grid-column">
+      <h4>Tai nghe theo giá</h4>
+      <ul>
+        <li><a href="#">Tai nghe dưới 1 triệu</a></li>
+        <li><a href="#">Tai nghe 1 triệu đến 2 triệu</a></li>
+        <li><a href="#">Tai nghe 2 đến 3 triệu</a></li>
+        <li><a href="#">Tai nghe 3 đến 4 triệu</a></li>
+        <li><a href="#">Tai nghe trên 4 triệu</a></li>
+      </ul>
+    </div>
+
+    <div class="megamenu-grid-column">
+      <h4>Kiểu kết nối</h4>
+      <ul>
+        <li><a href="#">Tai nghe Wireless</a></li>
+        <li><a href="#">Tai nghe Bluetooth</a></li>
+      </ul>
+    </div>
+
+    <div class="megamenu-grid-column">
+      <h4>Kiểu tai nghe</h4>
+      <ul>
+        <li><a href="#">Tai nghe Over-ear</a></li>
+        <li><a href="#">Tai nghe Gaming In-ear</a></li>
+      </ul>
+    </div>
+
   </div>
 </div>
 
 <div class="sidebar-megamenu-panel" id="megamenu-chair-desk">
-  <div class="megamenu-grid-container" style="grid-template-columns: repeat(3, 1fr);">
+  <div class="megamenu-grid-container" style="grid-template-columns: repeat(5, 1fr);">
+    
     <div class="megamenu-grid-column">
-      <h4>Ghế - Bàn (Chưa có ảnh)</h4>
-      <ul><li><a href="#">Mục 1</a></li><li><a href="#">Mục 2</a></li></ul>
+      <h4>Thương hiệu ghế Gaming</h4>
+      <ul>
+        <li><a href="#">Corsair</a></li>
+        <li><a href="#">Warrior</a></li>
+        <li><a href="#">E-DRA</a></li>
+        <li><a href="#">DXRacer</a></li>
+        <li><a href="#">Cougar</a></li>
+        <li><a href="#">AKRaing</a></li>
+        <li><a href="#">Razer</a></li>
+      </ul>
+      <h4 style="margin-top: 15px;">Giá tiền</h4>
+      <ul>
+        <li><a href="#">Dưới 5 triệu</a></li>
+        <li><a href="#">Từ 5 đến 10 triệu</a></li>
+        <li><a href="#">Trên 10 triệu</a></li>
+      </ul>
     </div>
+
+    <div class="megamenu-grid-column">
+      <h4>Thương hiệu ghế CTH</h4>
+      <ul>
+        <li><a href="#">Warrior</a></li>
+        <li><a href="#">Sihoo</a></li>
+        <li><a href="#">E-Dra</a></li>
+      </ul>
+    </div>
+
+    <div class="megamenu-grid-column">
+      <h4>Kiểu ghế</h4>
+      <ul>
+        <li><a href="#">Ghế Công thái học</a></li>
+        <li><a href="#">Ghế Gaming</a></li>
+      </ul>
+    </div>
+
+    <div class="megamenu-grid-column">
+      <h4>Bàn Gaming</h4>
+      <ul>
+        <li><a href="#">Bàn Gaming DXRacer</a></li>
+        <li><a href="#">Bàn Gaming E-Dra</a></li>
+        <li><a href="#">Bàn Gaming Warrior</a></li>
+      </ul>
+    </div>
+
+    <div class="megamenu-grid-column">
+      <h4>Bàn công thái học</h4>
+      <ul>
+        <li><a href="#">Bàn CTH Warrior</a></li>
+        <li><a href="#">Phụ kiện bàn ghế</a></li>
+      </ul>
+    </div>
+
   </div>
 </div>
 
 <div class="sidebar-megamenu-panel" id="megamenu-software-network">
-  <div class="megamenu-grid-container" style="grid-template-columns: repeat(3, 1fr);">
+  <div class="megamenu-grid-container" style="grid-template-columns: repeat(5, 1fr);">
+    
     <div class="megamenu-grid-column">
-      <h4>Phần mềm bản quyền</h4>
-      <ul> <li><a href="#">Window bản quyền - Chỉ từ 2,990k</a></li> <li><a href="#">Office 365 bản quyền - Chỉ từ 990k</a></li> </ul>
+      <h4>Hãng sản xuất</h4>
+      <ul>
+        <li><a href="#">Asus</a></li>
+        <li><a href="#">LinkSys</a></li>
+        <li><a href="#">TP-LINK</a></li>
+        <li><a href="#">Mercusys</a></li>
+      </ul>
     </div>
+
     <div class="megamenu-grid-column">
-      <h4>Thiết bị mạng (Chưa có ảnh)</h4>
-      <ul><li><a href="#">Mục 1</a></li><li><a href="#">Mục 2</a></li></ul>
+      <h4>Router Wi-Fi</h4>
+      <ul>
+        <li><a href="#">Gaming</a></li>
+        <li><a href="#">Phổ thông</a></li>
+        <li><a href="#">Xuyên tường</a></li>
+        <li><a href="#">Router Mesh Pack</a></li>
+        <li><a href="#">Router WiFi 5</a></li>
+        <li><a href="#">Router WiFi 6</a></li>
+      </ul>
     </div>
+
+    <div class="megamenu-grid-column">
+      <h4>USB Thu sóng - Card mạng</h4>
+      <ul>
+        <li><a href="#">Usb WiFi</a></li>
+        <li><a href="#">Card WiFi</a></li>
+        <li><a href="#">Dây cáp mạng</a></li>
+      </ul>
+    </div>
+
+    <div class="megamenu-grid-column">
+      <h4>Microsoft Office</h4>
+      <ul>
+        <li><a href="#">Microsoft Office 365</a></li>
+        <li><a href="#">Office Home 2024</a></li>
+      </ul>
+    </div>
+
+    <div class="megamenu-grid-column">
+      <h4>Microsoft Windows</h4>
+      <ul>
+        <li><a href="#">Windows 11 Home</a></li>
+        <li><a href="#">Windows 11 Pro</a></li>
+      </ul>
+    </div>
+
   </div>
 </div>
 
 <div class="sidebar-megamenu-panel" id="megamenu-handheld-console">
-  <div class="megamenu-grid-container" style="grid-template-columns: repeat(3, 1fr);">
+  <div class="megamenu-grid-container" style="grid-template-columns: repeat(4, 1fr);">
+    
     <div class="megamenu-grid-column">
-      <h4>Handheld, Console (Chưa có ảnh)</h4>
-      <ul><li><a href="#">Mục 1</a></li><li><a href="#">Mục 2</a></li></ul>
+      <h4>Handheld PC</h4>
+      <ul>
+        <li><a href="#">Rog Ally</a></li>
+        <li><a href="#">MSI Claw</a></li>
+        <li><a href="#">Legion Go</a></li>
+      </ul>
     </div>
+
+    <div class="megamenu-grid-column">
+      <h4>Tay cầm</h4>
+      <ul>
+        <li><a href="#">Tay cầm Playstation</a></li>
+        <li><a href="#">Tay cầm Rapoo</a></li>
+        <li><a href="#">Tay cầm DareU</a></li>
+        <li><a href="#">Xem tất cả</a></li>
+      </ul>
+    </div>
+
+    <div class="megamenu-grid-column">
+      <h4>Vô lăng lái xe, máy bay</h4>
+      <ul>
+        </ul>
+    </div>
+
+    <div class="megamenu-grid-column">
+      <h4>Sony Playstation</h4>
+      <ul>
+        <li><a href="#">Sony PS5 (Máy) chính hãng</a></li>
+        <li><a href="#">Tay cầm chính hãng</a></li>
+      </ul>
+    </div>
+
   </div>
 </div>
 
 <div class="sidebar-megamenu-panel" id="megamenu-accessories">
-  <div class="megamenu-grid-container" style="grid-template-columns: repeat(3, 1fr);">
+  <div class="megamenu-grid-container" style="grid-template-columns: repeat(4, 1fr);">
+    
     <div class="megamenu-grid-column">
-      <h4>Phụ kiện (Chưa có ảnh)</h4>
-      <ul><li><a href="#">Mục 1</a></li><li><a href="#">Mục 2</a></li></ul>
+      <h4>Hub, sạc, cáp</h4>
+      <ul>
+        <li><a href="#">Hub chuyển đổi</a></li>
+        <li><a href="#">Dây cáp</a></li>
+        <li><a href="#">Củ sạc</a></li>
+      </ul>
     </div>
+
+    <div class="megamenu-grid-column">
+      <h4>Quạt cầm tay, Quạt mini</h4>
+      <ul>
+        <li><a href="#">Jisulife</a></li>
+      </ul>
+    </div>
+
+    <div class="megamenu-grid-column">
+      <h4>Phụ kiện Elgato</h4>
+      <ul>
+        </ul>
+    </div>
+
+    <div class="megamenu-grid-column">
+      <h4>Sạc dự phòng</h4>
+      <ul>
+        </ul>
+    </div>
+
   </div>
 </div>
 
 <div class="sidebar-megamenu-panel" id="megamenu-service">
   <div class="megamenu-grid-container" style="grid-template-columns: repeat(3, 1fr);">
+    
     <div class="megamenu-grid-column">
-      <h4>Dịch vụ (Chưa có ảnh)</h4>
-      <ul><li><a href="#">Mục 1</a></li><li><a href="#">Mục 2</a></li></ul>
+      <h4>Dịch vụ</h4>
+      <ul>
+        <li><a href="#">Dịch vụ kỹ thuật tại nhà</a></li>
+        <li><a href="#">Dịch vụ sửa chữa</a></li>
+      </ul>
     </div>
+
+    <div class="megamenu-grid-column">
+      <h4>Chính sách</h4>
+      <ul>
+        <li><a href="#">Chính sách & bảng giá thu VGA qua sử dụng</a></li>
+        <li><a href="#">Chính sách bảo hành</a></li>
+        <li><a href="#">Chính sách giao hàng</a></li>
+        <li><a href="#">Chính sách đổi trả</a></li>
+      </ul>
+    </div>
+
+    <div class="megamenu-grid-column">
+      <h4>Build PC</h4>
+      <ul>
+         </ul>
+    </div>
+
   </div>
 </div>

@@ -1,151 +1,285 @@
 <?php
-define('BASE_PATH', dirname(__DIR__));
-
+// 1. CẤU HÌNH
+define('BASE_PATH', dirname(__DIR__)); 
 $PAGE_TITLE = 'Trang chủ';
 $SHOW_SEARCH = true;
 
+// 2. TẠO DỮ LIỆU GIẢ
+function create_product($id, $name, $price, $img, $label = '') {
+    return ['id' => $id, 'name' => $name, 'price' => $price, 'image' => $img, 'label' => $label];
+}
+function multiply_data($data, $count = 12) {
+    $result = [];
+    while (count($result) < $count) {
+        foreach ($data as $item) {
+            if (count($result) >= $count) break;
+            $new = $item;
+            $new['id'] = $item['id'] . '_' . count($result); 
+            $result[] = $new;
+        }
+    }
+    return $result;
+}
+
+// DATA SẢN PHẨM MẪU
+$base_laptop = [
+    create_product(101, 'Laptop ASUS Vivobook Go 15', 11490000, 'asus_vivo.jpg', '-10%'),
+    create_product(102, 'Laptop HP Pavilion 15', 14590000, 'hp_pavilion.jpg'),
+    create_product(103, 'MacBook Air M1 2020', 18490000, 'macbook_m1.jpg', 'Hot'),
+    create_product(104, 'Laptop Acer Nitro 5 Tiger', 19990000, 'acer_nitro.jpg'),
+];
+$base_pc = [
+    create_product(201, 'PC GVN Intel i3 / GTX 1650', 9590000, 'pc_gvn_1.jpg'),
+    create_product(202, 'PC GVN i5 12400F / RTX 3060', 15990000, 'pc_gvn_2.jpg', 'Best Seller'),
+    create_product(203, 'PC GVN AMD Ryzen 5 / RX 6600', 14490000, 'pc_gvn_3.jpg'),
+    create_product(204, 'PC GVN Dragon High-End', 85990000, 'pc_gvn_high.jpg', 'New'),
+];
+$base_gear = [
+    create_product(301, 'Chuột Logitech G Pro X', 2990000, 'logitech_gpro.jpg'),
+    create_product(302, 'Phím cơ Keychron K8 Pro', 2590000, 'keychron_k8.jpg'),
+    create_product(303, 'Tai nghe HyperX Cloud II', 1890000, 'hyperx_cloud.jpg'),
+    create_product(304, 'Ghế Gaming Anda Seat', 5900000, 'chair_anda.jpg', '-50%'),
+];
+
+$list_laptop = multiply_data($base_laptop, 12); 
+$list_pc     = multiply_data($base_pc, 12);     
+$list_gear   = multiply_data($base_gear, 12);
+
+// 3. DATA DANH MỤC NHANH (Đã thêm 'code' để tạo link)
+$quick_categories = [
+    ['name' => 'Laptop', 'code' => 'laptop', 'icon' => 'https://img.icons8.com/fluency/48/laptop.png'],
+    ['name' => 'PC', 'code' => 'pc', 'icon' => 'https://img.icons8.com/fluency/48/workstation.png'],
+    ['name' => 'Màn hình', 'code' => 'monitor', 'icon' => 'https://img.icons8.com/fluency/48/monitor.png'],
+    ['name' => 'Mainboard', 'code' => 'mainboard', 'icon' => 'https://img.icons8.com/fluency/48/motherboard.png'],
+    ['name' => 'CPU', 'code' => 'cpu', 'icon' => 'https://img.icons8.com/fluency/48/processor.png'],
+    ['name' => 'VGA', 'code' => 'vga', 'icon' => 'https://img.icons8.com/fluency/48/video-card.png'],
+    ['name' => 'RAM', 'code' => 'ram', 'icon' => 'https://img.icons8.com/fluency/48/memory-slot.png'],
+    ['name' => 'Ổ cứng', 'code' => 'hdd', 'icon' => 'https://img.icons8.com/fluency/48/hdd.png'],
+    ['name' => 'Case', 'code' => 'case', 'icon' => 'https://img.icons8.com/fluency/48/server-case.png'],
+    ['name' => 'Tản nhiệt', 'code' => 'cooling', 'icon' => 'https://img.icons8.com/fluency/48/fan.png'],
+    ['name' => 'Nguồn', 'code' => 'psu', 'icon' => 'https://img.icons8.com/fluency/48/power-supply-module.png'],
+    ['name' => 'Bàn phím', 'code' => 'keyboard', 'icon' => 'https://img.icons8.com/fluency/48/keyboard.png'],
+    ['name' => 'Chuột', 'code' => 'mouse', 'icon' => 'https://img.icons8.com/fluency/48/mouse.png'],
+    ['name' => 'Ghế', 'code' => 'chair', 'icon' => 'https://img.icons8.com/fluency/48/gaming-chair.png'],
+    ['name' => 'Tai nghe', 'code' => 'headset', 'icon' => 'https://img.icons8.com/fluency/48/headphones.png'],
+    ['name' => 'Loa', 'code' => 'speaker', 'icon' => 'https://img.icons8.com/fluency/48/speaker.png'],
+    ['name' => 'Console', 'code' => 'console', 'icon' => 'https://img.icons8.com/fluency/48/controller.png'],
+    ['name' => 'Phụ kiện', 'code' => 'accessories', 'icon' => 'https://img.icons8.com/fluency/48/usb-connector.png'],
+    ['name' => 'Thiết bị VP', 'code' => 'office', 'icon' => 'https://img.icons8.com/fluency/48/print.png'],
+    ['name' => 'Sạc DP', 'code' => 'powerbank', 'icon' => 'https://img.icons8.com/fluency/48/battery-level.png'],
+];
+
+// DATA TIN TỨC
+$news_list = [
+    ['title' => 'Cách reset máy tính Casio chi tiết và đầy đủ cho mọi dòng', 'img' => 'https://via.placeholder.com/300x200?text=News+1'],
+    ['title' => '3 cách tải Where Winds Meet trên PC, laptop chi tiết', 'img' => 'https://via.placeholder.com/300x200?text=News+2'],
+    ['title' => 'Chi tiết từng cách giải phóng dung lượng Zalo bị đầy', 'img' => 'https://via.placeholder.com/300x200?text=News+3'],
+    ['title' => 'Hướng dẫn cách tải Excel về máy tính, điện thoại', 'img' => 'https://via.placeholder.com/300x200?text=News+4'],
+];
+
 ob_start();
 ?>
+<link rel="stylesheet" href="public/assets/css/cssUser/index.css?v=6">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 <script src="public/assets/js/user.js?v=1"></script>
-<style>
-  :root { --accent: #4dd0e1; }
-  .main-nav .nav-inner a{ transition: color .2s ease; }
-  .main-nav .nav-inner a:hover{ color: var(--accent); }
-</style>
-<?php
-$ADDITIONAL_BODY_END_CONTENT = ob_get_clean();
+<script src="public/assets/js/indexUser.js?v=3" defer></script> 
 
+<?php
+$ADDITIONAL_BODY_END_CONTENT = ob_get_clean(); 
 include BASE_PATH . '/includes/header.php';
 ?>
 
-<div class="sticky-banner-container-left">
-  <a href="#">
-    <img loading="lazy" src="public/assets/images/banner_doc_1.jpg" alt="Banner dọc 1">
-  </a>
-</div>
-<div class="sticky-banner-container-right">
-  <a href="#">
-    <img loading="lazy" src="public/assets/images/banner_doc_2.jpg" alt="Banner dọc 2">
-  </a>
-</div>
+<div class="sticky-banner-container-left"><a href="#"><img loading="lazy" src="public/assets/images/banner_doc_1.jpg" alt="Banner Trái"></a></div>
+<div class="sticky-banner-container-right"><a href="#"><img loading="lazy" src="public/assets/images/banner_doc_2.jpg" alt="Banner Phải"></a></div>
+
 <main class="homepage" role="main">
-    
     <div class="main-content">
       <div class="row">
 
         <div class="col-xl-3 col-lg-3 col-left-sidebar">
-          
           <?php include BASE_PATH . '/includes/sidebar.php'; ?>
-
-          <div class="sidebar-megamenu-container">
-            <?php 
-              $megamenu_panel_file = BASE_PATH . '/includes/megamenu_panels.php';
-              if (file_exists($megamenu_panel_file)) {
-                  include $megamenu_panel_file;
-              }
-            ?>
-          </div>
-
         </div>
+
         <div class="col-xl-9 col-lg-9 col-main-content">
           
-          <div class="top-banners">
-            <div class="banner-item">
-              <a href="#">
-                <img loading="lazy" src="public/assets/images/main_banner1.jpg" alt="Top Banner 1">
-              </a>
-            </div>
-            <div class="banner-item">
-              <a href="#">
-                <img loading="lazy" src="public/assets/images/main_banner2.jpg" alt="Top Banner 2">
-              </a>
-            </div>
-            <div class="banner-item">
-              <a href="#">
-                <img loading="lazy" src="public/assets/images/main_banner3.jpg" alt="Top Banner 3">
-              </a>
-            </div>
-          </div>
+          <section class="quick-categories-section">
+              <div class="quick-categories-header">Danh mục sản phẩm</div>
+              <div class="quick-categories-grid">
+                  <?php foreach($quick_categories as $cat): ?>
+                      <div class="quick-cat-item">
+                          <a href="public/user/product.php?cate=<?= $cat['code'] ?>">
+                              <img src="<?= $cat['icon'] ?>" alt="<?= $cat['name'] ?>">
+                              <span><?= $cat['name'] ?></span>
+                          </a>
+                      </div>
+                  <?php endforeach; ?>
+              </div>
+          </section>
 
-          <div class="main-slider-banner">
-            <a href="#">
-              <img loading="lazy" src="public/assets/images/main_banner1.jpg" alt="Main Slider Banner">
-            </a>
+          <div class="main-slider-wrapper">
+             <button class="slider-btn btn-prev" onclick="scrollSlider('main-banner-slider', 'left')">
+                <i class="fa-solid fa-chevron-left"></i>
+             </button>
+
+             <div class="product-slider full-width-slider" id="main-banner-slider">
+                <a href="#" class="main-banner-slide"><img src="public/assets/images/main_banner1.jpg" alt="Banner 1"></a>
+                <a href="#" class="main-banner-slide"><img src="public/assets/images/main_banner2.jpg" alt="Banner 2"></a>
+                <a href="#" class="main-banner-slide"><img src="public/assets/images/main_banner3.jpg" alt="Banner 3"></a>
+             </div>
+
+             <button class="slider-btn btn-next" onclick="scrollSlider('main-banner-slider', 'right')">
+                <i class="fa-solid fa-chevron-right"></i>
+             </button>
           </div>
 
           <div class="deal-banners">
-            <div class="banner-item">
-              <a href="#">
-                <img loading="lazy" src="public/assets/images/deal1.jpg" alt="Deal 1">
-              </a>
-            </div>
-            <div class="banner-item">
-              <a href="#">
-                <img loading="lazy" src="public/assets/images/deal2.jpg" alt="Deal 2">
-              </a>
-            </div>
-            <div class="banner-item">
-              <a href="#">
-                <img loading="lazy" src="public/assets/images/deal3.jpg" alt="Deal 3">
-              </a>
-            </div>
-            <div class="banner-item">
-              <a href="#">
-                <img loading="lazy" src="public/assets/images/deal4.jpg" alt="Deal 4">
-              </a>
-            </div>
+            <div class="banner-item"><a href="#"><img src="public/assets/images/deal1.jpg" alt="Deal 1"></a></div>
+            <div class="banner-item"><a href="#"><img src="public/assets/images/deal2.jpg" alt="Deal 2"></a></div>
+            <div class="banner-item"><a href="#"><img src="public/assets/images/deal3.jpg" alt="Deal 3"></a></div>
+            <div class="banner-item"><a href="#"><img src="public/assets/images/deal4.jpg" alt="Deal 4"></a></div>
           </div>
 
-          <section class="product-section" aria-labelledby="pc-title">
+          <section class="product-section">
             <div class="section-head">
-              <h2 id="pc-title"><a href="public/user/product.php?cate=pc">PC bán chạy</a></h2>
-              <a class="view-all" href="public/user/product.php?cate=pc">Xem tất cả</a>
-            </div>
-            <div class="products" id="pc-hot">
-              <p class="empty">Không có sản phẩm.</p>
-            </div>
-          </section>
-
-          <section class="product-section" aria-labelledby="laptop-title">
-            <div class="section-head">
-              <h2 id="laptop-title"><a href="public/user/product.php?cate=laptop">Laptop bán chạy</a></h2>
+              <h2>Laptop Bán Chạy</h2>
               <a class="view-all" href="public/user/product.php?cate=laptop">Xem tất cả</a>
             </div>
-            <div class="products" id="laptop-hot">
-              <p class="empty">Không có sản phẩm.</p>
+            <div class="product-slider-wrapper">
+                <button class="slider-btn btn-prev" onclick="scrollSlider('slider-laptop', 'left')"><i class="fa-solid fa-chevron-left"></i></button>
+                <div class="product-slider" id="slider-laptop">
+                  <?php foreach ($list_laptop as $row): ?>
+                      <div class="product-card">
+                          <a href="public/user/product_detail.php?id=<?= $row['id'] ?>" style="display:block; text-decoration:none; color:inherit;">
+                              <div style="position:relative; margin-bottom:10px;">
+                                  <?php if($row['label']): ?><span class="product-label"><?= $row['label'] ?></span><?php endif; ?>
+                                  <img loading="lazy" src="public/assets/images/<?= $row['image'] ?>" onerror="this.src='https://via.placeholder.com/300x300?text=Laptop'" alt="<?= htmlspecialchars($row['name']) ?>">
+                              </div>
+                              <h3 style="font-size:14px; height:38px; overflow:hidden; margin-bottom:5px;"><?= htmlspecialchars($row['name']) ?></h3>
+                              <div style="color:#d70018; font-weight:700;"><?= number_format($row['price'], 0, ',', '.') ?>₫</div>
+                          </a>
+                          <form action="public/user/cart.php" method="POST" style="margin-top:10px;">
+                              <input type="hidden" name="action" value="add">
+                              <input type="hidden" name="id" value="<?= $row['id'] ?>">
+                              <input type="hidden" name="name" value="<?= htmlspecialchars($row['name']) ?>">
+                              <input type="hidden" name="price" value="<?= $row['price'] ?>">
+                              <button type="submit" style="width:100%; padding:8px; background:#d70018; color:#fff; border:none; border-radius:4px; cursor:pointer; font-weight:600;">Thêm giỏ</button>
+                          </form>
+                      </div>
+                  <?php endforeach; ?>
+                </div>
+                <button class="slider-btn btn-next" onclick="scrollSlider('slider-laptop', 'right')"><i class="fa-solid fa-chevron-right"></i></button>
             </div>
           </section>
 
-          <section class="product-section" aria-labelledby="gear-title">
+          <section class="product-section">
             <div class="section-head">
-              <h2 id="gear-title"><a href="public/user/product.php?cate=gear">Gear gaming</a></h2>
+              <h2>PC GVN - Máy bộ</h2>
+              <a class="view-all" href="public/user/product.php?cate=pc">Xem tất cả</a>
+            </div>
+            <div class="product-slider-wrapper">
+                <button class="slider-btn btn-prev" onclick="scrollSlider('slider-pc', 'left')"><i class="fa-solid fa-chevron-left"></i></button>
+                <div class="product-slider" id="slider-pc">
+                  <?php foreach ($list_pc as $row): ?>
+                      <div class="product-card">
+                          <a href="public/user/product_detail.php?id=<?= $row['id'] ?>" style="display:block; text-decoration:none; color:inherit;">
+                              <div style="position:relative; margin-bottom:10px;">
+                                  <?php if($row['label']): ?><span class="product-label"><?= $row['label'] ?></span><?php endif; ?>
+                                  <img loading="lazy" src="public/assets/images/<?= $row['image'] ?>" onerror="this.src='https://via.placeholder.com/300x300?text=PC'" alt="<?= htmlspecialchars($row['name']) ?>">
+                              </div>
+                              <h3 style="font-size:14px; height:38px; overflow:hidden; margin-bottom:5px;"><?= htmlspecialchars($row['name']) ?></h3>
+                              <div style="color:#d70018; font-weight:700;"><?= number_format($row['price'], 0, ',', '.') ?>₫</div>
+                          </a>
+                          <form action="public/user/cart.php" method="POST" style="margin-top:10px;">
+                              <input type="hidden" name="action" value="add">
+                              <input type="hidden" name="id" value="<?= $row['id'] ?>">
+                              <input type="hidden" name="name" value="<?= htmlspecialchars($row['name']) ?>">
+                              <input type="hidden" name="price" value="<?= $row['price'] ?>">
+                              <button type="submit" style="width:100%; padding:8px; background:#d70018; color:#fff; border:none; border-radius:4px; cursor:pointer; font-weight:600;">Thêm giỏ</button>
+                          </form>
+                      </div>
+                  <?php endforeach; ?>
+                </div>
+                <button class="slider-btn btn-next" onclick="scrollSlider('slider-pc', 'right')"><i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+          </section>
+
+          <section class="product-section">
+            <div class="section-head">
+              <h2>Gaming Gear</h2>
               <a class="view-all" href="public/user/product.php?cate=gear">Xem tất cả</a>
             </div>
-            <div class="products" id="gear-hot">
-              <p class="empty">Không có sản phẩm.</p>
+            <div class="product-slider-wrapper">
+                <button class="slider-btn btn-prev" onclick="scrollSlider('slider-gear', 'left')"><i class="fa-solid fa-chevron-left"></i></button>
+                <div class="product-slider" id="slider-gear">
+                  <?php foreach ($list_gear as $row): ?>
+                      <div class="product-card">
+                          <a href="public/user/product_detail.php?id=<?= $row['id'] ?>" style="display:block; text-decoration:none; color:inherit;">
+                              <div style="position:relative; margin-bottom:10px;">
+                                  <?php if($row['label']): ?><span class="product-label"><?= $row['label'] ?></span><?php endif; ?>
+                                  <img loading="lazy" src="public/assets/images/<?= $row['image'] ?>" onerror="this.src='https://via.placeholder.com/300x300?text=Gear'" alt="<?= htmlspecialchars($row['name']) ?>">
+                              </div>
+                              <h3 style="font-size:14px; height:38px; overflow:hidden; margin-bottom:5px;"><?= htmlspecialchars($row['name']) ?></h3>
+                              <div style="color:#d70018; font-weight:700;"><?= number_format($row['price'], 0, ',', '.') ?>₫</div>
+                          </a>
+                          <form action="public/user/cart.php" method="POST" style="margin-top:10px;">
+                              <input type="hidden" name="action" value="add">
+                              <input type="hidden" name="id" value="<?= $row['id'] ?>">
+                              <input type="hidden" name="name" value="<?= htmlspecialchars($row['name']) ?>">
+                              <input type="hidden" name="price" value="<?= $row['price'] ?>">
+                              <button type="submit" style="width:100%; padding:8px; background:#d70018; color:#fff; border:none; border-radius:4px; cursor:pointer; font-weight:600;">Thêm giỏ</button>
+                          </form>
+                      </div>
+                  <?php endforeach; ?>
+                </div>
+                <button class="slider-btn btn-next" onclick="scrollSlider('slider-gear', 'right')"><i class="fa-solid fa-chevron-right"></i></button>
             </div>
           </section>
           
+          <section class="product-section">
+              <div class="section-head">
+                  <h2>Chuyên trang khuyến mãi</h2>
+                  <a href="#" class="view-all">Xem tất cả</a>
+              </div>
+              <div class="promo-grid">
+                  <a href="#" class="promo-item"><img src="https://via.placeholder.com/400x200/007bff/fff?text=Khuyen+Mai+1" alt="Promo 1"></a>
+                  <a href="#" class="promo-item"><img src="https://via.placeholder.com/400x200/28a745/fff?text=Khuyen+Mai+2" alt="Promo 2"></a>
+                  <a href="#" class="promo-item"><img src="https://via.placeholder.com/400x200/dc3545/fff?text=Khuyen+Mai+3" alt="Promo 3"></a>
+              </div>
+          </section>
+
+          <section class="product-section">
+              <div class="section-head">
+                  <h2>Tin tức công nghệ</h2>
+                  <a href="#" class="view-all">Xem tất cả</a>
+              </div>
+              <div class="news-grid">
+                  <?php foreach($news_list as $news): ?>
+                      <div class="news-item">
+                          <a href="#">
+                              <img src="<?= $news['img'] ?>" alt="<?= $news['title'] ?>">
+                              <h3><?= $news['title'] ?></h3>
+                          </a>
+                      </div>
+                  <?php endforeach; ?>
+              </div>
+          </section>
+
           <section class="product-section brand-section">
-            <div class="section-head">
-              <h2 id="brand-title">THƯƠNG HIỆU NỔI BẬT</h2>
-            </div>
+            <div class="section-head"><h2>THƯƠNG HIỆU NỔI BẬT</h2></div>
             <div class="brand-grid">
-              <div class="brand-item"><a href="#"><img loading="lazy" src="https://via.placeholder.com/120x60/f0f0f0/000?text=ASUS" alt="ASUS"></a></div>
-              <div class="brand-item"><a href="#"><img loading="lazy" src="https://via.placeholder.com/120x60/f0f0f0/000?text=GIGABYTE" alt="GIGABYTE"></a></div>
-              <div class="brand-item"><a href="#"><img loading="lazy" src="https://via.placeholder.com/120x60/f0f0f0/000?text=MSI" alt="MSI"></a></div>
-              <div class="brand-item"><a href="#"><img loading="lazy" src="https://via.placeholder.com/120x60/f0f0f0/000?text=ACER" alt="ACER"></a></div>
-              <div class="brand-item"><a href="#"><img loading="lazy" src="https://via.placeholder.com/120x60/f0f0f0/000?text=RAZER" alt="RAZER"></a></div>
-              <div class="brand-item"><a href="#"><img loading="lazy" src="https://via.placeholder.com/120x60/f0f0f0/000?text=CORSAIR" alt="CORSAIR"></a></div>
-              <div class="brand-item"><a href="#"><img loading="lazy" src="https://via.placeholder.com/120x60/f0f0f0/000?text=LOGITECH" alt="LOGITECH"></a></div>
-              <div class="brand-item"><a href="#"><img loading="lazy" src="https://via.placeholder.com/120x60/f0f0f0/000?text=LENOVO" alt="LENOVO"></a></div>
+               <div class="brand-item"><a href="#"><img src="https://placehold.co/120x60/fff/333?text=ASUS" alt="ASUS"></a></div>
+               <div class="brand-item"><a href="#"><img src="https://placehold.co/120x60/fff/333?text=GIGABYTE" alt="GIGABYTE"></a></div>
+               <div class="brand-item"><a href="#"><img src="https://placehold.co/120x60/fff/333?text=MSI" alt="MSI"></a></div>
+               <div class="brand-item"><a href="#"><img src="https://placehold.co/120x60/fff/333?text=ACER" alt="ACER"></a></div>
+               <div class="brand-item"><a href="#"><img src="https://placehold.co/120x60/fff/333?text=RAZER" alt="RAZER"></a></div>
+               <div class="brand-item"><a href="#"><img src="https://placehold.co/120x60/fff/333?text=CORSAIR" alt="CORSAIR"></a></div>
             </div>
           </section>
-        </div>
 
         </div>
+      </div>
     </div>
-  </main>
+</main>
 
 <?php
 include BASE_PATH . '/includes/footer.php';

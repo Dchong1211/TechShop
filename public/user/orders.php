@@ -3,29 +3,36 @@ declare(strict_types=1);
 session_start();
 define('BASE_PATH', dirname(__DIR__));
 
+// Lấy danh sách đơn hàng (Sau này sẽ SELECT từ DB)
 $orders = $_SESSION['orders'] ?? [];
-function money_vn($v){ return number_format((float)$v,0,',','.').' ₫'; }
-$viewId = $_GET['id'] ?? '';
-$view = null;
-if ($viewId) {
-  foreach ($orders as $o) if ($o['id']===$viewId) {$view=$o;break;}
-}
 
-$PAGE_TITLE = 'Đơn hàng';
+function money_vn($v){ return number_format((float)$v,0,',','.').' ₫'; }
+
+$PAGE_TITLE = 'Đơn hàng của tôi';
 
 ob_start();
 ?>
   <style>
-    .page{max-width:1200px;margin:24px auto;padding:0 16px;display:grid;grid-template-columns:1fr 360px;gap:24px}
-    .card{background:#fff;border:1px solid #eee;border-radius:10px;padding:16px}
-    table{width:100%;border-collapse:collapse}
-    th,td{padding:10px;border-bottom:1px solid #f2f2f2;vertical-align:middle}
-    th{background:#fafafa;text-align:left}
-    .btn{display:inline-block;background:#1677ff;color:#fff;text-decoration:none;border:none;padding:10px 14px;border-radius:10px}
-    .btn.secondary{background:#f0f0f0;color:#333}
-    .empty{background:#fff;border:1px dashed #ddd;padding:24px;border-radius:10px;text-align:center}
-    .row{display:flex;justify-content:space-between;margin:6px 0}
-    .total{font-weight:700}
+    .page-orders { max-width: 1200px; margin: 24px auto; padding: 0 16px; }
+    .card { background: #fff; border: 1px solid #eee; border-radius: 8px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+    
+    table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+    th { background: #f9f9f9; text-align: left; padding: 12px; font-weight: 600; color: #555; border-bottom: 2px solid #eee; }
+    td { padding: 15px 12px; border-bottom: 1px solid #eee; vertical-align: middle; color: #333; }
+    
+    .btn { 
+        display: inline-block; padding: 6px 14px; border-radius: 6px; 
+        text-decoration: none; font-size: 13px; font-weight: 600; transition: 0.2s; 
+    }
+    .btn-view { background: #1677ff; color: #fff; border: 1px solid #1677ff; }
+    .btn-view:hover { background: #0958d9; }
+    
+    .btn-home { background: #d70018; color: #fff; padding: 10px 20px; font-size: 15px; }
+    
+    .empty-box { text-align: center; padding: 40px; }
+    .status-badge { padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 600; }
+    .status-pending { background: #e6f7ff; color: #096dd9; }
+    .status-cancelled { background: #fff1f0; color: #cf1322; }
   </style>
 <?php
 $ADDITIONAL_HEAD_CONTENT = ob_get_clean();
@@ -33,70 +40,56 @@ $ADDITIONAL_HEAD_CONTENT = ob_get_clean();
 include BASE_PATH . '/includes/header.php';
 ?>
 
-  <?php if ($view): ?>
-    <main class="page">
-      <section class="card">
-        <h2>Chi tiết đơn <?= htmlspecialchars($view['id'],ENT_QUOTES) ?></h2>
-        <div class="row"><span>Người nhận</span><strong><?= htmlspecialchars($view['fullname'],ENT_QUOTES) ?></strong></div>
-        <div class="row"><span>Điện thoại</span><span><?= htmlspecialchars($view['phone'],ENT_QUOTES) ?></span></div>
-        <div class="row"><span>Địa chỉ</span><span><?= htmlspecialchars($view['address'],ENT_QUOTES) ?></span></div>
-        <div class="row"><span>Thanh toán</span><span><?= $view['payment']==='cod'?'COD':'Chuyển khoản' ?></span></div>
-        <div class="row"><span>Thời gian</span><span><?= htmlspecialchars($view['created_at'],ENT_QUOTES) ?></span></div>
-        <?php if(!empty($view['note'])): ?><div class="row"><span>Ghi chú</span><span><?= htmlspecialchars($view['note'],ENT_QUOTES) ?></span></div><?php endif; ?>
-        <table style="margin-top:12px">
-          <thead><tr><th>Sản phẩm</th><th style="width:90px">SL</th><th style="width:140px">Thành tiền</th></tr></thead>
-          <tbody>
-          <?php foreach ($view['items'] as $it):
-            $line = (float)$it['price']*(int)$it['qty']; ?>
-            <tr>
-              <td><div style="font-weight:600"><?= htmlspecialchars($it['name'],ENT_QUOTES) ?></div><small><?= money_vn($it['price']) ?></small></td>
-              <td><?= (int)$it['qty'] ?></td>
-              <td><?= money_vn($line) ?></td>
-            </tr>
-          <?php endforeach; ?>
-          </tbody>
-        </table>
-      </section>
-      <aside class="card">
-        <h3>Tổng kết</h3>
-        <div class="row"><span>Tạm tính</span><span><?= money_vn($view['subtotal']) ?></span></div>
-        <div class="row"><span>Vận chuyển</span><span><?= $view['shipping']===0?'Miễn phí':money_vn($view['shipping']) ?></span></div>
-        <div class="row"><span>Giảm giá</span><span><?= money_vn($view['discount']) ?></span></div>
-        <div class="row total"><span>Tổng cộng</span><span><?= money_vn($view['total']) ?></span></div>
-        <div style="margin-top:12px;display:flex;gap:10px">
-          <a class="btn secondary" href="public/user/orders.php">← Danh sách đơn</a>
-          <a class="btn" href="public/user/index.php">Tiếp tục mua</a>
-        </div>
-      </aside>
-    </main>
-  <?php else: ?>
-    <main class="page">
-      <section class="card" style="grid-column:1/-1">
-        <h2>Đơn hàng của tôi</h2>
+<main class="page-orders">
+    <section class="card">
+        <h2 style="margin-top:0; border-bottom:1px solid #eee; padding-bottom:15px;">Lịch sử đơn hàng</h2>
+        
         <?php if (empty($orders)): ?>
-          <div class="empty">
-            <p>Bạn chưa có đơn hàng nào.</p>
-            <a class="btn" href="public/user/index.php">Mua gì đó ngay</a>
-          </div>
+            <div class="empty-box">
+                <img src="https://cdn-icons-png.flaticon.com/512/2038/2038854.png" width="80" alt="Empty" style="opacity:0.5; margin-bottom:15px;">
+                <p style="color:#666; margin-bottom:20px;">Bạn chưa có đơn hàng nào.</p>
+                <a class="btn btn-home" href="public/user/index.php">Mua sắm ngay</a>
+            </div>
         <?php else: ?>
-          <table>
-            <thead><tr><th>Mã đơn</th><th>Ngày</th><th>Người nhận</th><th>Tổng cộng</th><th></th></tr></thead>
-            <tbody>
-            <?php foreach ($orders as $o): ?>
-              <tr>
-                <td><?= htmlspecialchars($o['id'],ENT_QUOTES) ?></td>
-                <td><?= htmlspecialchars($o['created_at'],ENT_QUOTES) ?></td>
-                <td><?= htmlspecialchars($o['fullname'],ENT_QUOTES) ?></td>
-                <td><?= money_vn($o['total']) ?></td>
-                <td><a class="btn" href="public/user/orders.php?id=<?= urlencode($o['id']) ?>">Xem</a></td>
-              </tr>
-            <?php endforeach; ?>
-            </tbody>
-          </table>
+            <div style="overflow-x: auto;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Mã đơn</th>
+                            <th>Ngày đặt</th>
+                            <th>Người nhận</th>
+                            <th>Tổng tiền</th>
+                            <th>Trạng thái</th>
+                            <th style="text-align:right">Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Đảo ngược mảng để đơn mới nhất lên đầu -->
+                        <?php foreach (array_reverse($orders) as $o): ?>
+                            <tr>
+                                <td><strong>#<?= htmlspecialchars($o['id'], ENT_QUOTES) ?></strong></td>
+                                <td><?= htmlspecialchars($o['created_at'], ENT_QUOTES) ?></td>
+                                <td><?= htmlspecialchars($o['fullname'], ENT_QUOTES) ?></td>
+                                <td style="font-weight:700; color:#d70018;"><?= money_vn($o['total']) ?></td>
+                                <td>
+                                    <?php if(isset($o['status']) && $o['status'] === 'cancelled'): ?>
+                                        <span class="status-badge status-cancelled">Đã hủy</span>
+                                    <?php else: ?>
+                                        <span class="status-badge status-pending">Đang xử lý</span>
+                                    <?php endif; ?>
+                                </td>
+                                <td style="text-align:right">
+                                    <!-- Link trỏ đúng về orders_detail.php -->
+                                    <a class="btn btn-view" href="public/user/orders_detail.php?id=<?= urlencode($o['id']) ?>">Xem chi tiết</a>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
         <?php endif; ?>
-      </section>
-    </main>
-  <?php endif; ?>
+    </section>
+</main>
 
 <?php
 include BASE_PATH . '/includes/footer.php';

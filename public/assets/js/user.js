@@ -1,4 +1,4 @@
-const API_PRODUCTS = '/TechShop/app/api/get_products.php';
+const API_PRODUCTS = '/TechShop/app/api/get_products.php'; 
 
 document.addEventListener('DOMContentLoaded', async () => {
   const allProducts = await fetchProducts();

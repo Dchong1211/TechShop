@@ -54,64 +54,70 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $cart = $_SESSION['cart'];
 $subtotal = cart_subtotal();
-$shipping = $subtotal > 0 ? 0 : 0;
+$shipping = $subtotal > 0 ? 0 : 0; // Logic phí ship có thể sửa sau
 $discount = 0;
 $total    = max(0, $subtotal + $shipping - $discount);
 
 $BACK_URL = 'public/user/index.php';
-
 $PAGE_TITLE = 'Giỏ hàng';
 
+// Bắt đầu buffer để chèn CSS vào Header
 ob_start();
 ?>
-  <style>
-    .cart-page{max-width:1200px;margin:24px auto;padding:0 16px;display:grid;grid-template-columns:1fr 320px;gap:24px}
-    .cart-table{width:100%;border-collapse:collapse;background:#fff;border:1px solid #eee}
-    .cart-table th,.cart-table td{padding:12px;border-bottom:1px solid #f0f0f0;vertical-align:middle}
-    .cart-table th{background:#fafafa;text-align:left;font-weight:600}
-    .cart-item{display:flex;gap:12px;align-items:center}
-    .cart-item img{width:64px;height:64px;object-fit:cover;border-radius:8px}
-    .qty-input{width:72px;padding:6px;text-align:center}
-    .cart-actions a{color:#ff4d4f;text-decoration:none}
-    .summary{background:#fff;border:1px solid #eee;border-radius:8px;padding:16px}
-    .summary h3{margin:0 0 12px 0}
-    .summary .row{display:flex;justify-content:space-between;margin:6px 0}
-    .summary .total{font-weight:700;font-size:18px;border-top:1px dashed #ddd;padding-top:10px;margin-top:8px}
-    .btn{display:inline-block;background:#1677ff;color:#fff;text-decoration:none;border:none;padding:10px 14px;border-radius:8px;cursor:pointer}
-    .btn.secondary{background:#f0f0f0;color:#333}
-    .cart-header-actions{display:flex;gap:12px;margin-bottom:10px}
-    .empty-box{background:#fff;border:1px dashed #ddd;padding:24px;text-align:center;border-radius:8px}
-    .price{white-space:nowrap}
-  </style>
+  <link rel="stylesheet" href="public/assets/css/cssUser/cart.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 <?php
 $ADDITIONAL_HEAD_CONTENT = ob_get_clean();
 
 include BASE_PATH . '/includes/header.php';
 ?>
 
+  <div class="cart-progress-bar">
+    <div class="progress-step active">
+      <i>1</i> <span>Giỏ hàng</span>
+    </div>
+    <div class="progress-line"></div>
+    <div class="progress-step">
+      <i>2</i> <span>Thông tin đặt hàng</span>
+    </div>
+    <div class="progress-line"></div>
+    <div class="progress-step">
+      <i>3</i> <span>Thanh toán</span>
+    </div>
+    <div class="progress-line"></div>
+    <div class="progress-step">
+      <i>4</i> <span>Hoàn tất</span>
+    </div>
+  </div>
+
   <main class="cart-page">
-    <section>
-      <div class="cart-header-actions">
-        <a class="btn secondary" href="<?= $BACK_URL ?>">← Tiếp tục mua sắm</a>
-        <a class="btn secondary" href="public/user/cart.php?action=clear" onclick="return confirm('Xoá toàn bộ giỏ hàng?')">Xoá giỏ</a>
+    
+    <?php if (empty($cart)): ?>
+      <div class="empty-cart-box">
+        <div class="empty-cart-icon"><i class="fa-solid fa-cart-shopping"></i></div>
+        <p style="font-size:18px; color:#666;">Giỏ hàng của bạn đang trống</p>
+        <a class="btn-checkout" href="<?= $BACK_URL ?>" style="max-width:200px; margin:20px auto; background:#1677ff;">Tiếp tục mua sắm</a>
       </div>
 
-      <?php if (empty($cart)): ?>
-        <div class="empty-box">
-          <p>Giỏ hàng của bạn đang trống.</p>
-          <a class="btn" href="<?= $BACK_URL ?>">Mua gì đó ngay</a>
+    <?php else: ?>
+      <section class="cart-left-section">
+        <div class="cart-header-actions">
+          <a class="btn-text" href="<?= $BACK_URL ?>"><i class="fa-solid fa-chevron-left"></i> Mua thêm sản phẩm khác</a>
+          <a class="btn-text" href="public/user/cart.php?action=clear" onclick="return confirm('Xoá toàn bộ giỏ hàng?')" style="color:#666;">
+            <i class="fa-solid fa-trash-can"></i> Xoá tất cả
+          </a>
         </div>
-      <?php else: ?>
+
         <form method="post">
           <input type="hidden" name="action" value="update">
           <table class="cart-table">
             <thead>
               <tr>
-                <th>Sản phẩm</th>
-                <th>Giá</th>
-                <th style="width:120px">Số lượng</th>
-                <th>Tạm tính</th>
-                <th></th>
+                <th style="width: 45%">Sản phẩm</th>
+                <th style="width: 15%">Đơn giá</th>
+                <th style="width: 15%">Số lượng</th>
+                <th style="width: 20%; text-align:right;">Thành tiền</th>
+                <th style="width: 5%"></th>
               </tr>
             </thead>
             <tbody>
@@ -121,48 +127,70 @@ include BASE_PATH . '/includes/header.php';
                   <td>
                     <div class="cart-item">
                       <?php if (!empty($item['img'])): ?>
-                        <img src="<?= htmlspecialchars($item['img'], ENT_QUOTES) ?>" alt="<?= htmlspecialchars($item['name'], ENT_QUOTES) ?>">
+                        <img src="<?= htmlspecialchars($item['img'], ENT_QUOTES) ?>" alt="Product Image">
                       <?php else: ?>
-                        <img src="https://via.placeholder.com/64x64?text=No+Img" alt="No image">
+                        <img src="public/assets/images/no-image.png" alt="No Image">
                       <?php endif; ?>
-                      <div>
-                        <div style="font-weight:600"><?= htmlspecialchars($item['name'], ENT_QUOTES) ?></div>
-                        <small>#<?= htmlspecialchars($item['id'], ENT_QUOTES) ?></small>
+                      <div class="item-info">
+                        <h4><?= htmlspecialchars($item['name'], ENT_QUOTES) ?></h4>
+                        <span class="item-id">Mã SP: <?= htmlspecialchars($item['id'], ENT_QUOTES) ?></span>
+                        <br>
+                        <a class="item-remove" href="public/user/cart.php?action=remove&id=<?= urlencode($item['id']) ?>" onclick="return confirm('Xoá sản phẩm này?')">
+                           Xoá
+                        </a>
                       </div>
                     </div>
                   </td>
-                  <td class="price"><?= number_format((float)$item['price'], 0, ',', '.') ?> ₫</td>
+                  <td class="price-col"><?= number_format((float)$item['price'], 0, ',', '.') ?>₫</td>
                   <td>
-                    <input class="qty-input" type="number" name="quantities[<?= htmlspecialchars($item['id'], ENT_QUOTES) ?>]" value="<?= (int)$item['qty'] ?>" min="0">
+                    <div class="qty-wrapper">
+                      <input class="qty-input" type="number" name="quantities[<?= htmlspecialchars($item['id'], ENT_QUOTES) ?>]" value="<?= (int)$item['qty'] ?>" min="1">
+                    </div>
                   </td>
-                  <td class="price"><?= number_format($line, 0, ',', '.') ?> ₫</td>
-                  <td class="cart-actions">
-                    <a href="public/user/cart.php?action=remove&id=<?= urlencode($item['id']) ?>" onclick="return confirm('Xoá sản phẩm này?')">Xoá</a>
+                  <td class="subtotal-col" style="text-align:right;">
+                    <?= number_format($line, 0, ',', '.') ?>₫
                   </td>
+                  <td></td>
                 </tr>
               <?php endforeach; ?>
             </tbody>
           </table>
 
-          <div style="margin-top:12px; display:flex; gap:12px;">
-            <button class="btn" type="submit">Cập nhật giỏ</button>
-            <a class="btn secondary" href="<?= $BACK_URL ?>">+ Thêm sản phẩm</a>
+          <div class="cart-footer-actions">
+            <button class="btn-update" type="submit">Cập nhật giỏ hàng</button>
           </div>
         </form>
-      <?php endif; ?>
-    </section>
+      </section>
 
-    <aside class="summary">
-      <h3>Tóm tắt đơn hàng</h3>
-      <div class="row"><span>Tạm tính</span><strong class="price"><?= number_format($subtotal, 0, ',', '.') ?> ₫</strong></div>
-      <div class="row"><span>Vận chuyển</span><span><?= $shipping === 0 ? 'Miễn phí' : number_format($shipping, 0, ',', '.') . ' ₫' ?></span></div>
-      <div class="row"><span>Giảm giá</span><span><?= $discount === 0 ? '0 ₫' : ('- ' . number_format($discount, 0, ',', '.') . ' ₫') ?></span></div>
-      <div class="row total"><span>Tổng cộng</span><span class="price"><?= number_format($total, 0, ',', '.') ?> ₫</span></div>
-      <div style="margin-top:12px;display:flex;flex-direction:column;gap:8px">
-        <a class="btn" href="public/user/checkout.php">Thanh toán</a>
-        <a class="btn secondary" href="<?= $BACK_URL ?>">← Tiếp tục mua</a>
-      </div>
-    </aside>
+      <aside class="summary-box">
+        <h3>Tóm tắt đơn hàng</h3>
+        <div class="summary-row">
+          <span>Tạm tính</span>
+          <strong><?= number_format($subtotal, 0, ',', '.') ?>₫</strong>
+        </div>
+        <div class="summary-row">
+          <span>Phí vận chuyển</span>
+          <span><?= $shipping === 0 ? 'Miễn phí' : number_format($shipping, 0, ',', '.') . '₫' ?></span>
+        </div>
+        <div class="summary-row">
+          <span>Giảm giá</span>
+          <span><?= $discount === 0 ? '0₫' : ('- ' . number_format($discount, 0, ',', '.') . '₫') ?></span>
+        </div>
+        
+        <div class="summary-row total">
+          <span>Tổng cộng</span>
+          <span><?= number_format($total, 0, ',', '.') ?>₫</span>
+        </div>
+        
+        <div style="margin-top: 10px; font-style: italic; font-size: 13px; color: #666;">
+          (Đã bao gồm VAT nếu có)
+        </div>
+
+        <a class="btn-checkout" href="public/user/checkout.php">Thanh toán</a>
+        <a class="btn-continue" href="<?= $BACK_URL ?>">Tiếp tục mua hàng</a>
+      </aside>
+    <?php endif; ?>
+
   </main>
 
 <?php
