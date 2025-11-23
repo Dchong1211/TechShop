@@ -11,8 +11,12 @@ $csrf_token = CSRF::token();
     <meta name="csrf-token" content="<?= $csrf_token ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quản lý Sản phẩm | Admin Panel</title>
+<<<<<<< HEAD
     <base href="/TechShop/">
     <link rel="stylesheet" href="public/assets/css/cssAdmin/main_admin.css">
+=======
+    <link rel="stylesheet" href="public/assets/css/cssAdmin/main_admin.css"> 
+>>>>>>> c7d5161 (Push by Dchong1211 on 23/11/25 23:45:11.62)
     <link rel="stylesheet" href="public/assets/css/cssAdmin/products.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <style>

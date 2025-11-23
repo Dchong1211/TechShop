@@ -59,16 +59,21 @@ class AuthController {
 
 // ===================== LOGIN =====================
     // Hàm đăng nhập
-    public function login($email, $password) {
-        // Gọi model để kiểm tra đăng nhập
-        $result = $this->userModel->login($email, $password);
-        // Nếu đăng nhập fail thì trả kết quả luôn
-        if (!$result['success']) return $result;
+    public function login($usernameOrEmail, $password) {
 
-        // Lấy thông tin user từ kết quả
+        // Gọi model kiểm tra login
+        $result = $this->userModel->login($usernameOrEmail, $password);
+
+        // Nếu sai thông tin
+        if (!$result['success']) {
+            echo "<script>alert('{$result['message']}'); window.history.back();</script>";
+            exit;
+        }
+
+        // Lấy dữ liệu user
         $user = $result['user'];
 
-        // Lưu thông tin user vào session
+        // Lưu session
         $_SESSION['user'] = [
             'id'     => $user['id'],
             'name'   => $user['name'],
@@ -77,13 +82,19 @@ class AuthController {
             'status' => $user['status']
         ];
 
-        // Trả kết quả thành công + info user
-        return [
-            'success' => true,
-            'message' => 'Đăng nhập thành công!',
-            'user'    => $_SESSION['user']
-        ];
+        // ==============================
+        // 🔥 REDIRECT THEO ROLE
+        // ==============================
+        if ($user['role'] === 'admin') {
+            header("Location: /TechShop/public/admin");
+            exit;
+        }
+
+        // User thường → homepage
+        header("Location: /TechShop/public/");
+        exit;
     }
+
 
     // ===================== GET CURRENT USER =====================
     // Lấy thông tin user đang đăng nhập

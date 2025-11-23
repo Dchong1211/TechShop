@@ -92,37 +92,36 @@ class User {
     }
 
     // ======================== LOGIN ========================
-    public function login($email, $password) {
+    public function login($username, $password) {
 
-        // Validate input
-        if (!$email || !$password)
-            return ['success' => false, 'message' => 'Thiếu email hoặc mật khẩu!'];
+        if (!$username || !$password)
+            return ['success' => false, 'message' => 'Thiếu tài khoản hoặc mật khẩu!'];
 
-        // Lấy user theo email
-        $stmt = $this->conn->prepare("SELECT * FROM users WHERE email=?");
-        $stmt->bind_param("s", $email);
+        // Tìm user theo email hoặc username
+        $stmt = $this->conn->prepare("
+            SELECT * FROM users 
+            WHERE email=? OR name=? 
+            LIMIT 1
+        ");
+        $stmt->bind_param("ss", $username, $username);
         $stmt->execute();
         $user = $stmt->get_result()->fetch_assoc();
 
-        // Không có user
         if (!$user)
-            return ['success' => false, 'message' => 'Email không tồn tại!'];
+            return ['success' => false, 'message' => 'Tài khoản không tồn tại!'];
 
-        // Mật khẩu sai
         if (!password_verify($password, $user['password']))
             return ['success' => false, 'message' => 'Mật khẩu sai!'];
 
-        // Chưa verify email
         if ($user['email_verified'] == 0)
             return ['success' => false, 'message' => 'Email chưa xác minh!'];
 
-        // Tài khoản bị khóa
         if ((int)$user['status'] !== 1)
             return ['success' => false, 'message' => 'Tài khoản đã bị khóa!'];
 
-        // Đăng nhập OK
         return ['success' => true, 'message' => 'Đăng nhập thành công!', 'user' => $user];
     }
+
 
     // ======================== GET USER ========================
     public function getByEmail($email) {

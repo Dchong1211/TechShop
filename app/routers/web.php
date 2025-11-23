@@ -9,7 +9,7 @@ require_once __DIR__ . '/../controllers/ProductController.php';
 
 /* ===================== AUTH VIEW ===================== */
 // login / register page
-$router->get("/login", [AuthController::class, "loginPage"], ["guest"]);
+$router->get("/login", [AuthController::class, "login"], ["guest"]);
 $router->get("/register", [AuthController::class, "registerPage"], ["guest"]);
 $router->get("/verify-email", [AuthController::class, "verifyEmailPage"], ["guest"]);
 
@@ -30,8 +30,14 @@ $router->post("/verify-email", function () {
 // đăng nhập
 $router->post("/login", function () {
     CSRF::requireToken();
-    echo json_encode((new AuthController())->login($_POST['email'], $_POST['password']), JSON_UNESCAPED_UNICODE);
+
+    $auth = new AuthController();
+    $username = $_POST['email'] ?? $_POST['username'] ?? '';
+    $password = $_POST['password'];
+
+    $auth->login($username, $password);
 }, ["guest"]);
+
 
 // đăng xuất
 $router->post("/logout", function () {
@@ -124,4 +130,8 @@ $router->post("/admin/products/update", function () {
 $router->post("/admin/products/delete", function () {
     CSRF::requireToken();
     echo json_encode((new ProductController())->delete(), JSON_UNESCAPED_UNICODE);
+}, ["admin"]);
+
+$router->get("/admin", function () {
+    require_once __DIR__ . "/../../public/admin/index.php";
 }, ["admin"]);
