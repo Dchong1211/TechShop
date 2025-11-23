@@ -1,11 +1,16 @@
+<?php
+require_once __DIR__ . '/../../app/helpers/CSRF.php';
+$csrf = CSRF::token();
+?>
 <!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đăng Nhập</title>
-    <link rel="stylesheet" href="/public/assets/css/cssAdmin/login.css"> 
+    <link rel="stylesheet" href="public/assets/css/cssAdmin/login.css"> 
 </head>
+
 <body>
 
     <div class="split-page-container">
@@ -17,7 +22,7 @@
         <div class="login-container">
             <div class="login-box"> 
                 <h2>Đăng Nhập</h2>
-                <form action="login.php" method="POST">
+                <form action="/TechShop/public/login" method="POST">
                     <div class="input-group">
                         <label for="username">Tên người dùng / Email</label>
                         <input type="text" id="username" name="username" required>
@@ -27,7 +32,7 @@
                         <label for="password">Mật khẩu</label>
                         <input type="password" id="password" name="password" required>
                     </div>
-                    
+                    <input type="hidden" name="csrf" value="<?= $csrf ?>">
                     <button type="submit" class="login-button">Đăng Nhập</button>
                 </form>
                 
