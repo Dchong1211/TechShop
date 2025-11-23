@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chi tiết Đơn hàng</title>
-    <link rel="stylesheet" href="/public/assets/css/cssAdmin/main_admin.css"> 
-    <link rel="stylesheet" href="/public/assets/css/cssAdmin/detail_order.css"> 
+    <link rel="stylesheet" href="public/assets/css/cssAdmin/main_admin.css"> 
+    <link rel="stylesheet" href="public/assets/css/cssAdmin/detail_order.css"> 
 </head>
 <body>
 
