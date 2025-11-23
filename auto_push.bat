@@ -1,21 +1,16 @@
-:: Bước 1: Di chuyển đến thư mục project
+@echo off
 cd /d C:\xampp\htdocs\TechShop
 
-:: Bước 2: Lấy tên người dùng từ cấu hình Git
 for /f "delims=" %%a in ('git config user.name') do set username=%%a
 
-:: Bước 3: Thêm toàn bộ file vào git
+set datetime=%date%_%time%
+
 git add .
-
-:: Bước 4: Commit với thời gian tự động
-set datetime=%date% %time%
-git commit -m "Push by %username% on %datetime%"
-
-:: Bước 5: Kéo code mới nhất về (tránh lỗi conflict)
+git commit -m "Auto push by %username% at %datetime%"
 git pull origin main --rebase
-
-:: Bước 6: Push code lên GitHub
 git push origin main
 
-:: Bước 7: Hiển thị thông báo hoàn tất
-echo PUSH COMPLETE!
+echo ============================
+echo     PUSH COMPLETED! 🟢
+echo ============================
+pause
