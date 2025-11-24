@@ -10,8 +10,7 @@ $csrf_token = CSRF::token();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quên mật khẩu | TechShop</title>
-    <base href="/TechShop/">
-    <link rel="stylesheet" href="public/assets/css/cssAdmin/forgot_password.css">
+    <link rel="stylesheet" href="../assets/css/cssAdmin/admin_auth.css"> 
     <style>
         .hidden {
             display: none;

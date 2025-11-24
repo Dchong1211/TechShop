@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sửa Sản phẩm</title>
-    <link rel="stylesheet" href="public/assets/css/cssAdmin/main_admin.css"> 
-    <link rel="stylesheet" href="public/assets/css/cssAdmin/forms.css">
+    <link rel="stylesheet" href="../assets/css/cssAdmin/admin_style.css"> 
+
 </head>
 <body>
 

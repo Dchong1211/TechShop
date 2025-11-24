@@ -1,3 +1,4 @@
+/* BIẾN MÀU SẮC CHUNG */
 :root {
     --primary-color: #3498db;
     --accent-color: #2ecc71;
@@ -5,6 +6,10 @@
     --light-bg: #ecf0f1;
     --dark-bg: #2c3e50;
     --box-bg: #ffffff;
+    --error-bg: #ffebee;
+    --error-text: #c62828;
+    --success-bg: #e8f5e9;
+    --success-text: #2e7d32;
 }
 
 * {
@@ -18,21 +23,42 @@ body {
     min-height: 100vh;
 }
 
+/* LAYOUT CHIA ĐÔI MÀN HÌNH */
 .split-page-container {
     display: flex;
     min-height: 100vh;
 }
 
+/* PHẦN HÌNH ẢNH/SLOGAN (BÊN TRÁI) */
 .techshop-slogan {
     flex: 0 0 60%;
     background-image: url(/TechShop/public/assets/images/TechShop.jpg);
     background-size: cover;
+    background-position: center;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
     padding: 40px;
+    position: relative;
+}
+
+/* Lớp phủ màu tối để chữ dễ đọc hơn */
+.techshop-slogan::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 0;
+}
+
+.techshop-slogan h1,
+.techshop-slogan p {
+    position: relative;
     z-index: 1;
 }
 
@@ -49,7 +75,9 @@ body {
     font-style: italic;
 }
 
-
+/* CONTAINER FORM (BÊN PHẢI) */
+.login-container,
+.register-container,
 .forgot-password-container {
     flex: 0 0 40%;
     background-color: var(--light-bg);
@@ -59,15 +87,18 @@ body {
     padding: 20px;
 }
 
+.login-box,
+.register-box,
 .forgot-password-box {
     width: 100%;
     max-width: 400px;
     background-color: var(--box-bg);
     padding: 40px;
-    text-align: left; 
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
-.forgot-password-box h2 {
+h2 {
     color: var(--primary-color);
     margin-bottom: 30px;
     font-size: 1.8rem;
@@ -76,6 +107,7 @@ body {
     text-align: center;
 }
 
+/* INPUT STYLES */
 .input-group {
     margin-bottom: 20px;
     text-align: left;
@@ -94,6 +126,7 @@ body {
     padding: 12px;
     border: 1px solid #dcdfe1;
     font-size: 1rem;
+    border-radius: 4px;
     transition: border-color 0.3s, box-shadow 0.3s;
 }
 
@@ -102,10 +135,17 @@ body {
     outline: none;
 }
 
-.forgot-password-button {
+.input-group input[readonly] {
+    background: #f5f5f5;
+    color: #777;
+}
+
+/* BUTTONS */
+button[type="submit"] {
     width: 100%;
     padding: 12px;
     border: none;
+    border-radius: 4px;
     background-color: var(--accent-color);
     color: white;
     font-size: 1.1rem;
@@ -115,24 +155,27 @@ body {
     margin-top: 10px;
 }
 
-.forgot-password-button:hover {
+button[type="submit"]:hover {
     background-color: #27ae60;
 }
 
-.forgot-password-button:active {
+button[type="submit"]:active {
     transform: translateY(1px);
 }
 
+.btn-loading {
+    opacity: 0.7;
+    pointer-events: none;
+    cursor: wait;
+}
+
+/* LINKS & FOOTER ACTIONS */
 .function {
     display: flex;
-    justify-content: space-between; 
+    justify-content: space-between;
     align-items: center;
     margin-top: 20px;
     font-size: 0.9rem;
-}
-
-.function p {
-    margin: 0;
 }
 
 .function a {
@@ -145,8 +188,51 @@ body {
     color: var(--primary-color);
     text-decoration: underline;
 }
-.register {
-    margin-top: 0; 
-    font-size: 1em;
-    text-align: right; 
+
+/* UTILS */
+.hidden {
+    display: none;
+}
+
+.message-box {
+    margin-bottom: 15px;
+    padding: 10px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: none;
+    text-align: center;
+}
+
+.message-box.error {
+    background-color: var(--error-bg);
+    color: var(--error-text);
+    border: 1px solid #ef9a9a;
+}
+
+.message-box.success {
+    background-color: var(--success-bg);
+    color: var(--success-text);
+    border: 1px solid #a5d6a7;
+}
+
+/* MOBILE RESPONSIVE */
+@media (max-width: 768px) {
+    .split-page-container {
+        flex-direction: column;
+    }
+
+    .techshop-slogan {
+        flex: 0 0 30%;
+        padding: 20px;
+    }
+
+    .techshop-slogan h1 {
+        font-size: 3rem;
+    }
+
+    .login-container,
+    .register-container,
+    .forgot-password-container {
+        flex: 1;
+    }
 }
