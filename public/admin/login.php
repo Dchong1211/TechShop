@@ -37,8 +37,8 @@ $csrf = CSRF::token();
                 </form>
                 
                 <div class="function">
-                    <p class="forgot-password"><a href="/public/admin/forgot_password.php">Quên mật khẩu?</a></p>
-                    <p class="register"><a href="/public/admin/register.php">Đăng kí</a></p>
+                    <p class="forgot-password"><a href="forgot_password.php">Quên mật khẩu?</a></p>
+                    <p class="register"><a href="register.php">Đăng kí</a></p>
                 </div>
             </div>
         </div>

@@ -97,8 +97,8 @@ $csrf_token = CSRF::token();
                 </div>
 
                 <div class="function">
-                    <p class="login"><a href="public/admin/login.php">Đăng nhập</a></p>
-                    <p class="register"><a href="public/admin/register.php">Đăng ký</a></p>
+                    <p class="login"><a href="login.php">Đăng nhập</a></p>
+                    <p class="register"><a href="register.php">Đăng ký</a></p>
                 </div>
             </div>
         </div>

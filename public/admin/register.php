@@ -82,7 +82,7 @@ $csrf_token = CSRF::token();
                         <button type="submit" class="register-button">Đăng Ký</button>
 
                         <div class="function">
-                            <p class="login">Đã có tài khoản? <a href="public/admin/login.php">Đăng nhập</a></p>
+                            <p class="login">Đã có tài khoản? <a href="login.php">Đăng nhập</a></p>
                         </div>
                     </form>
                 </div>
