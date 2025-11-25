@@ -123,7 +123,10 @@ a {
 
 body.dark-mode .navbar-brand {
     background: var(--dark-gradient);
+    background-clip: text;             
+    -webkit-background-clip: text;      
     color: transparent;
+    text-shadow: 0 0 10px rgba(127, 94, 255, 0.5);
 }
 
 .sidebar-toggle {
