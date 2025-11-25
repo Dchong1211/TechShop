@@ -24,11 +24,11 @@ document.getElementById('form-login').addEventListener('submit', async function(
             
             setTimeout(() => {
                 if (data.user.role === 'admin') {
-                    window.location.href = '/TechShop/public/admin/index.php';
+                    window.location.href = '/TechShop/admin';
                 } else {
-                    window.location.href = '/TechShop/public/user/index.php';
+                    window.location.href = '/TechShop/user';
                 }
-            }, 1000);
+            }, 800);
         } else {
             throw new Error(data.message || 'Đăng nhập thất bại');
         }

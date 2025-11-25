@@ -9,7 +9,7 @@ require_once __DIR__ . '/../controllers/ProductController.php';
 
 /* ===================== AUTH VIEW ===================== */
 // Trang login admin
-$router->get("/admin/login", function () {
+$router->get("/login", function () {
     require_once __DIR__ . "/../../public/admin/login.php";
 }, ["guest"]);
 
