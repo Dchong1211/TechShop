@@ -10,7 +10,7 @@ document.getElementById('form-login').addEventListener('submit', async function(
     msgBox.style.display = 'none';
 
     try {
-        const response = await fetch('/TechShop/public/login', {
+        const response = await fetch('/TechShop/login', {
             method: 'POST',
             body: formData
         });
@@ -28,7 +28,7 @@ document.getElementById('form-login').addEventListener('submit', async function(
                 } else {
                     window.location.href = '/TechShop/user';
                 }
-            }, 800);
+            }, 1000);
         } else {
             throw new Error(data.message || 'Đăng nhập thất bại');
         }

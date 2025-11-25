@@ -15,7 +15,7 @@
         
         <nav class="top-navbar">
             <div class="navbar-left">
-                <a href="index.php" class="navbar-brand">TechShop</a>
+                <a href="dashboard.php" class="navbar-brand">TechShop</a>
                 <button class="sidebar-toggle" type="button">☰</button> </div>
             <div class="navbar-search">
                 <input type="text" placeholder="Search...">
@@ -35,7 +35,7 @@
             <nav class="sidebar-nav">
                 <ul>
                     <li>
-                        <a href="index.php">
+                        <a href="dashboard.php">
                             <span class="icon"><i class="bi bi-house" style="color: #5e6e82"></i></span>
                             <span class="title">Dashboard</span>
                         </a>

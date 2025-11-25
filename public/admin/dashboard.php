@@ -35,7 +35,7 @@
             <nav class="sidebar-nav">
                 <ul>
                     <li>
-                        <a href="index.php" class="active">
+                        <a href="dashboard.php" class="active">
                             <span class="icon"><i class="bi bi-house" style="color: #5e6e82"></i></span>
                             <span class="title">Dashboard</span>
                         </a>

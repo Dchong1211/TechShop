@@ -14,7 +14,7 @@
     </div>
 
     <div class="nav-item">
-      <a href="public/user/index.php">Trang chủ</a>
+      <a href="public/user/dashboard.php">Trang chủ</a>
     </div>
     <div class="nav-item">
       <a href="public/user/product.php?cate=laptop">Laptop</a>
