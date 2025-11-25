@@ -24,7 +24,7 @@ document.getElementById('form-login').addEventListener('submit', async function(
             
             setTimeout(() => {
                 if (data.user.role === 'admin') {
-                    window.location.href = '/TechShop/admin';
+                    window.location.href = '/TechShop/admin/dashboard.php';
                 } else {
                     window.location.href = '/TechShop/user';
                 }
