@@ -20,8 +20,8 @@
             </div>
             <div class="navbar-right">
                 <button class="theme-toggle" id="theme-toggle" type="button" title="Chuyển đổi Sáng/Tối">
-                    <span class="icon-sun">[☀️]</span>
-                    <span class="icon-moon">[🌙]</span>
+                    <span class="icon-sun"><i class="bi bi-sun" style="color: #5e6e82"></i></span>
+                    <span class="icon-moon"><i class="bi bi-moon" style="color: #5e6e82"></i></span>
                 </button>
                 <a href="#" class="nav-icon"><i class="bi bi-bell" style="color: #5e6e82"></i></a>
                 <a href="#" class="nav-icon"><i class="bi bi-gear" style="color: #5e6e82"></i></a>
