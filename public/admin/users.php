@@ -80,7 +80,7 @@
                 <form method="GET" class="search-box">
                     <input type="hidden" name="controller" value="customer">
                     <input type="hidden" name="action" value="index">
-
+                    <!-- Lỗi khai báo biến $keyword -->
                     <input type="text" name="keyword"
                            placeholder="Tìm kiếm theo Tên / Email..."
                            value="<?= htmlspecialchars($keyword) ?>">
