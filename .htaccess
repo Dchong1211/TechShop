@@ -2,9 +2,7 @@ RewriteEngine On
 
 RewriteBase /TechShop/
 
-# Nếu là file thật / folder thật → Cho chạy bình thường
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 
-# Còn lại redirect vào public/index.php
 RewriteRule ^(.*)$ public/index.php [QSA,L]
