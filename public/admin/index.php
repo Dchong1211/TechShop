@@ -6,6 +6,8 @@
     <title>Dashboard</title>
     <link rel="stylesheet" href="../assets/css/cssAdmin/admin_style.css"> 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <?php require_once __DIR__ . '/../../app/helpers/CSRF.php'; ?>
+    <meta name="csrf-token" content="<?= CSRF::token(); ?>">
 </head>
 <body>
     
@@ -20,8 +22,8 @@
             </div>
             <div class="navbar-right">
                 <button class="theme-toggle" id="theme-toggle" type="button" title="Chuyển đổi Sáng/Tối">
-                    <span class="icon-sun"><i class="bi bi-sun" style="color: #5e6e82"></i></span>
-                    <span class="icon-moon"><i class="bi bi-moon" style="color: #5e6e82"></i></span>
+                    <span class="icon-sun">[☀️]</span>
+                    <span class="icon-moon">[🌙]</span>
                 </button>
                 <a href="#" class="nav-icon"><i class="bi bi-bell" style="color: #5e6e82"></i></a>
                 <a href="#" class="nav-icon"><i class="bi bi-gear" style="color: #5e6e82"></i></a>
@@ -171,6 +173,6 @@
 
         </main>
     </div>
-    <script src="../assets/js/admin.js"></script>
+    <script src="/TechShop/public/assets/js/admin.js"></script>
 </body>
 </html>

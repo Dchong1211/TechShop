@@ -136,7 +136,7 @@
                     </div>
                 </div> </div> </main> 
         
-    <script src="../assets/js/admin.js"></script>
+    <script src="/TechShop/public/assets/js/admin.js"></script>
 
 </body>
 </html>
