@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-    <link rel="stylesheet" href="../assets/css/cssAdmin/admin_style.css"> 
+    <link rel="stylesheet" href="/TechShop/public/assets/css/cssAdmin/admin_style.css"> 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <?php require_once __DIR__ . '/../../app/helpers/CSRF.php'; ?>
     <meta name="csrf-token" content="<?= CSRF::token(); ?>">
@@ -35,31 +35,31 @@
             <nav class="sidebar-nav">
                 <ul>
                     <li>
-                        <a href="dashboard.php" class="active">
+                        <a href="/TechShop/admin/dashboard" class="active">
                             <span class="icon"><i class="bi bi-house" style="color: #5e6e82"></i></span>
                             <span class="title">Dashboard</span>
                         </a>
                     </li>
                     <li>
-                        <a href="products.php">
+                        <a href="/TechShop/admin/products">
                             <span class="icon"><i class="bi bi-box" style="color: #5e6e82"></i></span>
                             <span class="title">Quản lý Sản phẩm</span>
                         </a>
                     </li>
                     <li>
-                        <a href="orders.php">
+                        <a href="/TechShop/admin/orders">
                             <span class="icon"><i class="bi bi-cart" style="color: #5e6e82"></i></span>
                             <span class="title">Quản lý Đơn hàng</span>
                         </a>
                     </li>
                     <li>
-                        <a href="users.php">
+                        <a href="/TechShop/admin/users">
                             <span class="icon"><i class="bi bi-people" style="color: #5e6e82"></i></span>
                             <span class="title">Quản lý Người dùng</span>
                         </a>
                     </li>
                     <li class="sidebar-logout">
-                        <a href="login.php">
+                        <a href="/TechShop/login.php">
                             <span class="icon"><i class="bi bi-box-arrow-right" style="color: #5e6e82"></i></span>
                             <span class="title">Đăng xuất</span>
                         </a>

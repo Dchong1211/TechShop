@@ -1,8 +1,10 @@
 RewriteEngine On
-
 RewriteBase /TechShop/
 
+# Cho phép truy cập thẳng vào assets (không rewrite)
+RewriteRule ^assets/(.*)$ public/assets/$1 [L,NC]
+
+# Nếu không phải file/thư mục thật thì chuyển vào public/index.php
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-
-RewriteRule ^(.*)$ public/index.php [QSA,L]
+RewriteRule ^(.*)$ public/index.php?url=$1 [QSA,L]

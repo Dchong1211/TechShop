@@ -24,9 +24,9 @@ document.getElementById('form-login').addEventListener('submit', async function(
             
             setTimeout(() => {
                 if (data.user.role === 'admin') {
-                    window.location.href = '/TechShop/admin/dashboard.php';
+                    window.location.href = '/TechShop/admin/dashboard';
                 } else {
-                    window.location.href = '/TechShop/user';
+                    window.location.href = '/TechShop/public/user';
                 }
             }, 1000);
         } else {

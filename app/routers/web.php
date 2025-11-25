@@ -151,11 +151,10 @@ $router->post("/admin/products/delete", function () {
 
 
 /* ===================== ADMIN DASHBOARD ===================== */
-$router->get("/admin", function () {
+$router->get("/admin/dashboard", function() {
     require_once __DIR__ . "/../../public/admin/dashboard.php";
 }, ["admin"]);
 
-// Các trang admin khác (mở bằng router, không mở file trực tiếp)
 $router->get("/admin/users", function () {
     require_once __DIR__ . "/../../public/admin/users.php";
 }, ["admin"]);
