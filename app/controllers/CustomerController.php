@@ -1,5 +1,5 @@
 <?php
-include "./models/CustomerModel.php";
+include __DIR__ . "/../models/CustomerModel.php";
 
 class CustomerController {
     private $model;
@@ -10,11 +10,11 @@ class CustomerController {
         $this->model = new CustomerModel($conn);
     }
 
-    // -------- INDEX (LIST + SEARCH + PAGINATION) --------
+    // -------- INDEX --------
     public function index(){
         $limit = 5;
         $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-        $keyword = isset($_GET['keyword']) ? $_GET['keyword'] : "";
+        $keyword = $_GET['keyword'] ?? "";
 
         $offset = ($page - 1) * $limit;
 
@@ -23,7 +23,7 @@ class CustomerController {
         $total_records = $this->model->countAll($keyword);
         $total_pages = ceil($total_records / $limit);
 
-        include "./views/customer/index.php";
+        include __DIR__ . "/../public/admin/users.php";
     }
 
     // -------- ADD --------
@@ -31,28 +31,31 @@ class CustomerController {
         if (isset($_POST['submit'])){
             $this->model->insert($_POST);
             header("Location: ?controller=customer&action=index");
+            exit;
         }
 
-        include "./views/customer/form_add.php";
+        include __DIR__ . "/../public/admin/add_users.php";
     }
 
     // -------- EDIT --------
     public function edit(){
-        $id = $_GET['id'];
+        $id = $_GET['id'] ?? 0;
         $user = $this->model->getById($id);
 
         if (isset($_POST['submit'])){
             $this->model->update($id, $_POST);
             header("Location: ?controller=customer&action=index");
+            exit;
         }
 
-        include "./views/customer/form_edit.php";
+        include __DIR__ . "/../public/admin/edit_users.php";
     }
 
     // -------- DELETE --------
     public function delete(){
-        $id = $_GET['id'];
+        $id = $_GET['id'] ?? 0;
         $this->model->delete($id);
         header("Location: ?controller=customer&action=index");
+        exit;
     }
 }
