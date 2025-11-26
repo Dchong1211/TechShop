@@ -291,7 +291,7 @@ ALTER TABLE `danh_muc`
 --
 -- Indexes for table `don_hang` 
 --
-ALTER TABLE `don_hang`
+ALTER TABLE `don_hang` 
   ADD PRIMARY KEY (`id`),
   ADD KEY `id_khach_hang` (`id_khach_hang`);
 
