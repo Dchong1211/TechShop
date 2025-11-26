@@ -20,7 +20,6 @@ $router->get("/register", function () {
 
 // Trang verify email
 $router->get("/forgot-password", function () {
-    CSRF::token();
     require_once __DIR__ . "/../../public/admin/forgot_password.php";
 }, ["guest"]);
 

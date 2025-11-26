@@ -1,77 +1,51 @@
 <?php
-// Nạp model User
 require_once __DIR__ . '/../models/auth.php';
-// Nạp file kết nối database
 require_once __DIR__ . '/../config/database.php';
-// Nạp helper gửi mail
 require_once __DIR__ . '/../helpers/mailer.php';
-// Nạp hàm env() để lấy biến môi trường
 require_once __DIR__ . '/../config/env.php';
 
-// Khai báo class AuthController
 class AuthController {
 
-    // Thuộc tính lưu instance của model Auth
     private $userModel;
 
-    // Hàm khởi tạo
     public function __construct() {
-        // Tạo kết nối DB
         $db = (new Database())->getConnection();
-        // Khởi tạo model User với kết nối DB
         $this->userModel = new User($db);
 
-        // Nếu session chưa khởi tạo thì start
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
     }
 
- // ===================== REGISTER =====================
+    // ===================== REGISTER =====================
     public function register($name, $email, $password) {
         $result = $this->userModel->register($name, $email, $password);
 
-        // Nếu lỗi (email đã tồn tại & đã xác minh hoặc lỗi khác) -> trả về luôn
-        if (!$result['success']) {
-            return $result;
-        }
+        if (!$result['success']) return $result;
 
-        // Gửi OTP (dù là đăng ký mới hay resend)
         $subject = "TechShop - Mã OTP";
         $body    = "<h3>Mã OTP của bạn: <b>{$result['otp']}</b></h3>";
 
-        // dùng email trả từ model cho chắc
         Mailer::send($result['email'], $subject, $body);
 
         return [
             'success' => true,
             'message' => $result['resend']
-                ? 'Email này đã đăng ký nhưng chưa kích hoạt. OTP mới đã được gửi!'
+                ? 'Email đã tồn tại nhưng chưa kích hoạt. OTP mới đã được gửi!'
                 : 'OTP đã được gửi! Vui lòng kiểm tra email.',
             'email'   => $result['email'],
         ];
     }
 
-
-// ===================== VERIFY EMAIL =====================
-    // Hàm xác minh email bằng OTP
+    // ===================== VERIFY EMAIL (OTP) =====================
     public function verifyEmail($email, $otp) {
-        // Gọi model để verify
         return $this->userModel->verifyEmail($email, $otp);
     }
 
-// ===================== LOGIN =====================
-    // Hàm đăng nhập
+    // ===================== LOGIN =====================
     public function login($usernameOrEmail, $password) {
-
         $result = $this->userModel->login($usernameOrEmail, $password);
-
-        if (!$result['success']) {
-            return [
-                'success' => false,
-                'message' => $result['message']
-            ];
-        }
+        if (!$result['success']) return $result;
 
         $user = $result['user'];
 
@@ -90,146 +64,49 @@ class AuthController {
         ];
     }
 
-
-
     // ===================== GET CURRENT USER =====================
-    // Lấy thông tin user đang đăng nhập
     public function get_current_user() {
-        // Nếu chưa có user trong session
         if (!isset($_SESSION['user'])) {
-            // Trả thông báo chưa đăng nhập
-            return [
-                'success' => false,
-                'message' => 'Người dùng chưa đăng nhập!'
-            ];
+            return ['success' => false, 'message' => 'Người dùng chưa đăng nhập!'];
         }
-
-        // Nếu có thì trả info user
-        return [
-            'success' => true,
-            'user'    => $_SESSION['user']
-        ];
+        return ['success' => true, 'user' => $_SESSION['user']];
     }
 
-    // ===================== FORGOT PASSWORD (LINK) =====================
-    // Quên mật khẩu: gửi link reset qua email (flow cũ, vẫn giữ)
-    public function forgotPassword($email) {
-        // Kiểm tra định dạng email
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL))
-            return ['success' => false, 'message' => 'Email không hợp lệ!'];
-
-        // Tìm user theo email
-        $user = $this->userModel->getByEmail($email);
-        // Nếu không có user
-        if (!$user)
-            return ['success' => false, 'message' => 'Email không tồn tại!'];
-
-        // Tạo token reset ngẫu nhiên
-        $token = bin2hex(random_bytes(32));
-        // Thời gian hết hạn: +1 giờ
-        $expires = date("Y-m-d H:i:s", time() + 3600);
-
-        // Lưu token + thời gian hết hạn vào DB
-        $this->userModel->saveResetToken($email, $token, $expires);
-
-        // Tạo link reset mật khẩu
-        $link = env('BASE_URL') . "/reset-password?token=" . urlencode($token);
-
-        // Gửi email chứa link reset
-        Mailer::send(
-            $email,
-            "TechShop - Đặt lại mật khẩu",
-            "
-            <h3>Xin chào {$user['name']}</h3>
-            <p>Nhấn để đặt lại mật khẩu:</p>
-            <a href='{$link}'>{$link}</a>
-            "
-        );
-
-        // Trả kết quả cho FE
-        return ['success' => true, 'message' => 'Link reset mật khẩu đã được gửi!'];
-    }
-
-    // ===================== RESET PASSWORD (LINK) =====================
-    // Đặt lại mật khẩu bằng token (flow cũ)
-    public function resetPassword($token, $newPassword, $confirmPassword) {
-
-        // Kiểm tra nhập lại mật khẩu có khớp không
-        if ($newPassword !== $confirmPassword)
-            return ['success' => false, 'message' => 'Mật khẩu nhập lại không khớp!'];
-
-        // Kiểm tra độ mạnh mật khẩu bằng regex
-        if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/', $newPassword))
-            return ['success' => false, 'message' => 'Mật khẩu mới quá yếu!'];
-
-        // Lấy user từ token reset
-        $user = $this->userModel->getByResetToken($token);
-        // Nếu không có user -> token sai hoặc hết hạn
-        if (!$user)
-            return ['success' => false, 'message' => 'Token không hợp lệ hoặc đã hết hạn!'];
-
-        // Hash mật khẩu mới
-        $hashed = password_hash($newPassword, PASSWORD_DEFAULT);
-        // Cập nhật mật khẩu trong DB
-        $this->userModel->updatePassword($user['id'], $hashed);
-
-        // Trả kết quả OK
-        return ['success' => true, 'message' => 'Đổi mật khẩu thành công!'];
-    }
-
-    // ===================== FORGOT PASSWORD BY OTP =====================
-    // Quên mật khẩu: gửi mã OTP (flow mới dùng mã xác minh)
+    // ===================== FORGOT PASSWORD (OTP) =====================
     public function forgotPasswordOTP($email) {
-        // Kiểm tra định dạng email
         if (!filter_var($email, FILTER_VALIDATE_EMAIL))
             return ['success' => false, 'message' => 'Email không hợp lệ!'];
 
-        // Tìm user theo email
         $user = $this->userModel->getByEmail($email);
-        // Nếu không có user
         if (!$user)
             return ['success' => false, 'message' => 'Email không tồn tại!'];
 
-        // Tạo OTP 6 chữ số ngẫu nhiên
         $otp = random_int(100000, 999999);
-        // Thời gian hết hạn OTP: 5 phút
         $expires = date("Y-m-d H:i:s", time() + 300);
 
-        // Lưu OTP + thời gian hết hạn vào DB
         $this->userModel->saveResetOTP($email, $otp, $expires);
 
-        // Tiêu đề mail OTP
         $subject = "TechShop - OTP Đặt lại mật khẩu";
-        // Nội dung mail OTP
         $body = "
-            <h3>Xin chào {$user['name']}</h3>
+            <h3>Xin chào {$user['ho_ten']}</h3>
             <p>Mã OTP đặt lại mật khẩu của bạn là:</p>
             <h2><b>{$otp}</b></h2>
             <p>OTP có hiệu lực trong 5 phút.</p>
         ";
 
-        // Gửi email OTP
         Mailer::send($email, $subject, $body);
 
-        // Trả kết quả
-        return ['success' => true, 'message' => 'OTP đã gửi qua email!'];
+        return ['success' => true, 'message' => 'OTP đã được gửi qua email!'];
     }
 
     // ===================== VERIFY RESET OTP =====================
-    // Xác minh OTP đặt lại mật khẩu
     public function verifyResetOTP($email, $otp) {
-        // Gọi model để kiểm tra OTP
         $userId = $this->userModel->checkResetOTP($email, $otp);
 
-        // Nếu không hợp lệ hoặc hết hạn
         if (!$userId) {
-            return [
-                'success' => false,
-                'message' => 'OTP không đúng hoặc đã hết hạn!'
-            ];
+            return ['success' => false, 'message' => 'OTP không đúng hoặc đã hết hạn!'];
         }
 
-        // Nếu OK -> trả về user_id để FE dùng cho bước đổi mật khẩu
         return [
             'success' => true,
             'message' => 'OTP hợp lệ!',
@@ -237,37 +114,24 @@ class AuthController {
         ];
     }
 
-    // ===================== RESET PASSWORD BY OTP =====================
-    // Đặt lại mật khẩu mới bằng OTP (dùng user_id đã verify)
+    // ===================== RESET PASSWORD (OTP) =====================
     public function resetPasswordByOTP($userId, $newPassword, $confirmPassword) {
-
-        // Kiểm tra nhập lại mật khẩu có khớp không
         if ($newPassword !== $confirmPassword)
             return ['success' => false, 'message' => 'Mật khẩu nhập lại không khớp!'];
 
-        // Kiểm tra độ mạnh mật khẩu
         if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/', $newPassword))
             return ['success' => false, 'message' => 'Mật khẩu mới quá yếu!'];
 
-        // Hash mật khẩu mới
         $hashed = password_hash($newPassword, PASSWORD_DEFAULT);
-
-        // Cập nhật mật khẩu trong DB (và có thể clear OTP trong model)
         $this->userModel->updatePassword($userId, $hashed);
 
-        // Trả kết quả OK
         return ['success' => true, 'message' => 'Đổi mật khẩu thành công!'];
     }
 
-// ===================== LOGOUT =====================
-    //Hàm đăng xuất
+    // ===================== LOGOUT =====================
     public function logout() {
         unset($_SESSION['user']);
-
-        return [
-            "success" => true,
-            "message" => "Đã đăng xuất!"
-        ];
+        return ['success' => true, 'message' => 'Đã đăng xuất!'];
     }
 }
 ?>
