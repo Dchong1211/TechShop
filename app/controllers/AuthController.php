@@ -2,6 +2,7 @@
 require_once __DIR__ . '/../models/auth.php';
 require_once __DIR__ . '/../config/database.php';
 require_once __DIR__ . '/../helpers/mailer.php';
+require_once __DIR__ . '/../helpers/validation.php';
 require_once __DIR__ . '/../config/env.php';
 
 class AuthController {
@@ -19,6 +20,17 @@ class AuthController {
 
     // ===================== REGISTER =====================
     public function register($name, $email, $password) {
+
+        // Validation
+        if (!Validation::required($name))
+            return ['success' => false, 'message' => 'Tên không được để trống!'];
+
+        if (!Validation::email($email))
+            return ['success' => false, 'message' => 'Email không hợp lệ!'];
+
+        if (!Validation::strongPassword($password))
+            return ['success' => false, 'message' => 'Mật khẩu quá yếu!'];
+
         $result = $this->userModel->register($name, $email, $password);
 
         if (!$result['success']) return $result;
@@ -44,6 +56,13 @@ class AuthController {
 
     // ===================== LOGIN =====================
     public function login($usernameOrEmail, $password) {
+
+        if (!Validation::required($usernameOrEmail))
+            return ['success' => false, 'message' => 'Vui lòng nhập email hoặc username!'];
+
+        if (!Validation::required($password))
+            return ['success' => false, 'message' => 'Vui lòng nhập mật khẩu!'];
+
         $result = $this->userModel->login($usernameOrEmail, $password);
         if (!$result['success']) return $result;
 
@@ -74,7 +93,8 @@ class AuthController {
 
     // ===================== FORGOT PASSWORD (OTP) =====================
     public function forgotPasswordOTP($email) {
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL))
+
+        if (!Validation::email($email))
             return ['success' => false, 'message' => 'Email không hợp lệ!'];
 
         $user = $this->userModel->getByEmail($email);
@@ -101,6 +121,13 @@ class AuthController {
 
     // ===================== VERIFY RESET OTP =====================
     public function verifyResetOTP($email, $otp) {
+
+        if (!Validation::email($email))
+            return ['success' => false, 'message' => 'Email không hợp lệ!'];
+
+        if (!Validation::required($otp))
+            return ['success' => false, 'message' => 'OTP không được bỏ trống!'];
+
         $userId = $this->userModel->checkResetOTP($email, $otp);
 
         if (!$userId) {
@@ -116,11 +143,12 @@ class AuthController {
 
     // ===================== RESET PASSWORD (OTP) =====================
     public function resetPasswordByOTP($userId, $newPassword, $confirmPassword) {
+
+        if (!Validation::strongPassword($newPassword))
+            return ['success' => false, 'message' => 'Mật khẩu mới quá yếu!'];
+
         if ($newPassword !== $confirmPassword)
             return ['success' => false, 'message' => 'Mật khẩu nhập lại không khớp!'];
-
-        if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/', $newPassword))
-            return ['success' => false, 'message' => 'Mật khẩu mới quá yếu!'];
 
         $hashed = password_hash($newPassword, PASSWORD_DEFAULT);
         $this->userModel->updatePassword($userId, $hashed);
