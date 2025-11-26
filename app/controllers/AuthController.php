@@ -28,27 +28,30 @@ class AuthController {
     }
 
  // ===================== REGISTER =====================
-    // Hàm xử lý đăng ký tài khoản
     public function register($name, $email, $password) {
-        // Gọi model để xử lý đăng ký
         $result = $this->userModel->register($name, $email, $password);
 
-        // Nếu thất bại thì trả kết quả luôn
-        if (!$result['success']) 
+        // Nếu lỗi (email đã tồn tại & đã xác minh hoặc lỗi khác) -> trả về luôn
+        if (!$result['success']) {
             return $result;
+        }
 
-        // Nếu thành công -> gửi OTP email xác minh tài khoản
-        $subject = "TechShop - Mã OTP"; // Tiêu đề email
-        $body = "<h3>Mã OTP của bạn: <b>{$result['otp']}</b></h3>"; // Nội dung email
-        Mailer::send($email, $subject, $body); // Gửi mail
+        // Gửi OTP (dù là đăng ký mới hay resend)
+        $subject = "TechShop - Mã OTP";
+        $body    = "<h3>Mã OTP của bạn: <b>{$result['otp']}</b></h3>";
 
-        // Trả phản hồi cho FE
+        // dùng email trả từ model cho chắc
+        Mailer::send($result['email'], $subject, $body);
+
         return [
             'success' => true,
-            'message' => 'OTP đã được gửi!',
-            'email'   => $email
+            'message' => $result['resend']
+                ? 'Email này đã đăng ký nhưng chưa kích hoạt. OTP mới đã được gửi!'
+                : 'OTP đã được gửi! Vui lòng kiểm tra email.',
+            'email'   => $result['email'],
         ];
     }
+
 
 // ===================== VERIFY EMAIL =====================
     // Hàm xác minh email bằng OTP
@@ -59,12 +62,10 @@ class AuthController {
 
 // ===================== LOGIN =====================
     // Hàm đăng nhập
-   public function login($usernameOrEmail, $password) {
+    public function login($usernameOrEmail, $password) {
 
-        // Gọi model để kiểm tra login
         $result = $this->userModel->login($usernameOrEmail, $password);
 
-        // Nếu sai thông tin
         if (!$result['success']) {
             return [
                 'success' => false,
@@ -72,18 +73,16 @@ class AuthController {
             ];
         }
 
-        // Nếu đúng → lưu session
         $user = $result['user'];
 
         $_SESSION['user'] = [
             'id'     => $user['id'],
-            'name'   => $user['name'],
+            'name'   => $user['ho_ten'],
             'email'  => $user['email'],
-            'role'   => $user['role'],
-            'status' => $user['status']
+            'role'   => $user['vai_tro'],
+            'status' => $user['trang_thai']
         ];
 
-        // Trả JSON cho FE xử lý redirect
         return [
             'success' => true,
             'message' => "Đăng nhập thành công!",

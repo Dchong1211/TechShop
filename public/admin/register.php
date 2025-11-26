@@ -1,7 +1,6 @@
 <?php
-session_start();
-require_once __DIR__ . '/../../app/helpers/CSRF.php';
-$csrf_token = CSRF::token();
+    require_once __DIR__ . '/../../app/helpers/CSRF.php';
+    $csrf = CSRF::token();
 ?>
 <!DOCTYPE html>
 <html lang="vi">
@@ -9,7 +8,7 @@ $csrf_token = CSRF::token();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đăng Ký | TechShop</title>
-    <link rel="stylesheet" href="../assets/css/cssAdmin/admin_auth.css"> 
+    <link rel="stylesheet" href="/TechShop/public/assets/css/cssAdmin/admin_auth.css">
     <style>
         .hidden {
             display: none;
@@ -57,11 +56,10 @@ $csrf_token = CSRF::token();
                 <div id="register-step">
                     <h2>Đăng Ký</h2>
                     <form id="form-register">
-                        <input type="hidden" name="csrf" value="<?= $csrf_token ?>">
 
                         <div class="input-group">
-                            <label for="name">Họ và Tên</label>
-                            <input type="text" id="name" name="name" required placeholder="Nhập họ tên hiển thị">
+                            <label for="name">Tên đăng nhập</label>
+                            <input type="text" id="name" name="name" required placeholder="Nhập tên đăng nhập">
                         </div>
 
                         <div class="input-group">
@@ -78,11 +76,11 @@ $csrf_token = CSRF::token();
                             <label for="confirm_password">Nhập lại mật khẩu</label>
                             <input type="password" id="confirm_password" required>
                         </div>
-
+                        <input type="hidden" name="csrf" value="<?= $csrf ?>">
                         <button type="submit" class="register-button">Đăng Ký</button>
 
                         <div class="function">
-                            <p class="login">Đã có tài khoản? <a href="login.php">Đăng nhập</a></p>
+                            <p class="login">Đã có tài khoản? <a href="/TechShop/login">Đăng nhập</a></p>
                         </div>
                     </form>
                 </div>
@@ -94,14 +92,13 @@ $csrf_token = CSRF::token();
                     </p>
 
                     <form id="form-verify">
-                        <input type="hidden" name="csrf" value="<?= $csrf_token ?>">
                         <input type="hidden" id="verify_email" name="email">
 
                         <div class="input-group">
                             <label for="otp">Nhập mã OTP</label>
                             <input type="text" id="otp" name="otp" required placeholder="123456" maxlength="6" style="text-align: center; letter-spacing: 5px; font-weight: bold; font-size: 1.5rem;">
                         </div>
-
+                        <input type="hidden" name="csrf" value="<?= $csrf ?>">
                         <button type="submit" class="register-button">Xác Minh</button>
 
                         <div class="function">
@@ -113,6 +110,6 @@ $csrf_token = CSRF::token();
         </div>
     </div>
 
-    <script src="public/assets/js/auth_register.js"></script>
+    <script src="/TechShop/public/assets/js/auth_register.js"></script>
 </body>
 </html>

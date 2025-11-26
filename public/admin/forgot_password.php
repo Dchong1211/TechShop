@@ -1,7 +1,6 @@
 <?php
-session_start();
-require_once __DIR__ . '/../../app/helpers/CSRF.php';
-$csrf_token = CSRF::token();
+    require_once __DIR__ . '/../../app/helpers/CSRF.php';
+    $csrf = CSRF::token();
 ?>
 <!DOCTYPE html>
 <html lang="vi">
@@ -10,7 +9,7 @@ $csrf_token = CSRF::token();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quên mật khẩu | TechShop</title>
-    <link rel="stylesheet" href="../assets/css/cssAdmin/admin_auth.css"> 
+    <link rel="stylesheet" href="/TechShop/public/assets/css/cssAdmin/admin_auth.css">
     <style>
         .hidden {
             display: none;
@@ -55,11 +54,11 @@ $csrf_token = CSRF::token();
                 <div id="step-email">
                     <h2>Quên mật khẩu</h2>
                     <form id="form-send-otp">
-                        <input type="hidden" name="csrf" value="<?= $csrf_token ?>">
                         <div class="input-group">
                             <label for="email">Nhập Email đăng ký</label>
                             <input type="email" id="email" name="email" required placeholder="example@gmail.com">
                         </div>
+                        <input type="hidden" name="csrf" value="<?= $csrf ?>">
                         <button type="submit" class="forgot-password-button">Gửi mã xác minh</button>
                     </form>
                 </div>
@@ -68,12 +67,12 @@ $csrf_token = CSRF::token();
                     <h2>Xác minh OTP</h2>
                     <p>Mã OTP đã gửi tới email của bạn.</p>
                     <form id="form-verify-otp">
-                        <input type="hidden" name="csrf" value="<?= $csrf_token ?>">
                         <input type="hidden" id="otp_email_hidden" name="email">
                         <div class="input-group">
                             <label>Mã OTP</label>
                             <input type="text" name="otp" required placeholder="123456" style="text-align:center; letter-spacing:4px; font-weight:bold;">
                         </div>
+                        <input type="hidden" name="csrf" value="<?= $csrf ?>">
                         <button type="submit" class="forgot-password-button">Xác nhận OTP</button>
                     </form>
                 </div>
@@ -81,7 +80,6 @@ $csrf_token = CSRF::token();
                 <div id="step-reset" class="hidden">
                     <h2>Đặt lại mật khẩu</h2>
                     <form id="form-reset-pass">
-                        <input type="hidden" name="csrf" value="<?= $csrf_token ?>">
                         <input type="hidden" id="reset_user_id" name="user_id">
 
                         <div class="input-group">
@@ -92,19 +90,20 @@ $csrf_token = CSRF::token();
                             <label>Nhập lại mật khẩu</label>
                             <input type="password" id="confirm_pass" name="confirm_password" required>
                         </div>
+                        <input type="hidden" name="csrf" value="<?= $csrf ?>">
                         <button type="submit" class="forgot-password-button">Đổi mật khẩu</button>
                     </form>
                 </div>
 
                 <div class="function">
-                    <p class="login"><a href="login.php">Đăng nhập</a></p>
-                    <p class="register"><a href="register.php">Đăng ký</a></p>
+                    <p class="login"><a href="/TechShop/login">Đăng nhập</a></p>
+                    <p class="register"><a href="/TechShop/register">Đăng ký</a></p>
                 </div>
             </div>
         </div>
     </div>
 
-    <script src="public/assets/js/auth_forgot.js"></script>
+    <script src="/TechShop/public/assets/js/auth_forgot.js"></script>
 </body>
 
 </html>

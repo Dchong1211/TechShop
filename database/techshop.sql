@@ -183,7 +183,7 @@ CREATE TABLE `nguoi_dung` (
 --
 
 INSERT INTO `nguoi_dung` (`id`, `ho_ten`, `email`, `mat_khau`, `dien_thoai`, `dia_chi`, `vai_tro`, `email_verified`, `email_verified_at`, `otp`, `otp_expires_at`, `reset_token`, `reset_expires_at`, `reset_otp`, `reset_otp_expires`, `trang_thai`, `ngay_tao`) VALUES
-(1, 'Admin Toàn Năng', 'admin@techshop.com', '$2y$10$iM3.Xn3O0wLgYcW5vY7gU.0d1o8e/mPqC1c3ZqW9o0b6mJ8yL7zY.', '0901234567', 'Số 1, Phố Công Nghệ, Hà Nội', 'admin', 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2025-11-26 16:08:45'),
+(1, 'Admin', 'techshopNT@gmail.com', '$2y$10$sseAAOmARUnwvDgQk5ajWuliRMlZ71bMTV6NElq/1Nd/LGLhQwuAe', '0901234567', 'Số 1, Phố Công Nghệ, Hà Nội', 'admin', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2025-11-26 16:08:45'),
 (2, 'Nguyễn Văn A', 'vana@gmail.com', '$2y$10$iM3.Xn3O0wLgYcW5vY7gU.0d1o8e/mPqC1c3ZqW9o0b6mJ8yL7zY.', '0912345678', '45 Lê Lợi, Quận 1, TP.HCM', 'khach', 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2025-11-26 16:08:45'),
 (3, 'Trần Thị B', 'thib@yahoo.com', '$2y$10$iM3.Xn3O0wLgYcW5vY7gU.0d1o8e/mPqC1c3ZqW9o0b6mJ8yL7zY.', '0987654321', '100 Trần Phú, Hải Châu, Đà Nẵng', 'khach', 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2025-11-26 16:08:45'),
 (4, 'Lê Văn C', 'vanc@outlook.com', '$2y$10$iM3.Xn3O0wLgYcW5vY7gU.0d1o8e/mPqC1c3ZqW9o0b6mJ8yL7zY.', '0909888999', '22 Nguyễn Huệ, Quận Ninh Kiều, Cần Thơ', 'khach', 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2025-11-26 16:08:45'),

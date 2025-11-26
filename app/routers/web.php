@@ -14,11 +14,15 @@ $router->get("/login", function () {
 }, ["guest"]);
 
 // Trang đăng ký
-$router->get("/register", [AuthController::class, "registerPage"], ["guest"]);
+$router->get("/register", function () {
+    require_once __DIR__ . "/../../public/admin/register.php";
+}, ["guest"]);
 
 // Trang verify email
-$router->get("/verify-email", [AuthController::class, "verifyEmailPage"], ["guest"]);
-
+$router->get("/forgot-password", function () {
+    CSRF::token();
+    require_once __DIR__ . "/../../public/admin/forgot_password.php";
+}, ["guest"]);
 
 /* ===================== AUTH API ===================== */
 // Đăng ký

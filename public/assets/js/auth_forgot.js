@@ -20,7 +20,7 @@ document.getElementById('form-send-otp').addEventListener('submit', async functi
     msgBox.style.display = 'none';
 
     try {
-        const res = await fetch('/TechShop/public/forgot-password', {
+        const res = await fetch('/TechShop/forgot-password', {
             method: 'POST',
             body: formData
         });
@@ -47,7 +47,7 @@ document.getElementById('form-verify-otp').addEventListener('submit', async func
     btn.textContent = 'Đang kiểm tra...';
     
     try {
-        const res = await fetch('/TechShop/public/verify-reset-otp', {
+        const res = await fetch('/TechShop/verify-reset-otp', {
             method: 'POST',
             body: formData
         });
@@ -81,7 +81,7 @@ document.getElementById('form-reset-pass').addEventListener('submit', async func
     const formData = new FormData(this);
 
     try {
-        const res = await fetch('/TechShop/public/reset-password-otp', {
+        const res = await fetch('/TechShop/reset-password-otp', {
             method: 'POST',
             body: formData
         });
@@ -90,7 +90,7 @@ document.getElementById('form-reset-pass').addEventListener('submit', async func
         if (data.success) {
             showMsg('Đổi mật khẩu thành công! Đang chuyển về trang đăng nhập...', 'success');
             setTimeout(() => {
-                window.location.href = 'public/admin/login.php';
+                window.location.href = '/TechShop/login';
             }, 2000);
         } else {
             showMsg(data.message);

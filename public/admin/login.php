@@ -1,4 +1,8 @@
 
+<?php
+    require_once __DIR__ . '/../../app/helpers/CSRF.php';
+    $csrf = CSRF::token();
+?>
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -6,10 +10,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đăng Nhập</title>
     <link rel="stylesheet" href="/TechShop/public/assets/css/cssAdmin/admin_auth.css">
-    <?php
-        require_once __DIR__ . '/../../app/helpers/CSRF.php';
-        $csrf = CSRF::token();
-    ?>
 </head>
 
 <body>

@@ -27,7 +27,7 @@ document.getElementById('form-register').addEventListener('submit', async functi
     msgBox.style.display = 'none';
 
     try {
-        const res = await fetch('/TechShop/public/register', {
+        const res = await fetch('/TechShop/register', {
             method: 'POST',
             body: formData
         });
@@ -63,7 +63,7 @@ document.getElementById('form-verify').addEventListener('submit', async function
     btn.classList.add('btn-loading');
     
     try {
-        const res = await fetch('/TechShop/public/verify-email', {
+        const res = await fetch('/TechShop/verify-email', {
             method: 'POST',
             body: formData
         });
@@ -72,7 +72,7 @@ document.getElementById('form-verify').addEventListener('submit', async function
         if (data.success) {
             showMessage('Tài khoản đã kích hoạt! Đang chuyển đến đăng nhập...', 'success');
             setTimeout(() => {
-                window.location.href = 'public/admin/login.php';
+                window.location.href = '/TechShop/login';
             }, 1500);
         } else {
             showMessage(data.message);
