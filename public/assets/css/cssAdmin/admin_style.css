@@ -310,7 +310,6 @@ body.dark-mode .theme-toggle .icon-moon {
     border-radius: 0 var(--border-radius-button) var(--border-radius-button) 0;
 }
 
-/* Forms Generic */
 .form-group {
     margin-bottom: 20px;
 }
@@ -415,7 +414,6 @@ body.dark-mode .theme-toggle .icon-moon {
     background: #c0392b;
 }
 
-/* Actions Toolbar */
 .table-actions,
 .top-actions {
     display: flex;
@@ -425,15 +423,58 @@ body.dark-mode .theme-toggle .icon-moon {
 }
 
 .search-box {
-    display: flex;
+    display: flex;           
+    align-items: stretch;     
+    width: 100%;
+    max-width: 400px;          
+    background: #fff;         
+    border: 2px solid #007bff; 
+    border-radius: 6px;        
+    overflow: hidden;          
+    box-shadow: 0 3px 6px rgba(0,0,0,0.1); 
 }
 
 .search-box input {
-    border-radius: var(--border-radius-button) 0 0 var(--border-radius-button);
-    border-right: none;
+    flex-grow: 1;           
+    border: none;         
+    padding: 10px 15px;        
+    font-size: 15px;
+    color: #333;             
+    outline: none;             
 }
 
-/* 4. PAGE SPECIFIC: DASHBOARD */
+.search-box .btn-search {
+    background-color: #007bff;  
+    color: #fff;               
+    border: none;
+    padding: 0 25px;           
+    font-weight: 700;        
+    font-size: 14px;
+    cursor: pointer;
+    text-transform: uppercase; 
+    transition: background 0.2s ease;
+}
+
+.search-box .btn-search:hover {
+    background-color: #0056b3; 
+}
+
+body.dark-mode .search-box {
+    background: #1a2639;      
+    border-color: #00eaff;   
+}
+body.dark-mode .search-box input {
+    background: transparent;
+    color: #fff;
+}
+body.dark-mode .search-box .btn-search {
+    background-color: #00eaff;
+    color: #000;             
+}
+body.dark-mode .search-box .btn-search:hover {
+    background-color: #00c4d6;
+}
+
 .dashboard-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
