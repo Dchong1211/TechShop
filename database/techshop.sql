@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 26, 2025 at 10:53 AM
+-- Generation Time: Nov 26, 2025 at 11:03 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -32,30 +32,44 @@ CREATE TABLE `chi_tiet_don_hang` (
   `id_don_hang` int(11) NOT NULL,
   `id_san_pham` int(11) NOT NULL,
   `so_luong` int(11) NOT NULL,
-  `don_gia` decimal(10,2) NOT NULL COMMENT 'Giá tại thời điểm mua'
+  `don_gia` decimal(10,2) NOT NULL COMMENT 'Giá tại thời điểm mua',
+  `gia_von` decimal(10,2) NOT NULL COMMENT 'Giá vốn của sản phẩm tại thời điểm bán'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `chi_tiet_don_hang`
 --
 
-INSERT INTO `chi_tiet_don_hang` (`id`, `id_don_hang`, `id_san_pham`, `so_luong`, `don_gia`) VALUES
-(1, 1, 101, 1, 32990000.00),
-(2, 1, 111, 1, 3590000.00),
-(3, 1, 137, 2, 6500000.00),
-(4, 1, 128, 1, 1090000.00),
-(5, 2, 120, 1, 11500000.00),
-(6, 2, 134, 1, 3290000.00),
-(7, 2, 136, 2, 5990000.00),
-(8, 3, 108, 1, 3500000.00),
-(9, 3, 118, 1, 1800000.00),
-(10, 3, 150, 1, 9900000.00),
-(11, 3, 176, 1, 400000.00),
-(12, 3, 165, 1, 450000.00),
-(13, 3, 167, 2, 750000.00),
-(14, 4, 142, 1, 52000000.00),
-(15, 4, 157, 1, 650000.00),
-(16, 4, 158, 2, 2350000.00);
+INSERT INTO `chi_tiet_don_hang` (`id`, `id_don_hang`, `id_san_pham`, `so_luong`, `don_gia`, `gia_von`) VALUES
+(1, 1, 101, 1, 32990000.00, 0.00),
+(2, 1, 111, 1, 3590000.00, 0.00),
+(3, 1, 137, 2, 6500000.00, 0.00),
+(4, 1, 128, 1, 1090000.00, 0.00),
+(5, 2, 120, 1, 11500000.00, 0.00),
+(6, 2, 134, 1, 3290000.00, 0.00),
+(7, 2, 136, 2, 5990000.00, 0.00),
+(8, 3, 108, 1, 3500000.00, 0.00),
+(9, 3, 118, 1, 1800000.00, 0.00),
+(10, 3, 150, 1, 9900000.00, 0.00),
+(11, 3, 176, 1, 400000.00, 0.00),
+(12, 3, 165, 1, 450000.00, 0.00),
+(13, 3, 167, 2, 750000.00, 0.00),
+(14, 4, 142, 1, 52000000.00, 0.00),
+(15, 4, 157, 1, 650000.00, 0.00),
+(16, 4, 158, 2, 2350000.00, 0.00);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `chi_tiet_gio_hang`
+--
+
+CREATE TABLE `chi_tiet_gio_hang` (
+  `id` int(11) NOT NULL,
+  `id_nguoi_dung` int(11) NOT NULL COMMENT 'Khóa ngoại tới nguoi_dung',
+  `id_san_pham` int(11) NOT NULL COMMENT 'Khóa ngoại tới san_pham',
+  `so_luong` int(11) NOT NULL COMMENT 'Số lượng sản phẩm trong giỏ'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -95,6 +109,19 @@ INSERT INTO `danh_muc` (`id`, `ten_dm`, `mo_ta`, `trang_thai`) VALUES
 (18, 'Máy In & Thiết Bị Văn Phòng', 'Máy in, máy scan, máy fax.', 1),
 (19, 'Phụ Kiện Điện Thoại', 'Ốp lưng, dán màn hình, cáp sạc.', 1),
 (20, 'Thiết Bị Đeo Thông Minh', 'Đồng hồ thông minh, vòng tay sức khỏe.', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `danh_sach_yeu_thich`
+--
+
+CREATE TABLE `danh_sach_yeu_thich` (
+  `id_nguoi_dung` int(11) NOT NULL COMMENT 'Khóa ngoại tới nguoi_dung',
+  `id_san_pham` int(11) NOT NULL COMMENT 'Khóa ngoại tới san_pham',
+  `ma_chi_tiet` varchar(255) DEFAULT NULL COMMENT 'Khóa chi tiết (cho biến thể sản phẩm)',
+  `ngay_them` datetime NOT NULL DEFAULT current_timestamp() COMMENT 'Thời gian thêm vào wishlist'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -269,6 +296,35 @@ INSERT INTO `san_pham` (`id`, `id_dm`, `ten_sp`, `gia`, `gia_khuyen_mai`, `so_lu
 (179, 10, 'VGA PNY RTX A4000 16GB', 20000000.00, NULL, 5, 'pny_a4000.jpg', 'Card đồ họa chuyên nghiệp cho thiết kế', 'Dành cho Workstation. GPU NVIDIA Ampere, 16GB GDDR6 ECC.', '2026-10-01 10:20:00', 300, 1),
 (180, 20, 'Đồng Hồ Thông Minh Apple Watch Ultra 2', 22000000.00, 20990000.00, 10, 'apple_watch_ultra_2.jpg', 'Thiết kế bền bỉ, GPS tần số kép', 'Chất liệu Titanium, màn hình sáng 3000 nits, WR100.', '2026-10-05 16:30:00', 500, 1);
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `thong_bao`
+--
+
+CREATE TABLE `thong_bao` (
+  `id` int(11) NOT NULL,
+  `id_nguoi_dung` int(11) NOT NULL COMMENT 'Khóa ngoại tới nguoi_dung',
+  `loai_thong_bao` varchar(50) NOT NULL COMMENT 'Loại thông báo (e.g., price_drop, back_in_stock)',
+  `noi_dung` text NOT NULL COMMENT 'Nội dung thông báo',
+  `da_doc` tinyint(1) NOT NULL DEFAULT 0 COMMENT 'Trạng thái đã đọc (0: Chưa, 1: Rồi)',
+  `ngay_tao` datetime NOT NULL DEFAULT current_timestamp() COMMENT 'Thời gian tạo thông báo'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `thong_ke_doanh_thu`
+--
+
+CREATE TABLE `thong_ke_doanh_thu` (
+  `id` int(11) NOT NULL,
+  `ngay_thong_ke` date NOT NULL COMMENT 'Ngày thống kê (hoặc đầu tháng)',
+  `tong_doanh_thu` decimal(14,2) NOT NULL COMMENT 'Tổng doanh thu (Gross Revenue)',
+  `tong_don_hang` int(11) NOT NULL COMMENT 'Tổng số lượng đơn hàng hoàn thành',
+  `cap_nhat_lan_cuoi` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp() COMMENT 'Lần cuối dữ liệu được cập nhật'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 --
 -- Indexes for dumped tables
 --
@@ -282,6 +338,14 @@ ALTER TABLE `chi_tiet_don_hang`
   ADD KEY `id_san_pham` (`id_san_pham`);
 
 --
+-- Indexes for table `chi_tiet_gio_hang`
+--
+ALTER TABLE `chi_tiet_gio_hang`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `uc_user_product` (`id_nguoi_dung`,`id_san_pham`),
+  ADD KEY `fk_cart_product` (`id_san_pham`);
+
+--
 -- Indexes for table `danh_muc`
 --
 ALTER TABLE `danh_muc`
@@ -289,9 +353,16 @@ ALTER TABLE `danh_muc`
   ADD UNIQUE KEY `ten_dm` (`ten_dm`);
 
 --
--- Indexes for table `don_hang` 
+-- Indexes for table `danh_sach_yeu_thich`
 --
-ALTER TABLE `don_hang` 
+ALTER TABLE `danh_sach_yeu_thich`
+  ADD PRIMARY KEY (`id_nguoi_dung`,`id_san_pham`),
+  ADD KEY `fk_wishlist_product` (`id_san_pham`);
+
+--
+-- Indexes for table `don_hang`
+--
+ALTER TABLE `don_hang`
   ADD PRIMARY KEY (`id`),
   ADD KEY `id_khach_hang` (`id_khach_hang`);
 
@@ -312,6 +383,20 @@ ALTER TABLE `san_pham`
   ADD KEY `id_dm` (`id_dm`);
 
 --
+-- Indexes for table `thong_bao`
+--
+ALTER TABLE `thong_bao`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idx_user_read` (`id_nguoi_dung`,`da_doc`);
+
+--
+-- Indexes for table `thong_ke_doanh_thu`
+--
+ALTER TABLE `thong_ke_doanh_thu`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `ngay_thong_ke` (`ngay_thong_ke`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -320,6 +405,12 @@ ALTER TABLE `san_pham`
 --
 ALTER TABLE `chi_tiet_don_hang`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+
+--
+-- AUTO_INCREMENT for table `chi_tiet_gio_hang`
+--
+ALTER TABLE `chi_tiet_gio_hang`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `danh_muc`
@@ -346,6 +437,18 @@ ALTER TABLE `san_pham`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=181;
 
 --
+-- AUTO_INCREMENT for table `thong_bao`
+--
+ALTER TABLE `thong_bao`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `thong_ke_doanh_thu`
+--
+ALTER TABLE `thong_ke_doanh_thu`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- Constraints for dumped tables
 --
 
@@ -355,6 +458,20 @@ ALTER TABLE `san_pham`
 ALTER TABLE `chi_tiet_don_hang`
   ADD CONSTRAINT `chi_tiet_don_hang_ibfk_1` FOREIGN KEY (`id_don_hang`) REFERENCES `don_hang` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `chi_tiet_don_hang_ibfk_2` FOREIGN KEY (`id_san_pham`) REFERENCES `san_pham` (`id`) ON UPDATE CASCADE;
+
+--
+-- Constraints for table `chi_tiet_gio_hang`
+--
+ALTER TABLE `chi_tiet_gio_hang`
+  ADD CONSTRAINT `fk_cart_product` FOREIGN KEY (`id_san_pham`) REFERENCES `san_pham` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_cart_user` FOREIGN KEY (`id_nguoi_dung`) REFERENCES `nguoi_dung` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `danh_sach_yeu_thich`
+--
+ALTER TABLE `danh_sach_yeu_thich`
+  ADD CONSTRAINT `fk_wishlist_product` FOREIGN KEY (`id_san_pham`) REFERENCES `san_pham` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_wishlist_user` FOREIGN KEY (`id_nguoi_dung`) REFERENCES `nguoi_dung` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `don_hang`
@@ -367,8 +484,14 @@ ALTER TABLE `don_hang`
 --
 ALTER TABLE `san_pham`
   ADD CONSTRAINT `san_pham_ibfk_1` FOREIGN KEY (`id_dm`) REFERENCES `danh_muc` (`id`) ON UPDATE CASCADE;
+
+--
+-- Constraints for table `thong_bao`
+--
+ALTER TABLE `thong_bao`
+  ADD CONSTRAINT `fk_notification_user` FOREIGN KEY (`id_nguoi_dung`) REFERENCES `nguoi_dung` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */; 
