@@ -13,60 +13,11 @@
     
     <div class="app-wrapper">
         
-        <nav class="top-navbar">
-            <div class="navbar-left">
-                <a href="dashboard.php" class="navbar-brand">TechShop</a>
-                <button class="sidebar-toggle" type="button">☰</button> </div>
-            <div class="navbar-search">
-                <input type="text" placeholder="Search...">
-            </div>
-            <div class="navbar-right">
-                <button class="theme-toggle" id="theme-toggle" type="button" title="Chuyển đổi Sáng/Tối">
-                    <span class="icon-sun">[☀️]</span>
-                    <span class="icon-moon">[🌙]</span>
-                </button>
-                <a href="#" class="nav-icon"><i class="bi bi-bell" style="color: #5e6e82"></i></a>
-                <a href="#" class="nav-icon"><i class="bi bi-gear" style="color: #5e6e82"></i></a>
-                <a href="#" class="nav-icon user-avatar">[User]</a>
-            </div>
-        </nav>
-
-        <aside class="sidebar">
-            <nav class="sidebar-nav">
-                <ul>
-                    <li>
-                        <a href="/TechShop/admin/dashboard" class="active">
-                            <span class="icon"><i class="bi bi-house" style="color: #5e6e82"></i></span>
-                            <span class="title">Dashboard</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="/TechShop/admin/products">
-                            <span class="icon"><i class="bi bi-box" style="color: #5e6e82"></i></span>
-                            <span class="title">Quản lý Sản phẩm</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="/TechShop/admin/orders">
-                            <span class="icon"><i class="bi bi-cart" style="color: #5e6e82"></i></span>
-                            <span class="title">Quản lý Đơn hàng</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="/TechShop/admin/users">
-                            <span class="icon"><i class="bi bi-people" style="color: #5e6e82"></i></span>
-                            <span class="title">Quản lý Người dùng</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-logout">
-                        <a href="/TechShop/login.php">
-                            <span class="icon"><i class="bi bi-box-arrow-right" style="color: #5e6e82"></i></span>
-                            <span class="title">Đăng xuất</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </aside>
+        <?php 
+        $active_page = 'dashboard'; 
+        
+        include __DIR__ . '/../includes/Admin/layout_sidebar.php'; 
+        ?>
 
         <main class="main-content">
             

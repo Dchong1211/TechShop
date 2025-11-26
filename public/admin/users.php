@@ -13,140 +13,91 @@
 
     <div class="app-wrapper">
         
-        <nav class="top-navbar">
-            <div class="navbar-left">
-                <a href="dashboard.php" class="navbar-brand">TechShop</a>
-                <button class="sidebar-toggle" type="button">☰</button> </div>
-            <div class="navbar-search">
-                <input type="text" placeholder="Search...">
+        <?php 
+        $active_page = 'users'; 
+        
+        include __DIR__ . '/../includes/Admin/layout_sidebar.php'; 
+        ?>
+
+    <main class="main-content">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title">Quản lý Người dùng</h5>
+
+                <div class="table-actions">
+                    <a href="?controller=customer&action=add" class="btn btn-primary">Thêm Người dùng Mới</a>
+
+                    <!-- SEARCH BOX -->
+                    <form method="GET" class="search-box">
+                        <input type="hidden" name="controller" value="customer">
+                        <input type="hidden" name="action" value="dashboard">
+                        <!-- Lỗi khai báo biến $keyword -->
+                        <input type="text" name="keyword"
+                            placeholder="Tìm kiếm theo Tên / Email..."
+                            value="<?= htmlspecialchars($keyword) ?>">
+                        <button type="submit" class="btn btn-search">Tìm</button>
+                    </form>
+                </div>--
             </div>
-            <div class="navbar-right">
-                <button class="theme-toggle" id="theme-toggle" type="button" title="Chuyển đổi Sáng/Tối">
-                    <span class="icon-sun"><i class="bi bi-sun" style="color: #5e6e82"></i></span>
-                    <span class="icon-moon"><i class="bi bi-moon" style="color: #5e6e82"></i></span>
-                </button>
-                <a href="#" class="nav-icon"><i class="bi bi-bell" style="color: #5e6e82"></i></a>
-                <a href="#" class="nav-icon"><i class="bi bi-gear" style="color: #5e6e82"></i></a>
-                <a href="#" class="nav-icon user-avatar">[User]</a>
-            </div>
-        </nav>
 
-        <aside class="sidebar">
-            <nav class="sidebar-nav">
-                <ul>
-                    <li>
-                        <a href="dashboard.php">
-                            <span class="icon"><i class="bi bi-house" style="color: #5e6e82"></i></span>
-                            <span class="title">Dashboard</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="products.php">
-                            <span class="icon"><i class="bi bi-box" style="color: #5e6e82"></i></span>
-                            <span class="title">Quản lý Sản phẩm</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="orders.php">
-                            <span class="icon"><i class="bi bi-cart" style="color: #5e6e82"></i></span>
-                            <span class="title">Quản lý Đơn hàng</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="users.php" class="active">
-                            <span class="icon"><i class="bi bi-people" style="color: #5e6e82"></i></span>
-                            <span class="title">Quản lý Người dùng</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-logout">
-                        <a href="login.php">
-                            <span class="icon"><i class="bi bi-box-arrow-right" style="color: #5e6e82"></i></span>
-                            <span class="title">Đăng xuất</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </aside>
+            <div class="card-body">
+                <div class="user-table-container">
 
-        <main class="main-content">
-    <div class="card">
-        <div class="card-header">
-            <h5 class="card-title">Quản lý Người dùng</h5>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Tên Người dùng</th>
+                                <th>Email</th>
+                                <th>SĐT</th>
+                                <th>Ngày đăng ký</th>
+                                <th>Trạng thái</th>
+                                <th>Chức năng</th>
+                            </tr>
+                        </thead>
 
-            <div class="table-actions">
-                <a href="?controller=customer&action=add" class="btn btn-primary">Thêm Người dùng Mới</a>
+                        <tbody>
+                            <?php if (!empty($users)): ?>
+                                <?php foreach ($users as $u): ?>
+                                    <tr>
+                                        <td><?= htmlspecialchars($u['ten_khachhang']) ?></td>
+                                        <td><?= htmlspecialchars($u['email']) ?></td>
+                                        <td><?= date("d/m/Y", strtotime($u['created_at'])) ?></td>
 
-                <!-- SEARCH BOX -->
-                <form method="GET" class="search-box">
-                    <input type="hidden" name="controller" value="customer">
-                    <input type="hidden" name="action" value="dashboard">
-                    <!-- Lỗi khai báo biến $keyword -->
-                    <input type="text" name="keyword"
-                           placeholder="Tìm kiếm theo Tên / Email..."
-                           value="<?= htmlspecialchars($keyword) ?>">
-                    <button type="submit" class="btn btn-search">Tìm</button>
-                </form>
-            </div>--
-        </div>
+                                        <td>
+                                            <?php if ($u['status'] == 1): ?>
+                                                <span class="status status-active">Hoạt động</span>
+                                            <?php else: ?>
+                                                <span class="status status-inactive">Khóa</span>
+                                            <?php endif; ?>
+                                        </td>
 
-        <div class="card-body">
-            <div class="user-table-container">
+                                        <td class="action-buttons">
+                                            <a href="?controller=customer&action=edit&id=<?= $u['id'] ?>"
+                                            class="btn btn-edit">Sửa</a>
 
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Tên Người dùng</th>
-                            <th>Email</th>
-                            <th>SĐT</th>
-                            <th>Ngày đăng ký</th>
-                            <th>Trạng thái</th>
-                            <th>Chức năng</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        <?php if (!empty($users)): ?>
-                            <?php foreach ($users as $u): ?>
+                                            <a href="?controller=customer&action=delete&id=<?= $u['id'] ?>"
+                                            class="btn btn-lock"
+                                            onclick="return confirm('Xóa khách hàng này?')">
+                                                Xóa
+                                            </a>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            <?php else: ?>
                                 <tr>
-                                    <td><?= htmlspecialchars($u['ten_khachhang']) ?></td>
-                                    <td><?= htmlspecialchars($u['email']) ?></td>
-                                    <td><?= date("d/m/Y", strtotime($u['created_at'])) ?></td>
-
-                                    <td>
-                                        <?php if ($u['status'] == 1): ?>
-                                            <span class="status status-active">Hoạt động</span>
-                                        <?php else: ?>
-                                            <span class="status status-inactive">Khóa</span>
-                                        <?php endif; ?>
-                                    </td>
-
-                                    <td class="action-buttons">
-                                        <a href="?controller=customer&action=edit&id=<?= $u['id'] ?>"
-                                           class="btn btn-edit">Sửa</a>
-
-                                        <a href="?controller=customer&action=delete&id=<?= $u['id'] ?>"
-                                           class="btn btn-lock"
-                                           onclick="return confirm('Xóa khách hàng này?')">
-                                            Xóa
-                                        </a>
+                                    <td colspan="7" style="text-align:center; padding:20px;">
+                                        Không tìm thấy khách hàng nào.
                                     </td>
                                 </tr>
-                            <?php endforeach; ?>
-                        <?php else: ?>
-                            <tr>
-                                <td colspan="7" style="text-align:center; padding:20px;">
-                                    Không tìm thấy khách hàng nào.
-                                </td>
-                            </tr>
-                        <?php endif; ?>
-                    </tbody>
-                </table>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
 
 
+                </div>
             </div>
         </div>
-    </div>
 </main>
 
     </div>
