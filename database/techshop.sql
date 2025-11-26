@@ -1,202 +1,209 @@
--- =========================================================
--- 🗑 XÓA DB CŨ (NẾU CÓ)
--- =========================================================
-DROP DATABASE IF EXISTS techshop;
+-- phpMyAdmin SQL Dump
+-- version 5.2.1
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1
+-- Generation Time: Nov 13, 2025 at 11:22 AM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
--- =========================================================
--- 🛠 TẠO DATABASE MỚI
--- =========================================================
-CREATE DATABASE techshop CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE techshop;
-
-
-/* =========================================================
-   🧑‍💻 TABLE: USERS
-   ========================================================= */
-CREATE TABLE users (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    email VARCHAR(150) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL,
-    role ENUM('user','admin') DEFAULT 'user',
-
-    -- Email verify
-    email_verified TINYINT(1) DEFAULT 0,
-    email_verified_at DATETIME,
-
-    otp VARCHAR(6),
-    otp_expires_at DATETIME,
-
-    -- Reset password
-    reset_token VARCHAR(64),
-    reset_expires_at DATETIME,
-
-    reset_otp VARCHAR(6),
-    reset_otp_expires DATETIME,
-
-    -- Tình trạng tài khoản
-    status TINYINT(1) DEFAULT 1,
-
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- Tạo admin mặc định
-INSERT INTO users (name, email, password, role, email_verified, status) VALUES (
-    'Admin TechShop',
-    'techshopNT@gmail.com',
-    '$2y$10$5mue1FeO5.w4FNKrQGLpNOvfKhCk3huX3KwjNQH6QCSRN2dXsRKmC',  -- Admin@123
-    'admin',
-    1,
-    1
-);
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
 
 
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
 
-/* =========================================================
-   📍 TABLE: USER ADDRESSES (Địa chỉ nhận hàng)
-   ========================================================= */
-CREATE TABLE user_addresses (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
-    full_name VARCHAR(100) NOT NULL,
-    phone VARCHAR(20) NOT NULL,
-    address TEXT NOT NULL,
-    is_default TINYINT(1) DEFAULT 0,
+--
+-- Database: `techshop_db`
+--
 
-    FOREIGN KEY (user_id) REFERENCES users(id)
-        ON DELETE CASCADE
-        ON UPDATE CASCADE
-);
+-- --------------------------------------------------------
 
+--
+-- Table structure for table `chi_tiet_don_hang`
+--
 
+CREATE TABLE `chi_tiet_don_hang` (
+  `id` int(11) NOT NULL,
+  `id_don_hang` int(11) NOT NULL,
+  `id_san_pham` int(11) NOT NULL,
+  `so_luong` int(11) NOT NULL,
+  `don_gia` decimal(10,2) NOT NULL COMMENT 'Giá tại thời điểm mua'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-/* =========================================================
-   🏷 TABLE: CATEGORIES
-   ========================================================= */
-CREATE TABLE categories (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    description TEXT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+-- --------------------------------------------------------
 
-INSERT INTO categories (name, description) VALUES
-('Laptop', 'Các dòng laptop, notebook, ultrabook'),
-('Chuột', 'Chuột gaming có dây & không dây'),
-('Bàn phím', 'Bàn phím cơ & văn phòng'),
-('Tai nghe', 'Headset, earphone, bluetooth');
+--
+-- Table structure for table `danh_muc`
+--
 
+CREATE TABLE `danh_muc` (
+  `id` int(11) NOT NULL,
+  `ten_dm` varchar(100) NOT NULL,
+  `mo_ta` text DEFAULT NULL,
+  `trang_thai` tinyint(1) NOT NULL DEFAULT 1 COMMENT '1: Hiển thị, 0: Ẩn'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+-- --------------------------------------------------------
 
-/* =========================================================
-   🛒 TABLE: PRODUCTS
-   ========================================================= */
-CREATE TABLE products (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(150) NOT NULL,
-    description TEXT,
-    price DECIMAL(12,2) NOT NULL,
-    image VARCHAR(255),
-    category_id INT,
+--
+-- Table structure for table `don_hang`
+--
 
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+CREATE TABLE `don_hang` (
+  `id` int(11) NOT NULL,
+  `id_khach_hang` int(11) NOT NULL,
+  `tong_tien` decimal(10,2) NOT NULL,
+  `phuong_thuc_thanh_toan` varchar(50) NOT NULL,
+  `ten_nguoi_nhan` varchar(100) NOT NULL,
+  `sdt_nguoi_nhan` varchar(15) NOT NULL,
+  `dia_chi_giao_hang` varchar(255) NOT NULL,
+  `trang_thai_don` enum('cho_xac_nhan','da_xac_nhan','dang_giao','da_giao','huy') NOT NULL DEFAULT 'cho_xac_nhan',
+  `ngay_dat_hang` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-    FOREIGN KEY (category_id) REFERENCES categories(id)
-        ON DELETE SET NULL
-        ON UPDATE CASCADE
-);
+-- --------------------------------------------------------
 
-INSERT INTO products (name, description, price, image, category_id) VALUES
-('Laptop Asus TUF F15', 'Gaming RTX 4060, i7 Gen13', 23990000, 'asus_tuf_f15.jpg', 1),
-('Laptop Acer Nitro 5', 'Gaming RTX 3050, Ryzen 5', 19990000, 'acer_nitro_5.jpg', 1),
-('Chuột Logitech G Pro X', 'Chuột gaming không dây', 2190000, 'logitech_gprox.jpg', 2),
-('Chuột Razer DeathAdder V2', 'Chuột LED RGB nổi tiếng', 1590000, 'razer_da_v2.jpg', 2),
-('Bàn phím Keychron K8', 'Bàn phím cơ Bluetooth cao cấp', 2690000, 'keychron_k8.jpg', 3),
-('Bàn phím Akko 3068B', 'Bàn phím cơ không dây', 1890000, 'akko_3068b.jpg', 3),
-('Tai nghe Razer BlackShark V2', 'Headset 7.1, gaming', 2990000, 'razer_blackshark.jpg', 4),
-('Tai nghe Logitech G733', 'RGB wireless', 3490000, 'logitech_g733.jpg', 4);
+--
+-- Table structure for table `nguoi_dung`
+--
 
+CREATE TABLE `nguoi_dung` (
+  `id` int(11) NOT NULL,
+  `ho_ten` varchar(100) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `mat_khau` varchar(255) NOT NULL,
+  `dien_thoai` varchar(15) DEFAULT NULL,
+  `dia_chi` varchar(255) DEFAULT NULL,
+  `vai_tro` enum('khach','admin') NOT NULL DEFAULT 'khach',
+  `trang_thai` tinyint(1) NOT NULL DEFAULT 1 COMMENT '1: Hoạt động, 0: Bị khóa',
+  `ngay_tao` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+-- --------------------------------------------------------
 
-/* =========================================================
-   🛍 TABLE: CART ITEMS (GIỎ HÀNG)
-   ========================================================= */
-CREATE TABLE cart_items (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
-    product_id INT NOT NULL,
-    quantity INT DEFAULT 1,
+--
+-- Table structure for table `san_pham`
+--
 
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+CREATE TABLE `san_pham` (
+  `id` int(11) NOT NULL,
+  `id_dm` int(11) NOT NULL,
+  `ten_sp` varchar(255) NOT NULL,
+  `gia` decimal(10,2) NOT NULL,
+  `gia_khuyen_mai` decimal(10,2) DEFAULT NULL,
+  `so_luong_ton` int(11) NOT NULL DEFAULT 0,
+  `hinh_anh` varchar(255) DEFAULT NULL COMMENT 'Đường dẫn file ảnh',
+  `mo_ta_ngan` varchar(500) DEFAULT NULL,
+  `chi_tiet` longtext DEFAULT NULL,
+  `ngay_nhap` datetime NOT NULL DEFAULT current_timestamp(),
+  `luot_xem` int(11) NOT NULL DEFAULT 0,
+  `trang_thai` tinyint(1) NOT NULL DEFAULT 1 COMMENT '1: Bán, 0: Ngừng bán'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-    FOREIGN KEY (user_id) REFERENCES users(id)
-        ON DELETE CASCADE,
-    FOREIGN KEY (product_id) REFERENCES products(id)
-        ON DELETE CASCADE
-);
+--
+-- Indexes for dumped tables
+--
 
+--
+-- Indexes for table `chi_tiet_don_hang`
+--
+ALTER TABLE `chi_tiet_don_hang`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `uc_order_product` (`id_don_hang`,`id_san_pham`),
+  ADD KEY `id_san_pham` (`id_san_pham`);
 
+--
+-- Indexes for table `danh_muc`
+--
+ALTER TABLE `danh_muc`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `ten_dm` (`ten_dm`);
 
-/* =========================================================
-   ❤️ TABLE: WISHLIST (Sản phẩm yêu thích)
-   ========================================================= */
-CREATE TABLE wishlist (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
-    product_id INT NOT NULL,
+--
+-- Indexes for table `don_hang`
+--
+ALTER TABLE `don_hang`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `id_khach_hang` (`id_khach_hang`);
 
-    UNIQUE(user_id, product_id),
+--
+-- Indexes for table `nguoi_dung`
+--
+ALTER TABLE `nguoi_dung`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `email` (`email`);
 
-    FOREIGN KEY (user_id) REFERENCES users(id)
-        ON DELETE CASCADE,
-    FOREIGN KEY (product_id) REFERENCES products(id)
-        ON DELETE CASCADE
-);
+--
+-- Indexes for table `san_pham`
+--
+ALTER TABLE `san_pham`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `ten_sp` (`ten_sp`),
+  ADD KEY `id_dm` (`id_dm`);
 
+--
+-- AUTO_INCREMENT for dumped tables
+--
 
+--
+-- AUTO_INCREMENT for table `chi_tiet_don_hang`
+--
+ALTER TABLE `chi_tiet_don_hang`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
-/* =========================================================
-   📦 TABLE: ORDERS (Đơn hàng)
-   ========================================================= */
-CREATE TABLE orders (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
-    address TEXT NOT NULL,
-    total_price DECIMAL(12,2) NOT NULL,
-    payment_method VARCHAR(50) NOT NULL,
+--
+-- AUTO_INCREMENT for table `danh_muc`
+--
+ALTER TABLE `danh_muc`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
-    status ENUM('pending','paid','shipping','completed','cancelled')
-        DEFAULT 'pending',
+--
+-- AUTO_INCREMENT for table `don_hang`
+--
+ALTER TABLE `don_hang`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+--
+-- AUTO_INCREMENT for table `nguoi_dung`
+--
+ALTER TABLE `nguoi_dung`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
-    FOREIGN KEY (user_id) REFERENCES users(id)
-        ON DELETE CASCADE
-);
+--
+-- AUTO_INCREMENT for table `san_pham`
+--
+ALTER TABLE `san_pham`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
-INSERT INTO orders (user_id, total_price, address, payment_method) VALUES
-(1, 23990000, '123 Nguyễn Trãi, TP.HCM', 'COD'),
-(1, 4690000,  '45 Trần Phú, Nha Trang', 'Chuyển khoản');
+--
+-- Constraints for dumped tables
+--
 
+--
+-- Constraints for table `chi_tiet_don_hang`
+--
+ALTER TABLE `chi_tiet_don_hang`
+  ADD CONSTRAINT `chi_tiet_don_hang_ibfk_1` FOREIGN KEY (`id_don_hang`) REFERENCES `don_hang` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `chi_tiet_don_hang_ibfk_2` FOREIGN KEY (`id_san_pham`) REFERENCES `san_pham` (`id`) ON UPDATE CASCADE;
 
+--
+-- Constraints for table `don_hang`
+--
+ALTER TABLE `don_hang`
+  ADD CONSTRAINT `don_hang_ibfk_1` FOREIGN KEY (`id_khach_hang`) REFERENCES `nguoi_dung` (`id`) ON UPDATE CASCADE;
 
-/* =========================================================
-   📦 TABLE: ORDER ITEMS (Sản phẩm trong đơn)
-   ========================================================= */
-CREATE TABLE order_items (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    order_id INT NOT NULL,
-    product_id INT NOT NULL,
-    quantity INT DEFAULT 1,
-    price DECIMAL(12,2) NOT NULL,   -- giá tại thời điểm mua
+--
+-- Constraints for table `san_pham`
+--
+ALTER TABLE `san_pham`
+  ADD CONSTRAINT `san_pham_ibfk_1` FOREIGN KEY (`id_dm`) REFERENCES `danh_muc` (`id`) ON UPDATE CASCADE;
+COMMIT;
 
-    FOREIGN KEY (order_id) REFERENCES orders(id)
-        ON DELETE CASCADE,
-    FOREIGN KEY (product_id) REFERENCES products(id)
-        ON DELETE CASCADE
-);
-
-INSERT INTO order_items (order_id, product_id, quantity, price) VALUES
-(1, 1, 1, 23990000),
-(2, 3, 2, 2190000);
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
