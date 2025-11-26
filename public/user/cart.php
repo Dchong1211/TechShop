@@ -54,14 +54,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $cart = $_SESSION['cart'];
 $subtotal = cart_subtotal();
-$shipping = $subtotal > 0 ? 0 : 0; // Logic phí ship có thể sửa sau
+$shipping = 0; 
 $discount = 0;
 $total    = max(0, $subtotal + $shipping - $discount);
 
 $BACK_URL = 'public/user/index.php';
 $PAGE_TITLE = 'Giỏ hàng';
 
-// Bắt đầu buffer để chèn CSS vào Header
 ob_start();
 ?>
   <link rel="stylesheet" href="public/assets/css/cssUser/cart.css">
@@ -69,7 +68,7 @@ ob_start();
 <?php
 $ADDITIONAL_HEAD_CONTENT = ob_get_clean();
 
-include BASE_PATH . '/includes/header.php';
+include BASE_PATH . '/includes/User/header.php'; // ĐÃ SỬA
 ?>
 
   <div class="cart-progress-bar">
@@ -174,7 +173,7 @@ include BASE_PATH . '/includes/header.php';
         </div>
         <div class="summary-row">
           <span>Giảm giá</span>
-          <span><?= $discount === 0 ? '0₫' : ('- ' . number_format($discount, 0, ',', '.') . '₫') ?></span>
+          <span>0₫</span>
         </div>
         
         <div class="summary-row total">
@@ -182,10 +181,6 @@ include BASE_PATH . '/includes/header.php';
           <span><?= number_format($total, 0, ',', '.') ?>₫</span>
         </div>
         
-        <div style="margin-top: 10px; font-style: italic; font-size: 13px; color: #666;">
-          (Đã bao gồm VAT nếu có)
-        </div>
-
         <a class="btn-checkout" href="public/user/checkout.php">Thanh toán</a>
         <a class="btn-continue" href="<?= $BACK_URL ?>">Tiếp tục mua hàng</a>
       </aside>
@@ -194,5 +189,5 @@ include BASE_PATH . '/includes/header.php';
   </main>
 
 <?php
-include BASE_PATH . '/includes/footer.php';
+include BASE_PATH . '/includes/User/footer.php'; // ĐÃ SỬA
 ?>

@@ -82,11 +82,11 @@ ob_start();
 <link rel="stylesheet" href="public/assets/css/cssUser/index.css?v=6">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 <script src="public/assets/js/user.js?v=1"></script>
-<script src="public/assets/js/indexUser.js?v=3" defer></script> 
+<script src="public/assets/js/indexUser.js?v=1" defer></script> 
 
 <?php
 $ADDITIONAL_BODY_END_CONTENT = ob_get_clean(); 
-include BASE_PATH . '/includes/header.php';
+include BASE_PATH . '/includes/User/header.php';
 ?>
 
 <div class="sticky-banner-container-left"><a href="#"><img loading="lazy" src="public/assets/images/banner_doc_1.jpg" alt="Banner Trái"></a></div>
@@ -97,7 +97,7 @@ include BASE_PATH . '/includes/header.php';
       <div class="row">
 
         <div class="col-xl-3 col-lg-3 col-left-sidebar">
-          <?php include BASE_PATH . '/includes/sidebar.php'; ?>
+          <?php include BASE_PATH . '/includes/User/sidebar.php'; ?>
         </div>
 
         <div class="col-xl-9 col-lg-9 col-main-content">
@@ -282,5 +282,5 @@ include BASE_PATH . '/includes/header.php';
 </main>
 
 <?php
-include BASE_PATH . '/includes/footer.php';
+include BASE_PATH . '/includes/User/footer.php';
 ?>

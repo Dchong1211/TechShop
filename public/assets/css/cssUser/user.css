@@ -1,4 +1,8 @@
-/* === user.css: STYLE DÙNG CHUNG TOÀN WEBSITE === */
+/* ==========================================================================
+   FILE: public/assets/css/cssUser/user.css
+   ========================================================================== */
+
+/* --- 1. THIẾT LẬP CHUNG --- */
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 :root {
@@ -11,6 +15,7 @@
   --white: #fff;
   --text: #222;
   --muted: #666;
+  --main-red: #d70018;
   --radius: 8px;
   --shadow: 0 2px 8px rgba(0,0,0,.04);
   --nav-accent: #f0f0f0;
@@ -22,11 +27,12 @@ body {
   background-attachment: fixed;
   color: var(--text);
   line-height: 1.4;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
-/* --- HEADER & TOPBAR --- */
+/* --- 2. HEADER & TOPBAR --- */
 .topbar { background: #222; color: #fff; font-size: 13px; padding: 6px 16px; }
-.main-header { background: #fff; box-shadow: var(--shadow); }
+.main-header { background: var(--white); box-shadow: var(--shadow); position: relative; z-index: 1000; }
 .header-inner { max-width: 1200px; margin: 0 auto; padding: 14px 16px; display: flex; gap: 20px; align-items: center; }
 .logo { text-decoration: none; font-size: 26px; font-weight: 700; color: var(--c-primary); min-width: 140px; }
 
@@ -35,41 +41,59 @@ body {
 .search-box button { border: none; background: var(--c-gradient); color: #fff; padding: 0 20px; cursor: pointer; transition: filter 0.2s ease; }
 .search-box button:hover { filter: brightness(1.15); }
 
-.header-actions { display: flex; gap: 10px; }
-.header-actions a { background: #f1f1f1; border-radius: 6px; text-decoration: none; color: #333; font-size: 13px; padding: 6px 10px; transition: background 0.2s ease, color 0.2s ease; }
+.header-actions { display: flex; gap: 10px; align-items: center; }
+.header-actions a { background: #f1f1f1; border-radius: 6px; text-decoration: none; color: #333; font-size: 13px; padding: 6px 10px; transition: background 0.2s ease, color 0.2s ease; white-space: nowrap; }
 .header-actions a:hover { background: rgba(173, 144, 232, 0.1); color: var(--c-primary); }
 
-/* --- NAVIGATION (MENU) --- */
+/* --- 3. NAVIGATION --- */
 .main-nav { background: var(--c-gradient); width: 100%; box-shadow: 0 1px 0 rgba(0,0,0,.06); }
-.main-nav .nav-inner { max-width: 1200px; width: 100%; margin: 0 auto; padding: 10px 16px; display: flex; justify-content: center; align-items: center; gap: 0; }
+.main-nav .nav-inner { max-width: 1200px; width: 100%; margin: 0 auto; padding: 10px 16px; display: flex; align-items: center; gap: 0; }
+.nav-item-toggle button { background: none; border: none; color: white; font-weight: bold; font-size: 14px; display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 12px 18px; }
+.hamburger-icon span { display: block; width: 20px; height: 2px; background: white; margin-bottom: 4px; }
 .main-nav .nav-inner a { position: relative; color: #fff; text-decoration: none; font-size: 14px; font-weight: 500; white-space: nowrap; padding: 12px 18px; line-height: 1; border-radius: 8px; transition: background .15s ease; }
-.main-nav .nav-inner a:not(:first-child) { margin-left: 18px; }
+.main-nav .nav-inner a:not(:first-child) { margin-left: 10px; }
 .main-nav .nav-inner a:hover, .main-nav .nav-inner a.active { background: rgba(255,255,255,.18); color: var(--nav-accent); }
 
-/* --- SIDEBAR DANH MỤC (Dùng chung cho nhiều trang) --- */
-.category-sidebar { display: block; background: #fff; border-radius: var(--radius); box-shadow: var(--shadow); padding: 10px 0; margin-top: 0; }
-.category-sidebar h3 { font-size: 15px; font-weight: 600; padding: 0 15px 6px; border-bottom: 1px solid #eee; }
+/* --- 4. SIDEBAR --- */
+.category-sidebar { display: block; background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); padding: 10px 0; margin-top: 0; position: relative; }
+.category-sidebar h3 { font-size: 15px; font-weight: 600; padding: 0 15px 6px; border-bottom: 1px solid #eee; margin-bottom: 5px; }
 .category-sidebar ul { list-style: none; }
 .category-sidebar li a { display: flex; align-items: center; gap: 8px; padding: 8px 15px; text-decoration: none; color: #333; font-size: 13px; line-height: 1.3; }
-.category-sidebar li a:hover { background: rgba(173, 144, 232, 0.1); color: var(--c-primary); }
+.category-sidebar li a:hover { background: rgba(173, 144, 232, 0.1); color: var(--c-primary); font-weight: 600; }
 .sidebar-icon { width: 20px; height: 20px; object-fit: contain; flex-shrink: 0; }
+.sidebar-submenu { display: none; padding-left: 30px; } 
 
-/* --- COMPONENT: THẺ SẢN PHẨM (Dùng chung) --- */
-.product-section { background: #fff; border-radius: var(--radius); box-shadow: var(--shadow); padding: 16px; margin-bottom: 16px; }
+/* --- 5. MEGA MENU --- */
+.col-left-sidebar { position: relative !important; }
+.sidebar-megamenu-panel { display: none; position: absolute; top: 0; left: 100%; margin-left: -5px; width: 800px; height: auto; min-height: 300px; padding: 15px 20px; background-color: #fff; border: 1px solid #e0e0e0; box-shadow: 5px 5px 15px rgba(0,0,0,0.15); z-index: 99999; border-top-right-radius: 8px; border-bottom-right-radius: 8px; border-bottom-left-radius: 8px; }
+.sidebar-megamenu-panel::before { content: ""; position: absolute; top: 0; bottom: 0; left: -30px; width: 40px; background: transparent; z-index: 1; }
+.sidebar-megamenu-panel.active { display: block !important; }
+.megamenu-grid-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 20px 15px; }
+.megamenu-grid-column h4 { font-size: 13px; font-weight: 700; color: #fff; background: var(--main-red); padding: 4px 10px; border-radius: 4px; margin-top: 0; margin-bottom: 8px; text-transform: uppercase; display: inline-block; }
+.megamenu-grid-column ul { list-style: none; padding: 0; margin: 0; }
+.megamenu-grid-column ul li { margin-bottom: 2px; }
+.megamenu-grid-column ul li a { text-decoration: none; color: #444; font-size: 13px; padding: 4px 8px; border-radius: 4px; display: block; transition: all 0.2s ease; }
+.megamenu-grid-column ul li a:hover { color: var(--main-red); background-color: #fff0f0; transform: translateX(2px); }
+.sidebar-item-with-submenu.megamenu-hover > a { background: var(--main-red); color: #fff; position: relative; z-index: 1000; }
+.sidebar-item-with-submenu.megamenu-hover > a img { filter: brightness(0) invert(1); }
+
+/* --- 6. PRODUCT CARD --- */
+.product-section { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); padding: 16px; margin-bottom: 16px; }
 .section-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
-.section-head h2 { font-size: 18px; }
+.section-head h2 { font-size: 18px; color: var(--text); }
 .section-head a { text-decoration: none; font-size: 13px; color: var(--c-primary); }
 
-.product-card { background: #fff; border: 1px solid #eee; border-radius: var(--radius); overflow: hidden; text-align: center; transition: .15s ease; }
-.product-card:hover { border-color: rgba(173, 144, 232, 0.5); transform: translateY(-2px); }
-.product-card img { width: 100%; height: 130px; object-fit: cover; background: #ddd; }
-.product-card h3 { font-size: 14px; padding: 8px 8px 0 8px; min-height: 40px; }
-.product-card .price { color: var(--c-primary); font-weight: 700; margin: 4px 0 8px 0; }
-.product-card a { display: inline-block; text-decoration: none; background: #f1f1f1; color: #333; font-size: 13px; margin-bottom: 10px; padding: 4px 14px; border-radius: 999px; }
-.product-card a:hover { background: rgba(173, 144, 232, 0.1); color: var(--c-primary); }
+.product-card { background: var(--white); border: 1px solid #eee; border-radius: var(--radius); overflow: hidden; text-align: center; transition: .15s ease; }
+/* --- FIX RUNG LẮC: Đã bỏ transform translateY --- */
+.product-card:hover { border-color: var(--main-red); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+.product-card img { width: 100%; height: 160px; object-fit: contain; padding: 10px; }
+.product-card h3 { font-size: 14px; padding: 0 10px; min-height: 40px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; color: var(--text); margin-bottom: 5px; }
+.product-card .price { color: var(--main-red); font-weight: 700; margin: 5px 0 10px 0; font-size: 15px; }
+.product-card a { display: inline-block; text-decoration: none; background: #f1f1f1; color: #333; font-size: 13px; margin-bottom: 15px; padding: 6px 14px; border-radius: 999px; }
+.product-card a:hover { background: var(--main-red); color: white; }
 
-/* --- FOOTER --- */
-.main-footer { background: #222; color: #ccc; padding: 40px 0 0 0; font-size: 14px; }
+/* --- 7. FOOTER --- */
+.main-footer { background: #222; color: #ccc; padding: 40px 0 0 0; font-size: 14px; margin-top: 40px; }
 .footer-container { max-width: 1200px; margin: 0 auto; padding: 0 16px; }
 .footer-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 24px; padding-bottom: 30px; }
 .footer-column h4 { font-size: 16px; color: #fff; margin-bottom: 15px; font-weight: 600; }
@@ -82,12 +106,76 @@ body {
 .social-icons a:hover { background: var(--c-gradient); }
 .footer-bottom-bar { border-top: 1px solid #444; padding: 20px 0; text-align: center; font-size: 13px; color: #999; }
 
-/* --- RESPONSIVE CƠ BẢN --- */
+/* ================================================= */
+/* === 8. DARK MODE - CẤU HÌNH CHI TIẾT === */
+/* ================================================= */
+
+[data-theme="dark"] {
+    --white: #141414; /* Nền thẻ tối */
+    --text: #ffffff;  /* Chữ trắng */
+    --muted: #ccc;    
+    --bg: #0a0a0a;    /* Nền web đen */
+    --shadow: 0 4px 12px rgba(0,0,0,0.5); 
+}
+
+[data-theme="dark"] body { background: var(--bg); color: var(--text); }
+
+/* --- Header & Sidebar --- */
+[data-theme="dark"] .main-header, 
+[data-theme="dark"] .category-sidebar { 
+    background: #1a1a1a; border-color: #333; 
+}
+[data-theme="dark"] .category-sidebar li a { color: #ccc; }
+[data-theme="dark"] .category-sidebar li a:hover { color: var(--c-secondary); background: #333; }
+
+/* --- FIX CHỮ TỐI Ở TRANG CHỦ (Quan Trọng) --- */
+[data-theme="dark"] .section-head h2 {
+    color: #ffffff !important; /* Ép chữ tiêu đề thành trắng */
+    text-shadow: 0 0 10px rgba(255,255,255,0.2); /* Thêm bóng sáng nhẹ */
+}
+[data-theme="dark"] .section-head a, 
+[data-theme="dark"] .view-all {
+    color: #6EEBEE !important; /* Link "Xem tất cả" màu xanh neon */
+}
+
+/* --- Product Card Dark Mode --- */
+[data-theme="dark"] .product-card { 
+    background: #1f1f1f; border: 1px solid #333; 
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+}
+[data-theme="dark"] .product-card h3 { 
+    color: #ffffff !important; /* Tên sản phẩm trắng tinh */
+    font-weight: 600;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+}
+[data-theme="dark"] .product-card .price { 
+    color: #ff4d4f !important; /* Giá tiền đỏ neon */
+    text-shadow: 0 0 8px rgba(255, 77, 79, 0.4); 
+}
+[data-theme="dark"] .product-card a, 
+[data-theme="dark"] .product-card button { 
+    background: #2a2a2a; color: #fff; border: 1px solid #444; 
+}
+[data-theme="dark"] .product-card a:hover,
+[data-theme="dark"] .product-card button:hover { 
+    background: #d70018; border-color: #d70018; 
+    box-shadow: 0 0 10px rgba(215, 0, 24, 0.6);
+}
+
+/* --- Mega Menu Dark Mode --- */
+[data-theme="dark"] .sidebar-megamenu-panel { background-color: #1a1a1a; border-color: #333; }
+[data-theme="dark"] .megamenu-grid-column h4 { box-shadow: 0 2px 5px rgba(0,0,0,0.5); }
+[data-theme="dark"] .megamenu-grid-column ul li a { color: #ddd; }
+[data-theme="dark"] .megamenu-grid-column ul li a:hover { color: #ff4d4f; background-color: #333; }
+
+/* --- Responsive --- */
 @media (max-width: 991px) {
-  .footer-grid { grid-template-columns: repeat(3, 1fr); }
-  .header-inner, .main-nav .nav-inner { flex-wrap: wrap; }
+    .footer-grid { grid-template-columns: repeat(3, 1fr); }
+    .header-inner, .main-nav .nav-inner { flex-wrap: wrap; }
+    .sidebar-megamenu-panel { display: none !important; }
 }
 @media (max-width: 520px) {
-  .footer-grid { grid-template-columns: 1fr; }
-  .search-box { order: 3; margin-top: 10px; width: 100%; }
+    .footer-grid { grid-template-columns: 1fr; }
+    .search-box { order: 3; margin-top: 10px; width: 100%; }
+    .header-actions a { padding: 8px; }
 }

@@ -168,3 +168,9 @@
 
   </ul>
 </aside>
+
+<?php 
+// --- QUAN TRỌNG: INCLUDE FILE PANEL MEGA MENU Ở ĐÂY ---
+// Code này giúp load nội dung các bảng menu con để JS hiển thị
+include 'megamenu_panels.php'; 
+?>

@@ -3,10 +3,7 @@ declare(strict_types=1);
 session_start();
 define('BASE_PATH', dirname(__DIR__));
 
-// 1. LẤY DỮ LIỆU
 $orders = $_SESSION['orders'] ?? [];
-
-// 2. TÌM ĐƠN HÀNG
 $viewId = $_GET['id'] ?? '';
 $viewIndex = -1; 
 
@@ -19,22 +16,15 @@ if ($viewId) {
     }
 }
 
-// --- SỬA 1: PHP REDIRECT ---
-// Nếu không tìm thấy đơn -> Về danh sách
 if ($viewIndex === -1) {
-    // Đang ở cùng thư mục public/user, chỉ cần gọi tên file là được
     header('Location: orders.php'); 
     exit;
 }
 
 $view = $orders[$viewIndex];
 
-// 3. XỬ LÝ HỦY ĐƠN
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'cancel') {
     $_SESSION['orders'][$viewIndex]['status'] = 'cancelled';
-    
-    // --- SỬA 2: RELOAD TRANG ---
-    // Dùng tên file trực tiếp vì đang ở cùng thư mục
     header("Location: orders_detail.php?id=" . urlencode($viewId));
     exit;
 }
@@ -47,11 +37,11 @@ $PAGE_TITLE = 'Chi tiết đơn hàng #' . $view['id'];
 
 ob_start();
 ?>
-<link rel="stylesheet" href="/TechShop/public/assets/css/cssUser/orders_detail.css">
+<link rel="stylesheet" href="public/assets/css/cssUser/orders_detail.css">
 
 <?php
 $ADDITIONAL_HEAD_CONTENT = ob_get_clean();
-include BASE_PATH . '/includes/header.php';
+include BASE_PATH . '/includes/User/header.php'; // ĐÃ SỬA
 ?>
 
 <main class="page-detail">
@@ -130,7 +120,7 @@ include BASE_PATH . '/includes/header.php';
 
         <div class="card" style="padding: 15px;">
             <div class="btn-group">
-                <a href="/TechShop/public/user/index.php" class="btn btn-primary">Mua thêm sản phẩm khác</a>
+                <a href="public/user/index.php" class="btn btn-primary">Mua thêm sản phẩm khác</a>
                 
                 <?php if(!isset($view['status']) || $view['status'] !== 'cancelled'): ?>
                     <form method="POST" onsubmit="return confirm('Bạn có chắc chắn muốn hủy đơn hàng này không?');">
@@ -139,12 +129,12 @@ include BASE_PATH . '/includes/header.php';
                     </form>
                 <?php endif; ?>
 
-                <a href="/TechShop/public/user/orders.php" class="btn btn-secondary">← Quay lại danh sách đơn</a>
+                <a href="public/user/orders.php" class="btn btn-secondary">← Quay lại danh sách đơn</a>
             </div>
         </div>
     </aside>
 </main>
 
 <?php
-include BASE_PATH . '/includes/footer.php';
+include BASE_PATH . '/includes/User/footer.php'; // ĐÃ SỬA
 ?>

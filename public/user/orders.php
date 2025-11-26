@@ -3,7 +3,6 @@ declare(strict_types=1);
 session_start();
 define('BASE_PATH', dirname(__DIR__));
 
-// Lấy danh sách đơn hàng (Sau này sẽ SELECT từ DB)
 $orders = $_SESSION['orders'] ?? [];
 
 function money_vn($v){ return number_format((float)$v,0,',','.').' ₫'; }
@@ -37,7 +36,7 @@ ob_start();
 <?php
 $ADDITIONAL_HEAD_CONTENT = ob_get_clean();
 
-include BASE_PATH . '/includes/header.php';
+include BASE_PATH . '/includes/User/header.php'; // ĐÃ SỬA
 ?>
 
 <main class="page-orders">
@@ -46,7 +45,7 @@ include BASE_PATH . '/includes/header.php';
         
         <?php if (empty($orders)): ?>
             <div class="empty-box">
-                <img src="https://cdn-icons-png.flaticon.com/512/2038/2038854.png" width="80" alt="Empty" style="opacity:0.5; margin-bottom:15px;">
+                <i class="fa-solid fa-box-open" style="font-size: 50px; color: #ddd; margin-bottom: 15px;"></i>
                 <p style="color:#666; margin-bottom:20px;">Bạn chưa có đơn hàng nào.</p>
                 <a class="btn btn-home" href="public/user/index.php">Mua sắm ngay</a>
             </div>
@@ -64,7 +63,6 @@ include BASE_PATH . '/includes/header.php';
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- Đảo ngược mảng để đơn mới nhất lên đầu -->
                         <?php foreach (array_reverse($orders) as $o): ?>
                             <tr>
                                 <td><strong>#<?= htmlspecialchars($o['id'], ENT_QUOTES) ?></strong></td>
@@ -79,7 +77,6 @@ include BASE_PATH . '/includes/header.php';
                                     <?php endif; ?>
                                 </td>
                                 <td style="text-align:right">
-                                    <!-- Link trỏ đúng về orders_detail.php -->
                                     <a class="btn btn-view" href="public/user/orders_detail.php?id=<?= urlencode($o['id']) ?>">Xem chi tiết</a>
                                 </td>
                             </tr>
@@ -92,5 +89,5 @@ include BASE_PATH . '/includes/header.php';
 </main>
 
 <?php
-include BASE_PATH . '/includes/footer.php';
+include BASE_PATH . '/includes/User/footer.php'; // ĐÃ SỬA
 ?>

@@ -42,6 +42,7 @@ if ($_SERVER['REQUEST_METHOD']==='POST') {
       'address'=>$address,
       'payment'=>$payment,
       'note'=>$note,
+      'status'=>'pending', // Thêm trạng thái mặc định
       'created_at'=>date('Y-m-d H:i:s')
     ];
     $_SESSION['cart'] = [];
@@ -73,16 +74,17 @@ ob_start();
 <?php
 $ADDITIONAL_HEAD_CONTENT = ob_get_clean();
 
-include BASE_PATH . '/includes/header.php';
+include BASE_PATH . '/includes/User/header.php'; // ĐÃ SỬA
 ?>
 
   <?php if ($done): ?>
     <main class="success">
       <div class="card" style="text-align:center">
-        <div>Đặt hàng thành công</div>
-        <div class="ok">Mã đơn: <?= htmlspecialchars($orderId,ENT_QUOTES) ?></div>
-        <p>Chúng tôi đã nhận đơn hàng của bạn.</p>
-        <div style="display:flex;gap:12px;justify-content:center;margin-top:12px">
+        <div style="font-size: 50px; color: #52c41a;"><i class="fa-regular fa-circle-check"></i></div>
+        <div class="ok">Đặt hàng thành công</div>
+        <div>Mã đơn: <strong><?= htmlspecialchars($orderId,ENT_QUOTES) ?></strong></div>
+        <p>Cảm ơn bạn đã mua hàng tại TechShop.</p>
+        <div style="display:flex;gap:12px;justify-content:center;margin-top:20px">
           <a class="btn" href="public/user/orders.php">Xem đơn hàng</a>
           <a class="btn secondary" href="public/user/index.php">Về trang chủ</a>
         </div>
@@ -119,9 +121,9 @@ include BASE_PATH . '/includes/header.php';
             <label>Ghi chú</label>
             <textarea name="note" rows="3"><?= htmlspecialchars($_POST['note'] ?? '',ENT_QUOTES) ?></textarea>
           </div>
-          <div style="display:flex;gap:12px;align-items:center;margin-top:8px">
-            <button class="btn" type="submit">Đặt hàng</button>
-            <a class="btn secondary" href="public/user/cart.php">← Quay lại giỏ hàng</a>
+          <div style="display:flex;gap:12px;align-items:center;margin-top:20px">
+            <button class="btn" type="submit" style="width:150px">Đặt hàng</button>
+            <a class="btn secondary" href="public/user/cart.php">← Giỏ hàng</a>
           </div>
         </form>
       </section>
@@ -129,29 +131,28 @@ include BASE_PATH . '/includes/header.php';
       <aside class="card">
         <h2>Tóm tắt đơn hàng</h2>
         <table class="items">
-          <thead><tr><th>Sản phẩm</th><th style="width:90px">SL</th><th style="width:140px">Thành tiền</th></tr></thead>
+          <thead><tr><th>Sản phẩm</th><th style="width:50px">SL</th><th style="width:110px;text-align:right">Tiền</th></tr></thead>
           <tbody>
           <?php foreach ($cart as $it):
             $line = (float)$it['price'] * (int)$it['qty']; ?>
             <tr>
               <td>
-                <div style="font-weight:600"><?= htmlspecialchars($it['name'],ENT_QUOTES) ?></div>
-                <small><?= money_vn($it['price']) ?></small>
+                <div style="font-weight:600;font-size:13px"><?= htmlspecialchars($it['name'],ENT_QUOTES) ?></div>
+                <small style="color:#888"><?= money_vn($it['price']) ?></small>
               </td>
-              <td><?= (int)$it['qty'] ?></td>
-              <td><?= money_vn($line) ?></td>
+              <td style="text-align:center"><?= (int)$it['qty'] ?></td>
+              <td style="text-align:right"><?= money_vn($line) ?></td>
             </tr>
           <?php endforeach; ?>
           </tbody>
         </table>
         <div class="row"><span>Tạm tính</span><strong><?= money_vn($subtotal) ?></strong></div>
         <div class="row"><span>Vận chuyển</span><span><?= $shipping===0?'Miễn phí':money_vn($shipping) ?></span></div>
-        <div class="row"><span>Giảm giá</span><span><?= money_vn($discount) ?></span></div>
-        <div class="row total"><span>Tổng cộng</span><span><?= money_vn($total) ?></span></div>
+        <div class="row total"><span>Tổng cộng</span><span style="color:#d70018"><?= money_vn($total) ?></span></div>
       </aside>
     </main>
   <?php endif; ?>
 
 <?php
-include BASE_PATH . '/includes/footer.php';
+include BASE_PATH . '/includes/User/footer.php'; // ĐÃ SỬA
 ?>

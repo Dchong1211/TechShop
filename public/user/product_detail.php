@@ -1,11 +1,12 @@
 <?php
-define('BASE_PATH', dirname(__DIR__));
+define('BASE_PATH', dirname(__DIR__)); // Trỏ về folder /public
 session_start();
 
 $product_id = $_GET['id'] ?? '';
 $product = null;
 
 if ($product_id) {
+    // API giả lập, đảm bảo server local bật
     $json_data = @file_get_contents("http://localhost/TechShop/app/api/get_products.php");
     $all_products = ($json_data) ? json_decode($json_data, true) : [];
     
@@ -19,21 +20,21 @@ if ($product_id) {
     }
 }
 
+// Nếu không tìm thấy SP
 if (!$product) {
     $PAGE_TITLE = 'Không tìm thấy';
     $SHOW_SEARCH = true;
-    include BASE_PATH . '/includes/header.php';
+    include BASE_PATH . '/includes/User/header.php'; // ĐÃ SỬA
     echo '<main class="homepage" role="main" style="padding: 20px;"><div class="main-content"><p>Sản phẩm không tồn tại hoặc đã bị xoá.</p><a href="public/user/index.php">Về trang chủ</a></div></main>';
-    include BASE_PATH . '/includes/footer.php';
+    include BASE_PATH . '/includes/User/footer.php'; // ĐÃ SỬA
     exit;
 }
 
 $PAGE_TITLE = $product['name'];
 $SHOW_SEARCH = true;
-
 $ADDITIONAL_HEAD_CONTENT = '<link rel="stylesheet" href="public/assets/css/cssUser/product_detail.css?v=1">';
 
-include BASE_PATH . '/includes/header.php';
+include BASE_PATH . '/includes/User/header.php'; // ĐÃ SỬA
 ?>
 
   <main class="homepage" role="main">
@@ -48,7 +49,7 @@ include BASE_PATH . '/includes/header.php';
           <div class="pdp-price"><?= number_format((float)$product['price'], 0, ',', '.') ?>đ</div>
           
           <p class="pdp-desc">
-            (Đây là mô tả sản phẩm. Bạn có thể thêm trường 'description' vào API và hiển thị ở đây.)
+            (Mô tả sản phẩm: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sản phẩm chính hãng, bảo hành 12 tháng.)
           </p>
 
           <form class="pdp-form" action="public/user/cart.php" method="POST">
@@ -70,5 +71,5 @@ include BASE_PATH . '/includes/header.php';
   </main>
 
 <?php
-include BASE_PATH . '/includes/footer.php';
+include BASE_PATH . '/includes/User/footer.php'; // ĐÃ SỬA
 ?>

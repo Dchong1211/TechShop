@@ -14,7 +14,7 @@
     </div>
 
     <div class="nav-item">
-      <a href="public/user/dashboard.php">Trang chủ</a>
+      <a href="public/user/index.php">Trang chủ</a>
     </div>
     <div class="nav-item">
       <a href="public/user/product.php?cate=laptop">Laptop</a>
@@ -35,7 +35,7 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     
-    // --- Code xử lý nút hamburger (cho menu mobile) ---
+    // --- Code xử lý nút hamburger (cho mobile) ---
     const sidebarToggleBtn = document.getElementById('sidebar-toggle-btn');
     const sidebarOverlay = document.getElementById('sidebar-overlay');
     const sidebarMobile = document.querySelector('.category-sidebar'); 
@@ -50,91 +50,77 @@ document.addEventListener('DOMContentLoaded', function() {
         sidebarMobile.addEventListener('click', (e) => e.stopPropagation());
     }
 
-    // --- Code xử lý submenu (accordion) CỦA SIDEBAR (dùng cho mobile) ---
+    // --- Code xử lý submenu Mobile (Accordion) ---
     document.querySelectorAll('.category-sidebar .sidebar-item-with-submenu > a').forEach(button => {
         button.addEventListener('click', function (event) {
-            // Chỉ chạy accordion trên mobile (khi nút hamburger hiển thị)
             if (window.innerWidth <= 991) {
+                event.preventDefault(); // Chặn link trên mobile để mở menu
                 const parentItem = this.closest('.sidebar-item-with-submenu');
-                const isSubmenuOpen = parentItem.classList.contains('submenu-open');
-
-                if (this.getAttribute('href') === '#' || (parentItem.querySelector('.sidebar-submenu') && isSubmenuOpen)) {
-                    event.preventDefault();
-                }
-
-                if (isSubmenuOpen) {
-                    parentItem.classList.remove('submenu-open');
-                } else {
-                    parentItem.classList.add('submenu-open');
-                }
+                parentItem.classList.toggle('submenu-open');
             }
         });
     });
 
-    // ===============================================
-    // === CODE MỚI: XỬ LÝ MEGA MENU (CHO DESKTOP) ===
-    // ===============================================
-    const megamenuItems = document.querySelectorAll('.nav-item-has-megamenu');
-    const megamenuPanels = document.querySelectorAll('.sidebar-megamenu-panel');
-    const sidebarContainer = document.querySelector('.col-left-sidebar');
-    let hoverTimeout;
+    // ============================================================
+    // === FIX LỖI NHẤP NHÁY: DÙNG TIMEOUT (DELAY) CHO DESKTOP ===
+    // ============================================================
+    if (window.innerWidth > 991) {
+        const menuItems = document.querySelectorAll('.nav-item-has-megamenu');
+        let activeTimeout; // Biến lưu bộ đếm thời gian
+        let currentActivePanel = null;
+        let currentActiveItem = null;
 
-    // Chỉ chạy logic này trên Desktop
-    if (window.innerWidth > 991 && sidebarContainer) {
-        
-        megamenuItems.forEach(item => {
+        // Hàm tắt toàn bộ menu
+        function closeAllMenus() {
+            document.querySelectorAll('.sidebar-megamenu-panel').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-item-has-megamenu').forEach(i => i.classList.remove('megamenu-hover'));
+            currentActivePanel = null;
+            currentActiveItem = null;
+        }
+
+        // 1. Xử lý khi di chuột vào ITEM (Laptop, PC...)
+        menuItems.forEach(item => {
             const targetId = item.getAttribute('data-megamenu-target');
             const panel = document.getElementById(targetId);
 
             item.addEventListener('mouseenter', function() {
-                clearTimeout(hoverTimeout);
-                // 1. Tắt hết các mục khác
-                hideAllMegaMenus();
-                
-                // 2. Thêm class hover cho mục này (để đổi màu)
-                item.classList.add('megamenu-hover');
-                
-                // 3. Hiển thị panel tương ứng
-                if (panel) {
-                    // Tính toán vị trí
-                    const sidebarRect = sidebarContainer.getBoundingClientRect();
-                    const itemRect = item.getBoundingClientRect();
-                    
-                    // Vị trí top: Căn theo mục li được hover
-                    panel.style.top = itemRect.top - sidebarRect.top + 'px'; 
-                    // Vị trí left: Nằm ngay bên phải sidebar
-                    panel.style.left = sidebarContainer.clientWidth + 'px'; 
+                // Nếu chuột quay lại item, hủy lệnh tắt (nếu có)
+                clearTimeout(activeTimeout);
 
-                    panel.classList.add('active');
+                // Tắt menu cũ nếu đang mở cái khác
+                if (currentActiveItem && currentActiveItem !== item) {
+                    currentActiveItem.classList.remove('megamenu-hover');
+                    if (currentActivePanel) currentActivePanel.classList.remove('active');
                 }
+
+                // Bật menu mới
+                item.classList.add('megamenu-hover');
+                if (panel) {
+                    panel.classList.add('active');
+                    currentActivePanel = panel;
+                }
+                currentActiveItem = item;
+            });
+
+            // Khi chuột rời khỏi Item -> Chờ 200ms rồi mới tắt
+            item.addEventListener('mouseleave', function() {
+                activeTimeout = setTimeout(closeAllMenus, 200); // Delay 200ms
             });
         });
 
-        // Thêm sự kiện 'mouseleave' cho toàn bộ cột bên trái
-        // (bao gồm sidebar VÀ khu vực chứa megamenu)
-        sidebarContainer.addEventListener('mouseleave', function() {
-            // Đặt một khoảng trễ nhỏ (ví dụ 300ms) trước khi ẩn
-            // để người dùng có thời gian di chuột từ sidebar sang megamenu
-            hoverTimeout = setTimeout(hideAllMegaMenus, 300);
-        });
+        // 2. Xử lý khi di chuột vào BẢNG MENU CON (Panel)
+        const allPanels = document.querySelectorAll('.sidebar-megamenu-panel');
+        allPanels.forEach(panel => {
+            // Khi chuột vào bảng menu -> Hủy lệnh tắt (giữ menu mở)
+            panel.addEventListener('mouseenter', function() {
+                clearTimeout(activeTimeout);
+            });
 
-        // Nếu chuột đi vào lại container (sidebar hoặc panel) thì hủy hẹn giờ
-        sidebarContainer.addEventListener('mouseenter', function() {
-            clearTimeout(hoverTimeout);
-        });
-        
-        // Cần lắng nghe cả các panel nữa
-        megamenuPanels.forEach(panel => {
-           panel.addEventListener('mouseenter', function() {
-               clearTimeout(hoverTimeout);
-           });
+            // Khi chuột rời bảng menu -> Chờ 200ms rồi tắt
+            panel.addEventListener('mouseleave', function() {
+                activeTimeout = setTimeout(closeAllMenus, 200);
+            });
         });
     }
-
-    function hideAllMegaMenus() {
-        megamenuItems.forEach(item => item.classList.remove('megamenu-hover'));
-        megamenuPanels.forEach(panel => panel.classList.remove('active'));
-    }
-
 });
 </script>

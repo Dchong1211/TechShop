@@ -17,6 +17,7 @@ if ($category_slug == 'all') {
     $products_list = $all_products;
     $page_title = 'Tất cả sản phẩm';
 } else {
+    // Lọc tương đối đơn giản theo chuỗi
     $products_list = array_filter($all_products, function($p) use ($category_slug) {
         if (empty($p['category'])) return false;
         $c = strtolower((string)$p['category']);
@@ -27,7 +28,7 @@ if ($category_slug == 'all') {
 
 $SHOW_SEARCH = true;
 
-include BASE_PATH . '/includes/header.php';
+include BASE_PATH . '/includes/User/header.php'; // ĐÃ SỬA
 ?>
 
   <main class="homepage" role="main">
@@ -35,7 +36,7 @@ include BASE_PATH . '/includes/header.php';
       <div class="row">
 
         <div class="col-xl-3 col-lg-3 col-left-sidebar">
-          <?php include BASE_PATH . '/includes/sidebar.php'; ?>
+          <?php include BASE_PATH . '/includes/User/sidebar.php'; // ĐÃ SỬA ?>
         </div>
 
         <div class="col-xl-9 col-lg-9 col-main-content">
@@ -46,7 +47,7 @@ include BASE_PATH . '/includes/header.php';
             
             <div class="products">
               <?php if (empty($products_list)): ?>
-                <p style="grid-column: 1 / -1;">Không tìm thấy sản phẩm nào.</p>
+                <p style="grid-column: 1 / -1; padding: 20px;">Không tìm thấy sản phẩm nào trong danh mục này.</p>
               <?php else: ?>
                 <?php foreach ($products_list as $item): ?>
                   <div class="product-card">
@@ -66,5 +67,5 @@ include BASE_PATH . '/includes/header.php';
   </main>
 
 <?php
-include BASE_PATH . '/includes/footer.php';
+include BASE_PATH . '/includes/User/footer.php'; // ĐÃ SỬA
 ?>

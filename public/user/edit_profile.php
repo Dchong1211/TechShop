@@ -3,7 +3,6 @@
 session_start();
 define('BASE_PATH', dirname(__DIR__));
 
-// Bảo vệ trang
 if (!isset($_SESSION['user'])) {
     header('Location: index.php');
     exit;
@@ -30,7 +29,7 @@ ob_start();
 </style>
 <?php
 $ADDITIONAL_HEAD_CONTENT = ob_get_clean();
-include BASE_PATH . '/includes/header.php';
+include BASE_PATH . '/includes/User/header.php'; // ĐÃ SỬA
 ?>
 
 <main class="page">
@@ -76,8 +75,8 @@ document.getElementById('edit-profile-form').addEventListener('submit', function
   
   messageDiv.style.display = 'none';
 
-  // Giả định API nằm ở /app/api/update_profile.php
-  fetch('../app/api/update_profile.php', {
+  // ĐÃ SỬA: Dùng đường dẫn tuyệt đối để tránh lỗi 404
+  fetch('/TechShop/app/api/update_profile.php', {
     method: 'POST',
     body: formData
   })
@@ -87,11 +86,6 @@ document.getElementById('edit-profile-form').addEventListener('submit', function
       messageDiv.textContent = 'Cập nhật thành công!';
       messageDiv.className = 'success';
       messageDiv.style.display = 'block';
-      
-      // Quan trọng: Vì session được cập nhật ở backend,
-      // khi người dùng F5 lại trang profile, họ sẽ thấy tên mới.
-      // (Không cần cập nhật session ở frontend)
-      
     } else {
       messageDiv.textContent = data.message || 'Đã xảy ra lỗi. Vui lòng thử lại.';
       messageDiv.className = 'error';
@@ -99,7 +93,8 @@ document.getElementById('edit-profile-form').addEventListener('submit', function
     }
   })
   .catch(error => {
-    messageDiv.textContent = 'Lỗi kết nối. Vui lòng thử lại.';
+    console.error('Error:', error);
+    messageDiv.textContent = 'Lỗi kết nối API. Vui lòng kiểm tra lại.';
     messageDiv.className = 'error';
     messageDiv.style.display = 'block';
   });
@@ -107,5 +102,5 @@ document.getElementById('edit-profile-form').addEventListener('submit', function
 </script>
 <?php
 $ADDITIONAL_BODY_END_CONTENT = ob_get_clean();
-include BASE_PATH . '/includes/footer.php';
+include BASE_PATH . '/includes/User/footer.php'; // ĐÃ SỬA
 ?>
