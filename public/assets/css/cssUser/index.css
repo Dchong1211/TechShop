@@ -1,40 +1,47 @@
-/* === index.css: BẢN FINAL FIX LỖI NHẤP NHÁY 100% === */
+/* ==========================================================================
+   FILE: public/assets/css/cssUser/index.css
+   MÔ TẢ: Style riêng cho Trang chủ (Banner, Slider, Danh mục nhanh...)
+   PHIÊN BẢN: Final Full Width (Card Size 280px + Toggle Sidebar)
+   ========================================================================== */
 
-/* 1. BỐ CỤC CHUNG */
-.homepage { max-width: 1200px; margin: 18px auto; }
+/* 1. BỐ CỤC CHUNG (Wide Layout 1440px) */
+.homepage { max-width: 1440px; margin: 20px auto; }
 .main-content { width: 100%; padding: 0 15px; margin: 0 auto; }
-.row { display: flex; flex-wrap: wrap; margin: 0 -15px; }
-.col-xl-3 { flex: 0 0 25%; max-width: 25%; padding: 0 15px; }
-.col-xl-9 { flex: 0 0 75%; max-width: 75%; padding: 0 15px; }
 
-/* 2. DANH MỤC NHANH */
+/* 2. DANH MỤC NHANH (QUICK CATEGORIES) - Xuống dưới cùng */
 .quick-categories-section {
-    background: #fff; border-radius: 8px; padding: 20px;
-    margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    background: #fff;
+    border-radius: 8px;
+    padding: 25px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
 .quick-categories-header {
-    font-size: 16px; font-weight: 700; margin-bottom: 15px; color: #333;
-    border-bottom: 1px solid #eee; padding-bottom: 10px;
+    font-size: 18px; font-weight: 700; margin-bottom: 20px; color: #333;
+    border-bottom: 1px solid #eee; padding-bottom: 15px;
 }
 .quick-categories-grid {
-    display: grid; grid-template-columns: repeat(10, 1fr); gap: 15px 5px;
+    display: grid;
+    /* Tự động chia cột: Mỗi cột tối thiểu 100px */
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); 
+    gap: 20px 10px;
 }
 .quick-cat-item a {
     display: flex; flex-direction: column; align-items: center;
-    text-decoration: none; color: #333; font-size: 12px; text-align: center;
+    text-decoration: none; color: #333; font-size: 13px; text-align: center;
     transition: 0.2s;
 }
 .quick-cat-item a:hover { color: #d70018; transform: translateY(-3px); }
 .quick-cat-item img {
-    width: 45px; height: 45px; object-fit: contain; margin-bottom: 8px;
+    width: 55px; height: 55px; /* Icon to hơn chút */
+    object-fit: contain; margin-bottom: 10px;
     transition: 0.2s;
 }
 
-/* 3. BANNERS */
-.top-banners { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 15px; }
-.top-banners .banner-item { height: 180px; }
-.deal-banners { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 30px; }
-.deal-banners .banner-item { height: 150px; }
+/* 3. BANNERS (DEAL) */
+.deal-banners { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 40px; }
+.deal-banners .banner-item { height: 180px; } /* Banner cao hơn cho đẹp */
+
 .banner-item a, .main-banner-slide { 
     display: block; width: 100%; height: 100%; border-radius: 8px; overflow: hidden; 
 }
@@ -45,95 +52,128 @@
 
 /* 4. SLIDER CHÍNH */
 .main-slider-wrapper {
-    height: 400px; position: relative; margin-bottom: 15px;
+    height: 480px; /* Tăng chiều cao slider chính */
+    position: relative; margin-bottom: 30px;
     border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 #main-banner-slider {
-    display: flex; overflow-x: auto; scrollbar-width: none; width: 100%; height: 100%;
-    /* BỎ scroll-behavior để JS toàn quyền kiểm soát */
+    display: flex; overflow-x: auto; 
+    scrollbar-width: none; width: 100%; height: 100%;
 }
 #main-banner-slider::-webkit-scrollbar { display: none; }
 .main-banner-slide { min-width: 100%; flex-shrink: 0; }
 
-/* 5. SẢN PHẨM (SLIDER) - FIX QUAN TRỌNG */
-.product-section { margin-bottom: 30px; background: #fff; padding: 15px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+/* 5. SẢN PHẨM (SLIDER) */
+.product-section { 
+    margin-bottom: 40px; background: #fff; padding: 25px; 
+    border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); 
+}
 .section-head { 
     display: flex; justify-content: space-between; align-items: center; 
-    margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px;
+    margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 15px;
 }
-.section-head h2 { color: #333; font-weight: 700; text-transform: uppercase; font-size: 18px; margin: 0; }
-.view-all { font-size: 13px; color: #007bff; text-decoration: none; }
+.section-head h2 { color: #333; font-weight: 700; text-transform: uppercase; font-size: 22px; margin: 0; }
+.view-all { font-size: 14px; color: #007bff; text-decoration: none; font-weight: 600; }
 .view-all:hover { text-decoration: underline; }
 
-.product-slider-wrapper { position: relative; padding: 0 5px; }
+.product-slider-wrapper { position: relative; padding: 0 10px; }
 .product-slider { 
-    display: flex; gap: 15px; overflow-x: auto; padding-bottom: 15px; scrollbar-width: none; 
-    /* FIX: Không dùng smooth ở CSS */
+    display: flex; gap: 20px; 
+    overflow-x: auto; padding-bottom: 15px; scrollbar-width: none; 
 }
 .product-slider::-webkit-scrollbar { display: none; }
 
-/* --- FIX: CARD SẢN PHẨM TRONG SLIDER --- */
+/* --- FIX: CARD SẢN PHẨM RỘNG RA --- */
 .product-slider .product-card {
-    min-width: 220px; width: 220px; flex-shrink: 0;
-    background: #fff; border: 1px solid #f0f0f0; border-radius: 8px;
-    position: relative; padding: 10px; display: flex; flex-direction: column;
+    /* TĂNG KÍCH THƯỚC LÊN 280px ĐỂ LẤP ĐẦY KHOẢNG TRỐNG */
+    min-width: 280px; 
+    width: 280px; 
+    flex-shrink: 0;
     
-    /* FIX GPU: Giúp trình duyệt vẽ mượt hơn */
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
-    will-change: transform;
-    transition: box-shadow 0.2s, border-color 0.2s; /* Bỏ transition transform */
+    background: #fff; border: 1px solid #f0f0f0; border-radius: 10px;
+    position: relative; padding: 20px; display: flex; flex-direction: column;
+    
+    /* Fix lỗi nhấp nháy */
+    -webkit-transform: translateZ(0); transform: translateZ(0); will-change: transform;
+    transition: box-shadow 0.2s, border-color 0.2s; 
 }
 
-/* FIX QUAN TRỌNG NHẤT: XÓA translateY KHI HOVER */
-/* Nếu giữ lại, khi slider chạy, thẻ sẽ nhảy lên xuống gây nhấp nháy */
+/* Hover effect */
 .product-slider .product-card:hover { 
-    box-shadow: 0 4px 15px rgba(0,0,0,0.15); 
+    box-shadow: 0 5px 25px rgba(0,0,0,0.12); 
     border-color: #d70018; 
-    transform: none !important; /* Cấm nhảy lên */
+    transform: none !important; 
 }
 
-.product-label { position: absolute; top: 10px; right: 10px; background: #d70018; color: #fff; font-size: 10px; font-weight: bold; padding: 3px 6px; border-radius: 3px; z-index: 2; }
+.product-label { position: absolute; top: 12px; right: 12px; background: #d70018; color: #fff; font-size: 12px; font-weight: bold; padding: 4px 8px; border-radius: 4px; z-index: 2; }
 
-/* Nút điều hướng */
+/* Nút điều hướng Slider */
 .slider-btn {
     position: absolute; top: 50%; transform: translateY(-50%);
-    width: 40px; height: 40px; background: rgba(255,255,255,0.9); border: 1px solid #ddd; border-radius: 50%;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.15); cursor: pointer; z-index: 10;
+    width: 50px; height: 50px; 
+    background: rgba(255,255,255,0.95); border: 1px solid #ddd; border-radius: 50%;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15); cursor: pointer; z-index: 10;
     display: flex; align-items: center; justify-content: center; opacity: 1; transition: 0.3s;
+    font-size: 20px; color: #555;
 }
 .slider-btn:hover { background: #d70018; color: #fff; border-color: #d70018; }
-.product-slider-wrapper .btn-prev { left: -20px; }
-.product-slider-wrapper .btn-next { right: -20px; }
-.main-slider-wrapper .btn-prev { left: 10px; }
-.main-slider-wrapper .btn-next { right: 10px; }
+.product-slider-wrapper .btn-prev { left: -25px; }
+.product-slider-wrapper .btn-next { right: -25px; }
+.main-slider-wrapper .btn-prev { left: 20px; }
+.main-slider-wrapper .btn-next { right: 20px; }
 
-/* 6. PROMO & NEWS & BRAND */
-.promo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
-.promo-item { display: block; border-radius: 8px; overflow: hidden; }
+/* 6. CHUYÊN TRANG KHUYẾN MÃI */
+.promo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.promo-item { display: block; border-radius: 10px; overflow: hidden; }
 .promo-item img { width: 100%; height: auto; display: block; transition: 0.3s; }
 .promo-item:hover img { transform: scale(1.03); }
 
-.news-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
+/* 7. TIN TỨC CÔNG NGHỆ */
+.news-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
 .news-item a { text-decoration: none; color: #333; display: block; }
-.news-item img { width: 100%; height: 150px; object-fit: cover; border-radius: 8px; margin-bottom: 10px; }
-.news-item h3 { font-size: 14px; font-weight: 600; line-height: 1.4; height: 40px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; margin-bottom: 5px; }
+.news-item img { width: 100%; height: 200px; /* Ảnh tin tức to hơn */ object-fit: cover; border-radius: 10px; margin-bottom: 12px; }
+.news-item h3 { font-size: 16px; font-weight: 600; line-height: 1.4; height: 45px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; margin-bottom: 5px; }
 .news-item:hover h3 { color: #d70018; }
 
-.brand-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
-.brand-item { background: #fff; border: 1px solid #eee; border-radius: 8px; padding: 10px; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
-.brand-item:hover { border-color: #d70018; transform: translateY(-2px); }
-.brand-item img { max-width: 100%; max-height: 50px; filter: grayscale(100%); transition: 0.3s; }
+/* 8. THƯƠNG HIỆU */
+.brand-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 20px; }
+.brand-item { background: #fff; border: 1px solid #eee; border-radius: 8px; padding: 20px; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
+.brand-item:hover { border-color: #d70018; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+.brand-item img { max-width: 100%; max-height: 60px; filter: grayscale(100%); transition: 0.3s; }
 .brand-item:hover img { filter: grayscale(0); }
 
-/* 9. BANNER DÍNH */
-.sticky-banner-container-left, .sticky-banner-container-right { position: fixed; top: 150px; z-index: 50; display: none; width: 120px; }
-.sticky-banner-container-left { left: calc( (100% - 1200px) / 2 - 135px ); }
-.sticky-banner-container-right { right: calc( (100% - 1200px) / 2 - 135px ); }
-.sticky-banner-container-left img, .sticky-banner-container-right img { width: 100%; display: block; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-@media (min-width: 1500px) { .sticky-banner-container-left, .sticky-banner-container-right { display: block; } }
+/* 9. ẨN BANNER DỌC CŨ */
+.sticky-banner-container-left, .sticky-banner-container-right { display: none !important; }
+
+/* =========================================================
+   CHỨC NĂNG: ẨN/HIỆN SIDEBAR MƯỢT MÀ (SMOOTH TRANSITION)
+   ========================================================= */
+
+/* 1. Khi Body có class này -> Ẩn cột Sidebar đi */
+body.desktop-sidebar-hidden .col-left-sidebar {
+    display: none !important; /* Ẩn cột trái */
+}
+
+/* 2. Đồng thời -> Mở rộng cột nội dung ra 100% (Tràn viền) */
+body.desktop-sidebar-hidden .hero-section {
+    grid-template-columns: 1fr !important; /* Chuyển từ 2 cột thành 1 cột */
+}
+
+/* Hiệu ứng chuyển động mượt mà cho toàn bộ Section */
+.hero-section {
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
 
 /* RESPONSIVE */
+@media (max-width: 1400px) {
+    /* Màn hình nhỏ hơn thì quay về layout flex */
+    .homepage { max-width: 1200px; }
+    .row { display: flex; gap: 0; }
+    .col-xl-3 { flex: 0 0 25%; max-width: 25%; }
+    .col-xl-9 { flex: 0 0 75%; max-width: 75%; }
+    .product-slider .product-card { min-width: 220px; width: 220px; }
+}
+
 @media (max-width: 991px) {
     .col-xl-3 { display: none; } .col-xl-9 { flex: 0 0 100%; max-width: 100%; }
     .quick-categories-grid { grid-template-columns: repeat(5, 1fr); }

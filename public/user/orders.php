@@ -11,32 +11,11 @@ $PAGE_TITLE = 'Đơn hàng của tôi';
 
 ob_start();
 ?>
-  <style>
-    .page-orders { max-width: 1200px; margin: 24px auto; padding: 0 16px; }
-    .card { background: #fff; border: 1px solid #eee; border-radius: 8px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-    
-    table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-    th { background: #f9f9f9; text-align: left; padding: 12px; font-weight: 600; color: #555; border-bottom: 2px solid #eee; }
-    td { padding: 15px 12px; border-bottom: 1px solid #eee; vertical-align: middle; color: #333; }
-    
-    .btn { 
-        display: inline-block; padding: 6px 14px; border-radius: 6px; 
-        text-decoration: none; font-size: 13px; font-weight: 600; transition: 0.2s; 
-    }
-    .btn-view { background: #1677ff; color: #fff; border: 1px solid #1677ff; }
-    .btn-view:hover { background: #0958d9; }
-    
-    .btn-home { background: #d70018; color: #fff; padding: 10px 20px; font-size: 15px; }
-    
-    .empty-box { text-align: center; padding: 40px; }
-    .status-badge { padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 600; }
-    .status-pending { background: #e6f7ff; color: #096dd9; }
-    .status-cancelled { background: #fff1f0; color: #cf1322; }
-  </style>
+  <link rel="stylesheet" href="public/assets/css/cssUser/orders.css?v=1">
 <?php
 $ADDITIONAL_HEAD_CONTENT = ob_get_clean();
 
-include BASE_PATH . '/includes/User/header.php'; // ĐÃ SỬA
+include BASE_PATH . '/includes/User/header.php';
 ?>
 
 <main class="page-orders">
@@ -89,5 +68,5 @@ include BASE_PATH . '/includes/User/header.php'; // ĐÃ SỬA
 </main>
 
 <?php
-include BASE_PATH . '/includes/User/footer.php'; // ĐÃ SỬA
+include BASE_PATH . '/includes/User/footer.php';
 ?>

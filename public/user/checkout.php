@@ -6,7 +6,7 @@ define('BASE_PATH', dirname(__DIR__));
 if (!isset($_SESSION['cart'])) $_SESSION['cart'] = [];
 $cart = $_SESSION['cart'];
 if (empty($cart)) {
-  header('Location: /TechShop/public/user/cart.php');
+  header('Location: public/user/cart.php');
   exit;
 }
 function money_vn($v){ return number_format((float)$v,0,',','.').' ₫'; }
@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD']==='POST') {
       'address'=>$address,
       'payment'=>$payment,
       'note'=>$note,
-      'status'=>'pending', // Thêm trạng thái mặc định
+      'status'=>'pending',
       'created_at'=>date('Y-m-d H:i:s')
     ];
     $_SESSION['cart'] = [];
@@ -54,27 +54,11 @@ $PAGE_TITLE = 'Thanh toán';
 
 ob_start();
 ?>
-  <style>
-    .page{max-width:1200px;margin:24px auto;padding:0 16px;display:grid;grid-template-columns:1fr 380px;gap:24px}
-    .card{background:#fff;border:1px solid #eee;border-radius:10px;padding:16px}
-    .field{margin-bottom:12px}
-    .field label{display:block;font-weight:600;margin-bottom:6px}
-    .field input,.field textarea,.field select{width:100%;padding:10px;border:1px solid #ddd;border-radius:8px}
-    .err{color:#d63031;font-size:13px;margin-top:4px}
-    .items{width:100%;border-collapse:collapse}
-    .items th,.items td{padding:10px;border-bottom:1px solid #f3f3f3;vertical-align:middle}
-    .items th{text-align:left;font-weight:600;background:#fafafa}
-    .row{display:flex;justify-content:space-between;margin:6px 0}
-    .total{font-weight:700;font-size:18px;border-top:1px dashed #ddd;padding-top:10px;margin-top:8px}
-    .btn{display:inline-block;background:#1677ff;color:#fff;text-decoration:none;border:none;padding:12px 14px;border-radius:10px;cursor:pointer;text-align:center}
-    .btn.secondary{background:#f0f0f0;color:#333}
-    .success{max-width:720px;margin:40px auto}
-    .ok{font-size:20px;font-weight:700;margin:8px 0}
-  </style>
+  <link rel="stylesheet" href="public/assets/css/cssUser/checkout.css?v=1">
 <?php
 $ADDITIONAL_HEAD_CONTENT = ob_get_clean();
 
-include BASE_PATH . '/includes/User/header.php'; // ĐÃ SỬA
+include BASE_PATH . '/includes/User/header.php';
 ?>
 
   <?php if ($done): ?>
@@ -82,10 +66,10 @@ include BASE_PATH . '/includes/User/header.php'; // ĐÃ SỬA
       <div class="card" style="text-align:center">
         <div style="font-size: 50px; color: #52c41a;"><i class="fa-regular fa-circle-check"></i></div>
         <div class="ok">Đặt hàng thành công</div>
-        <div>Mã đơn: <strong><?= htmlspecialchars($orderId,ENT_QUOTES) ?></strong></div>
-        <p>Cảm ơn bạn đã mua hàng tại TechShop.</p>
+        <div style="color: #aaa;">Mã đơn: <strong style="color: #AD90E8;"><?= htmlspecialchars($orderId,ENT_QUOTES) ?></strong></div>
+        <p style="color: #aaa;">Cảm ơn bạn đã mua hàng tại TechShop.</p>
         <div style="display:flex;gap:12px;justify-content:center;margin-top:20px">
-          <a class="btn" href="public/user/orders.php">Xem đơn hàng</a>
+          <a class="btn" href="public/user/orders.php" style="background:#1677ff;">Xem đơn hàng</a>
           <a class="btn secondary" href="public/user/index.php">Về trang chủ</a>
         </div>
       </div>
@@ -93,7 +77,7 @@ include BASE_PATH . '/includes/User/header.php'; // ĐÃ SỬA
   <?php else: ?>
     <main class="page">
       <section class="card">
-        <h2>Thông tin nhận hàng</h2>
+        <h2 style="margin-top:0;">Thông tin nhận hàng</h2>
         <form method="post" novalidate>
           <div class="field">
             <label>Họ và tên</label>
@@ -129,7 +113,7 @@ include BASE_PATH . '/includes/User/header.php'; // ĐÃ SỬA
       </section>
 
       <aside class="card">
-        <h2>Tóm tắt đơn hàng</h2>
+        <h2 style="margin-top:0;">Tóm tắt đơn hàng</h2>
         <table class="items">
           <thead><tr><th>Sản phẩm</th><th style="width:50px">SL</th><th style="width:110px;text-align:right">Tiền</th></tr></thead>
           <tbody>
@@ -146,7 +130,7 @@ include BASE_PATH . '/includes/User/header.php'; // ĐÃ SỬA
           <?php endforeach; ?>
           </tbody>
         </table>
-        <div class="row"><span>Tạm tính</span><strong><?= money_vn($subtotal) ?></strong></div>
+        <div class="row" style="margin-top: 15px;"><span>Tạm tính</span><strong><?= money_vn($subtotal) ?></strong></div>
         <div class="row"><span>Vận chuyển</span><span><?= $shipping===0?'Miễn phí':money_vn($shipping) ?></span></div>
         <div class="row total"><span>Tổng cộng</span><span style="color:#d70018"><?= money_vn($total) ?></span></div>
       </aside>
@@ -154,5 +138,5 @@ include BASE_PATH . '/includes/User/header.php'; // ĐÃ SỬA
   <?php endif; ?>
 
 <?php
-include BASE_PATH . '/includes/User/footer.php'; // ĐÃ SỬA
+include BASE_PATH . '/includes/User/footer.php';
 ?>

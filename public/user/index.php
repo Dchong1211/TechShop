@@ -4,7 +4,7 @@ define('BASE_PATH', dirname(__DIR__));
 $PAGE_TITLE = 'Trang chủ';
 $SHOW_SEARCH = true;
 
-// 2. TẠO DỮ LIỆU GIẢ
+// (Giữ nguyên phần tạo dữ liệu giả...)
 function create_product($id, $name, $price, $img, $label = '') {
     return ['id' => $id, 'name' => $name, 'price' => $price, 'image' => $img, 'label' => $label];
 }
@@ -21,7 +21,6 @@ function multiply_data($data, $count = 12) {
     return $result;
 }
 
-// DATA SẢN PHẨM MẪU
 $base_laptop = [
     create_product(101, 'Laptop ASUS Vivobook Go 15', 11490000, 'asus_vivo.jpg', '-10%'),
     create_product(102, 'Laptop HP Pavilion 15', 14590000, 'hp_pavilion.jpg'),
@@ -45,28 +44,28 @@ $list_laptop = multiply_data($base_laptop, 12);
 $list_pc     = multiply_data($base_pc, 12);     
 $list_gear   = multiply_data($base_gear, 12);
 
-// 3. DATA DANH MỤC NHANH (Đã thêm 'code' để tạo link)
+// DATA DANH MỤC NHANH
 $quick_categories = [
-    ['name' => 'Laptop', 'code' => 'laptop', 'icon' => 'https://img.icons8.com/fluency/48/laptop.png'],
-    ['name' => 'PC', 'code' => 'pc', 'icon' => 'https://img.icons8.com/fluency/48/workstation.png'],
-    ['name' => 'Màn hình', 'code' => 'monitor', 'icon' => 'https://img.icons8.com/fluency/48/monitor.png'],
-    ['name' => 'Mainboard', 'code' => 'mainboard', 'icon' => 'https://img.icons8.com/fluency/48/motherboard.png'],
-    ['name' => 'CPU', 'code' => 'cpu', 'icon' => 'https://img.icons8.com/fluency/48/processor.png'],
-    ['name' => 'VGA', 'code' => 'vga', 'icon' => 'https://img.icons8.com/fluency/48/video-card.png'],
-    ['name' => 'RAM', 'code' => 'ram', 'icon' => 'https://img.icons8.com/fluency/48/memory-slot.png'],
-    ['name' => 'Ổ cứng', 'code' => 'hdd', 'icon' => 'https://img.icons8.com/fluency/48/hdd.png'],
-    ['name' => 'Case', 'code' => 'case', 'icon' => 'https://img.icons8.com/fluency/48/server-case.png'],
-    ['name' => 'Tản nhiệt', 'code' => 'cooling', 'icon' => 'https://img.icons8.com/fluency/48/fan.png'],
-    ['name' => 'Nguồn', 'code' => 'psu', 'icon' => 'https://img.icons8.com/fluency/48/power-supply-module.png'],
-    ['name' => 'Bàn phím', 'code' => 'keyboard', 'icon' => 'https://img.icons8.com/fluency/48/keyboard.png'],
-    ['name' => 'Chuột', 'code' => 'mouse', 'icon' => 'https://img.icons8.com/fluency/48/mouse.png'],
-    ['name' => 'Ghế', 'code' => 'chair', 'icon' => 'https://img.icons8.com/fluency/48/gaming-chair.png'],
-    ['name' => 'Tai nghe', 'code' => 'headset', 'icon' => 'https://img.icons8.com/fluency/48/headphones.png'],
-    ['name' => 'Loa', 'code' => 'speaker', 'icon' => 'https://img.icons8.com/fluency/48/speaker.png'],
-    ['name' => 'Console', 'code' => 'console', 'icon' => 'https://img.icons8.com/fluency/48/controller.png'],
-    ['name' => 'Phụ kiện', 'code' => 'accessories', 'icon' => 'https://img.icons8.com/fluency/48/usb-connector.png'],
-    ['name' => 'Thiết bị VP', 'code' => 'office', 'icon' => 'https://img.icons8.com/fluency/48/print.png'],
-    ['name' => 'Sạc DP', 'code' => 'powerbank', 'icon' => 'https://img.icons8.com/fluency/48/battery-level.png'],
+    ['name' => 'Laptop', 'code' => 'laptop', 'icon' => 'fa-solid fa-laptop'],
+    ['name' => 'PC', 'code' => 'pc', 'icon' => 'fa-solid fa-desktop'],
+    ['name' => 'Màn hình', 'code' => 'monitor', 'icon' => 'fa-solid fa-tv'],
+    ['name' => 'Mainboard', 'code' => 'mainboard', 'icon' => 'fa-solid fa-microchip'],
+    ['name' => 'CPU', 'code' => 'cpu', 'icon' => 'fa-solid fa-memory'],
+    ['name' => 'VGA', 'code' => 'vga', 'icon' => 'fa-solid fa-ticket'],
+    ['name' => 'RAM', 'code' => 'ram', 'icon' => 'fa-solid fa-layer-group'],
+    ['name' => 'Ổ cứng', 'code' => 'hdd', 'icon' => 'fa-solid fa-hard-drive'],
+    ['name' => 'Case', 'code' => 'case', 'icon' => 'fa-solid fa-server'],
+    ['name' => 'Tản nhiệt', 'code' => 'cooling', 'icon' => 'fa-solid fa-snowflake'],
+    ['name' => 'Nguồn', 'code' => 'psu', 'icon' => 'fa-solid fa-plug'],
+    ['name' => 'Bàn phím', 'code' => 'keyboard', 'icon' => 'fa-regular fa-keyboard'],
+    ['name' => 'Chuột', 'code' => 'mouse', 'icon' => 'fa-solid fa-computer-mouse'],
+    ['name' => 'Ghế', 'code' => 'chair', 'icon' => 'fa-solid fa-chair'],
+    ['name' => 'Tai nghe', 'code' => 'headset', 'icon' => 'fa-solid fa-headset'],
+    ['name' => 'Loa', 'code' => 'speaker', 'icon' => 'fa-solid fa-volume-high'],
+    ['name' => 'Console', 'code' => 'console', 'icon' => 'fa-solid fa-gamepad'],
+    ['name' => 'Phụ kiện', 'code' => 'accessories', 'icon' => 'fa-brands fa-usb'],
+    ['name' => 'Thiết bị VP', 'code' => 'office', 'icon' => 'fa-solid fa-print'],
+    ['name' => 'Sạc DP', 'code' => 'powerbank', 'icon' => 'fa-solid fa-battery-full'],
 ];
 
 // DATA TIN TỨC
@@ -79,10 +78,36 @@ $news_list = [
 
 ob_start();
 ?>
-<link rel="stylesheet" href="public/assets/css/cssUser/index.css?v=6">
+<link rel="stylesheet" href="public/assets/css/cssUser/index.css?v=10000">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-<script src="public/assets/js/user.js?v=1"></script>
-<script src="public/assets/js/indexUser.js?v=1" defer></script> 
+<script src="public/assets/js/user.js?v=9999"></script>
+<script src="public/assets/js/indexUser.js?v=9999" defer></script> 
+
+<style>
+    /* CSS Cục bộ để xử lý layout 2 phần */
+    .hero-section {
+        display: grid;
+        grid-template-columns: 280px 1fr;
+        gap: 20px;
+        margin-bottom: 40px;
+    }
+    
+    /* Phần nội dung full-width bên dưới */
+    .full-width-content {
+        display: block;
+        width: 100%;
+    }
+    
+    /* Responsive cho mobile */
+    @media (max-width: 991px) {
+        .hero-section {
+            grid-template-columns: 1fr;
+        }
+        .col-left-sidebar {
+            display: none;
+        }
+    }
+</style>
 
 <?php
 $ADDITIONAL_BODY_END_CONTENT = ob_get_clean(); 
@@ -94,51 +119,40 @@ include BASE_PATH . '/includes/User/header.php';
 
 <main class="homepage" role="main">
     <div class="main-content">
-      <div class="row">
-
-        <div class="col-xl-3 col-lg-3 col-left-sidebar">
+      
+      <div class="hero-section">
+        
+        <div class="col-left-sidebar">
           <?php include BASE_PATH . '/includes/User/sidebar.php'; ?>
         </div>
 
-        <div class="col-xl-9 col-lg-9 col-main-content">
-          
-          <section class="quick-categories-section">
-              <div class="quick-categories-header">Danh mục sản phẩm</div>
-              <div class="quick-categories-grid">
-                  <?php foreach($quick_categories as $cat): ?>
-                      <div class="quick-cat-item">
-                          <a href="public/user/product.php?cate=<?= $cat['code'] ?>">
-                              <img src="<?= $cat['icon'] ?>" alt="<?= $cat['name'] ?>">
-                              <span><?= $cat['name'] ?></span>
-                          </a>
-                      </div>
-                  <?php endforeach; ?>
+        <div class="hero-content">
+             <div class="main-slider-wrapper">
+                 <button class="slider-btn btn-prev" onclick="scrollSlider('main-banner-slider', 'left')">
+                    <i class="fa-solid fa-chevron-left"></i>
+                 </button>
+
+                 <div class="product-slider full-width-slider" id="main-banner-slider">
+                    <a href="#" class="main-banner-slide"><img src="public/assets/images/main_banner1.jpg" alt="Banner 1"></a>
+                    <a href="#" class="main-banner-slide"><img src="public/assets/images/main_banner2.jpg" alt="Banner 2"></a>
+                    <a href="#" class="main-banner-slide"><img src="public/assets/images/main_banner3.jpg" alt="Banner 3"></a>
+                 </div>
+
+                 <button class="slider-btn btn-next" onclick="scrollSlider('main-banner-slider', 'right')">
+                    <i class="fa-solid fa-chevron-right"></i>
+                 </button>
               </div>
-          </section>
-
-          <div class="main-slider-wrapper">
-             <button class="slider-btn btn-prev" onclick="scrollSlider('main-banner-slider', 'left')">
-                <i class="fa-solid fa-chevron-left"></i>
-             </button>
-
-             <div class="product-slider full-width-slider" id="main-banner-slider">
-                <a href="#" class="main-banner-slide"><img src="public/assets/images/main_banner1.jpg" alt="Banner 1"></a>
-                <a href="#" class="main-banner-slide"><img src="public/assets/images/main_banner2.jpg" alt="Banner 2"></a>
-                <a href="#" class="main-banner-slide"><img src="public/assets/images/main_banner3.jpg" alt="Banner 3"></a>
-             </div>
-
-             <button class="slider-btn btn-next" onclick="scrollSlider('main-banner-slider', 'right')">
-                <i class="fa-solid fa-chevron-right"></i>
-             </button>
-          </div>
-
-          <div class="deal-banners">
-            <div class="banner-item"><a href="#"><img src="public/assets/images/deal1.jpg" alt="Deal 1"></a></div>
-            <div class="banner-item"><a href="#"><img src="public/assets/images/deal2.jpg" alt="Deal 2"></a></div>
-            <div class="banner-item"><a href="#"><img src="public/assets/images/deal3.jpg" alt="Deal 3"></a></div>
-            <div class="banner-item"><a href="#"><img src="public/assets/images/deal4.jpg" alt="Deal 4"></a></div>
-          </div>
-
+              
+              <div class="deal-banners" style="margin-top: 20px;">
+                <div class="banner-item"><a href="#"><img src="public/assets/images/deal1.jpg" alt="Deal 1"></a></div>
+                <div class="banner-item"><a href="#"><img src="public/assets/images/deal2.jpg" alt="Deal 2"></a></div>
+                <div class="banner-item"><a href="#"><img src="public/assets/images/deal3.jpg" alt="Deal 3"></a></div>
+                <div class="banner-item"><a href="#"><img src="public/assets/images/deal4.jpg" alt="Deal 4"></a></div>
+              </div>
+        </div>
+      </div>
+      <div class="full-width-content">
+          
           <section class="product-section">
             <div class="section-head">
               <h2>Laptop Bán Chạy</h2>
@@ -276,9 +290,22 @@ include BASE_PATH . '/includes/User/header.php';
             </div>
           </section>
 
-        </div>
+          <section class="quick-categories-section">
+            <div class="quick-categories-header">Danh mục sản phẩm</div>
+                <div class="quick-categories-grid">
+                    <?php foreach($quick_categories as $cat): ?>
+                        <div class="quick-cat-item">
+                            <a href="public/user/product.php?cate=<?= $cat['code'] ?>">
+                                <i class="<?= $cat['icon'] ?>"></i>
+                                <span><?= $cat['name'] ?></span>
+                            </a>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            </section>
+
       </div>
-    </div>
+      </div>
 </main>
 
 <?php

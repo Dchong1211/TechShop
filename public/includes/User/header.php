@@ -24,21 +24,48 @@ $ADDITIONAL_HEAD_CONTENT = $ADDITIONAL_HEAD_CONTENT ?? '';
       background: #f0f0f0;
       border: 1px solid #ddd;
       border-radius: 20px;
-      padding: 4px;
+      padding: 5px 10px; /* Chỉnh lại padding cho cân đối */
       cursor: pointer;
       display: flex;
       align-items: center;
-      margin-left: 10px; /* Thêm khoảng cách */
-      /* Ghi đè style của .header-actions a */
-      color: #333; 
+      justify-content: center;
+      margin-left: 10px; 
+      transition: all 0.3s ease;
     }
-    .theme-toggle span {
-      font-size: 16px;
-      line-height: 1;
+    
+    /* Định dạng ảnh Icon */
+    .theme-toggle img {
+      width: 20px;  /* Kích thước icon */
+      height: 20px;
+      object-fit: contain;
+      transition: transform 0.3s ease;
     }
-    /* Ẩn icon không hoạt động */
+    
+    .theme-toggle:hover img {
+        transform: rotate(15deg); /* Hiệu ứng xoay nhẹ khi di chuột */
+    }
+
+    /* --- LOGIC ẨN HIỆN ICON --- */
+    
+    /* 1. Khi ở Light Mode: Ẩn icon trăng, Hiện icon mặt trời */
     html[data-theme="light"] .theme-toggle .icon-dark { display: none; }
+    
+    /* 2. Khi ở Dark Mode: Ẩn icon mặt trời, Hiện icon trăng */
     html[data-theme="dark"] .theme-toggle .icon-light { display: none; }
+
+    /* --- XỬ LÝ MÀU SẮC ICON --- */
+    /* Mặc định icon tải về màu đen. */
+    
+    /* Khi sang Dark Mode, đảo ngược màu ảnh (đen -> trắng) để nổi bật trên nền tối */
+    html[data-theme="dark"] .theme-toggle img {
+        filter: invert(1); 
+    }
+    
+    /* Style riêng cho nút khi ở Dark Mode (cho đồng bộ với header tối) */
+    html[data-theme="dark"] .theme-toggle {
+        background: #333;
+        border-color: #555;
+    }
 
     /* Thêm transition cho mượt */
     body, .main-header, .main-footer, .category-sidebar, 
@@ -97,8 +124,9 @@ $ADDITIONAL_HEAD_CONTENT = $ADDITIONAL_HEAD_CONTENT ?? '';
         <?php endif; ?>
 
         <button class="theme-toggle" id="theme-toggle" title="Đổi giao diện">
-            <span class="icon-light">☀️</span>
-            <span class="icon-dark">🌙</span>
+            <img src="https://img.icons8.com/ios-glyphs/30/000000/sun--v1.png" alt="Light Mode" class="icon-light">
+            
+            <img src="https://img.icons8.com/ios-glyphs/30/000000/moon-symbol.png" alt="Dark Mode" class="icon-dark">
         </button>
       </nav>
       </div>

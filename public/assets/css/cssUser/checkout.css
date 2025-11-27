@@ -1,0 +1,104 @@
+/* =========================================================
+   FILE: public/assets/css/cssUser/checkout.css
+   ========================================================= */
+
+.page { max-width: 1200px; margin: 24px auto; padding: 0 16px; display: grid; grid-template-columns: 1fr 380px; gap: 24px; }
+.card { background: #fff; border: 1px solid #eee; border-radius: 10px; padding: 16px; }
+
+/* Form Fields */
+.field { margin-bottom: 12px; }
+.field label { display: block; font-weight: 600; margin-bottom: 6px; color: #333; }
+.field input, .field textarea, .field select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; }
+.err { color: #d63031; font-size: 13px; margin-top: 4px; }
+
+/* Bảng tóm tắt */
+.items { width: 100%; border-collapse: collapse; }
+.items th, .items td { padding: 10px; border-bottom: 1px solid #f3f3f3; vertical-align: middle; }
+.items th { text-align: left; font-weight: 600; background: #fafafa; color: #555; }
+.items td { color: #333; }
+
+.row { display: flex; justify-content: space-between; margin: 6px 0; color: #555; }
+.total { font-weight: 700; font-size: 18px; border-top: 1px dashed #ddd; padding-top: 10px; margin-top: 8px; color: #000; }
+
+/* Buttons */
+.btn { display: inline-block; background: #d70018; color: #fff; text-decoration: none; border: none; padding: 12px 14px; border-radius: 10px; cursor: pointer; text-align: center; }
+.btn.secondary { background: #f0f0f0; color: #333; }
+
+/* Success Page */
+.success { max-width: 720px; margin: 40px auto; }
+.ok { font-size: 20px; font-weight: 700; margin: 8px 0; }
+
+@media (max-width: 768px) { .page { grid-template-columns: 1fr; } }
+
+/* ========================================== */
+/* === DARK MODE (XANH THAN + TÍM) === */
+/* ========================================== */
+
+/* 1. Nền khối Card: Xanh Than */
+[data-theme="dark"] .card {
+    background: #151922; /* Xanh than */
+    border-color: #2d3748;
+    color: #e6e6e6;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+/* Label & Text */
+[data-theme="dark"] .field label,
+[data-theme="dark"] .ok { color: #fff; }
+
+/* Input nền đen sâu, viền tím khi focus */
+[data-theme="dark"] .field input,
+[data-theme="dark"] .field textarea,
+[data-theme="dark"] .field select {
+    background: #0b0c15;
+    border-color: #2d3748;
+    color: #fff;
+}
+[data-theme="dark"] .field input:focus,
+[data-theme="dark"] .field textarea:focus,
+[data-theme="dark"] .field select:focus {
+    border-color: #AD90E8;
+    box-shadow: 0 0 8px rgba(173, 144, 232, 0.3);
+    outline: none;
+}
+
+/* Bảng sản phẩm */
+[data-theme="dark"] .items th {
+    background: #1a1f2b;
+    color: #fff;
+    border-bottom-color: #2d3748;
+}
+[data-theme="dark"] .items td {
+    color: #ccc;
+    border-bottom-color: #2d3748;
+}
+[data-theme="dark"] .row { color: #94a3b8; }
+
+/* Tổng tiền */
+[data-theme="dark"] .total {
+    color: #fff;
+    border-top-color: #2d3748;
+}
+[data-theme="dark"] .total span:last-child {
+    color: #ff6b6b !important; /* Hồng cam */
+    text-shadow: 0 0 5px rgba(255, 107, 107, 0.3);
+}
+
+/* Nút Quay lại */
+[data-theme="dark"] .btn.secondary {
+    background: transparent;
+    border: 1px solid #555;
+    color: #ccc;
+}
+[data-theme="dark"] .btn.secondary:hover {
+    border-color: #AD90E8;
+    color: #AD90E8;
+}
+
+/* Nút Đặt hàng (Tím Gradient) */
+[data-theme="dark"] button[type="submit"],
+[data-theme="dark"] .btn[href*="orders.php"] {
+    background: linear-gradient(90deg, #7f5eff, #AD90E8);
+    color: #fff;
+    box-shadow: 0 4px 15px rgba(127, 94, 255, 0.3);
+}

@@ -1,0 +1,68 @@
+/* =========================================================
+   FILE: public/assets/css/cssUser/orders.css
+   ========================================================= */
+
+.page-orders { max-width: 1200px; margin: 24px auto; padding: 0 16px; }
+.card { background: #fff; border: 1px solid #eee; border-radius: 8px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+th { background: #f9f9f9; text-align: left; padding: 12px; font-weight: 600; color: #555; border-bottom: 2px solid #eee; }
+td { padding: 15px 12px; border-bottom: 1px solid #eee; vertical-align: middle; color: #333; }
+
+.btn { display: inline-block; padding: 6px 14px; border-radius: 6px; text-decoration: none; font-size: 13px; font-weight: 600; transition: 0.2s; }
+.btn-view { background: #1677ff; color: #fff; border: 1px solid #1677ff; }
+.btn-view:hover { background: #0958d9; }
+.btn-home { background: #d70018; color: #fff; padding: 10px 20px; font-size: 15px; }
+.empty-box { text-align: center; padding: 40px; }
+.status-badge { padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 600; }
+.status-pending { background: #e6f7ff; color: #096dd9; }
+.status-cancelled { background: #fff1f0; color: #cf1322; }
+
+/* ========================================== */
+/* === DARK MODE (XANH THAN + TÍM) === */
+/* ========================================== */
+[data-theme="dark"] .card {
+    background: #151922; /* Nền Xanh Than */
+    border-color: #2d3748;
+    color: #e6e6e6;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+[data-theme="dark"] th {
+    background: #1a1f2b; /* Header bảng đậm hơn */
+    color: #fff;
+    border-bottom-color: #2d3748;
+}
+
+[data-theme="dark"] td {
+    border-bottom-color: #2d3748;
+    color: #ccc;
+}
+
+/* Mã đơn hàng Tím */
+[data-theme="dark"] strong {
+    color: #AD90E8;
+}
+
+/* Badge trạng thái (Màu Tím nhẹ cho Pending) */
+[data-theme="dark"] .status-pending {
+    background: rgba(173, 144, 232, 0.15);
+    color: #AD90E8;
+    border: 1px solid rgba(173, 144, 232, 0.3);
+}
+[data-theme="dark"] .status-cancelled {
+    background: rgba(255, 77, 79, 0.15);
+    color: #ff4d4f;
+    border: 1px solid rgba(255, 77, 79, 0.3);
+}
+
+/* Nút Xem chi tiết (Viền Tím) */
+[data-theme="dark"] .btn-view {
+    background: transparent;
+    border: 1px solid #AD90E8;
+    color: #AD90E8;
+}
+[data-theme="dark"] .btn-view:hover {
+    background: #AD90E8;
+    color: #fff;
+    box-shadow: 0 0 10px rgba(173, 144, 232, 0.4);
+}
