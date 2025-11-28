@@ -7,9 +7,7 @@ require_once __DIR__ . '/../controllers/CartController.php';
 require_once __DIR__ . '/../controllers/ProductController.php';
 
 
-/* ============================================================
-|                       AUTH VIEWS
-============================================================ */
+/* =====================AUTH VIEWS===================== */
 $router->get("/login", function () {
     require_once __DIR__ . "/../../public/admin/login.php";
 }, ["guest"]);
@@ -22,11 +20,7 @@ $router->get("/forgot-password", function () {
     require_once __DIR__ . "/../../public/admin/forgot_password.php";
 }, ["guest"]);
 
-
-
-/* ============================================================
-|                       AUTH API
-============================================================ */
+/* =====================AUTH API===================== */
 // Đăng ký
 $router->post("/register", function () {
     CSRF::requireToken();
@@ -66,11 +60,7 @@ $router->post("/logout", function () {
 // Lấy thông tin user
 $router->get("/profile", [AuthController::class, "get_current_user"], ["login"]);
 
-
-
-/* ============================================================
-|                      RESET PASSWORD
-============================================================ */
+/* =====================RESET PASSWORD===================== */
 // Gửi OTP reset
 $router->post("/forgot-password", function () {
     CSRF::requireToken();
@@ -100,11 +90,7 @@ $router->post("/reset-password-otp", function () {
     );
 }, ["guest"]);
 
-
-
-/* ============================================================
-|                       CART API (LOGIN REQUIRED)
-============================================================ */
+/* =====================CART API (LOGIN REQUIRED)===================== */
 $router->get("/api/cart", function () {
     echo json_encode((new CartController())->getCart(), JSON_UNESCAPED_UNICODE);
 }, ["login"]);
@@ -129,11 +115,7 @@ $router->post("/api/cart/clear", function () {
     echo json_encode((new CartController())->clear(), JSON_UNESCAPED_UNICODE);
 }, ["login"]);
 
-
-
-/* ============================================================
-|                       PRODUCT PUBLIC API
-============================================================ */
+/* =====================PRODUCT PUBLIC API===================== */
 $router->get("/api/products", function () {
     echo json_encode((new ProductController())->list(), JSON_UNESCAPED_UNICODE);
 });
@@ -142,11 +124,7 @@ $router->get("/api/products/{id}", function ($id) {
     echo json_encode((new ProductController())->detail($id), JSON_UNESCAPED_UNICODE);
 });
 
-
-
-/* ============================================================
-|                       PRODUCT ADMIN API
-============================================================ */
+/* =====================PRODUCT ADMIN API===================== */
 $router->post("/admin/products/add", function () {
     CSRF::requireToken();
     echo json_encode((new ProductController())->create(), JSON_UNESCAPED_UNICODE);
@@ -162,11 +140,7 @@ $router->post("/admin/products/delete", function () {
     echo json_encode((new ProductController())->delete(), JSON_UNESCAPED_UNICODE);
 }, ["admin"]);
 
-
-
-/* ============================================================
-|                       ADMIN VIEW PAGES
-============================================================ */
+/* =====================ADMIN VIEW PAGES===================== */
 $router->get("/admin/dashboard", function() {
     require_once __DIR__ . "/../../public/admin/dashboard.php";
 }, ["admin"]);

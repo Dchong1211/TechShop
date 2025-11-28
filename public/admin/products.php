@@ -37,7 +37,7 @@
                         <button class="btn btn-search">Tìm</button>
                     </div>
 
-                    <a href="/TechShop/public/admin/add_products.php" class="btn btn-primary">
+                    <a href="/TechShop/admin/add_products.php" class="btn btn-primary">
                         Thêm Sản phẩm Mới
                     </a>
                 </div>
