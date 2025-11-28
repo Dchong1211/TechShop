@@ -1,3 +1,9 @@
+<?php
+    require_once __DIR__ . '/../../app/helpers/CSRF.php';
+    $csrf = CSRF::token();
+    requireAdmin();
+?>
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -6,8 +12,6 @@
     <title>Quản lý Đơn hàng</title>
     <link rel="stylesheet" href="../assets/css/cssAdmin/admin_style.css"> 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <?php require_once __DIR__ . '/../../app/helpers/CSRF.php'; ?>
-    <meta name="csrf-token" content="<?= CSRF::token(); ?>">
 </head>
 <body>
 

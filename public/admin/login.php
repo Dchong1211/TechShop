@@ -1,4 +1,3 @@
-
 <?php
     require_once __DIR__ . '/../../app/helpers/CSRF.php';
     $csrf = CSRF::token();

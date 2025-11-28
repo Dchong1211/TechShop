@@ -1,6 +1,7 @@
 <?php
     require_once __DIR__ . '/../../app/helpers/CSRF.php';
     $csrf = CSRF::token();
+    requireAdmin();
 ?>
 <!DOCTYPE html>
 <html lang="vi">

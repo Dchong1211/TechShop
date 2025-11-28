@@ -3,7 +3,7 @@ require_once __DIR__ . '/../../app/controllers/ProductController.php';
 require_once __DIR__ . '/../../app/helpers/CSRF.php';
 
 $csrf = CSRF::token();
-
+requireAdmin();
 // Lấy ID từ URL
 $id = $_GET['id'] ?? 0;
 
