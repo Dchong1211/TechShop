@@ -139,6 +139,9 @@ $router->post("/admin/products/delete", function () {
     CSRF::requireToken();
     echo json_encode((new ProductController())->delete(), JSON_UNESCAPED_UNICODE);
 }, ["admin"]);
+$router->get("/admin/products/add", function () {
+    require_once __DIR__ . "/../../public/admin/add_products.php";
+}, ["admin"]);
 
 /* =====================ADMIN VIEW PAGES===================== */
 $router->get("/admin/dashboard", function() {

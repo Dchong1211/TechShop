@@ -12,7 +12,7 @@
 
     <meta name="csrf-token" content="<?= $csrf ?>">
     <script src="/TechShop/public/assets/js/admin_products.js"></script>
-    <link rel="stylesheet" href="../assets/css/cssAdmin/admin_style.css"> 
+    <link rel="stylesheet" href="/TechShop/public/assets/css/cssAdmin/admin_style.css"> 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 </head>
 
@@ -38,7 +38,7 @@
                         <button class="btn btn-search">Tìm</button>
                     </div>
 
-                    <a href="/TechShop/admin/add_products.php" class="btn btn-primary">
+                    <a href="/TechShop/admin/products/add" class="btn btn-primary">
                         Thêm Sản phẩm Mới
                     </a>
                 </div>

@@ -13,7 +13,7 @@
 
     <meta name="csrf-token" content="<?= $csrf ?>">
 
-    <link rel="stylesheet" href="../assets/css/cssAdmin/admin_style.css">
+    <link rel="stylesheet" href="/TechShop/public/assets/css/cssAdmin/admin_style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 </head>
 
@@ -29,7 +29,7 @@
     <main class="main-content">
 
         <div class="card">
-            <form action="/TechShop/admin/products/add" 
+            <form action="/TechShop/public/admin/products/add" 
                   method="POST" 
                   enctype="multipart/form-data" 
                   class="product-form">
@@ -107,7 +107,7 @@
                 </div>
 
                 <div class="card-footer">
-                    <a href="/TechShop/admin/products" class="btn btn-secondary">Hủy bỏ</a>
+                    <a href="/TechShop/public/admin/products" class="btn btn-secondary">Hủy bỏ</a>
                     <button type="submit" class="btn btn-primary">Lưu Sản phẩm</button>
                 </div>
 
@@ -118,7 +118,7 @@
 
 </div>
 
-<script src="../assets/js/admin.js"></script>
+<script src="/TechShop/public/assets/js/admin.js"></script>
 
 </body>
 </html>
