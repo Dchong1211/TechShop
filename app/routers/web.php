@@ -7,23 +7,26 @@ require_once __DIR__ . '/../controllers/CartController.php';
 require_once __DIR__ . '/../controllers/ProductController.php';
 
 
-/* ===================== AUTH VIEW ===================== */
-// Trang login admin
+/* ============================================================
+|                       AUTH VIEWS
+============================================================ */
 $router->get("/login", function () {
     require_once __DIR__ . "/../../public/admin/login.php";
 }, ["guest"]);
 
-// Trang đăng ký
 $router->get("/register", function () {
     require_once __DIR__ . "/../../public/admin/register.php";
 }, ["guest"]);
 
-// Trang verify email
 $router->get("/forgot-password", function () {
     require_once __DIR__ . "/../../public/admin/forgot_password.php";
 }, ["guest"]);
 
-/* ===================== AUTH API ===================== */
+
+
+/* ============================================================
+|                       AUTH API
+============================================================ */
 // Đăng ký
 $router->post("/register", function () {
     CSRF::requireToken();
@@ -33,7 +36,7 @@ $router->post("/register", function () {
     );
 }, ["guest"]);
 
-// Xác minh email OTP
+// Xác minh email
 $router->post("/verify-email", function () {
     CSRF::requireToken();
     echo json_encode(
@@ -42,7 +45,7 @@ $router->post("/verify-email", function () {
     );
 }, ["guest"]);
 
-// Đăng nhập (AJAX)
+// Đăng nhập
 $router->post("/login", function () {
     CSRF::requireToken();
 
@@ -53,22 +56,21 @@ $router->post("/login", function () {
     echo json_encode($auth->login($username, $password), JSON_UNESCAPED_UNICODE);
 });
 
-
-/* ===================== LOGOUT ===================== */
+// Logout
 $router->post("/logout", function () {
     CSRF::requireToken();
-    echo json_encode(
-        (new AuthController())->logout(),
-        JSON_UNESCAPED_UNICODE
-    );
+    echo json_encode((new AuthController())->logout(), JSON_UNESCAPED_UNICODE);
 }, ["login"]);
 
 
-/* ===================== LẤY THÔNG TIN USER ===================== */
+// Lấy thông tin user
 $router->get("/profile", [AuthController::class, "get_current_user"], ["login"]);
 
 
-/* ===================== RESET PASSWORD ===================== */
+
+/* ============================================================
+|                      RESET PASSWORD
+============================================================ */
 // Gửi OTP reset
 $router->post("/forgot-password", function () {
     CSRF::requireToken();
@@ -87,17 +89,22 @@ $router->post("/verify-reset-otp", function () {
     );
 }, ["guest"]);
 
-// Đổi mật khẩu bằng OTP
+// Đổi mật khẩu qua OTP
 $router->post("/reset-password-otp", function () {
     CSRF::requireToken();
     echo json_encode(
-        (new AuthController())->resetPasswordByOTP($_POST['user_id'], $_POST['new_password'], $_POST['confirm_password']),
+        (new AuthController())->resetPasswordByOTP(
+            $_POST['user_id'], $_POST['new_password'], $_POST['confirm_password']
+        ),
         JSON_UNESCAPED_UNICODE
     );
 }, ["guest"]);
 
 
-/* ===================== CART API ===================== */
+
+/* ============================================================
+|                       CART API (LOGIN REQUIRED)
+============================================================ */
 $router->get("/api/cart", function () {
     echo json_encode((new CartController())->getCart(), JSON_UNESCAPED_UNICODE);
 }, ["login"]);
@@ -123,7 +130,10 @@ $router->post("/api/cart/clear", function () {
 }, ["login"]);
 
 
-/* ===================== PRODUCT PUBLIC ===================== */
+
+/* ============================================================
+|                       PRODUCT PUBLIC API
+============================================================ */
 $router->get("/api/products", function () {
     echo json_encode((new ProductController())->list(), JSON_UNESCAPED_UNICODE);
 });
@@ -133,27 +143,30 @@ $router->get("/api/products/{id}", function ($id) {
 });
 
 
-/* ===================== PRODUCT ADMIN ===================== */
-// Thêm sản phẩm
+
+/* ============================================================
+|                       PRODUCT ADMIN API
+============================================================ */
 $router->post("/admin/products/add", function () {
     CSRF::requireToken();
     echo json_encode((new ProductController())->create(), JSON_UNESCAPED_UNICODE);
 }, ["admin"]);
 
-// Sửa sản phẩm
 $router->post("/admin/products/update", function () {
     CSRF::requireToken();
     echo json_encode((new ProductController())->update(), JSON_UNESCAPED_UNICODE);
 }, ["admin"]);
 
-// Xóa sản phẩm
 $router->post("/admin/products/delete", function () {
     CSRF::requireToken();
     echo json_encode((new ProductController())->delete(), JSON_UNESCAPED_UNICODE);
 }, ["admin"]);
 
 
-/* ===================== ADMIN DASHBOARD ===================== */
+
+/* ============================================================
+|                       ADMIN VIEW PAGES
+============================================================ */
 $router->get("/admin/dashboard", function() {
     require_once __DIR__ . "/../../public/admin/dashboard.php";
 }, ["admin"]);

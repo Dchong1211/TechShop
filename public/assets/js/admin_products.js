@@ -1,11 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
     loadProducts();
 
-    // Xử lý tìm kiếm
-    const searchInput = document.getElementById('search-input');
+    const searchInput = document.getElementById('searchInput');
     searchInput.addEventListener('input', (e) => {
         const keyword = e.target.value.toLowerCase();
-        const rows = document.querySelectorAll('#product-list tr');
+        const rows = document.querySelectorAll('#productTableBody tr');
+
         rows.forEach(row => {
             const text = row.innerText.toLowerCase();
             row.style.display = text.includes(keyword) ? '' : 'none';
@@ -13,82 +13,86 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+// Load danh sách
 async function loadProducts() {
-    const tbody = document.getElementById('product-list');
-    
+    const tbody = document.getElementById('productTableBody');
+
     try {
         const res = await fetch('/TechShop/public/api/products');
         const data = await res.json();
 
-        if (data.success) {
-            renderTable(data.data);
-        } else {
-            tbody.innerHTML = `<tr><td colspan="7" style="color:red; text-align:center">${data.message}</td></tr>`;
-        }
-    } catch (err) {
-        console.error(err);
-        tbody.innerHTML = `<tr><td colspan="7" style="color:red; text-align:center">Lỗi kết nối server!</td></tr>`;
+        if (data.success) renderTable(data.data);
+        else tbody.innerHTML = `<tr><td colspan="7">${data.message}</td></tr>`;
+
+    } catch {
+        tbody.innerHTML = `<tr><td colspan="7">Lỗi kết nối server!</td></tr>`;
     }
 }
 
+// Render table
 function renderTable(products) {
-    const tbody = document.getElementById('product-list');
+    const tbody = document.getElementById('productTableBody');
+
     if (products.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center">Không có sản phẩm nào.</td></tr>';
+        tbody.innerHTML = `<tr><td colspan="7">Không có sản phẩm nào.</td></tr>`;
         return;
     }
 
     tbody.innerHTML = products.map(p => `
         <tr>
             <td>${p.id}</td>
+
             <td>
-                <img src="public/assets/images/${p.image || 'placeholder.png'}" 
-                     style="width:50px; height:50px; object-fit:cover; border-radius:4px;">
+                <img src="/TechShop/public/uploads/products/${p.hinh_anh || 'placeholder.png'}"
+                     style="width:50px;height:50px; object-fit:cover;">
             </td>
-            <td>${p.name}</td>
-            <td>${getCategoryName(p.category_id)}</td>
-            <td>${new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(p.price)}</td>
-            <td>
-                <span class="status ${p.stock > 0 ? 'status-active' : 'status-inactive'}">
-                    ${p.stock > 0 ? 'Còn hàng' : 'Hết hàng'}
-                </span>
-            </td>
+
+            <td>${p.ten_sp}</td>
+
+            <td>${p.category_name || 'Không có danh mục'}</td>
+
+            <td>${formatPrice(Number(p.gia))}</td>
+
+            <td>${p.so_luong_ton > 0 ? 'Còn hàng' : 'Hết hàng'}</td>
+
             <td class="action-buttons">
-                <a href="public/admin/edit_products.php?id=${p.id}" class="btn btn-edit">Sửa</a>
+                <a href="/TechShop/public/admin/edit_products.php?id=${p.id}" class="btn btn-edit">Sửa</a>
                 <button onclick="deleteProduct(${p.id})" class="btn btn-delete">Xóa</button>
             </td>
         </tr>
     `).join('');
 }
 
-// Helper: Map category_id sang tên (Nếu API không trả về tên, ta tạm map cứng hoặc gọi thêm API categories)
+
+// Helper
 function getCategoryName(id) {
-    const cats = { '1': 'Laptop', '2': 'PC', '3': 'Gear', '4': 'Phụ kiện' };
+    const cats = {1:'Laptop',2:'PC',3:'Gear',4:'Phụ kiện'};
     return cats[id] || 'Khác';
 }
+function formatPrice(num) {
+    return new Intl.NumberFormat('vi-VN', {style:'currency',currency:'VND'}).format(num);
+}
 
+// Xóa sản phẩm
 async function deleteProduct(id) {
-    if (!confirm('Bạn có chắc chắn muốn xóa sản phẩm ID: ' + id + '?')) return;
+    if (!confirm(`Xóa sản phẩm ID: ${id}?`)) return;
 
-    try {
-        const csrf = document.querySelector('meta[name="csrf-token"]').content;
-        const formData = new FormData();
-        formData.append('id', id);
-        formData.append('csrf', csrf);
+    const csrf = document.querySelector('meta[name="csrf-token"]').content;
+    const formData = new FormData();
+    formData.append('id', id);
+    formData.append('csrf', csrf);
 
-        const res = await fetch('/TechShop/public/admin/products/delete', {
-            method: 'POST',
-            body: formData
-        });
-        const data = await res.json();
+    const res = await fetch('/TechShop/public/admin/products/delete', {
+        method: 'POST',
+        body: formData
+    });
 
-        if (data.success) {
-            alert('Đã xóa thành công!');
-            loadProducts(); // Reload lại bảng
-        } else {
-            alert('Lỗi: ' + data.message);
-        }
-    } catch (err) {
-        alert('Lỗi kết nối khi xóa!');
+    const data = await res.json();
+
+    if (data.success) {
+        alert('Đã xóa!');
+        loadProducts();
+    } else {
+        alert('Lỗi: ' + data.message);
     }
 }

@@ -6,70 +6,65 @@ class Product {
     private $conn;
 
     public function __construct() {
-        $db = new Database();
-        $this->conn = $db->getConnection();
+        $this->conn = (new Database())->getConnection(); // Kết nối DB
     }
 
-    // Lấy danh sách sản phẩm
     public function getAll() {
-        $sql = "SELECT * FROM products ORDER BY id DESC";
+        $sql = "
+            SELECT sp.*, dm.ten_dm AS category_name
+            FROM san_pham sp
+            LEFT JOIN danh_muc dm ON sp.id_dm = dm.id
+            ORDER BY sp.id DESC
+        "; // Lấy tất cả sản phẩm
         return $this->conn->query($sql)->fetch_all(MYSQLI_ASSOC);
     }
 
-    // Lấy sản phẩm theo ID
     public function getById($id) {
-        $sql = "SELECT * FROM products WHERE id = ?";
+        $sql = "
+            SELECT sp.*, dm.ten_dm AS category_name
+            FROM san_pham sp
+            LEFT JOIN danh_muc dm ON sp.id_dm = dm.id
+            WHERE sp.id = ?
+        "; // Lấy SP theo ID
+
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("i", $id);
         $stmt->execute();
         return $stmt->get_result()->fetch_assoc();
     }
 
-    // Tìm sản phẩm theo tên
-    public function search($keyword) {
-        $k = "%{$keyword}%";
-        $sql = "SELECT * FROM products WHERE name LIKE ?";
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("s", $k);
-        $stmt->execute();
-        return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
-    }
-
-    // Lọc theo category
-    public function getByCategory($cate_id) {
-        $sql = "SELECT * FROM products WHERE category_id = ?";
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("i", $cate_id);
-        $stmt->execute();
-        return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
-    }
-
-    // Thêm sản phẩm
-    public function create($name, $desc, $price, $image, $cate) {
-        $sql = "INSERT INTO products(name,description,price,image,category_id)
-                VALUES (?,?,?,?,?)";
+    public function create($dm, $ten, $gia, $gia_km, $sl, $img, $mo_ta_ngan, $chi_tiet) {
+        $sql = "
+            INSERT INTO san_pham (id_dm,ten_sp,gia,gia_khuyen_mai,so_luong_ton,hinh_anh,mo_ta_ngan,chi_tiet)
+            VALUES (?,?,?,?,?,?,?,?)
+        "; // Thêm SP
 
         $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("ssdsi", $name, $desc, $price, $image, $cate);
+        $stmt->bind_param("isddiiss", 
+            $dm, $ten, $gia, $gia_km, $sl, $img, $mo_ta_ngan, $chi_tiet
+        );
         return $stmt->execute();
     }
 
-    // Sửa sản phẩm
-    public function update($id, $name, $desc, $price, $image, $cate) {
-        $sql = "UPDATE products SET name=?,description=?,price=?,image=?,category_id=?
-                WHERE id=?";
+    public function update($id, $dm, $ten, $gia, $gia_km, $sl, $img, $mo_ta_ngan, $chi_tiet, $trang_thai) {
+        $sql = "
+            UPDATE san_pham 
+            SET id_dm=?, ten_sp=?, gia=?, gia_khuyen_mai=?, so_luong_ton=?,
+                hinh_anh=?, mo_ta_ngan=?, chi_tiet=?, trang_thai=?
+            WHERE id=?
+        "; // Sửa SP
 
         $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("ssdsii", $name, $desc, $price, $image, $cate, $id);
+        $stmt->bind_param("isddiissii",
+            $dm, $ten, $gia, $gia_km, $sl, $img, $mo_ta_ngan, $chi_tiet, $trang_thai, $id
+        );
         return $stmt->execute();
     }
 
-    // Xóa sản phẩm
+    //Xóa sản phẩm
     public function delete($id) {
-        $sql = "DELETE FROM products WHERE id=?";
-        $stmt = $this->conn->prepare($sql);
+        $stmt = $this->conn->prepare("DELETE FROM san_pham WHERE id=?"); 
         $stmt->bind_param("i", $id);
         return $stmt->execute();
     }
 }
-
