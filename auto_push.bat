@@ -1,32 +1,48 @@
 @echo off
 cd /d C:\xampp\htdocs\TechShop
 
-:: ===== EXPORT DB=====
-echo Dang export database voi PHP...
-php export_db.php
-echo Export thanh cong!
-echo.
+:: Format date/time
+for /f "tokens=1-3 delims=/ " %%a in ("%date%") do (
+    set dd=%%a
+    set mm=%%b
+    set yy=%%c
+)
+for /f "tokens=1-3 delims=:." %%h in ("%time%") do (
+    set hh=%%h
+    set min=%%i
+    set sec=%%j
+)
+set datetime=%yy%-%mm%-%dd%_%hh%-%min%-%sec%
 
-:: ===== GIT ADD / COMMIT / PUSH =====
+:: Get git username
 for /f "delims=" %%a in ('git config user.name') do set username=%%a
-set datetime=%date%_%time%
 
-echo Dang commit code...
+:: Export database
+php export_db.php
+if %errorlevel% neq 0 (
+    echo Export DB failed.
+    pause
+    exit /b
+)
+
+:: Git add + commit
 git add .
 git commit -m "Auto push by %username% at %datetime%"
-echo.
 
-echo Dang pull code moi nhat...
-git pull origin main --rebase
-echo.
+:: Pull code (no rebase)
+git pull origin main
 
-echo Dang push len GitHub...
+:: Push code
 git push origin main
-echo.
+if %errorlevel% neq 0 (
+    echo Push failed.
+    pause
+    exit /b
+)
 
-:: ===== IMPORT DB =====
+:: Import database
 C:\xampp\mysql\bin\mysql.exe -u root -e "SET FOREIGN_KEY_CHECKS=0;" techshop
 C:\xampp\mysql\bin\mysql.exe -u root techshop < database\techshop.sql
 C:\xampp\mysql\bin\mysql.exe -u root -e "SET FOREIGN_KEY_CHECKS=1;" techshop
 
-echo  DATABASE + CODE DA DONG BO THANH CONG
+echo Done.
