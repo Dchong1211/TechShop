@@ -1,11 +1,7 @@
 @echo off
 cd /d C:\xampp\htdocs\TechShop
 
-echo =======================================
-echo      AUTO PUSH + AUTO SYNC DATABASE
-echo =======================================
-
-:: ===== EXPORT DB (máy nào có DB thì export) =====
+:: ===== EXPORT DB=====
 echo Dang export database voi PHP...
 php export_db.php
 echo Export thanh cong!
@@ -28,15 +24,10 @@ echo Dang push len GitHub...
 git push origin main
 echo.
 
-:: ===== IMPORT DB (máy nao khong co DB moi nhat thi import) =====
-echo =======================================
-echo  DANG DONG BO DATABASE LOCAL
-echo =======================================
+:: ===== IMPORT DB =====
 
 C:\xampp\mysql\bin\mysql.exe -u root -e "SET FOREIGN_KEY_CHECKS=0;" techshop
 C:\xampp\mysql\bin\mysql.exe -u root techshop < database\techshop.sql
 C:\xampp\mysql\bin\mysql.exe -u root -e "SET FOREIGN_KEY_CHECKS=1;" techshop
 
-echo =======================================
 echo  DATABASE + CODE DA DONG BO THANH CONG
-echo =======================================

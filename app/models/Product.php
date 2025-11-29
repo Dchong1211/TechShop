@@ -14,7 +14,7 @@ class Product {
             SELECT sp.*, dm.ten_dm AS category_name
             FROM san_pham sp
             LEFT JOIN danh_muc dm ON sp.id_dm = dm.id
-            ORDER BY sp.id DESC
+            ORDER BY sp.id ASC
         "; // Lấy tất cả sản phẩm
         return $this->conn->query($sql)->fetch_all(MYSQLI_ASSOC);
     }
