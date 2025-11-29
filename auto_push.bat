@@ -30,13 +30,13 @@ echo.
 
 :: ===== IMPORT DB (máy nao khong co DB moi nhat thi import) =====
 echo =======================================
-echo      DANG DONG BO DATABASE LOCAL
+echo  DANG DONG BO DATABASE LOCAL
 echo =======================================
 
+C:\xampp\mysql\bin\mysql.exe -u root -e "SET FOREIGN_KEY_CHECKS=0;" techshop
 C:\xampp\mysql\bin\mysql.exe -u root techshop < database\techshop.sql
+C:\xampp\mysql\bin\mysql.exe -u root -e "SET FOREIGN_KEY_CHECKS=1;" techshop
 
 echo =======================================
 echo  DATABASE + CODE DA DONG BO THANH CONG
 echo =======================================
-
-pause
