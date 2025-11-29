@@ -33,15 +33,15 @@
                 <h5 class="card-title">Quản lý Sản phẩm</h5>
 
                 <div class="table-actions">
-                    <div class="search-box">
-                        <input id="searchInput" type="text" placeholder="Tìm kiếm sản phẩm...">
-                        <button class="btn btn-search">Tìm</button>
-                    </div>
+                <a href="/TechShop/admin/products/add" class="btn btn-primary">
+                    Thêm Sản phẩm Mới
+                </a>
 
-                    <a href="/TechShop/admin/products/add" class="btn btn-primary">
-                        Thêm Sản phẩm Mới
-                    </a>
+                <div class="search-box">
+                    <input id="searchInput" type="text" placeholder="Tìm kiếm sản phẩm...">
+                    <button class="btn btn-search">Tìm</button>
                 </div>
+            </div>
             </div>
 
             <div class="card-body">

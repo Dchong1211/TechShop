@@ -459,6 +459,50 @@ body.dark-mode .theme-toggle .icon-moon {
     background-color: #0056b3; 
 }
 
+
+.search-box button.btn-search {
+    background: var(--primary-color);
+    border-radius: 0 var(--border-radius-button) var(--border-radius-button) 0;
+    color: white;
+}
+
+.table-actions {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap; 
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.search-box {
+    display: flex;
+    align-items: stretch;
+    width: auto;
+    max-width: 300px;
+    background: none;
+    border: none;
+    box-shadow: none;
+}
+.search-box input {
+    flex-grow: 1;
+    border-radius: var(--border-radius-input) 0 0 var(--border-radius-input);
+}
+.search-box .btn-search {
+    border-radius: 0 var(--border-radius-button) var(--border-radius-button) 0;
+}
+
+@media (max-width: 768px) {
+    .table-actions {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+    .search-box, .search-box input {
+        width: 100%;
+        max-width: none;
+    }
+}
+
 body.dark-mode .search-box {
     background: #1a2639;      
     border-color: #00eaff;   
