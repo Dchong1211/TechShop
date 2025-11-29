@@ -16,7 +16,7 @@ class Product {
             FROM san_pham sp
             LEFT JOIN danh_muc dm ON sp.id_dm = dm.id
             WHERE sp.trang_thai = 1
-            ORDER BY sp.ngay_nhap DESC
+            ORDER BY sp.ngay_nhap ASC
         ";
         return $this->conn->query($sql)->fetch_all(MYSQLI_ASSOC);
     }
@@ -28,7 +28,7 @@ class Product {
             FROM san_pham sp
             LEFT JOIN danh_muc dm ON sp.id_dm = dm.id
             WHERE sp.id_dm = ? AND sp.trang_thai = 1
-            ORDER BY sp.ngay_nhap DESC
+            ORDER BY sp.ngay_nhap ASC
         ";
 
         $stmt = $this->conn->prepare($sql);
