@@ -1,44 +1,57 @@
 <?php
-class WishlistModel {
+
+require_once __DIR__ . '/../config/database.php';
+
+class Wishlist {
     private $conn;
-    public function __construct($conn){
-        $this->conn = $conn;
+    private $table = 'danh_sach_yeu_thich';
+
+    public function __construct($conn = null) {
+        global $conn as $globalConn;
+        $this->conn = $conn ?? $globalConn;
     }
 
-    public function add($userId, $productId, $detailKey = null){
-        $sql = "INSERT INTO wishlist (user_id, product_id, detail_key) VALUES (?, ?, ?)
-                ON DUPLICATE KEY UPDATE detail_key = VALUES(detail_key), created_at = CURRENT_TIMESTAMP";
+    public function add($userId, $productId, $maChiTiet = null) {
+        $sql = "INSERT INTO {$this->table} (id_nguoi_dung, id_san_pham, ma_chi_tiet) VALUES (?, ?, ?)";
         $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("iis", $userId, $productId, $detailKey);
+        $stmt->bind_param("iis", $userId, $productId, $maChiTiet);
+        $res = $stmt->execute();
+        return $res;
+    }
+
+    public function remove($userId, $productId, $maChiTiet = null) {
+        if ($maChiTiet === null) {
+            $sql = "DELETE FROM {$this->table} WHERE id_nguoi_dung = ? AND id_san_pham = ?";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bind_param("ii", $userId, $productId);
+        } else {
+            $sql = "DELETE FROM {$this->table} WHERE id_nguoi_dung = ? AND id_san_pham = ? AND ma_chi_tiet = ?";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bind_param("iis", $userId, $productId, $maChiTiet);
+        }
         return $stmt->execute();
     }
 
-    public function remove($userId, $productId){
-        $sql = "DELETE FROM wishlist WHERE user_id = ? AND product_id = ?";
+    public function listByUser($userId) {
+        $sql = "SELECT * FROM {$this->table} WHERE id_nguoi_dung = ? ORDER BY ngay_them DESC";
         $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("ii", $userId, $productId);
-        return $stmt->execute();
+        $stmt->bind_param("i",$userId);
+        $stmt->execute();
+        return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
     }
 
-    public function getByUser($userId, $limit = 50, $offset = 0){
-        $sql = "SELECT w.*, p.* FROM wishlist w
-                JOIN product p ON p.Id = w.product_id
-                WHERE w.user_id = ? ORDER BY w.created_at DESC LIMIT ? OFFSET ?";
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("iii", $userId, $limit, $offset);
+    public function exists($userId, $productId, $maChiTiet = null) {
+        if ($maChiTiet === null) {
+            $sql = "SELECT COUNT(*) cnt FROM {$this->table} WHERE id_nguoi_dung = ? AND id_san_pham = ?";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bind_param("ii",$userId,$productId);
+        } else {
+            $sql = "SELECT COUNT(*) cnt FROM {$this->table} WHERE id_nguoi_dung = ? AND id_san_pham = ? AND ma_chi_tiet = ?";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bind_param("iis",$userId,$productId,$maChiTiet);
+        }
         $stmt->execute();
-        $res = $stmt->get_result();
-        return $res->fetch_all(MYSQLI_ASSOC);
-    }
-
-    public function getUsersByProduct($productId){
-        $sql = "SELECT u.id, u.name, u.email FROM wishlist w
-                JOIN users u ON u.id = w.user_id
-                WHERE w.product_id = ?";
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("i", $productId);
-        $stmt->execute();
-        $res = $stmt->get_result();
-        return $res->fetch_all(MYSQLI_ASSOC);
+        $r = $stmt->get_result()->fetch_assoc();
+        return $r['cnt'] > 0;
     }
 }

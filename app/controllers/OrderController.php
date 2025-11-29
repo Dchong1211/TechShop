@@ -1,52 +1,63 @@
 <?php
-    class OrderController {
-        private $conn;
-        private $orderModel;
-        private $itemModel;
+// controllers/OrderController.php
+require_once __DIR__ . '/../models/Order.php';
+require_once __DIR__ . '/../helpers/auth.php';
+require_once __DIR__ . '/../helpers/CSRF.php';
 
+checkAuth();
+$model = new Order();
+$action = $_GET['action'] ?? 'list';
 
-        public function __construct($conn) {
-            $this->conn = $conn;
-            $this->orderModel = new OrderModel($conn);
-            $this->itemModel = new OrderItemModel($conn);
-        }
+if ($action === 'create' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+    verify_csrf();
+    $data = [
+        'id_khach_hang' => intval($_POST['id_khach_hang']),
+        'tong_tien' => floatval($_POST['tong_tien']),
+        'phuong_thuc_thanh_toan' => $_POST['phuong_thuc_thanh_toan'],
+        'ten_nguoi_nhan' => $_POST['ten_nguoi_nhan'],
+        'sdt_nguoi_nhan' => $_POST['sdt_nguoi_nhan'],
+        'dia_chi_giao_hang' => $_POST['dia_chi_giao_hang'],
+        'trang_thai_don' => $_POST['trang_thai_don'] ?? 'cho_xac_nhan'
+    ];
+    $id = $model->create($data);
+    header("Location: /admin/orders.php?created=" . ($id?1:0) . "&id={$id}");
+    exit;
+}
 
+if ($action === 'update_status' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+    verify_csrf();
+    $id = intval($_POST['id']);
+    $status = $_POST['trang_thai_don'];
+    $ok = $model->updateStatus($id, $status);
+    header("Location: /admin/orders.php?updated=" . ($ok?1:0)."&id={$id}");
+    exit;
+}
 
-        public function index() {
-            
-        }
+if ($action === 'delete' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+    verify_csrf();
+    $id = intval($_POST['id']);
+    $ok = $model->delete($id);
+    header("Location: /admin/orders.php?deleted=" . ($ok?1:0));
+    exit;
+}
 
+if ($action === 'view') {
+    $id = intval($_GET['id']);
+    $order = $model->getById($id);
+    header('Content-Type: application/json');
+    echo json_encode($order);
+    exit;
+}
 
-        public function show($id) {
-            return [
-            "order" => $this->orderModel->getOrderById($id),
-            "items" => $this->itemModel->getItemsByOrder($id)
-            ];
-        }
+if ($action === 'search') {
+    $q = $_GET['q'] ?? '';
+    $res = $model->search($q);
+    header('Content-Type: application/json');
+    echo json_encode($res);
+    exit;
+}
 
-
-        public function store($user_id, $address, $total_price, $payment_method, $items) {
-            $order_id = $this->orderModel->createOrder($user_id, $address, $total_price, $payment_method);
-
-
-            if (!$order_id) return false;
-
-
-            foreach ($items as $item) {
-                $this->itemModel->addItem($order_id, $item['product_id'], $item['quantity'], $item['price']);
-            }
-
-
-            return $order_id;
-        }
-
-        public function update($id, $address, $total_price, $payment_method, $status) {
-            return $this->orderModel->updateOrder($id, $address, $total_price, $payment_method, $status);
-        }
-
-
-        public function delete($id) {
-            return $this->orderModel->deleteOrder($id);
-        }
-    }
-?>
+$res = $model->all();
+header('Content-Type: application/json');
+echo json_encode($res);
+exit;

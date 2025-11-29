@@ -1,19 +1,20 @@
 <?php
+
 require_once __DIR__ . '/../config/database.php';
 
-class Category {
+class Notify {
     private $conn;
-    private $table = 'danh_muc';
+    private $table = 'thong_bao';
 
     public function __construct($conn = null) {
         global $conn as $globalConn;
         $this->conn = $conn ?? $globalConn;
     }
 
-    public function create($ten_dm, $mo_ta = null, $trang_thai = 1) {
-        $sql = "INSERT INTO {$this->table} (ten_dm, mo_ta, trang_thai) VALUES (?, ?, ?)";
+    public function create($data) {
+        $sql = "INSERT INTO {$this->table} (id_nguoi_dung, loai_thong_bao, noi_dung, da_doc) VALUES (?, ?, ?, ?)";
         $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("ssi", $ten_dm, $mo_ta, $trang_thai);
+        $stmt->bind_param("issi", $data['id_nguoi_dung'], $data['loai_thong_bao'], $data['noi_dung'], $data['da_doc']);
         $res = $stmt->execute();
         if ($res) return $this->conn->insert_id;
         return false;
@@ -27,10 +28,10 @@ class Category {
         return $stmt->get_result()->fetch_assoc();
     }
 
-    public function update($id, $ten_dm, $mo_ta, $trang_thai) {
-        $sql = "UPDATE {$this->table} SET ten_dm=?, mo_ta=?, trang_thai=? WHERE id=?";
+    public function markRead($id) {
+        $sql = "UPDATE {$this->table} SET da_doc = 1 WHERE id = ?";
         $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("ssii", $ten_dm, $mo_ta, $trang_thai, $id);
+        $stmt->bind_param("i",$id);
         return $stmt->execute();
     }
 
@@ -41,17 +42,17 @@ class Category {
         return $stmt->execute();
     }
 
-    public function search($q, $limit=50, $offset=0) {
+    public function searchByUser($userId, $q = '', $limit=50, $offset=0) {
         $like = "%{$q}%";
-        $sql = "SELECT * FROM {$this->table} WHERE ten_dm LIKE ? OR mo_ta LIKE ? LIMIT ? OFFSET ?";
+        $sql = "SELECT * FROM {$this->table} WHERE id_nguoi_dung = ? AND noi_dung LIKE ? ORDER BY ngay_tao DESC LIMIT ? OFFSET ?";
         $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("ssii",$like,$like,$limit,$offset);
+        $stmt->bind_param("isii", $userId, $like, $limit, $offset);
         $stmt->execute();
         return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
     }
 
     public function all($limit=100, $offset=0) {
-        $sql = "SELECT * FROM {$this->table} ORDER BY id DESC LIMIT ? OFFSET ?";
+        $sql = "SELECT * FROM {$this->table} ORDER BY ngay_tao DESC LIMIT ? OFFSET ?";
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("ii",$limit,$offset);
         $stmt->execute();
