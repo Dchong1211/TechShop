@@ -213,8 +213,21 @@ INSERT INTO `nguoi_dung` (`id`, `ho_ten`, `email`, `mat_khau`, `vai_tro`, `email
 (10, 'minhchau', 'chau.hm.64cntt@ntu.edu.vn', '$2y$10$AMW3saXBRKwWJNvWWJ3pVOlpmMV45Ms68j/P5l/wMAVCKpTRYLMeq', 'khach', 1, '2025-11-29 20:05:57', NULL, NULL, NULL, NULL, NULL, NULL, 1, '2025-11-29 20:03:36');
 
 -- --------------------------------------------------------
+<<<<<<< HEAD
 
 --
+=======
+INSERT INTO `nguoi_dung` (`id`, `ho_ten`, `email`, `mat_khau`, `dien_thoai`, `dia_chi`, `vai_tro`, `email_verified`, `email_verified_at`, `otp`, `otp_expires_at`, `reset_token`, `reset_expires_at`, `reset_otp`, `reset_otp_expires`, `trang_thai`, `ngay_tao`) 
+VALUES (6, 'quyvuongbattu', 'nguyentrongthoi31@gmail.com', '$2y$10$fZFJ.JyewveYEOsSR82/juGo71yv0M0X3lhj/goLJmKclaXqKEEfe', NULL, NULL, 'khach', '1', '2025-11-28 08:45:46', NULL, NULL, NULL, NULL, NULL, NULL, '1', '2025-11-28 08:45:01');
+INSERT INTO `nguoi_dung` (`id`, `ho_ten`, `email`, `mat_khau`, `dien_thoai`, `dia_chi`, `vai_tro`, `email_verified`, `email_verified_at`, `otp`, `otp_expires_at`, `reset_token`, `reset_expires_at`, `reset_otp`, `reset_otp_expires`, `trang_thai`, `ngay_tao`) 
+VALUES (7, 'Dchong', 'vdinhtrong580@gmail.com', '$2y$10$TmGiltoOT0jLSiBGgIllqurY7Uxhym55rPiB9JzS0R61WKbUnE5rW', NULL, NULL, 'khach', '1', '2025-11-29 19:50:13', NULL, NULL, NULL, NULL, NULL, NULL, '1', '2025-11-29 19:49:51');
+INSERT INTO `nguoi_dung` (`id`, `ho_ten`, `email`, `mat_khau`, `dien_thoai`, `dia_chi`, `vai_tro`, `email_verified`, `email_verified_at`, `otp`, `otp_expires_at`, `reset_token`, `reset_expires_at`, `reset_otp`, `reset_otp_expires`, `trang_thai`, `ngay_tao`) 
+VALUES (8, 'minhhung', 'hung.nm.64cntt@ntu.edu.vn', '$2y$10$NjhMXNGZWoqpTuXDDSS8VO7D8ZJFKi9KJ2BApC6IDI668HvJeVI6q', NULL, NULL, 'khach', '1', '2025-11-29 19:55:19', NULL, NULL, NULL, NULL, NULL, NULL, '1', '2025-11-29 19:54:51');
+INSERT INTO `nguoi_dung` (`id`, `ho_ten`, `email`, `mat_khau`, `dien_thoai`, `dia_chi`, `vai_tro`, `email_verified`, `email_verified_at`, `otp`, `otp_expires_at`, `reset_token`, `reset_expires_at`, `reset_otp`, `reset_otp_expires`, `trang_thai`, `ngay_tao`) 
+VALUES (9, 'duykhanh', 'khanh.tdu.64cntt@ntu.edu.vn', '$2y$10$FBUZG/khUCYDs8.8ROJ8UOXFieDiN/iSJeVsxktAQMsRWNf9/1NO6', NULL, NULL, 'khach', '1', '2025-11-29 19:59:51', NULL, NULL, NULL, NULL, NULL, NULL, '1', '2025-11-29 19:57:25');
+INSERT INTO `nguoi_dung` (`id`, `ho_ten`, `email`, `mat_khau`, `dien_thoai`, `dia_chi`, `vai_tro`, `email_verified`, `email_verified_at`, `otp`, `otp_expires_at`, `reset_token`, `reset_expires_at`, `reset_otp`, `reset_otp_expires`, `trang_thai`, `ngay_tao`) 
+VALUES (10, 'minhchau', 'chau.hm.64cntt@ntu.edu.vn', '$2y$10$AMW3saXBRKwWJNvWWJ3pVOlpmMV45Ms68j/P5l/wMAVCKpTRYLMeq', NULL, NULL, 'khach', '1', '2025-11-29 20:05:57', NULL, NULL, NULL, NULL, NULL, NULL, '1', '2025-11-29 20:03:36');
+>>>>>>> 996b41d (Auto push by Dchong1211 at 29/11/25_20:39:54.80)
 -- Table structure for table `san_pham`
 --
 
