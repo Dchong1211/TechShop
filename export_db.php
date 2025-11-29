@@ -1,8 +1,4 @@
 <?php
-// =========================
-// EXPORT DATABASE Y HỆT PHPMyAdmin + KHÔNG BAO GIỜ LỖI FK
-// =========================
-
 // === CONFIG ===
 $host     = "127.0.0.1";
 $user     = "root";
@@ -33,16 +29,14 @@ $sql .= "-- Host: 127.0.0.1\n";
 $sql .= "-- Database: `$database`\n";
 $sql .= "-- Exported at: " . date("Y-m-d H:i:s") . "\n\n";
 
-$sql .= "SET FOREIGN_KEY_CHECKS=0;\n\n"; // 🔥 QUAN TRỌNG
+$sql .= "SET FOREIGN_KEY_CHECKS=0;\n\n";
 
 $sql .= "SET SQL_MODE = \"NO_AUTO_VALUE_ON_ZERO\";\n";
 $sql .= "SET time_zone = \"+00:00\";\n\n";
 $sql .= "START TRANSACTION;\n";
 $sql .= "/*!40101 SET NAMES utf8mb4 */;\n\n";
 
-// =============================
 // XUẤT TỪNG BẢNG
-// =============================
 foreach ($tables as $table) {
 
     // DROP TABLE
@@ -100,7 +94,7 @@ foreach ($tables as $table) {
 
 // FOOTER
 $sql .= "COMMIT;\n";
-$sql .= "\nSET FOREIGN_KEY_CHECKS=1;\n"; // 🔥 QUAN TRỌNG
+$sql .= "\nSET FOREIGN_KEY_CHECKS=1;\n";
 
 file_put_contents($backup_file, $sql);
 
