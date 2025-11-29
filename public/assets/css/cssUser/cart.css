@@ -2,7 +2,7 @@
    FILE: public/assets/css/cssUser/cart.css
    ========================================================= */
 
-/* --- 1. Progress Bar --- */
+/* --- 1. Progress Bar (Thanh tiến trình) --- */
 .cart-progress-bar {
     display: flex; justify-content: center; align-items: center;
     margin-bottom: 30px; padding: 20px 0;
@@ -23,13 +23,13 @@
 }
 .progress-line { width: 60px; height: 2px; background: #eee; margin: 0 15px; }
 
-/* --- 2. Layout --- */
+/* --- 2. Layout chính --- */
 .cart-page {
     max-width: 1200px; margin: 0 auto 40px; padding: 0 16px;
     display: grid; grid-template-columns: 1fr 360px; gap: 24px; align-items: start;
 }
 
-/* --- 3. Cột trái --- */
+/* --- 3. Bảng sản phẩm (Cột trái) --- */
 .cart-left-section {
     background: #fff; border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.05); overflow: hidden;
@@ -78,7 +78,7 @@
 }
 .btn-update:hover { background: #d70018; color: white; }
 
-/* --- 4. Cột phải --- */
+/* --- 4. Sidebar Tóm tắt (Cột phải) --- */
 .summary-box {
     background: #fff; border-radius: 8px; padding: 20px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.05); position: sticky; top: 20px;
@@ -109,6 +109,7 @@
     .cart-table thead { display: none; }
     .cart-table tr { display: flex; flex-direction: column; border: 1px solid #eee; margin-bottom: 15px; padding: 15px; position: relative; }
     .cart-table td { padding: 5px 0; border: none; }
+    .cart-actions { position: absolute; top: 15px; right: 15px; }
 }
 
 /* ========================================== */
@@ -158,17 +159,20 @@
 [data-theme="dark"] .btn-continue { color: #94a3b8; } /* Chữ phụ màu xanh xám */
 [data-theme="dark"] .summary-row.total { color: #fff; }
 
+/* Giá tiền màu Hồng Cam (Dịu mắt) */
 [data-theme="dark"] .summary-row.total span:last-child,
 [data-theme="dark"] .subtotal-col {
-    color: #ff6b6b; /* Hồng cam */
+    color: #ff6b6b; 
     text-shadow: 0 0 8px rgba(255, 107, 107, 0.2);
 }
+[data-theme="dark"] .price-col { color: #ccc; }
 
 /* Input số lượng */
 [data-theme="dark"] .qty-wrapper { border-color: #2d3748; }
-[data-theme="dark"] .qty-input { background: #0b0c15; color: #fff; } /* Nền input đen sâu */
+[data-theme="dark"] .qty-input { background: #0b0c15; color: #fff; } 
 
-/* 6. NÚT BẤM TÍM */
+/* 6. NÚT BẤM */
+/* Cập nhật giỏ hàng (Viền Tím) */
 [data-theme="dark"] .btn-update {
     background: transparent;
     border-color: #AD90E8;
@@ -179,6 +183,7 @@
     box-shadow: 0 0 10px rgba(173, 144, 232, 0.3);
 }
 
+/* Thanh toán (Gradient Tím) */
 [data-theme="dark"] .btn-checkout {
     background: linear-gradient(90deg, #7f5eff, #AD90E8);
     color: #fff;

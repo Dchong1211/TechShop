@@ -1,72 +1,397 @@
+/* =========================================================
+   FILE: public/assets/css/cssUser/product_detail.css
+   MÔ TẢ: Trang chi tiết sản phẩm – Layout nâng cấp kiểu GearVN
+   ========================================================= */
+
 .pdp-page {
   max-width: 1200px;
-  margin: 24px auto;
-  padding: 24px;
+  margin: 24px auto 40px;
+  padding: 24px 26px 28px;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 32px;
-  background: var(--white);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: 28px;
+  border-radius: 18px;
+  background: radial-gradient(circle at top left, rgba(215,0,24,0.12), transparent 60%),
+              radial-gradient(circle at bottom right, rgba(59,130,246,0.1), transparent 55%),
+              #0f172a;
+  box-shadow: 0 0 0 1px rgba(148,163,184,0.08),
+              0 18px 45px rgba(15,23,42,0.9);
+  position: relative;
 }
-.pdp-image img {
+
+/* viền glow nhẹ bên trong */
+.pdp-page::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 18px;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(59,130,246,0.4), rgba(56,189,248,0.15), rgba(244,63,94,0.4));
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* Đảm bảo nội dung không dính vào viền glow */
+.pdp-page > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* CỘT TRÁI: MEDIA */
+.pdp-left {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.pdp-media-card {
+  border-radius: 14px;
+  padding: 14px;
+  background: rgba(15,23,42,0.9);
+  border: 1px solid rgba(148,163,184,0.4);
+  box-shadow: 0 10px 35px rgba(15,23,42,0.9);
+}
+
+.pdp-image-main {
+  border-radius: 12px;
+  background: radial-gradient(circle at top, rgba(255,255,255,0.06), transparent 55%);
+  padding: 18px 18px 12px;
+}
+
+.pdp-image-main img {
+  width: 100%;
   max-width: 100%;
-  border-radius: var(--radius);
-  border: 1px solid #eee;
-}
-.pdp-info h1 {
-  font-size: 28px;
-  margin-bottom: 12px;
-  font-weight: 700;
-}
-.pdp-price {
-  font-size: 24px;
-  font-weight: 700;
-  color: var(--main-red);
-  margin-bottom: 20px;
-}
-.pdp-desc {
-  margin-bottom: 20px;
-  line-height: 1.6;
-  color: var(--muted);
-}
-.pdp-form label {
   display: block;
-  margin-bottom: 6px;
+  border-radius: 10px;
+  object-fit: contain;
+}
+
+/* strip thông tin meta dưới ảnh */
+.pdp-meta-strip {
+  margin-top: 14px;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  font-size: 11px;
+}
+
+.pdp-meta-pill {
+  border-radius: 999px;
+  padding: 6px 10px;
+  background: rgba(15,23,42,0.95);
+  border: 1px solid rgba(148,163,184,0.35);
+  color: #e5e7eb;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  line-height: 1.25;
+}
+
+.pdp-meta-pill span:first-child {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: #9ca3af;
+}
+
+.pdp-meta-pill span:last-child {
   font-weight: 600;
 }
+
+/* CỘT PHẢI: THÔNG TIN CHI TIẾT */
+.pdp-right {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Tên sản phẩm */
+.pdp-info-title {
+  font-size: 24px;
+  line-height: 1.35;
+  font-weight: 800;
+  color: #f9fafb;
+  margin: 0;
+}
+
+/* dãy badge nhỏ dưới tên */
+.pdp-badges-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.pdp-badge {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  border: 1px solid rgba(148,163,184,0.45);
+  color: #e5e7eb;
+  background: rgba(15,23,42,0.9);
+}
+
+.pdp-badge--sale {
+  border-color: rgba(248,113,113,0.9);
+  color: #fee2e2;
+  background: linear-gradient(90deg, rgba(248,113,113,0.15), rgba(248,113,113,0.05));
+}
+
+.pdp-badge--stock-ok {
+  border-color: rgba(34,197,94,0.9);
+  color: #bbf7d0;
+  background: linear-gradient(90deg, rgba(34,197,94,0.18), rgba(22,163,74,0.05));
+}
+
+.pdp-badge--stock-out {
+  border-color: rgba(248,113,113,0.9);
+  color: #fecaca;
+  background: linear-gradient(90deg, rgba(248,113,113,0.18), rgba(127,29,29,0.1));
+}
+
+/* CARD GIÁ */
+.pdp-price-card {
+  margin-top: 4px;
+  padding: 14px 16px 16px;
+  border-radius: 14px;
+  background: radial-gradient(circle at top left, rgba(56,189,248,0.16), transparent 60%),
+              radial-gradient(circle at bottom right, rgba(94,234,212,0.16), transparent 55%),
+              #020617;
+  border: 1px solid rgba(148,163,184,0.4);
+  box-shadow: 0 12px 32px rgba(15,23,42,0.85);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.pdp-price-main {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.pdp-price {
+  font-size: 26px;
+  font-weight: 900;
+  color: #facc15;
+}
+
+.pdp-old-price-line {
+  font-size: 13px;
+  color: #9ca3af;
+}
+
+.pdp-old-price-line .old-price {
+  text-decoration: line-through;
+  margin-right: 6px;
+}
+
+.pdp-price-note {
+  font-size: 11px;
+  color: #e5e7eb;
+}
+
+/* box info nhỏ bên phải card giá */
+.pdp-price-side {
+  font-size: 12px;
+  color: #e5e7eb;
+  max-width: 220px;
+  line-height: 1.5;
+}
+
+/* HỘP MUA HÀNG */
+.pdp-purchase-box {
+  margin-top: 6px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: rgba(15,23,42,0.9);
+  border: 1px solid rgba(148,163,184,0.5);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.pdp-form {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.pdp-form label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #e5e7eb;
+}
+
+/* input số lượng */
 .pdp-form input[type="number"] {
   width: 80px;
-  padding: 8px;
-  font-size: 16px;
-  margin-right: 10px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-}
-.pdp-form .btn {
-  background: var(--main-red);
-  color: white;
-  border: none;
-  padding: 12px 20px;
-  font-size: 16px;
-  font-weight: 600;
+  padding: 8px 10px;
+  font-size: 14px;
   border-radius: 8px;
+  border: 1px solid #4b5563;
+  background: #020617;
+  color: #e5e7eb;
+  outline: none;
+}
+
+.pdp-form input[type="number"]:focus {
+  border-color: #38bdf8;
+  box-shadow: 0 0 0 1px rgba(56,189,248,0.35);
+}
+
+/* nút thêm giỏ */
+.pdp-form .btn {
+  background: linear-gradient(90deg, #22c55e, #4ade80);
+  color: #052e16;
+  border: none;
+  padding: 10px 22px;
+  font-size: 14px;
+  font-weight: 800;
+  border-radius: 999px;
   cursor: pointer;
-  transition: background .2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  box-shadow: 0 6px 18px rgba(34,197,94,0.45);
+  transition: transform .15s ease, box-shadow .18s ease, filter .15s ease;
+  white-space: nowrap;
 }
+
 .pdp-form .btn:hover {
-  background: #a00010;
+  transform: translateY(-1px);
+  box-shadow: 0 10px 26px rgba(34,197,94,0.55);
+  filter: brightness(1.05);
 }
-@media (max-width: 768px) {
+
+.pdp-stock-text {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.pdp-stock-text--ok {
+  color: #22c55e;
+}
+
+.pdp-stock-text--out {
+  color: #f97373;
+}
+
+/* MÔ TẢ NGẮN / FEATURES */
+.pdp-desc-block {
+  margin-top: 6px;
+}
+
+.pdp-desc-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #e5e7eb;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+}
+
+.pdp-feature-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 13px;
+  color: #cbd5f5;
+}
+
+.pdp-feature-list li {
+  position: relative;
+  padding-left: 16px;
+  margin-bottom: 4px;
+}
+
+.pdp-feature-list li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: #38bdf8;
+}
+
+/* KHỐI MÔ TẢ CHI TIẾT PHÍA DƯỚI */
+.pdp-detail-section {
+  max-width: 1200px;
+  margin: 0 auto 40px;
+  padding: 20px 24px 26px;
+  border-radius: 14px;
+  background: #020617;
+  border: 1px solid rgba(31,41,55,0.85);
+  box-shadow: 0 12px 30px rgba(15,23,42,0.9);
+}
+
+.pdp-detail-title {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: #e5e7eb;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+}
+
+.pdp-detail-content {
+  font-size: 14px;
+  line-height: 1.7;
+  color: #e5e7eb;
+}
+
+/* =============== RESPONSIVE =============== */
+
+@media (max-width: 992px) {
   .pdp-page {
     grid-template-columns: 1fr;
-    padding: 16px;
-    gap: 20px;
+    padding: 20px 18px 22px;
+    gap: 24px;
   }
-  .pdp-info h1 {
-    font-size: 22px;
+}
+
+@media (max-width: 768px) {
+  .pdp-meta-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-  .pdp-price {
-    font-size: 20px;
+  .pdp-price-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .pdp-price-side {
+    max-width: none;
+  }
+  .pdp-purchase-box {
+    align-items: flex-start;
+  }
+  .pdp-form {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .pdp-form input[type="number"] {
+    width: 100%;
+  }
+  .pdp-form .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 576px) {
+  .pdp-page {
+    margin: 18px auto 28px;
+    padding: 16px 12px 18px;
   }
 }

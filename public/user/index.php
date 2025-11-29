@@ -1,50 +1,77 @@
 <?php
-// 1. CẤU HÌNH
-define('BASE_PATH', dirname(__DIR__)); 
+// 1. CẤU HÌNH ĐƯỜNG DẪN
+define('BASE_PATH', dirname(__DIR__));
+
+// 2. KẾT NỐI DATABASE (Theo cấu trúc MVC hoặc Includes)
+$db_path_mvc = __DIR__ . '/../../app/config/database.php';
+$db_path_inc = BASE_PATH . '/includes/db.php';
+
+if (file_exists($db_path_mvc)) {
+    require_once $db_path_mvc;
+} elseif (file_exists($db_path_inc)) {
+    require_once $db_path_inc;
+} else {
+    die("Lỗi: Không tìm thấy file cấu hình Database.");
+}
+
+// Khởi tạo kết nối
+try {
+    $db = new Database();
+    $conn = $db->getConnection();
+} catch (Exception $e) {
+    die("Lỗi kết nối: " . $e->getMessage());
+}
+
 $PAGE_TITLE = 'Trang chủ';
 $SHOW_SEARCH = true;
 
-// (Giữ nguyên phần tạo dữ liệu giả...)
-function create_product($id, $name, $price, $img, $label = '') {
-    return ['id' => $id, 'name' => $name, 'price' => $price, 'image' => $img, 'label' => $label];
+/**
+ * 3. HÀM LẤY SẢN PHẨM TỪ DB
+ * Lấy sản phẩm mới nhất hoặc bán chạy (dựa trên lượt xem/tồn kho)
+ */
+function get_products_by_category($conn, $category_ids, $limit = 10) {
+    $ids_string = implode(',', $category_ids);
+    // Lấy sản phẩm đang bán, sắp xếp theo lượt xem (giả lập bán chạy) hoặc mới nhất
+    $sql = "SELECT * FROM san_pham 
+            WHERE id_dm IN ($ids_string) AND trang_thai = 1 
+            ORDER BY luot_xem DESC, ngay_nhap DESC 
+            LIMIT $limit";  
+    $result = $conn->query($sql);
+    return $result ? $result->fetch_all(MYSQLI_ASSOC) : [];
 }
-function multiply_data($data, $count = 12) {
-    $result = [];
-    while (count($result) < $count) {
-        foreach ($data as $item) {
-            if (count($result) >= $count) break;
-            $new = $item;
-            $new['id'] = $item['id'] . '_' . count($result); 
-            $result[] = $new;
-        }
+
+/**
+ * 4. HÀM TÍNH PHẦN TRĂM GIẢM GIÁ
+ */
+function get_discount_label($price, $sale_price) {
+    if ($sale_price > 0 && $sale_price < $price) {
+        $percent = round((($price - $sale_price) / $price) * 100);
+        return "-{$percent}%";
     }
-    return $result;
+    return '';
 }
 
-$base_laptop = [
-    create_product(101, 'Laptop ASUS Vivobook Go 15', 11490000, 'asus_vivo.jpg', '-10%'),
-    create_product(102, 'Laptop HP Pavilion 15', 14590000, 'hp_pavilion.jpg'),
-    create_product(103, 'MacBook Air M1 2020', 18490000, 'macbook_m1.jpg', 'Hot'),
-    create_product(104, 'Laptop Acer Nitro 5 Tiger', 19990000, 'acer_nitro.jpg'),
-];
-$base_pc = [
-    create_product(201, 'PC GVN Intel i3 / GTX 1650', 9590000, 'pc_gvn_1.jpg'),
-    create_product(202, 'PC GVN i5 12400F / RTX 3060', 15990000, 'pc_gvn_2.jpg', 'Best Seller'),
-    create_product(203, 'PC GVN AMD Ryzen 5 / RX 6600', 14490000, 'pc_gvn_3.jpg'),
-    create_product(204, 'PC GVN Dragon High-End', 85990000, 'pc_gvn_high.jpg', 'New'),
-];
-$base_gear = [
-    create_product(301, 'Chuột Logitech G Pro X', 2990000, 'logitech_gpro.jpg'),
-    create_product(302, 'Phím cơ Keychron K8 Pro', 2590000, 'keychron_k8.jpg'),
-    create_product(303, 'Tai nghe HyperX Cloud II', 1890000, 'hyperx_cloud.jpg'),
-    create_product(304, 'Ghế Gaming Anda Seat', 5900000, 'chair_anda.jpg', '-50%'),
-];
+// 5. LẤY DỮ LIỆU THẬT TỪ DB (Mapping theo techshop.sql)
+// Laptop (ID 1: Gaming, 2: Văn phòng)
+$list_laptop = get_products_by_category($conn, [1, 2], 12);
 
-$list_laptop = multiply_data($base_laptop, 12); 
-$list_pc     = multiply_data($base_pc, 12);     
-$list_gear   = multiply_data($base_gear, 12);
+// PC (ID 3)
+$list_pc = get_products_by_category($conn, [3], 12);
 
-// DATA DANH MỤC NHANH
+// Màn hình (ID 4) - Mới thêm
+$list_monitor = get_products_by_category($conn, [4], 12);
+
+// Gear: Phím(5), Chuột(6), Tai nghe(7)
+$list_gear = get_products_by_category($conn, [5, 6, 7], 12);
+
+// Linh kiện PC: RAM(9), VGA(10), CPU(11), Main(12), Nguồn(15? - Check lại ID nguồn)
+$list_components = get_products_by_category($conn, [9, 10, 11, 12], 12);
+
+// Phụ kiện: Loa(17), Webcam(13), Cáp/Sạc...
+$list_accessories = get_products_by_category($conn, [13, 17, 19, 20], 12);
+
+
+// 6. DATA DANH MỤC NHANH (Giữ nguyên để điều hướng)
 $quick_categories = [
     ['name' => 'Laptop', 'code' => 'laptop', 'icon' => 'fa-solid fa-laptop'],
     ['name' => 'PC', 'code' => 'pc', 'icon' => 'fa-solid fa-desktop'],
@@ -68,45 +95,25 @@ $quick_categories = [
     ['name' => 'Sạc DP', 'code' => 'powerbank', 'icon' => 'fa-solid fa-battery-full'],
 ];
 
-// DATA TIN TỨC
-$news_list = [
-    ['title' => 'Cách reset máy tính Casio chi tiết và đầy đủ cho mọi dòng', 'img' => 'https://via.placeholder.com/300x200?text=News+1'],
-    ['title' => '3 cách tải Where Winds Meet trên PC, laptop chi tiết', 'img' => 'https://via.placeholder.com/300x200?text=News+2'],
-    ['title' => 'Chi tiết từng cách giải phóng dung lượng Zalo bị đầy', 'img' => 'https://via.placeholder.com/300x200?text=News+3'],
-    ['title' => 'Hướng dẫn cách tải Excel về máy tính, điện thoại', 'img' => 'https://via.placeholder.com/300x200?text=News+4'],
-];
-
 ob_start();
 ?>
-<link rel="stylesheet" href="public/assets/css/cssUser/index.css?v=10000">
+<link rel="stylesheet" href="public/assets/css/cssUser/index.css?v=10005">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 <script src="public/assets/js/user.js?v=9999"></script>
 <script src="public/assets/js/indexUser.js?v=9999" defer></script> 
 
 <style>
-    /* CSS Cục bộ để xử lý layout 2 phần */
-    .hero-section {
-        display: grid;
-        grid-template-columns: 280px 1fr;
-        gap: 20px;
-        margin-bottom: 40px;
-    }
-    
-    /* Phần nội dung full-width bên dưới */
-    .full-width-content {
-        display: block;
-        width: 100%;
-    }
-    
-    /* Responsive cho mobile */
+    /* CSS Cục bộ: Layout 2 cột */
+    .hero-section { display: grid; grid-template-columns: 280px 1fr; gap: 20px; margin-bottom: 40px; }
+    .full-width-content { display: block; width: 100%; }
     @media (max-width: 991px) {
-        .hero-section {
-            grid-template-columns: 1fr;
-        }
-        .col-left-sidebar {
-            display: none;
-        }
+        .hero-section { grid-template-columns: 1fr; }
+        .col-left-sidebar { display: none; }
     }
+    
+    /* Fix chữ nổi bật trong Dark Mode (Thêm vào đây cho chắc) */
+    [data-theme="dark"] .product-card h3 { color: #fff !important; font-weight: 600; }
+    [data-theme="dark"] .section-head h2 { color: #fff !important; text-shadow: 0 0 10px rgba(255,255,255,0.2); }
 </style>
 
 <?php
@@ -151,8 +158,10 @@ include BASE_PATH . '/includes/User/header.php';
               </div>
         </div>
       </div>
+
       <div class="full-width-content">
           
+          <?php if(!empty($list_laptop)): ?>
           <section class="product-section">
             <div class="section-head">
               <h2>Laptop Bán Chạy</h2>
@@ -161,30 +170,14 @@ include BASE_PATH . '/includes/User/header.php';
             <div class="product-slider-wrapper">
                 <button class="slider-btn btn-prev" onclick="scrollSlider('slider-laptop', 'left')"><i class="fa-solid fa-chevron-left"></i></button>
                 <div class="product-slider" id="slider-laptop">
-                  <?php foreach ($list_laptop as $row): ?>
-                      <div class="product-card">
-                          <a href="public/user/product_detail.php?id=<?= $row['id'] ?>" style="display:block; text-decoration:none; color:inherit;">
-                              <div style="position:relative; margin-bottom:10px;">
-                                  <?php if($row['label']): ?><span class="product-label"><?= $row['label'] ?></span><?php endif; ?>
-                                  <img loading="lazy" src="public/assets/images/<?= $row['image'] ?>" onerror="this.src='https://via.placeholder.com/300x300?text=Laptop'" alt="<?= htmlspecialchars($row['name']) ?>">
-                              </div>
-                              <h3 style="font-size:14px; height:38px; overflow:hidden; margin-bottom:5px;"><?= htmlspecialchars($row['name']) ?></h3>
-                              <div style="color:#d70018; font-weight:700;"><?= number_format($row['price'], 0, ',', '.') ?>₫</div>
-                          </a>
-                          <form action="public/user/cart.php" method="POST" style="margin-top:10px;">
-                              <input type="hidden" name="action" value="add">
-                              <input type="hidden" name="id" value="<?= $row['id'] ?>">
-                              <input type="hidden" name="name" value="<?= htmlspecialchars($row['name']) ?>">
-                              <input type="hidden" name="price" value="<?= $row['price'] ?>">
-                              <button type="submit" style="width:100%; padding:8px; background:#d70018; color:#fff; border:none; border-radius:4px; cursor:pointer; font-weight:600;">Thêm giỏ</button>
-                          </form>
-                      </div>
-                  <?php endforeach; ?>
+                  <?php foreach ($list_laptop as $row): renderProductCard($row); endforeach; ?>
                 </div>
                 <button class="slider-btn btn-next" onclick="scrollSlider('slider-laptop', 'right')"><i class="fa-solid fa-chevron-right"></i></button>
             </div>
           </section>
+          <?php endif; ?>
 
+          <?php if(!empty($list_pc)): ?>
           <section class="product-section">
             <div class="section-head">
               <h2>PC GVN - Máy bộ</h2>
@@ -193,30 +186,46 @@ include BASE_PATH . '/includes/User/header.php';
             <div class="product-slider-wrapper">
                 <button class="slider-btn btn-prev" onclick="scrollSlider('slider-pc', 'left')"><i class="fa-solid fa-chevron-left"></i></button>
                 <div class="product-slider" id="slider-pc">
-                  <?php foreach ($list_pc as $row): ?>
-                      <div class="product-card">
-                          <a href="public/user/product_detail.php?id=<?= $row['id'] ?>" style="display:block; text-decoration:none; color:inherit;">
-                              <div style="position:relative; margin-bottom:10px;">
-                                  <?php if($row['label']): ?><span class="product-label"><?= $row['label'] ?></span><?php endif; ?>
-                                  <img loading="lazy" src="public/assets/images/<?= $row['image'] ?>" onerror="this.src='https://via.placeholder.com/300x300?text=PC'" alt="<?= htmlspecialchars($row['name']) ?>">
-                              </div>
-                              <h3 style="font-size:14px; height:38px; overflow:hidden; margin-bottom:5px;"><?= htmlspecialchars($row['name']) ?></h3>
-                              <div style="color:#d70018; font-weight:700;"><?= number_format($row['price'], 0, ',', '.') ?>₫</div>
-                          </a>
-                          <form action="public/user/cart.php" method="POST" style="margin-top:10px;">
-                              <input type="hidden" name="action" value="add">
-                              <input type="hidden" name="id" value="<?= $row['id'] ?>">
-                              <input type="hidden" name="name" value="<?= htmlspecialchars($row['name']) ?>">
-                              <input type="hidden" name="price" value="<?= $row['price'] ?>">
-                              <button type="submit" style="width:100%; padding:8px; background:#d70018; color:#fff; border:none; border-radius:4px; cursor:pointer; font-weight:600;">Thêm giỏ</button>
-                          </form>
-                      </div>
-                  <?php endforeach; ?>
+                  <?php foreach ($list_pc as $row): renderProductCard($row); endforeach; ?>
                 </div>
                 <button class="slider-btn btn-next" onclick="scrollSlider('slider-pc', 'right')"><i class="fa-solid fa-chevron-right"></i></button>
             </div>
           </section>
+          <?php endif; ?>
+          
+          <?php if(!empty($list_monitor)): ?>
+          <section class="product-section">
+            <div class="section-head">
+              <h2>Màn hình giá tốt</h2>
+              <a class="view-all" href="public/user/product.php?cate=monitor">Xem tất cả</a>
+            </div>
+            <div class="product-slider-wrapper">
+                <button class="slider-btn btn-prev" onclick="scrollSlider('slider-monitor', 'left')"><i class="fa-solid fa-chevron-left"></i></button>
+                <div class="product-slider" id="slider-monitor">
+                  <?php foreach ($list_monitor as $row): renderProductCard($row); endforeach; ?>
+                </div>
+                <button class="slider-btn btn-next" onclick="scrollSlider('slider-monitor', 'right')"><i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+          </section>
+          <?php endif; ?>
 
+          <?php if(!empty($list_components)): ?>
+          <section class="product-section">
+            <div class="section-head">
+              <h2>Linh kiện máy tính</h2>
+              <a class="view-all" href="public/user/product.php?cate=components">Xem tất cả</a>
+            </div>
+            <div class="product-slider-wrapper">
+                <button class="slider-btn btn-prev" onclick="scrollSlider('slider-components', 'left')"><i class="fa-solid fa-chevron-left"></i></button>
+                <div class="product-slider" id="slider-components">
+                  <?php foreach ($list_components as $row): renderProductCard($row); endforeach; ?>
+                </div>
+                <button class="slider-btn btn-next" onclick="scrollSlider('slider-components', 'right')"><i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+          </section>
+          <?php endif; ?>
+
+          <?php if(!empty($list_gear)): ?>
           <section class="product-section">
             <div class="section-head">
               <h2>Gaming Gear</h2>
@@ -225,58 +234,28 @@ include BASE_PATH . '/includes/User/header.php';
             <div class="product-slider-wrapper">
                 <button class="slider-btn btn-prev" onclick="scrollSlider('slider-gear', 'left')"><i class="fa-solid fa-chevron-left"></i></button>
                 <div class="product-slider" id="slider-gear">
-                  <?php foreach ($list_gear as $row): ?>
-                      <div class="product-card">
-                          <a href="public/user/product_detail.php?id=<?= $row['id'] ?>" style="display:block; text-decoration:none; color:inherit;">
-                              <div style="position:relative; margin-bottom:10px;">
-                                  <?php if($row['label']): ?><span class="product-label"><?= $row['label'] ?></span><?php endif; ?>
-                                  <img loading="lazy" src="public/assets/images/<?= $row['image'] ?>" onerror="this.src='https://via.placeholder.com/300x300?text=Gear'" alt="<?= htmlspecialchars($row['name']) ?>">
-                              </div>
-                              <h3 style="font-size:14px; height:38px; overflow:hidden; margin-bottom:5px;"><?= htmlspecialchars($row['name']) ?></h3>
-                              <div style="color:#d70018; font-weight:700;"><?= number_format($row['price'], 0, ',', '.') ?>₫</div>
-                          </a>
-                          <form action="public/user/cart.php" method="POST" style="margin-top:10px;">
-                              <input type="hidden" name="action" value="add">
-                              <input type="hidden" name="id" value="<?= $row['id'] ?>">
-                              <input type="hidden" name="name" value="<?= htmlspecialchars($row['name']) ?>">
-                              <input type="hidden" name="price" value="<?= $row['price'] ?>">
-                              <button type="submit" style="width:100%; padding:8px; background:#d70018; color:#fff; border:none; border-radius:4px; cursor:pointer; font-weight:600;">Thêm giỏ</button>
-                          </form>
-                      </div>
-                  <?php endforeach; ?>
+                  <?php foreach ($list_gear as $row): renderProductCard($row); endforeach; ?>
                 </div>
                 <button class="slider-btn btn-next" onclick="scrollSlider('slider-gear', 'right')"><i class="fa-solid fa-chevron-right"></i></button>
             </div>
           </section>
+          <?php endif; ?>
           
+          <?php if(!empty($list_accessories)): ?>
           <section class="product-section">
-              <div class="section-head">
-                  <h2>Chuyên trang khuyến mãi</h2>
-                  <a href="#" class="view-all">Xem tất cả</a>
-              </div>
-              <div class="promo-grid">
-                  <a href="#" class="promo-item"><img src="https://via.placeholder.com/400x200/007bff/fff?text=Khuyen+Mai+1" alt="Promo 1"></a>
-                  <a href="#" class="promo-item"><img src="https://via.placeholder.com/400x200/28a745/fff?text=Khuyen+Mai+2" alt="Promo 2"></a>
-                  <a href="#" class="promo-item"><img src="https://via.placeholder.com/400x200/dc3545/fff?text=Khuyen+Mai+3" alt="Promo 3"></a>
-              </div>
+            <div class="section-head">
+              <h2>Phụ kiện công nghệ</h2>
+              <a class="view-all" href="public/user/product.php?cate=accessories">Xem tất cả</a>
+            </div>
+            <div class="product-slider-wrapper">
+                <button class="slider-btn btn-prev" onclick="scrollSlider('slider-accessories', 'left')"><i class="fa-solid fa-chevron-left"></i></button>
+                <div class="product-slider" id="slider-accessories">
+                  <?php foreach ($list_accessories as $row): renderProductCard($row); endforeach; ?>
+                </div>
+                <button class="slider-btn btn-next" onclick="scrollSlider('slider-accessories', 'right')"><i class="fa-solid fa-chevron-right"></i></button>
+            </div>
           </section>
-
-          <section class="product-section">
-              <div class="section-head">
-                  <h2>Tin tức công nghệ</h2>
-                  <a href="#" class="view-all">Xem tất cả</a>
-              </div>
-              <div class="news-grid">
-                  <?php foreach($news_list as $news): ?>
-                      <div class="news-item">
-                          <a href="#">
-                              <img src="<?= $news['img'] ?>" alt="<?= $news['title'] ?>">
-                              <h3><?= $news['title'] ?></h3>
-                          </a>
-                      </div>
-                  <?php endforeach; ?>
-              </div>
-          </section>
+          <?php endif; ?>
 
           <section class="product-section brand-section">
             <div class="section-head"><h2>THƯƠNG HIỆU NỔI BẬT</h2></div>
@@ -291,23 +270,57 @@ include BASE_PATH . '/includes/User/header.php';
           </section>
 
           <section class="quick-categories-section">
-            <div class="quick-categories-header">Danh mục sản phẩm</div>
-                <div class="quick-categories-grid">
-                    <?php foreach($quick_categories as $cat): ?>
-                        <div class="quick-cat-item">
-                            <a href="public/user/product.php?cate=<?= $cat['code'] ?>">
-                                <i class="<?= $cat['icon'] ?>"></i>
-                                <span><?= $cat['name'] ?></span>
-                            </a>
-                        </div>
-                    <?php endforeach; ?>
-                </div>
-            </section>
+              <div class="quick-categories-header">Danh mục sản phẩm</div>
+              <div class="quick-categories-grid">
+                  <?php foreach($quick_categories as $cat): ?>
+                      <div class="quick-cat-item">
+                          <a href="public/user/product.php?cate=<?= $cat['code'] ?>">
+                              <i class="<?= $cat['icon'] ?>"></i>
+                              <span><?= $cat['name'] ?></span>
+                          </a>
+                      </div>
+                  <?php endforeach; ?>
+              </div>
+          </section>
 
       </div>
-      </div>
+    </div>
 </main>
 
 <?php
+// Helper Function để render thẻ sản phẩm (DRY code)
+function renderProductCard($row) {
+    $price = $row['gia'];
+    $sale_price = $row['gia_khuyen_mai'];
+    $price_show = ($sale_price > 0 && $sale_price < $price) ? $sale_price : $price;
+    $label = get_discount_label($price, $sale_price);
+    $img_url = "public/assets/images/" . $row['hinh_anh'];
+    ?>
+    <div class="product-card">
+        <button class="btn-wishlist" data-id="<?= $row['id'] ?>" title="Thêm vào yêu thích">
+            <i class="fa-solid fa-heart"></i>
+        </button>
+
+        <a href="public/user/product_detail.php?id=<?= $row['id'] ?>" style="display:block; text-decoration:none; color:inherit;">
+            <div style="position:relative; margin-bottom:10px;">
+                <?php if($label): ?><span class="product-label"><?= $label ?></span><?php endif; ?>
+                <img loading="lazy" src="<?= htmlspecialchars($img_url) ?>" onerror="this.src='https://via.placeholder.com/300x300?text=TechShop'" alt="<?= htmlspecialchars($row['ten_sp']) ?>">
+            </div>
+            <h3 style="font-size:14px; height:38px; overflow:hidden; margin-bottom:5px;"><?= htmlspecialchars($row['ten_sp']) ?></h3>
+            <div style="color:#d70018; font-weight:700;" class="price"><?= number_format($price_show, 0, ',', '.') ?>₫</div>
+            <?php if($sale_price > 0 && $sale_price < $price): ?>
+            <div style="font-size:12px; text-decoration:line-through; color:#999;"><?= number_format($price, 0, ',', '.') ?>₫</div>
+            <?php endif; ?>
+        </a>
+        <form action="public/user/cart.php" method="POST" style="margin-top:10px;">
+            <input type="hidden" name="action" value="add">
+            <input type="hidden" name="product_id" value="<?= $row['id'] ?>">
+            <input type="hidden" name="quantity" value="1">
+            <button type="submit" style="width:100%; padding:8px; background:#d70018; color:#fff; border:none; border-radius:4px; cursor:pointer; font-weight:600;">Thêm giỏ</button>
+        </form>
+    </div>
+    <?php
+}
+
 include BASE_PATH . '/includes/User/footer.php';
 ?>

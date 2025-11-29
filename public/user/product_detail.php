@@ -1,75 +1,222 @@
 <?php
-define('BASE_PATH', dirname(__DIR__)); // Trỏ về folder /public
 session_start();
+define('PUBLIC_PATH', dirname(__DIR__)); // C:\xampp\htdocs\TechShop\public
 
-$product_id = $_GET['id'] ?? '';
-$product = null;
+// =============== KẾT NỐI DATABASE ===============
+$host   = 'localhost';
+$user   = 'root';
+$pass   = '';
+$dbname = 'techshop';
 
-if ($product_id) {
-    // API giả lập, đảm bảo server local bật
-    $json_data = @file_get_contents("http://localhost/TechShop/app/api/get_products.php");
-    $all_products = ($json_data) ? json_decode($json_data, true) : [];
-    
-    if (is_array($all_products)) {
-        foreach ($all_products as $p) {
-            if (isset($p['id']) && (string)$p['id'] === $product_id) {
-                $product = $p;
-                break;
-            }
+$conn = new mysqli($host, $user, $pass, $dbname);
+if ($conn->connect_error) {
+    die('Kết nối database thất bại: ' . $conn->connect_error);
+}
+$conn->set_charset('utf8mb4');
+
+// =============== LẤY ID SẢN PHẨM ===============
+$id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+if ($id <= 0) {
+    die('Sản phẩm không hợp lệ');
+}
+
+// Tăng lượt xem
+$conn->query("UPDATE san_pham SET luot_xem = luot_xem + 1 WHERE id = {$id}");
+
+// Lấy chi tiết sản phẩm + tên danh mục
+$sql = "
+    SELECT sp.*, dm.ten_dm
+    FROM san_pham sp
+    JOIN danh_muc dm ON sp.id_dm = dm.id
+    WHERE sp.id = {$id} AND sp.trang_thai = 1
+    LIMIT 1
+";
+$rs = $conn->query($sql);
+if (!$rs || $rs->num_rows == 0) {
+    die('Không tìm thấy sản phẩm');
+}
+$p = $rs->fetch_assoc();
+
+// Chuẩn bị dữ liệu
+$name      = $p['ten_sp'];
+$gia       = (float)$p['gia'];
+$sale      = $p['gia_khuyen_mai'] !== null ? (float)$p['gia_khuyen_mai'] : null;
+$display   = ($sale !== null && $sale > 0 && $sale < $gia) ? $sale : $gia;
+$oldPrice  = ($sale !== null && $sale > 0 && $sale < $gia) ? $gia : 0;
+
+$discountPercent = 0;
+if ($oldPrice > 0) {
+    $discountPercent = round(100 - $display * 100 / $oldPrice);
+}
+
+// Ảnh (tuỳ cậu đặt, tớ lấy trong assets/images cho đơn giản)
+$thumb = $p['hinh_anh']
+    ? 'public/assets/images/' . $p['hinh_anh']
+    : 'public/assets/images/TechShop.jpg';
+
+$moTaNgan = $p['mo_ta_ngan'];
+$chiTiet  = $p['chi_tiet'];
+$soLuong  = (int)$p['so_luong_ton'];
+$tenDm    = $p['ten_dm'];
+$view     = (int)$p['luot_xem'];
+
+// text trạng thái
+$stockText = $soLuong > 0 ? "Còn hàng" : "Hết hàng";
+$stockClass = $soLuong > 0 ? "pdp-stock-text--ok" : "pdp-stock-text--out";
+
+// tách mô tả ngắn thành từng dòng bullet nếu có xuống dòng
+$featureLines = [];
+if ($moTaNgan) {
+    $tmp = preg_split('/\r\n|\r|\n/', trim($moTaNgan));
+    foreach ($tmp as $line) {
+        $line = trim($line);
+        if ($line !== '') {
+            $featureLines[] = $line;
         }
     }
 }
-
-// Nếu không tìm thấy SP
-if (!$product) {
-    $PAGE_TITLE = 'Không tìm thấy';
-    $SHOW_SEARCH = true;
-    include BASE_PATH . '/includes/User/header.php'; // ĐÃ SỬA
-    echo '<main class="homepage" role="main" style="padding: 20px;"><div class="main-content"><p>Sản phẩm không tồn tại hoặc đã bị xoá.</p><a href="public/user/index.php">Về trang chủ</a></div></main>';
-    include BASE_PATH . '/includes/User/footer.php'; // ĐÃ SỬA
-    exit;
-}
-
-$PAGE_TITLE = $product['name'];
-$SHOW_SEARCH = true;
-$ADDITIONAL_HEAD_CONTENT = '<link rel="stylesheet" href="public/assets/css/cssUser/product_detail.css?v=1">';
-
-include BASE_PATH . '/includes/User/header.php'; // ĐÃ SỬA
 ?>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title><?= htmlspecialchars($name) ?> | TechShop</title>
+    <base href="/TechShop/">
+    <link rel="stylesheet" href="public/assets/css/cssUser/user.css?v=1">
+    <link rel="stylesheet" href="public/assets/css/cssUser/product_detail.css?v=1">
+</head>
+<body>
+<?php @include PUBLIC_PATH . '/includes/User/header.php'; ?>
 
-  <main class="homepage" role="main">
-    <div class="main-content">
-      <div class="pdp-page">
-        <div class="pdp-image">
-          <img src="<?= htmlspecialchars($product['image'] ?? 'https://via.placeholder.com/500x500') ?>" alt="<?= htmlspecialchars($product['name']) ?>">
-        </div>
-        
-        <div class="pdp-info">
-          <h1><?= htmlspecialchars($product['name']) ?></h1>
-          <div class="pdp-price"><?= number_format((float)$product['price'], 0, ',', '.') ?>đ</div>
-          
-          <p class="pdp-desc">
-            (Mô tả sản phẩm: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sản phẩm chính hãng, bảo hành 12 tháng.)
-          </p>
+<main class="main-content">
+    <div class="pdp-page">
 
-          <form class="pdp-form" action="public/user/cart.php" method="POST">
-            <input type="hidden" name="action" value="add">
-            <input type="hidden" name="id" value="<?= htmlspecialchars($product['id']) ?>">
-            <input type="hidden" name="name" value="<?= htmlspecialchars($product['name']) ?>">
-            <input type="hidden" name="price" value="<?= htmlspecialchars($product['price']) ?>">
-            <input type="hidden" name="img" value="<?= htmlspecialchars($product['image'] ?? '') ?>">
-            
-            <div>
-              <label for="qty">Số lượng:</label>
-              <input type="number" id="qty" name="qty" value="1" min="1">
-              <button type="submit" class="btn">Thêm vào giỏ hàng</button>
+        <!-- CỘT TRÁI: ẢNH + META -->
+        <div class="pdp-left">
+            <div class="pdp-media-card">
+                <div class="pdp-image-main">
+                    <img src="<?= htmlspecialchars($thumb) ?>" alt="<?= htmlspecialchars($name) ?>">
+                </div>
+
+                <div class="pdp-meta-strip">
+                    <div class="pdp-meta-pill">
+                        <span>Danh mục</span>
+                        <span><?= htmlspecialchars($tenDm) ?></span>
+                    </div>
+                    <div class="pdp-meta-pill">
+                        <span>Mã sản phẩm</span>
+                        <span>#<?= $p['id'] ?></span>
+                    </div>
+                    <div class="pdp-meta-pill">
+                        <span>Lượt xem</span>
+                        <span><?= $view ?></span>
+                    </div>
+                    <div class="pdp-meta-pill">
+                        <span>Tình trạng</span>
+                        <span><?= $stockText ?></span>
+                    </div>
+                </div>
             </div>
-          </form>
         </div>
-      </div>
-    </div>
-  </main>
 
-<?php
-include BASE_PATH . '/includes/User/footer.php'; // ĐÃ SỬA
-?>
+        <!-- CỘT PHẢI: THÔNG TIN CHI TIẾT -->
+        <div class="pdp-right">
+            <h1 class="pdp-info-title"><?= htmlspecialchars($name) ?></h1>
+
+            <div class="pdp-badges-row">
+                <?php if ($discountPercent > 0): ?>
+                    <span class="pdp-badge pdp-badge--sale">Giảm <?= $discountPercent ?>%</span>
+                <?php endif; ?>
+                <span class="pdp-badge">Chính hãng</span>
+                <span class="pdp-badge">Hỗ trợ lắp đặt</span>
+                <span class="pdp-badge">Đổi trả 7 ngày</span>
+                <?php if ($soLuong > 0): ?>
+                    <span class="pdp-badge pdp-badge--stock-ok">Còn hàng</span>
+                <?php else: ?>
+                    <span class="pdp-badge pdp-badge--stock-out">Tạm hết hàng</span>
+                <?php endif; ?>
+            </div>
+
+            <!-- CARD GIÁ -->
+            <div class="pdp-price-card">
+                <div class="pdp-price-main">
+                    <div class="pdp-price">
+                        <?= number_format($display, 0, ',', '.') ?> ₫
+                    </div>
+                    <?php if ($oldPrice > 0): ?>
+                        <div class="pdp-old-price-line">
+                            <span class="old-price"><?= number_format($oldPrice, 0, ',', '.') ?> ₫</span>
+                            <span>| Giảm <?= $discountPercent ?>%</span>
+                        </div>
+                    <?php endif; ?>
+                    <div class="pdp-price-note">
+                        Giá đã bao gồm VAT (nếu có). Vui lòng liên hệ nhân viên tư vấn để nhận báo giá tốt nhất.
+                    </div>
+                </div>
+
+                <div class="pdp-price-side">
+                    <div><strong>Ưu đãi khi mua tại TechShop:</strong></div>
+                    <div>- Hỗ trợ lắp ráp PC tại cửa hàng</div>
+                    <div>- Tư vấn cấu hình phù hợp nhu cầu & ngân sách</div>
+                    <div>- Bảo hành theo chính sách nhà sản xuất</div>
+                </div>
+            </div>
+
+            <!-- HỘP MUA HÀNG -->
+            <div class="pdp-purchase-box">
+                <form method="post" action="public/user/cart.php" class="pdp-form">
+                    <label for="qty">Số lượng</label>
+                    <input type="hidden" name="action" value="add">
+                    <input type="hidden" name="id_san_pham" value="<?= $p['id'] ?>">
+                    <input type="number" id="qty" name="so_luong"
+                           min="1" max="<?= max(1, $soLuong) ?>"
+                           value="1">
+                    <button type="submit" class="btn">
+                        Thêm vào giỏ
+                    </button>
+                    <span class="pdp-stock-text <?= $stockClass ?>">
+                        <?= $soLuong > 0 ? "Còn lại: {$soLuong} sản phẩm" : "Hết hàng, vui lòng liên hệ" ?>
+                    </span>
+                </form>
+            </div>
+
+            <!-- MÔ TẢ NGẮN / FEATURE BULLETS -->
+            <?php if (!empty($featureLines)): ?>
+                <div class="pdp-desc-block">
+                    <div class="pdp-desc-title">Điểm nổi bật</div>
+                    <ul class="pdp-feature-list">
+                        <?php foreach ($featureLines as $line): ?>
+                            <li><?= htmlspecialchars($line) ?></li>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
+            <?php elseif ($moTaNgan): ?>
+                <div class="pdp-desc-block">
+                    <div class="pdp-desc-title">Mô tả tổng quan</div>
+                    <div style="font-size:13px;color:#cbd5f5;line-height:1.6;">
+                        <?= nl2br(htmlspecialchars($moTaNgan)) ?>
+                    </div>
+                </div>
+            <?php endif; ?>
+
+        </div> <!-- /.pdp-right -->
+
+    </div> <!-- /.pdp-page -->
+
+    <!-- KHỐI MÔ TẢ CHI TIẾT PHÍA DƯỚI -->
+    <section class="pdp-detail-section">
+        <div class="pdp-detail-title">Mô tả chi tiết</div>
+        <div class="pdp-detail-content">
+            <?php if ($chiTiet): ?>
+                <?= nl2br($chiTiet) ?>
+            <?php else: ?>
+                Chưa có mô tả chi tiết cho sản phẩm này.
+            <?php endif; ?>
+        </div>
+    </section>
+
+</main>
+
+<?php @include PUBLIC_PATH . '/includes/User/footer.php'; ?>
+</body>
+</html>

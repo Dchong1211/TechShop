@@ -1,0 +1,252 @@
+/* =========================================================
+   FILE: megamenu.css
+   MÔ TẢ: Sidebar, Mega Menu (GearVN Style) & Hiệu ứng Toggle
+   ========================================================= */
+
+/* ---------------------------------------------------------
+   1. SIDEBAR (CỘT DANH MỤC TRÁI)
+--------------------------------------------------------- */
+.category-sidebar { 
+    display: block; 
+    background: var(--white); 
+    border-radius: var(--radius); 
+    box-shadow: var(--shadow); 
+    padding: 10px 0; 
+    margin-top: 0; 
+    position: relative; 
+    z-index: 200;
+    
+    /* --- THÊM ĐOẠN NÀY ĐỂ ẨN THANH CUỘN --- */
+    max-height: calc(100vh - 150px); /* Giới hạn chiều cao để nội dung dài quá sẽ cuộn */
+    overflow-y: auto;                /* Cho phép cuộn dọc */
+    scrollbar-width: none;           /* Ẩn thanh cuộn trên Firefox */
+}
+
+/* Ẩn thanh cuộn trên Chrome, Safari, Edge */
+.category-sidebar::-webkit-scrollbar {
+    display: none;
+}
+
+.category-sidebar h3 { 
+    font-size: 15px; font-weight: 600; 
+    padding: 0 15px 6px; 
+    border-bottom: 1px solid #eee; 
+    margin-bottom: 5px;
+}
+
+.category-sidebar ul { list-style: none; padding: 0; margin: 0; }
+
+.category-sidebar li a { 
+    display: flex; align-items: center; gap: 8px; 
+    padding: 8px 15px; 
+    text-decoration: none; color: #333; 
+    font-size: 13px; line-height: 1.3; 
+    border-left: 3px solid transparent; 
+    transition: all 0.2s ease;
+}
+
+.category-sidebar li a:hover { 
+    background: #fff0f0; 
+    color: var(--main-red); 
+    font-weight: 600; 
+    border-left-color: var(--main-red); 
+}
+
+.category-sidebar .sidebar-icon { 
+    font-size: 18px; width: 24px; 
+    text-align: center; color: #555; 
+}
+
+.sidebar-submenu { display: none; padding-left: 30px; } 
+
+
+/* ---------------------------------------------------------
+   2. MEGA MENU PANEL (KHUNG BAO NGOÀI - GEARVN STYLE)
+--------------------------------------------------------- */
+
+/* Cấu hình cho Sidebar cha để Menu bay ra được */
+.col-left-sidebar {
+    /* Kích thước mặc định */
+    min-width: 280px; 
+    width: 280px;
+    
+    /* Hiệu ứng chuyển đổi mượt khi ẩn/hiện */
+    transition: 
+        opacity 0.3s ease, 
+        transform 0.3s ease, 
+        min-width 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
+        width 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
+        margin 0.4s ease;
+        
+    position: relative !important; 
+    overflow: visible !important; 
+    z-index: 999; /* Cao hơn Slider để Menu đè lên */
+}
+
+/* Khung Menu con xổ ra */
+.sidebar-megamenu-panel {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 100%; /* Bắt đầu từ mép phải Sidebar */
+    margin-left: -2px; /* Chồng nhẹ để liền mạch */
+    
+    /* --- KÍCH THƯỚC CỐ ĐỊNH CHUẨN GEARVN --- */
+    width: 950px !important; 
+    min-height: 100%;        
+    height: auto;
+    
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    box-shadow: 5px 5px 15px rgba(0,0,0,0.15);
+    z-index: 1000; /* Cao hơn Sidebar cha */
+    
+    padding: 20px 25px;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+}
+
+.sidebar-megamenu-panel::before { 
+    content: ""; position: absolute; 
+    top: 0; bottom: 0; left: -30px; width: 40px; 
+    background: transparent; z-index: 1; 
+}
+
+.sidebar-megamenu-panel.active { display: block !important; }
+
+
+/* ---------------------------------------------------------
+   3. LƯỚI NỘI DUNG BÊN TRONG (GRID CONTENT)
+--------------------------------------------------------- */
+.megamenu-grid-container {
+    /* Dùng Flexbox để chia cột thẳng hàng */
+    display: flex !important; 
+    flex-wrap: wrap !important; 
+    align-content: flex-start;
+    gap: 30px !important;
+    
+    /* Hủy bỏ Grid cũ */
+    grid-template-columns: none !important; 
+    height: 100%;
+}
+
+/* Định dạng từng cột (Column) */
+.megamenu-grid-column {
+    flex: 0 0 180px; /* Chiều rộng cố định -> Thẳng hàng tăm tắp */
+    max-width: 180px;
+    margin-bottom: 20px;
+}
+
+/* Tiêu đề nhóm */
+.megamenu-grid-column h4 {
+    font-size: 13px; font-weight: 700; color: #fff;
+    background: var(--main-red); 
+    padding: 5px 10px;
+    border-radius: 4px; 
+    margin-top: 0; margin-bottom: 10px;
+    text-transform: uppercase; 
+    display: block; width: 100%;
+    text-align: center;
+}
+
+/* Danh sách link */
+.megamenu-grid-column ul { list-style: none; padding: 0; margin: 0; }
+.megamenu-grid-column ul li { margin-bottom: 6px; }
+.megamenu-grid-column ul li a {
+    text-decoration: none; color: #444; font-size: 13px;
+    display: block; transition: all 0.2s ease;
+}
+.megamenu-grid-column ul li a:hover {
+    color: var(--main-red); 
+    font-weight: 600;
+    transform: translateX(5px);
+}
+
+/* Hover Item Cha */
+.sidebar-item-with-submenu.megamenu-hover > a { 
+    background: var(--main-red) !important; color: #fff !important; 
+    position: relative; z-index: 1000; border-left-color: var(--main-red); 
+}
+.sidebar-item-with-submenu.megamenu-hover > a .sidebar-icon { color: #fff !important; }
+
+
+/* ---------------------------------------------------------
+   4. DARK MODE (DEEP NAVY)
+--------------------------------------------------------- */
+[data-theme="dark"] .category-sidebar { background: #151922; border-color: #2d3748; }
+[data-theme="dark"] .category-sidebar li a { color: var(--text) !important; border-left: 3px solid transparent; }
+[data-theme="dark"] .category-sidebar li a:hover { 
+    color: #ffffff !important; text-shadow: 0 0 8px rgba(173, 144, 232, 0.6); 
+    background: var(--dm-accent-bg); border-left-color: var(--dm-accent); font-weight: 600; 
+}
+[data-theme="dark"] .category-sidebar .sidebar-icon { color: #94a3b8; }
+[data-theme="dark"] .category-sidebar li a:hover .sidebar-icon { color: #fff; }
+
+[data-theme="dark"] .sidebar-megamenu-panel { 
+    background-color: #151922; border-color: #2d3748; 
+    box-shadow: 5px 5px 15px rgba(0,0,0,0.5); 
+}
+
+/* Tiêu đề cột trong Dark Mode: Gradient Tím */
+[data-theme="dark"] .megamenu-grid-column h4 { 
+    background: linear-gradient(90deg, #7f5eff, #AD90E8); 
+    color: #fff; border: none; 
+    box-shadow: 0 2px 10px rgba(127, 94, 255, 0.3); 
+}
+
+[data-theme="dark"] .megamenu-grid-column ul li a { color: #94a3b8; }
+[data-theme="dark"] .megamenu-grid-column ul li a:hover { 
+    color: var(--dm-accent); 
+    font-weight: 600;
+}
+
+[data-theme="dark"] .sidebar-item-with-submenu.megamenu-hover > a { 
+    background: linear-gradient(90deg, #7f5eff, #AD90E8) !important; 
+    color: #fff !important; border-left-color: transparent; 
+}
+
+
+/* ---------------------------------------------------------
+   5. GLOBAL SIDEBAR TOGGLE EFFECT (HIỆU ỨNG ẨN HIỆN)
+--------------------------------------------------------- */
+
+/* Hiệu ứng cho Cột nội dung bên phải (Banner/Product List) */
+/* Áp dụng cho cả trang chủ và trang con */
+.hero-content, 
+.col-main-content {
+    transition: width 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* --- KHI ĐANG ẨN (Hidden State) --- */
+
+/* Bóp chiều rộng Sidebar về 0 */
+body.desktop-sidebar-hidden .col-left-sidebar {
+    min-width: 0 !important;
+    width: 0 !important;
+    margin-right: 0 !important; /* Xóa khoảng cách với nội dung */
+    
+    opacity: 0;
+    transform: translateX(-50px); /* Trượt sang trái */
+    pointer-events: none;
+    overflow: hidden; 
+}
+
+/* Mở rộng khung chứa ở Trang chủ (Grid -> 1 cột) */
+body.desktop-sidebar-hidden .hero-section {
+    grid-template-columns: 0px 1fr !important; 
+    gap: 0 !important;
+}
+
+/* Mở rộng khung chứa ở Trang Sản phẩm (Flex -> 100%) */
+body.desktop-sidebar-hidden .col-xl-9 {
+    flex: 0 0 100% !important; 
+    max-width: 100% !important;
+}
+
+
+/* RESPONSIVE */
+@media (max-width: 991px) { 
+    .sidebar-megamenu-panel { display: none !important; } 
+    .col-left-sidebar { display: none; }
+}
