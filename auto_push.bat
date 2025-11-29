@@ -1,24 +1,14 @@
 @echo off
 cd /d C:\xampp\htdocs\TechShop
 
-:: ===== BACKUP SQL TỰ ĐỘNG =====
-echo Dang backup database...
+:: === BACKUP DATABASE ===
+echo Dang export database voi PHP...
 
-:: Đường dẫn mysqldump
-set mysqldump_path=C:\xampp\mysql\bin\mysqldump.exe
+php export_db.php
 
-:: Tên database
-set dbname=techshop
+echo Export thanh cong!
+echo -------------------------
 
-:: File output
-set backup_file=C:\xampp\htdocs\TechShop\database\techshop.sql
-
-"%mysqldump_path%" -u root %dbname% > "%backup_file%"
-
-echo Backup SQL hoan tat: %backup_file%
-echo ===============================
-
-:: ===== AUTO PUSH GIT =====
 for /f "delims=" %%a in ('git config user.name') do set username=%%a
 
 set datetime=%date%_%time%
@@ -28,4 +18,5 @@ git commit -m "Auto push by %username% at %datetime%"
 git pull origin main --rebase
 git push origin main
 
-echo     PUSH COMPLETED!
+echo PUSH COMPLETED!
+pause
