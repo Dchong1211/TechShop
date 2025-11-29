@@ -1,7 +1,9 @@
 -- phpMyAdmin SQL Export
 -- Host: 127.0.0.1
 -- Database: `techshop`
--- Exported at: 2025-11-29 16:37:56
+-- Exported at: 2025-11-29 16:39:13
+
+SET FOREIGN_KEY_CHECKS=0;
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -369,3 +371,5 @@ CREATE TABLE `thong_ke_doanh_thu` (
 -- Dumping data for table `thong_ke_doanh_thu`
 
 COMMIT;
+
+SET FOREIGN_KEY_CHECKS=1;
