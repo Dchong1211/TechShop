@@ -8,21 +8,38 @@ class ProductController {
     private $model;
 
     public function __construct() {
-        $this->model = new Product(); // Khởi tạo model
+        $this->model = new Product();
     }
 
+    // Lấy toàn bộ sản phẩm
     public function list() {
-        return ["success"=>true, "data"=>$this->model->getAll()]; // Lấy danh sách
+        return [
+            "success" => true,
+            "data" => $this->model->getAll()
+        ];
     }
 
+    // Lấy chi tiết sản phẩm
     public function detail($id) {
-        $item = $this->model->getById($id); // Lấy 1 sản phẩm
-        return $item ? ["success"=>true,"data"=>$item] : ["success"=>false,"message"=>"Không tìm thấy sản phẩm!"];
+        $item = $this->model->getById($id);
+
+        return $item
+            ? ["success" => true, "data" => $item]
+            : ["success" => false, "message" => "Không tìm thấy sản phẩm!"];
     }
 
+    // Lấy theo danh mục
+    public function category($id_dm) {
+        return [
+            "success" => true,
+            "data" => $this->model->getByCategory($id_dm)
+        ];
+    }
+
+    // Admin: Tạo sản phẩm
     public function create() {
-        requireAdmin(); // Chỉ admin thêm
-        CSRF::requireToken(); // Check CSRF
+        requireAdmin();
+        CSRF::requireToken();
 
         $ok = $this->model->create(
             $_POST["id_dm"],
@@ -35,13 +52,15 @@ class ProductController {
             $_POST["chi_tiet"] ?? ""
         );
 
-        return $ok ? ["success"=>true,"message"=>"Thêm thành công"]
-                   : ["success"=>false,"message"=>"Thêm thất bại"];
+        return $ok
+            ? ["success" => true, "message" => "Thêm thành công"]
+            : ["success" => false, "message" => "Thêm thất bại"];
     }
 
+    // Admin: Cập nhật
     public function update() {
-        requireAdmin(); // Chỉ admin cập nhật
-        CSRF::requireToken(); // Check CSRF
+        requireAdmin();
+        CSRF::requireToken();
 
         $ok = $this->model->update(
             intval($_POST["id"]),
@@ -56,16 +75,20 @@ class ProductController {
             intval($_POST["trang_thai"])
         );
 
-        return $ok ? ["success"=>true,"message"=>"Cập nhật thành công"]
-                   : ["success"=>false,"message"=>"Cập nhật thất bại"];
+        return $ok
+            ? ["success" => true, "message" => "Cập nhật thành công"]
+            : ["success" => false, "message" => "Cập nhật thất bại"];
     }
 
+    // Admin: Xóa
     public function delete() {
-        requireAdmin(); // Chỉ admin được xóa
-        CSRF::requireToken(); // Check CSRF
+        requireAdmin();
+        CSRF::requireToken();
 
         $ok = $this->model->delete(intval($_POST["id"]));
-        return $ok ? ["success"=>true,"message"=>"Xóa thành công"]
-                   : ["success"=>false,"message"=>"Xóa thất bại"];
+
+        return $ok
+            ? ["success" => true, "message" => "Xóa thành công"]
+            : ["success" => false, "message" => "Xóa thất bại"];
     }
 }
