@@ -29,7 +29,7 @@ async function loadProducts() {
     }
 }
 
-// Render table
+// Render table (ĐÃ SỬA LỖI HIỂN THỊ ẢNH)
 function renderTable(products) {
     const tbody = document.getElementById('productTableBody');
 
@@ -38,29 +38,39 @@ function renderTable(products) {
         return;
     }
 
-    tbody.innerHTML = products.map(p => `
-        <tr>
-            <td>${p.id}</td>
+    tbody.innerHTML = products.map(p => {
+        // LOGIC MỚI: Kiểm tra nếu hinh_anh là URL (chứa http/https), dùng trực tiếp.
+        // Ngược lại, dùng đường dẫn cục bộ.
+        const imagePath = p.hinh_anh;
+        const finalSrc = imagePath && (imagePath.startsWith('http') || imagePath.startsWith('https'))
+            ? imagePath 
+            : `/TechShop/public/uploads/products/${imagePath || 'placeholder.png'}`;
+            
+        return `
+            <tr>
+                <td>${p.id}</td>
 
-            <td>
-                <img src="/TechShop/public/uploads/products/${p.hinh_anh || 'placeholder.png'}"
-                     style="width:50px;height:50px; object-fit:cover;">
-            </td>
+                <td>
+                    <img src="${finalSrc}"
+                         alt="${p.ten_sp}"
+                         style="width:50px;height:50px; object-fit:cover;">
+                </td>
 
-            <td>${p.ten_sp}</td>
+                <td>${p.ten_sp}</td>
 
-            <td>${p.category_name || 'Không có danh mục'}</td>
+                <td>${p.category_name || 'Không có danh mục'}</td>
 
-            <td>${formatPrice(Number(p.gia))}</td>
+                <td>${formatPrice(Number(p.gia))}</td>
 
-            <td>${p.so_luong_ton > 0 ? 'Còn hàng' : 'Hết hàng'}</td>
+                <td>${p.so_luong_ton > 0 ? 'Còn hàng' : 'Hết hàng'}</td>
 
-            <td class="action-buttons">
-                <a href="/TechShop/public/admin/edit_products.php?id=${p.id}" class="btn btn-edit">Sửa</a>
-                <button onclick="deleteProduct(${p.id})" class="btn btn-delete">Xóa</button>
-            </td>
-        </tr>
-    `).join('');
+                <td class="action-buttons">
+                    <a href="/TechShop/public/admin/edit_products.php?id=${p.id}" class="btn btn-edit">Sửa</a>
+                    <button onclick="deleteProduct(${p.id})" class="btn btn-delete">Xóa</button>
+                </td>
+            </tr>
+        `;
+    }).join('');
 }
 
 
