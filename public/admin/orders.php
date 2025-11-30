@@ -70,8 +70,7 @@
                                     <td>Chuyển khoản</td>
                                     <td><span class="status status-cancelled">Đã hủy</span></td>
                                     <td class="action-buttons">
-                                        <a href="order_detail.php?id=2024004" class="btn btn-detail">Xem chi tiết</a>
-                                        <button class="btn btn-delete">Xóa</button>
+                                        <a href="order_edit.php" class="btn btn-edit">Chỉnh sửa</a>
                                     </td>
                                 </tr>
                             </tbody>

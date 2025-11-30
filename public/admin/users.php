@@ -77,13 +77,8 @@
                                         </td>
 
                                         <td class="action-buttons">
-                                            <a href="?controller=customer&action=edit&id=<?= $u['id'] ?>"
-                                            class="btn btn-edit">Sửa</a>
-
-                                            <a href="?controller=customer&action=delete&id=<?= $u['id'] ?>"
-                                            class="btn btn-lock"
-                                            onclick="return confirm('Xóa khách hàng này?')">
-                                                Xóa
+                                            <a href="?controller=customer&action=edit&id=<?= $u['id'] ?>" class="btn btn-edit">
+                                                Chỉnh sửa
                                             </a>
                                         </td>
                                     </tr>

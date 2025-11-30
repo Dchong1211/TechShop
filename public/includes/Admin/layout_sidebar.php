@@ -7,8 +7,8 @@ if (!isset($active_page)) {
 
 <nav class="top-navbar">
     <div class="navbar-left">
-        <a href="/TechShop/admin/dashboard" class="navbar-brand">TechShop</a>
         <button class="sidebar-toggle" type="button">☰</button>
+        <a href="/TechShop/admin/dashboard" class="navbar-brand">TechShop</a>
     </div>
     <div class="navbar-search">
         <input type="text" placeholder="Search...">

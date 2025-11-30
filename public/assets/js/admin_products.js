@@ -39,8 +39,6 @@ function renderTable(products) {
     }
 
     tbody.innerHTML = products.map(p => {
-        // LOGIC MỚI: Kiểm tra nếu hinh_anh là URL (chứa http/https), dùng trực tiếp.
-        // Ngược lại, dùng đường dẫn cục bộ.
         const imagePath = p.hinh_anh;
         const finalSrc = imagePath && (imagePath.startsWith('http') || imagePath.startsWith('https'))
             ? imagePath 
@@ -53,7 +51,7 @@ function renderTable(products) {
                 <td>
                     <img src="${finalSrc}"
                          alt="${p.ten_sp}"
-                         style="width:50px;height:50px; object-fit:cover;">
+                         style="width:50px;height:50px; object-fit:cover; border-radius: 4px;">
                 </td>
 
                 <td>${p.ten_sp}</td>
@@ -65,8 +63,7 @@ function renderTable(products) {
                 <td>${p.so_luong_ton > 0 ? 'Còn hàng' : 'Hết hàng'}</td>
 
                 <td class="action-buttons">
-                    <a href="/TechShop/public/admin/edit_products.php?id=${p.id}" class="btn btn-edit">Sửa</a>
-                    <button onclick="deleteProduct(${p.id})" class="btn btn-delete">Xóa</button>
+                    <a href="/TechShop/public/admin/edit_products.php?id=${p.id}" class="btn btn-edit">Chỉnh sửa</a>
                 </td>
             </tr>
         `;
