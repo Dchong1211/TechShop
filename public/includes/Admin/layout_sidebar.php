@@ -7,7 +7,7 @@ if (!isset($active_page)) {
 
 <nav class="top-navbar">
     <div class="navbar-left">
-        <button class="sidebar-toggle" type="button">☰</button>
+        <button class="sidebar-toggle" type="button"><i class="bi bi-list"></i></button>
         <a href="/TechShop/admin/dashboard" class="navbar-brand">TechShop</a>
     </div>
     <div class="navbar-search">
@@ -19,7 +19,6 @@ if (!isset($active_page)) {
             <span class="icon-moon"><i class="bi bi-moon" style="color: #5e6e82"></i></span>
         </button>
         <a href="#" class="nav-icon"><i class="bi bi-bell" style="color: #5e6e82"></i></a>
-        <a href="#" class="nav-icon"><i class="bi bi-gear" style="color: #5e6e82"></i></a>
         <a href="#" class="nav-icon user-avatar">
             <?= isset($_SESSION['user']['name']) ? substr($_SESSION['user']['name'], 0, 1) : 'A' ?>
         </a>
