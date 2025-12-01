@@ -1,7 +1,7 @@
 -- phpMyAdmin SQL Export
 -- Host: 127.0.0.1
 -- Database: `techshop`
--- Exported at: 2025-11-30 15:57:23
+-- Exported at: 2025-12-01 02:49:23
 
 SET FOREIGN_KEY_CHECKS=0;
 
@@ -246,11 +246,11 @@ CREATE TABLE `san_pham` (
   UNIQUE KEY `ten_sp` (`ten_sp`),
   KEY `id_dm` (`id_dm`),
   CONSTRAINT `san_pham_ibfk_1` FOREIGN KEY (`id_dm`) REFERENCES `danh_muc` (`id`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=182 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=186 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Dumping data for table `san_pham`
 INSERT INTO `san_pham` (`id`,`id_dm`,`ten_sp`,`gia`,`gia_khuyen_mai`,`so_luong_ton`,`hinh_anh`,`mo_ta_ngan`,`chi_tiet`,`ngay_nhap`,`luot_xem`,`trang_thai`) VALUES
-  ('1','1','Laptop Gaming ASUS ROG Strix G16','35000000.00','32990000.00','15','https://i.pinimg.com/736x/b9/9f/7e/b99f7ed9d7a992e27df91c26c3258ca3.jpg','Core i9, RAM 32GB, RTX 4080, Màn hình 240Hz','Chi tiết cấu hình: Core i9-13980HX, 32GB DDR5, 1TB SSD, RTX 4080 12GB, 16-inch QHD+ 240Hz.','2025-09-01 10:00:00','520','1'),
+  ('1','1','Laptop Gaming ASUS ROG Strix G16','35000000.00','32990000.00','15','0','Core i9, RAM 32GB, RTX 4080, Màn hình 240Hz','Chi tiết cấu hình: Core i9-13980HX, 32GB DDR5, 1TB SSD, RTX 4080 12GB, 16-inch QHD+ 240Hz.','2025-09-01 10:00:00','520','1'),
   ('2','1','Laptop Gaming Acer Nitro 5','21000000.00','19990000.00','25','https://cdn.tgdd.vn/Products/Images/44/293230/acer-nitro-5-an515-58-7694-i7-nhqgysv001-thumb-600x600.jpg','Core i5, RAM 16GB, RTX 3050, Màn hình 144Hz','Chi tiết cấu hình: Core i5-12500H, 16GB DDR4, 512GB SSD, RTX 3050 4GB, 15.6-inch FHD 144Hz.','2025-09-05 11:30:00','480','1'),
   ('3','2','Laptop Văn Phòng Dell Inspiron 14','18000000.00','16500000.00','30','https://cdn.tgdd.vn/Products/Images/44/302830/dell-inspiron-14-5430-i5-8002w1-thumb-600x600.jpg','Core i7, RAM 16GB, SSD 512GB, Màn hình OLED','Máy tính xách tay mỏng nhẹ, hiệu năng cao cho công việc, Core i7-1355U.','2025-09-10 14:00:00','350','1'),
   ('4','2','Laptop Văn Phòng HP Pavilion Aero 13','15500000.00',NULL,'18','https://cdn.tgdd.vn/Products/Images/44/278550/hp-pavilion-aero-13-be0229au-r7-64u91pa-thumb-600x600.jpg','Ryzen 5, RAM 8GB, Siêu nhẹ chỉ 0.9kg','Thiết kế cao cấp, thời lượng pin dài, Ryzen 5 7535U, 8GB DDR4, 512GB SSD.','2025-09-15 09:45:00','290','1'),
@@ -314,7 +314,7 @@ INSERT INTO `san_pham` (`id`,`id_dm`,`ten_sp`,`gia`,`gia_khuyen_mai`,`so_luong_t
   ('62','10','VGA Inno3D RTX 4070 Twin X2 12GB','17000000.00','16500000.00','18','https://cdn.tgdd.vn/Products/Images/5391/306792/card-man-hinh-vga-inno3d-rtx-4070-twin-x2-12gb-thumb-600x600.jpg','Card đồ họa hiệu năng cao cho 2K gaming.','Thông số: 12GB GDDR6X, Tốc độ Boost Clock cao.','2026-07-05 11:30:00','580','1'),
   ('63','11','CPU Intel Core i7-13700F','10000000.00','9500000.00','25','https://cdn.tgdd.vn/Products/Images/571/311655/cpu-intel-core-i7-13700f-thumb-600x600.jpg','Bộ vi xử lý 16 nhân, không tích hợp đồ họa','Thông số: 8P+8E cores, 24 luồng, Max Turbo 5.2GHz.','2026-07-10 14:00:00','450','1'),
   ('64','12','Mainboard ASUS Prime B660M-A WIFI D4','3500000.00',NULL,'30','https://cdn.tgdd.vn/Products/Images/5842/306793/mainboard-asus-prime-b660m-a-wifi-d4-thumb-600x600.jpg','Hỗ trợ CPU Intel đời 12/13, RAM DDR4','Tính năng: Khe M.2 PCIe 4.0, LAN 2.5Gb.','2026-07-15 09:45:00','380','1'),
-  ('65','13','Webcam Rapoo C260 Full HD','500000.00','450000.00','50','https://cdn.tgdd.vn/Products/Images/5697/306065/webcam-rapoo-c260-thumb-600x600.jpg','Full HD 1080p, tích hợp mic','Độ phân giải video: 1920x1080 @ 30fps, góc nhìn rộng.','2026-07-20 16:15:00','200','1'),
+  ('65','13','Webcam Rapoo C260 Full HD','500000.00','450000.00','50','https://cdn.tgdd.vn/Products/Images/5697/306065/webcam-rapoo-c260-thumb-600x600.jpg','Full HD 1080p, tích hợp mic','Độ phân giải video: 1920x1080 @ 30fps, góc nhìn rộng.','2026-07-20 16:15:00','201','1'),
   ('66','15','Bộ Phát Wifi Di Động TP-Link M7350','2000000.00','1800000.00','20','https://cdn.tgdd.vn/Products/Images/4619/271242/bo-phat-wifi-di-dong-4g-tp-link-m7350-thumb-600x600.jpg','Phát Wifi từ Sim 4G, pin 8 giờ','Tốc độ 4G LTE-A Cat.4, hỗ trợ 10 thiết bị.','2026-07-25 08:30:00','150','1'),
   ('67','16','Sạc Dự Phòng Samsung 10000mAh 25W','800000.00','750000.00','45','https://cdn.tgdd.vn/Products/Images/5713/306066/pin-sac-du-phong-samsung-10000mah-25w-thumb-600x600.jpg','Sạc siêu nhanh 25W, nhỏ gọn','Công nghệ Super Fast Charging, bảo vệ đa lớp.','2026-08-01 13:00:00','300','1'),
   ('68','17','Loa Bluetooth Sony SRS-XB13','1500000.00','1390000.00','30','https://cdn.tgdd.vn/Products/Images/54/298417/loa-bluetooth-sony-srs-xb13-thumb-600x600.jpg','Âm thanh Extra Bass, Chống nước IP67','Pin 16 giờ, công nghệ DSP, âm thanh 360 độ.','2026-08-05 15:20:00','420','1'),

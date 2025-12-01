@@ -27,8 +27,8 @@ ob_start();
   .btn{display:inline-block;background:#1677ff;color:#fff;text-decoration:none;border:none;padding:10px 14px;border-radius:8px;cursor:pointer}
 </style>
 <?php
-$ADDITIONAL_HEAD_CONTENT = ob_get_clean();
-include BASE_PATH . '/includes/header.php';
+$ADDITIONAL_BODY_END_CONTENT = ob_get_clean(); 
+include BASE_PATH . '/includes/User/header.php';
 ?>
 
 <main class="page">
@@ -61,5 +61,5 @@ include BASE_PATH . '/includes/header.php';
 </main>
 
 <?php
-include BASE_PATH . '/includes/footer.php';
+include BASE_PATH . '/includes/User/footer.php';
 ?>
