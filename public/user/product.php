@@ -59,7 +59,7 @@ switch ($sort) {
 }
 
 // ================== PHÂN TRANG ==================
-$perPage = 12;
+$perPage = 10;
 $offset  = ($page - 1) * $perPage;
 
 $sqlProducts = "
