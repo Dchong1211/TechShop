@@ -370,3 +370,34 @@ html[data-theme="light"] body {
     top: 70px;
   }
 }
+
+/* Fix avatar và hình bên sidebar để không phá layout */
+.account-sidebar img,
+.account-avatar img,
+.account-nav img {
+  max-width: 28px;
+  max-height: 28px;
+  object-fit: contain;
+  display: inline-block;
+}
+
+/* Fix avatar lớn trong profile view */
+.profile-header img,
+.avatar-preview img {
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+/* Đảm bảo không ảnh nào vượt khung */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Sidebar không cho ảnh tràn */
+.account-sidebar {
+  overflow: hidden;
+}
+
