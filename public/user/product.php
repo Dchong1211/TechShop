@@ -1,6 +1,8 @@
 <?php
+declare(strict_types=1);
+
 session_start();
-define('PUBLIC_PATH', dirname(__DIR__)); // C:\xampp\htdocs\TechShop\public
+define('BASE_PATH', dirname(__DIR__)); // C:\xampp\htdocs\TechShop\public
 
 // ================== KẾT NỐI DATABASE ==================
 $host   = 'localhost';
@@ -91,7 +93,7 @@ if (!empty($baseQuery)) {
     $baseUrl .= '?' . http_build_query($baseQuery);
 }
 
-function pageLink($baseUrl, $pageNum) {
+function pageLink(string $baseUrl, int $pageNum): string {
     $join = (strpos($baseUrl, '?') === false) ? '?' : '&';
     return $baseUrl . $join . 'page=' . $pageNum;
 }
@@ -100,13 +102,13 @@ function pageLink($baseUrl, $pageNum) {
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>TechShop | <?= htmlspecialchars($categoryTitle) ?></title>
+    <title>TechShop | <?= htmlspecialchars($categoryTitle, ENT_QUOTES) ?></title>
     <base href="/TechShop/">
     <link rel="stylesheet" href="public/assets/css/cssUser/user.css?v=1">
     <link rel="stylesheet" href="public/assets/css/cssUser/product.css?v=2">
 </head>
 <body>
-<?php @include PUBLIC_PATH . '/includes/User/header.php'; ?>
+<?php @include BASE_PATH . '/includes/User/header.php'; ?>
 
 <main class="main-content">
 
@@ -114,7 +116,7 @@ function pageLink($baseUrl, $pageNum) {
 
         <!-- SIDEBAR DANH MỤC -->
         <aside class="col-left-sidebar">
-            <?php @include PUBLIC_PATH . '/includes/User/sidebar.php'; ?>
+            <?php @include BASE_PATH . '/includes/User/sidebar.php'; ?>
         </aside>
 
         <!-- CỘT SẢN PHẨM CHÍNH -->
@@ -123,7 +125,7 @@ function pageLink($baseUrl, $pageNum) {
             <!-- HEADER TOP (TITLE + SORT) -->
             <section class="product-header-block">
                 <div class="product-header-block-left">
-                    <h1><?= htmlspecialchars($categoryTitle) ?></h1>
+                    <h1><?= htmlspecialchars($categoryTitle, ENT_QUOTES) ?></h1>
                     <span class="sub-text">
                         <?php
                         if ($totalRows > 0) {
@@ -138,7 +140,7 @@ function pageLink($baseUrl, $pageNum) {
                 <div class="product-header-block-right">
                     <form method="get" action="public/user/product.php" class="product-sort">
                         <?php if ($cate !== ''): ?>
-                            <input type="hidden" name="cate" value="<?= htmlspecialchars($cate) ?>">
+                            <input type="hidden" name="cate" value="<?= htmlspecialchars($cate, ENT_QUOTES) ?>">
                         <?php endif; ?>
                         <label for="sort">Sắp xếp</label>
                         <select name="sort" id="sort" onchange="this.form.submit()">
@@ -172,7 +174,7 @@ function pageLink($baseUrl, $pageNum) {
 
                             $discountPercent = 0;
                             if ($oldPrice > 0) {
-                                $discountPercent = round(100 - $displayPrice * 100 / $oldPrice);
+                                $discountPercent = (int)round(100 - $displayPrice * 100 / $oldPrice);
                             }
 
                             // chỉnh path ảnh theo project – tạm thời dùng assets/images
@@ -187,8 +189,8 @@ function pageLink($baseUrl, $pageNum) {
 
                                 <!-- ẢNH + TÊN: click vào sẽ tới chi tiết -->
                                 <a href="public/user/product_detail.php?id=<?= $id ?>">
-                                    <img src="<?= htmlspecialchars($thumb) ?>" alt="<?= htmlspecialchars($name) ?>">
-                                    <h3><?= htmlspecialchars($name) ?></h3>
+                                    <img src="<?= htmlspecialchars($thumb, ENT_QUOTES) ?>" alt="<?= htmlspecialchars($name, ENT_QUOTES) ?>">
+                                    <h3><?= htmlspecialchars($name, ENT_QUOTES) ?></h3>
                                 </a>
 
                                 <div class="price-block">
@@ -229,7 +231,7 @@ function pageLink($baseUrl, $pageNum) {
                 <?php if ($totalPages > 1): ?>
                     <div class="pagination">
                         <?php if ($page > 1): ?>
-                            <a class="page-link" href="<?= htmlspecialchars(pageLink($baseUrl, $page-1)) ?>">&laquo;</a>
+                            <a class="page-link" href="<?= htmlspecialchars(pageLink($baseUrl, $page-1), ENT_QUOTES) ?>">&laquo;</a>
                         <?php endif; ?>
 
                         <?php
@@ -237,7 +239,7 @@ function pageLink($baseUrl, $pageNum) {
                         $end   = min($totalPages, $page + 2);
 
                         if ($start > 1) {
-                            echo '<a class="page-link" href="'.htmlspecialchars(pageLink($baseUrl, 1)).'">1</a>';
+                            echo '<a class="page-link" href="'.htmlspecialchars(pageLink($baseUrl, 1), ENT_QUOTES).'">1</a>';
                             if ($start > 2) {
                                 echo '<span class="page-link" style="background:transparent;border:none;">…</span>';
                             }
@@ -246,18 +248,18 @@ function pageLink($baseUrl, $pageNum) {
                         for ($i = $start; $i <= $end; $i++) {
                             $cls = 'page-link';
                             if ($i == $page) $cls .= ' active';
-                            echo '<a class="'.$cls.'" href="'.htmlspecialchars(pageLink($baseUrl, $i)).'">'.$i.'</a>';
+                            echo '<a class="'.$cls.'" href="'.htmlspecialchars(pageLink($baseUrl, $i), ENT_QUOTES).'">'.$i.'</a>';
                         }
 
                         if ($end < $totalPages) {
                             if ($end < $totalPages - 1) {
                                 echo '<span class="page-link" style="background:transparent;border:none;">…</span>';
                             }
-                            echo '<a class="page-link" href="'.htmlspecialchars(pageLink($baseUrl, $totalPages)).'">'.$totalPages.'</a>';
+                            echo '<a class="page-link" href="'.htmlspecialchars(pageLink($baseUrl, $totalPages), ENT_QUOTES).'">'.$totalPages.'</a>';
                         }
 
                         if ($page < $totalPages) {
-                            echo '<a class="page-link" href="'.htmlspecialchars(pageLink($baseUrl, $page+1)).'">&raquo;</a>';
+                            echo '<a class="page-link" href="'.htmlspecialchars(pageLink($baseUrl, $page+1), ENT_QUOTES).'">&raquo;</a>';
                         }
                         ?>
                     </div>
@@ -269,6 +271,6 @@ function pageLink($baseUrl, $pageNum) {
 
 </main>
 
-<?php @include PUBLIC_PATH . '/includes/User/footer.php'; ?>
+<?php @include BASE_PATH . '/includes/User/footer.php'; ?>
 </body>
 </html>

@@ -1,6 +1,8 @@
 <?php
+declare(strict_types=1);
+
 session_start();
-define('PUBLIC_PATH', dirname(__DIR__)); // C:\xampp\htdocs\TechShop\public
+define('BASE_PATH', dirname(__DIR__)); // C:\xampp\htdocs\TechShop\public
 
 // =============== KẾT NỐI DATABASE ===============
 $host   = 'localhost';
@@ -20,7 +22,7 @@ if ($id <= 0) {
     die('Sản phẩm không hợp lệ');
 }
 
-// Tăng lượt xem
+// Tăng lượt xem (không quan trọng nếu lỗi)
 $conn->query("UPDATE san_pham SET luot_xem = luot_xem + 1 WHERE id = {$id}");
 
 // Lấy chi tiết sản phẩm + tên danh mục
@@ -46,7 +48,7 @@ $oldPrice  = ($sale !== null && $sale > 0 && $sale < $gia) ? $gia : 0;
 
 $discountPercent = 0;
 if ($oldPrice > 0) {
-    $discountPercent = round(100 - $display * 100 / $oldPrice);
+    $discountPercent = (int)round(100 - $display * 100 / $oldPrice);
 }
 
 // Ảnh (tuỳ cậu đặt, tớ lấy trong assets/images cho đơn giản)
@@ -61,7 +63,7 @@ $tenDm    = $p['ten_dm'];
 $view     = (int)$p['luot_xem'];
 
 // text trạng thái
-$stockText = $soLuong > 0 ? "Còn hàng" : "Hết hàng";
+$stockText  = $soLuong > 0 ? "Còn hàng" : "Hết hàng";
 $stockClass = $soLuong > 0 ? "pdp-stock-text--ok" : "pdp-stock-text--out";
 
 // tách mô tả ngắn thành từng dòng bullet nếu có xuống dòng
@@ -80,13 +82,13 @@ if ($moTaNgan) {
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title><?= htmlspecialchars($name) ?> | TechShop</title>
+    <title><?= htmlspecialchars($name, ENT_QUOTES) ?> | TechShop</title>
     <base href="/TechShop/">
     <link rel="stylesheet" href="public/assets/css/cssUser/user.css?v=1">
     <link rel="stylesheet" href="public/assets/css/cssUser/product_detail.css?v=1">
 </head>
 <body>
-<?php @include PUBLIC_PATH . '/includes/User/header.php'; ?>
+<?php @include BASE_PATH . '/includes/User/header.php'; ?>
 
 <main class="main-content">
     <div class="pdp-page">
@@ -95,17 +97,17 @@ if ($moTaNgan) {
         <div class="pdp-left">
             <div class="pdp-media-card">
                 <div class="pdp-image-main">
-                    <img src="<?= htmlspecialchars($thumb) ?>" alt="<?= htmlspecialchars($name) ?>">
+                    <img src="<?= htmlspecialchars($thumb, ENT_QUOTES) ?>" alt="<?= htmlspecialchars($name, ENT_QUOTES) ?>">
                 </div>
 
                 <div class="pdp-meta-strip">
                     <div class="pdp-meta-pill">
                         <span>Danh mục</span>
-                        <span><?= htmlspecialchars($tenDm) ?></span>
+                        <span><?= htmlspecialchars($tenDm, ENT_QUOTES) ?></span>
                     </div>
                     <div class="pdp-meta-pill">
                         <span>Mã sản phẩm</span>
-                        <span>#<?= $p['id'] ?></span>
+                        <span>#<?= (int)$p['id'] ?></span>
                     </div>
                     <div class="pdp-meta-pill">
                         <span>Lượt xem</span>
@@ -121,7 +123,7 @@ if ($moTaNgan) {
 
         <!-- CỘT PHẢI: THÔNG TIN CHI TIẾT -->
         <div class="pdp-right">
-            <h1 class="pdp-info-title"><?= htmlspecialchars($name) ?></h1>
+            <h1 class="pdp-info-title"><?= htmlspecialchars($name, ENT_QUOTES) ?></h1>
 
             <div class="pdp-badges-row">
                 <?php if ($discountPercent > 0): ?>
@@ -157,7 +159,7 @@ if ($moTaNgan) {
                 <div class="pdp-price-side">
                     <div><strong>Ưu đãi khi mua tại TechShop:</strong></div>
                     <div>- Hỗ trợ lắp ráp PC tại cửa hàng</div>
-                    <div>- Tư vấn cấu hình phù hợp nhu cầu & ngân sách</div>
+                    <div>- Tư vấn cấu hình phù hợp nhu cầu &amp; ngân sách</div>
                     <div>- Bảo hành theo chính sách nhà sản xuất</div>
                 </div>
             </div>
@@ -167,10 +169,15 @@ if ($moTaNgan) {
                 <form method="post" action="public/user/cart.php" class="pdp-form">
                     <label for="qty">Số lượng</label>
                     <input type="hidden" name="action" value="add">
-                    <input type="hidden" name="id_san_pham" value="<?= $p['id'] ?>">
-                    <input type="number" id="qty" name="so_luong"
-                           min="1" max="<?= max(1, $soLuong) ?>"
-                           value="1">
+                    <input type="hidden" name="id_san_pham" value="<?= (int)$p['id'] ?>">
+                    <input
+                        type="number"
+                        id="qty"
+                        name="so_luong"
+                        min="1"
+                        max="<?= max(1, $soLuong) ?>"
+                        value="1"
+                    >
                     <button type="submit" class="btn">
                         Thêm vào giỏ
                     </button>
@@ -186,7 +193,7 @@ if ($moTaNgan) {
                     <div class="pdp-desc-title">Điểm nổi bật</div>
                     <ul class="pdp-feature-list">
                         <?php foreach ($featureLines as $line): ?>
-                            <li><?= htmlspecialchars($line) ?></li>
+                            <li><?= htmlspecialchars($line, ENT_QUOTES) ?></li>
                         <?php endforeach; ?>
                     </ul>
                 </div>
@@ -194,7 +201,7 @@ if ($moTaNgan) {
                 <div class="pdp-desc-block">
                     <div class="pdp-desc-title">Mô tả tổng quan</div>
                     <div style="font-size:13px;color:#cbd5f5;line-height:1.6;">
-                        <?= nl2br(htmlspecialchars($moTaNgan)) ?>
+                        <?= nl2br(htmlspecialchars($moTaNgan, ENT_QUOTES)) ?>
                     </div>
                 </div>
             <?php endif; ?>
@@ -217,6 +224,6 @@ if ($moTaNgan) {
 
 </main>
 
-<?php @include PUBLIC_PATH . '/includes/User/footer.php'; ?>
+<?php @include BASE_PATH . '/includes/User/footer.php'; ?>
 </body>
 </html>

@@ -1,26 +1,48 @@
 /* ==========================================================================
    FILE: public/assets/css/cssUser/user.css
-   PHIÊN BẢN: GearVN Style Mega Menu (Flex Layout + Fixed Column)
+   MÔ TẢ: Style chung cho layout User (header, nav, footer, dark mode)
    ========================================================================== */
 
-/* --- 1. THIẾT LẬP CHUNG --- */
-* { margin: 0; padding: 0; box-sizing: border-box; }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
+/* ===================== MÀU CHỦ ĐẠO (RGB) ===================== */
 :root {
-  --c-primary: #AD90E8;
-  --c-secondary: #6EEBEE;
-  --c-gradient: linear-gradient(90deg, var(--c-secondary), var(--c-primary));
-  --c-bg-light-cyan: #F0FFFF;
-  --c-bg-light-purple: #F5F0FF;
-  --bg: linear-gradient(120deg, var(--c-bg-light-cyan) 0%, var(--c-bg-light-purple) 100%);
-  --white: #fff;
-  --text: #222;
-  --muted: #666;
-  --main-red: #d70018; 
+  /* Màu chủ đạo kiểu LED RGB */
+  --c-primary:   #7b5cff;                     /* tím */
+  --c-secondary: #22d3ee;                     /* cyan */
+  --c-gradient:  linear-gradient(
+                    120deg,
+                    #22d3ee,
+                    #7b5cff,
+                    #ff4ecd
+                 );
+
+  /* Nền light mode dịu */
+  --c-bg-light-cyan:   #e6f7ff;
+  --c-bg-light-purple: #f5f0ff;
+  --bg: radial-gradient(circle at top,
+                        #e6f7ff 0%,
+                        #f5f0ff 40%,
+                        #ffffff 100%);
+
+  --white:    #ffffff;
+  --card-bg:  #f5f8ff;
+  --text:     #222;
+  --muted:    #666;
+
+  /* Giữ tên --main-red để khỏi sửa code, nhưng thực chất là cyan */
+  --main-red: #22d3ee;
+
   --radius: 8px;
   --shadow: 0 2px 8px rgba(0,0,0,.04);
   --nav-accent: #f0f0f0;
 }
+
+/* ====================== BODY ====================== */
 
 body {
   font-family: Arial, Helvetica, sans-serif;
@@ -31,264 +53,511 @@ body {
   transition: background 0.3s ease, color 0.3s ease;
 }
 
-/* --- 2. HEADER --- */
-.topbar { background: #222; color: #fff; font-size: 13px; padding: 6px 16px; }
-.main-header { background: var(--white); box-shadow: var(--shadow); position: relative; z-index: 1000; }
-.header-inner { max-width: 1200px; margin: 0 auto; padding: 14px 16px; display: flex; gap: 20px; align-items: center; }
-.logo { text-decoration: none; font-size: 26px; font-weight: 700; color: var(--c-primary); min-width: 140px; }
+/* ====================== HEADER ====================== */
 
-.search-box { flex: 1; display: flex; border: 1px solid #ddd; border-radius: 999px; overflow: hidden; }
-.search-box input { flex: 1; border: none; outline: none; padding: 9px 14px; font-size: 14px; }
-.search-box button { border: none; background: var(--c-gradient); color: #fff; padding: 0 20px; cursor: pointer; transition: filter 0.2s ease; }
-.search-box button:hover { filter: brightness(1.15); }
-
-.header-actions { display: flex; gap: 10px; align-items: center; margin-left: auto; }
-.header-actions > a { background: #f1f1f1; border-radius: 6px; text-decoration: none; color: #333; font-size: 13px; padding: 6px 10px; transition: background 0.2s ease; }
-.header-actions > a:hover { background: rgba(173, 144, 232, 0.1); color: var(--c-primary); }
-
-/* User Dropdown */
-.user-dropdown { position: relative; display: inline-block; }
-.user-btn { display: flex; align-items: center; gap: 8px; padding: 8px 12px; background: #f1f1f1; border-radius: 6px; text-decoration: none; color: #333; font-weight: 600; font-size: 13px; cursor: pointer; transition: all 0.2s; }
-.user-btn:hover { background: rgba(173, 144, 232, 0.2); color: #AD90E8; }
-.dropdown-menu { position: absolute; top: 100%; right: 0; width: 220px; background: #fff; border: 1px solid #eee; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); padding: 8px 0; opacity: 0; visibility: hidden; transform: translateY(10px); transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1); z-index: 9999; }
-.dropdown-menu::before { content: ""; position: absolute; top: -6px; right: 20px; width: 12px; height: 12px; background: #fff; transform: rotate(45deg); border-top: 1px solid #eee; border-left: 1px solid #eee; }
-.user-dropdown:hover .dropdown-menu { opacity: 1; visibility: visible; transform: translateY(10px); }
-.dropdown-menu a { display: flex !important; align-items: center; gap: 10px; padding: 10px 15px; color: #333; text-decoration: none; font-size: 13px; transition: 0.2s; background: transparent !important; }
-.dropdown-menu a:hover { background: #f9f9f9 !important; color: #d70018 !important; padding-left: 20px; }
-.logout-btn { border-top: 1px solid #f0f0f0; margin-top: 5px; color: #d70018 !important; }
-
-/* --- 3. NAVIGATION --- */
-/* --- 3. THANH MENU NGANG (NAVIGATION) --- */
-.main-nav { 
-    background: var(--c-gradient); 
-    width: 100%; 
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
-    position: relative; z-index: 900;
+.topbar {
+  background: #111827;
+  color: #f9fafb;
+  font-size: 13px;
+  padding: 6px 16px;
 }
 
-.main-nav .nav-inner { 
-    max-width: 1200px; width: 100%; margin: 0 auto; 
-    display: flex; align-items: center; gap: 20px; /* Khoảng cách giữa nút danh mục và menu */
-    padding: 0 16px;
-    height: 50px; /* Chiều cao cố định cho menu */
+.main-header {
+  background: var(--white);
+  box-shadow: var(--shadow);
+  position: relative;
+  z-index: 1000;
 }
 
-/* Container chứa các link menu */
-.nav-menu-list {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    flex: 1; /* Chiếm hết không gian còn lại */
-    overflow-x: auto; /* Nếu menu dài quá thì cho cuộn ngang trên mobile */
+.header-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 14px 16px;
+  display: flex;
+  gap: 20px;
+  align-items: center;
 }
 
-/* Nút mở danh mục */
-.nav-item-toggle button {
-    background: rgba(0, 0, 0, 0.2); /* Nền tối nhẹ để nổi bật nút danh mục */
-    border: none; color: white; font-weight: 700; font-size: 14px;
-    display: flex; align-items: center; gap: 10px; 
-    cursor: pointer; padding: 0 20px;
-    height: 50px; /* Full chiều cao */
-    text-transform: uppercase;
-}
-.hamburger-icon span {
-    display: block; width: 20px; height: 2px; background: white; margin-bottom: 4px;
+.logo {
+  text-decoration: none;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--c-primary);
 }
 
-/* Các link menu (Style mới) */
-.nav-item a { 
-    display: flex; align-items: center; gap: 6px; /* Khoảng cách icon và chữ */
-    color: #fff; text-decoration: none; font-size: 14px; 
-    font-weight: 500; white-space: nowrap; 
-    padding: 8px 12px; 
-    border-radius: 4px; 
-    transition: all 0.2s ease; 
+/* SEARCH BOX (header) */
+.search-box {
+  flex: 1;
+  display: flex;
+  gap: 8px;
+}
+.search-box input[type="text"] {
+  flex: 1;
+  padding: 8px 12px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+.search-box button {
+  padding: 8px 14px;
+  border-radius: 4px;
+  border: none;
+  background: linear-gradient(90deg, #00f5ff, #7b5cff);
+  color: #fff;
+  cursor: pointer;
+  font-weight: 600;
+  box-shadow: 0 0 12px rgba(123, 92, 255, 0.5);
 }
 
-.nav-item a:hover { 
-    background: rgba(255,255,255,0.2); 
-    color: #fff; 
-    transform: translateY(-2px);
+/* HEADER ACTIONS (Chào, Tài khoản, v.v.) */
+.header-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.header-actions > a {
+  text-decoration: none;
+  font-size: 13px;
+  color: var(--text);
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(0,0,0,0.03);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+.header-actions > a:hover {
+  background: rgba(123, 92, 255, 0.12);
+  color: var(--c-primary);
 }
 
-/* Icon trong menu */
-.nav-item a i {
-    font-size: 16px;
-    opacity: 0.9;
+/* DROPDOWN USER (chung, phần chi tiết trong components.css) */
+.user-dropdown {
+  position: relative;
+  display: inline-block;
+}
+.user-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  background: rgba(0,0,0,0.03);
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.user-btn:hover {
+  background: rgba(123, 92, 255, 0.15);
+  color: var(--c-primary);
 }
 
-/* --- 4. SIDEBAR --- */
-.category-sidebar { display: block; background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); padding: 10px 0; margin-top: 0; position: relative; }
-.category-sidebar h3 { font-size: 15px; font-weight: 600; padding: 0 15px 6px; border-bottom: 1px solid #eee; margin-bottom: 5px; }
-.category-sidebar ul { list-style: none; }
-.category-sidebar li a { display: flex; align-items: center; gap: 8px; padding: 8px 15px; text-decoration: none; color: #333; font-size: 13px; line-height: 1.3; border-left: 3px solid transparent; transition: all 0.2s ease; }
-.category-sidebar li a:hover { background: #fff0f0; color: var(--main-red); font-weight: 600; border-left-color: var(--main-red); }
-.sidebar-icon { width: 20px; height: 20px; object-fit: contain; flex-shrink: 0; }
-.category-sidebar .sidebar-icon { font-size: 18px; width: 24px; text-align: center; color: #555; }
-.sidebar-submenu { display: none; padding-left: 30px; } 
-
-/* =========================================================
-   MEGA MENU CHUẨN GEARVN (FLEXBOX + FIXED COLUMN)
-   ========================================================= */
-
-.col-left-sidebar { position: relative !important; overflow: visible !important; z-index: 100; }
-
-.sidebar-megamenu-panel {
-    display: none;
-    position: absolute;
-    top: 0;
-    left: 100%;
-    margin-left: -5px;
-    
-    /* Tự động co giãn, nhưng có giới hạn min/max hợp lý */
-    width: max-content !important; 
-    min-width: 500px; 
-    max-width: 950px;   
-    
-    height: auto;
-    min-height: 100%;   
-    
-    padding: 20px;
-    background-color: #fff;
-    border: 1px solid #e0e0e0;
-    box-shadow: 5px 5px 15px rgba(0,0,0,0.15);
-    z-index: 99999;
-    
-    border-top-right-radius: 8px;
-    border-bottom-right-radius: 8px;
-    border-bottom-left-radius: 8px;
+/* THEME TOGGLE */
+.theme-toggle-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--muted);
+}
+.theme-toggle-btn {
+  width: 34px;
+  height: 18px;
+  border-radius: 999px;
+  border: 1px solid #ccc;
+  position: relative;
+  background: #f0f0f0;
+  cursor: pointer;
+  transition: all 0.25s;
+}
+.theme-toggle-btn::before {
+  content: "";
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #fff;
+  top: 1px;
+  left: 1px;
+  transition: all 0.25s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+.theme-toggle-btn[data-theme="dark"] {
+  background: #333;
+  border-color: #666;
+}
+.theme-toggle-btn[data-theme="dark"]::before {
+  transform: translateX(16px);
 }
 
-.sidebar-megamenu-panel::before { content: ""; position: absolute; top: 0; bottom: 0; left: -30px; width: 40px; background: transparent; z-index: 1; }
-.sidebar-megamenu-panel.active { display: block !important; }
+/* ====================== NAVBAR CHÍNH ====================== */
 
-/* --- LAYOUT KIỂU GEARVN: FLEXBOX --- */
-.megamenu-grid-container {
-    display: flex !important;       /* Xếp ngang */
-    flex-wrap: wrap !important;     /* Xuống dòng khi hết chỗ */
-    gap: 30px !important;           /* Khoảng cách giữa các cột */
-    align-items: flex-start;        /* Căn trên cùng */
-    grid-template-columns: none !important; /* Hủy bỏ Grid cũ */
+.main-nav {
+  width: 100%;
+  background: linear-gradient(90deg, #00f5ff, #7b5cff, #ff4ecd);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
 }
 
-/* Cột cố định chiều rộng (Giống cột báo chí) */
-.megamenu-grid-column {
-    flex: 0 0 160px;    /* Chiều rộng cố định cho mỗi cột con */
-    max-width: 180px;
+.nav-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 6px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 20px;
 }
 
-/* Tiêu đề cột (Giống nút bấm/Tag) */
-.megamenu-grid-column h4 {
-    font-size: 13px; font-weight: 700; color: #fff;
-    background: var(--main-red); 
-    padding: 5px 10px;
-    border-radius: 4px; 
-    margin-top: 0; margin-bottom: 10px;
-    text-transform: uppercase; 
-    display: block; /* Chiếm hết chiều rộng cột */
-    text-align: center;
+/* Nút “Danh mục sản phẩm” */
+.btn-menu {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 12px;
+  background: rgba(0,0,0,0.25);
+  border-radius: 4px;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
 }
 
-/* Danh sách link */
-.megamenu-grid-column ul { list-style: none; padding: 0; margin: 0; }
-.megamenu-grid-column ul li { margin-bottom: 5px; }
-.megamenu-grid-column ul li a {
-    text-decoration: none; color: #555; font-size: 13px;
-    display: block; transition: all 0.2s ease;
-}
-.megamenu-grid-column ul li a:hover {
-    color: var(--main-red); transform: translateX(5px); font-weight: 500;
+.btn-menu i {
+  font-size: 14px;
 }
 
-/* Hover Sidebar Item */
-.sidebar-item-with-submenu.megamenu-hover > a {
-    background: var(--main-red) !important; color: #fff !important; 
-    position: relative; z-index: 1000; border-left-color: var(--main-red);
+/* Nhóm link: Trang chủ, Khuyến mãi, Tra cứu... */
+.main-nav-links {
+  display: flex;
+  gap: 18px;
+  flex: 1;
+  align-items: center;
 }
-.sidebar-item-with-submenu.megamenu-hover > a .sidebar-icon { color: #fff !important; }
 
-/* --- 6. PRODUCT CARD --- */
-.product-section { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); padding: 16px; margin-bottom: 16px; }
-.section-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
-.section-head h2 { font-size: 18px; color: var(--text); }
-.section-head a { text-decoration: none; font-size: 13px; color: var(--c-primary); }
-.product-card { background: var(--white); border: 1px solid #eee; border-radius: var(--radius); overflow: hidden; text-align: center; transition: .15s ease; }
-.product-card:hover { border-color: var(--main-red); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-.product-card img { width: 100%; height: 160px; object-fit: contain; padding: 10px; }
-.product-card h3 { font-size: 14px; padding: 0 10px; min-height: 40px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; color: var(--text); margin-bottom: 5px; }
-.product-card .price { color: var(--main-red); font-weight: 700; margin: 5px 0 10px 0; font-size: 15px; }
-.product-card a { display: inline-block; text-decoration: none; background: #f1f1f1; color: #333; font-size: 13px; margin-bottom: 15px; padding: 6px 14px; border-radius: 999px; }
-.product-card a:hover { background: var(--main-red); color: white; }
-
-/* --- 7. FOOTER --- */
-.main-footer { background: #222; color: #ccc; padding: 40px 0 0 0; font-size: 14px; margin-top: 40px; }
-.footer-container { max-width: 1200px; margin: 0 auto; padding: 0 16px; }
-.footer-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 24px; padding-bottom: 30px; }
-.footer-column h4 { font-size: 16px; color: #fff; margin-bottom: 15px; font-weight: 600; }
-.footer-column ul { list-style: none; }
-.footer-column li { margin-bottom: 8px; }
-.footer-column a { color: #ccc; text-decoration: none; line-height: 1.6; }
-.footer-column a:hover { color: var(--white); text-decoration: underline; }
-.social-icons { display: flex; gap: 12px; }
-.social-icons a { display: inline-block; color: #fff; background: #444; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: background .2s ease; }
-.social-icons a:hover { background: var(--c-gradient); }
-.footer-bottom-bar { border-top: 1px solid #444; padding: 20px 0; text-align: center; font-size: 13px; color: #999; }
-
-/* --- FLOATING TOOLBAR --- */
-.floating-toolbar { position: fixed; right: 20px; bottom: 30px; z-index: 9999; display: flex; flex-direction: column; gap: 12px; }
-.ft-btn { width: 48px; height: 48px; border-radius: 50%; background: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.15); display: flex; align-items: center; justify-content: center; transition: transform 0.3s; border: 2px solid #fff; cursor: pointer; text-decoration: none; }
-.ft-btn img { width: 28px; height: 28px; object-fit: contain; }
-.ft-btn:hover { transform: scale(1.15); }
-.ft-back-to-top { background: var(--main-red); color: #fff; font-size: 18px; opacity: 0; visibility: hidden; transform: translateY(20px); transition: all 0.3s ease; }
-.ft-back-to-top.show { opacity: 1; visibility: visible; transform: translateY(0); }
-
-/* ================================================= */
-/* === 8. DARK MODE - DEEP NAVY === */
-/* ================================================= */
-
-[data-theme="dark"] {
-    --white: #151922; --text: #e6e6e6; --muted: #94a3b8; --bg: #0a0a0a; --shadow: 0 4px 12px rgba(0,0,0,0.6); 
-    --dm-accent: #AD90E8; --dm-accent-bg: rgba(173, 144, 232, 0.15); 
+.main-nav-links a,
+.main-nav-links a:visited {
+  color: #fdfdfd;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 4px 0;
+  position: relative;
+  white-space: nowrap;
 }
-[data-theme="dark"] body { background-color: var(--bg); background-image: radial-gradient(circle at 50% 0%, #1a1d2d 0%, #0b0c15 60%); color: var(--text); }
-[data-theme="dark"] .main-header, [data-theme="dark"] .category-sidebar { background: #151922; border-color: #2d3748; }
-[data-theme="dark"] .category-sidebar li a { color: var(--text) !important; border-left: 3px solid transparent; }
-[data-theme="dark"] .category-sidebar li a:hover { color: #ffffff !important; text-shadow: 0 0 8px rgba(173, 144, 232, 0.6); background: var(--dm-accent-bg); border-left-color: var(--dm-accent); font-weight: 600; }
-[data-theme="dark"] .category-sidebar .sidebar-icon { color: #94a3b8; }
-[data-theme="dark"] .category-sidebar li a:hover .sidebar-icon { color: #fff; }
 
-[data-theme="dark"] .user-btn { background: #1e2330; color: #fff; }
-[data-theme="dark"] .user-btn:hover { background: #2a2a2a; color: #AD90E8; }
-[data-theme="dark"] .dropdown-menu { background: #151922; border-color: #2d3748; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
-[data-theme="dark"] .dropdown-menu::before { background: #151922; border-color: #2d3748; }
-[data-theme="dark"] .dropdown-menu a { color: #ccc; }
-[data-theme="dark"] .dropdown-menu a:hover { background: #1e2330 !important; color: #AD90E8 !important; }
-[data-theme="dark"] .logout-btn { border-top-color: #2d3748; }
+.main-nav-links a:hover {
+  color: #ffffff;
+}
 
-/* Mega Menu Dark Mode */
-[data-theme="dark"] .sidebar-megamenu-panel { background-color: #151922; border-color: #2d3748; box-shadow: 5px 5px 15px rgba(0,0,0,0.5); }
-[data-theme="dark"] .megamenu-grid-column h4 { background: linear-gradient(90deg, #7f5eff, #AD90E8); color: #fff; border: none; box-shadow: 0 2px 10px rgba(127, 94, 255, 0.3); }
-[data-theme="dark"] .megamenu-grid-column ul li a { color: #94a3b8; }
-[data-theme="dark"] .megamenu-grid-column ul li a:hover { color: var(--dm-accent); background-color: #1e2330; transform: translateX(3px); }
-[data-theme="dark"] .sidebar-item-with-submenu.megamenu-hover > a { background: linear-gradient(90deg, #7f5eff, #AD90E8) !important; color: #fff !important; border-left-color: transparent; }
+.main-nav-links a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 0;
+  height: 2px;
+  border-radius: 999px;
+  background: #ffffff;
+  transition: width 0.18s ease-out;
+}
 
-[data-theme="dark"] .product-card { background: #151922; border: 1px solid #2d3748; box-shadow: 0 4px 6px rgba(0,0,0,0.2); }
-[data-theme="dark"] .product-card h3 { color: #fff !important; font-weight: 500; }
-[data-theme="dark"] .product-card .price { color: #ff6b6b !important; text-shadow: 0 0 8px rgba(255, 107, 107, 0.3); }
-[data-theme="dark"] .product-card a, [data-theme="dark"] .product-card button { background: #1e2330; color: #fff; border: 1px solid #444; }
-[data-theme="dark"] .product-card a:hover, [data-theme="dark"] .product-card button:hover { background: var(--dm-accent); border-color: var(--dm-accent); color: #000; font-weight: 700; }
-[data-theme="dark"] .ft-btn { background: #1e2330; border-color: #333; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
-[data-theme="dark"] .ft-back-to-top { background: var(--dm-accent); color: #000; }
-[data-theme="dark"] .section-head h2 { color: #fff !important; }
-[data-theme="dark"] .section-head a, [data-theme="dark"] .view-all { color: var(--dm-accent) !important; }
+.main-nav-links a:hover::after {
+  width: 100%;
+}
+
+
+/* ====================== FOOTER ====================== */
+
+.main-footer {
+  margin-top: 40px;
+  background: #111827;
+  color: #e5e7eb;
+  padding: 40px 0 20px 0;
+}
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 24px;
+}
+.footer-column h4 {
+  font-size: 15px;
+  margin-bottom: 10px;
+  color: #f9fafb;
+}
+.footer-column ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.footer-column ul li {
+  margin-bottom: 6px;
+}
+.footer-column ul li a {
+  color: #9ca3af;
+  font-size: 13px;
+  text-decoration: none;
+}
+.footer-column ul li a:hover {
+  color: #e5e7eb;
+}
+.footer-bottom-bar {
+  border-top: 1px solid #1f2933;
+  margin-top: 20px;
+  padding-top: 10px;
+  text-align: center;
+  font-size: 13px;
+  color: #9ca3af;
+}
+
+.social-icons {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.social-icons a {
+  color: #e5e7eb;
+  text-decoration: none;
+  display: inline-flex;
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  align-items: center;
+  justify-content: center;
+  background: #111827;
+  border: 1px solid #374151;
+}
+.social-icons a:hover {
+  background: #1f2933;
+  border-color: #4b5563;
+}
+
+.payment-methods {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+}
+.payment-methods span {
+  font-size: 11px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: #111827;
+  border: 1px solid #374151;
+}
+
+/* ====================== DARK MODE ====================== */
+
+:root[data-theme="dark"] {
+  --dm-bg: #020617;
+  --dm-surface: #0b1120;
+  --dm-border: #1e293b;
+  --dm-accent: #22d3ee;
+}
+
+[data-theme="dark"] body {
+  background: radial-gradient(circle at top,
+                              #1f2937 0%,
+                              #020617 55%,
+                              #000 100%);
+  color: #e5e7eb;
+}
+
+/* header dark */
+[data-theme="dark"] .topbar {
+  background: #020617;
+}
+[data-theme="dark"] .main-header {
+  background: #020617;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.7);
+  border-bottom: 1px solid #0f172a;
+}
+[data-theme="dark"] .logo {
+  color: #22d3ee;
+}
+[data-theme="dark"] .search-box input[type="text"] {
+  background: #020617;
+  border-color: #1f2937;
+  color: #e5e7eb;
+}
+[data-theme="dark"] .search-box button {
+  background: linear-gradient(90deg, #22d3ee, #a855f7);
+  box-shadow: 0 0 14px rgba(56, 189, 248, 0.6);
+}
+[data-theme="dark"] .header-actions > a {
+  background: #020617;
+  border: 1px solid #1f2937;
+  color: #e5e7eb;
+}
+[data-theme="dark"] .header-actions > a:hover {
+  background: #111827;
+  color: #22d3ee;
+}
+
+/* nav dark */
+[data-theme="dark"] .main-nav {
+  background: linear-gradient(90deg, #0b1120, #1e293b);
+}
+
+/* footer dark */
+[data-theme="dark"] .main-footer {
+  background: #020617;
+  border-top: 1px solid #0f172a;
+}
+[data-theme="dark"] .footer-bottom-bar {
+  border-top-color: #0f172a;
+}
+
+/* ====================== RESPONSIVE ====================== */
 
 @media (max-width: 991px) {
-    .footer-grid { grid-template-columns: repeat(3, 1fr); }
-    .header-inner, .main-nav .nav-inner { flex-wrap: wrap; }
-    .sidebar-megamenu-panel { display: none !important; }
+  .header-inner {
+    flex-wrap: wrap;
+  }
+  .search-box {
+    order: 3;
+    width: 100%;
+  }
+  .header-actions {
+    order: 2;
+    margin-left: auto;
+  }
+  .nav-inner {
+    flex-wrap: wrap;
+  }
 }
-@media (max-width: 520px) {
-    .footer-grid { grid-template-columns: 1fr; }
-    .search-box { order: 3; margin-top: 10px; width: 100%; }
-    .header-actions a { padding: 8px; }
+
+/* ===================== NAVBAR CHUẨN PRO ======================= */
+
+.main-nav {
+  width: 100%;
+  background: var(--white);
+  border-bottom: 1px solid #e5e7eb;
 }
+
+[data-theme="dark"] .main-nav {
+  background: #0f172a;
+  border-bottom-color: #17223b;
+}
+
+.nav-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 6px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 22px;
+}
+
+/* ================= CHỈNH NÚT DANH MỤC ================= */
+#sidebar-toggle-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  background: linear-gradient(135deg, #009ffd, #2a2a72);
+  border: none;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+#sidebar-toggle-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 9px rgba(0,0,0,0.35);
+}
+
+[data-theme="dark"] #sidebar-toggle-btn {
+  background: linear-gradient(135deg, #3b82f6, #1e3a8a);
+}
+
+/* Hamburger icon */
+.hamburger-icon span {
+  display: block;
+  width: 16px;
+  height: 2px;
+  background: white;
+  margin: 2px 0;
+  border-radius: 2px;
+}
+
+/* ================= MENU ITEMS ================= */
+.nav-menu-list {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.nav-item a {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  color: #374151;
+  text-decoration: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+/* Separator giống ảnh 2 */
+.nav-item + .nav-item {
+  position: relative;
+}
+.nav-item + .nav-item::before {
+  content: "";
+  position: absolute;
+  left: -10px;
+  height: 18px;
+  width: 1px;
+  background: #d1d5db;
+}
+
+/* HOVER */
+.nav-item a:hover {
+  background: rgba(59,130,246,0.08);
+  color: #111827;
+}
+
+/* ICON */
+.nav-item a i {
+  font-size: 14px;
+  color: #6b7280;
+}
+.nav-item a:hover i {
+  color: #3b82f6;
+}
+
+/* ===== DARK MODE ===== */
+
+[data-theme="dark"] .nav-item a {
+  color: #e5e7eb;
+}
+[data-theme="dark"] .nav-item a:hover {
+  background: rgba(59,130,246,0.18);
+  color: white;
+}
+[data-theme="dark"] .nav-item + .nav-item::before {
+  background: #2d364f;
+}
+[data-theme="dark"] .nav-item a i {
+  color: #9ca3af;
+}
+[data-theme="dark"] .nav-item a:hover i {
+  color: #60a5fa;
+}
+

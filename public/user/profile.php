@@ -3,60 +3,125 @@
 session_start();
 define('BASE_PATH', dirname(__DIR__));
 
-// Bảo vệ trang: Nếu chưa đăng nhập, đá về trang chủ
 if (!isset($_SESSION['user'])) {
     header('Location: index.php');
     exit;
 }
 
-// Lấy thông tin user từ session
 $user = $_SESSION['user'];
 
 $PAGE_TITLE = 'Trang cá nhân';
+
+// nhúng CSS account
 ob_start();
 ?>
-<style>
-  .page{max-width:960px;margin:24px auto;padding:0 16px;display:grid;grid-template-columns:240px 1fr;gap:24px}
-  .card{background:#fff;border:1px solid #eee;border-radius:10px;padding:16px}
-  .nav-list a{display:block;padding:10px;text-decoration:none;color:#333;border-radius:6px; margin-bottom: 4px;}
-  .nav-list a.active{background:#f0f6ff;color:#1677ff;font-weight:600}
-  .nav-list a:hover{background:#f5f5f5}
-  .field{margin-bottom:12px}
-  .field label{display:block;font-weight:600;margin-bottom:6px; color: #555;}
-  .field-value{font-size:16px;padding:8px 0;}
-  .btn{display:inline-block;background:#1677ff;color:#fff;text-decoration:none;border:none;padding:10px 14px;border-radius:8px;cursor:pointer}
-</style>
+<link rel="stylesheet" href="public/assets/css/cssUser/account.css?v=2">
 <?php
-$ADDITIONAL_BODY_END_CONTENT = ob_get_clean(); 
+$ADDITIONAL_BODY_END_CONTENT = ob_get_clean();
+
 include BASE_PATH . '/includes/User/header.php';
 ?>
 
-<main class="page">
-  <aside>
-    <div class="card">
-      <nav class="nav-list">
-        <a href="public/user/profile.php" class="active">Thông tin cá nhân</a>
-        <a href="public/user/edit_profile.php">Chỉnh sửa thông tin</a>
-        <a href="public/user/change_password.php">Đổi mật khẩu</a>
-        <a href="public/user/orders.php">Quản lý đơn hàng</a>
-        <a href="public/user/logout.php" style="color: #ff4d4f;">Đăng xuất</a>
-      </nav>
-    </div>
+<main class="account-page">
+  <!-- SIDEBAR -->
+  <aside class="account-card account-sidebar">
+    <h2>Tài khoản</h2>
+    <nav class="account-nav">
+      <a href="public/user/profile.php" class="active">
+        <img class="nav-icon" src="https://cdn.jsdelivr.net/gh/tabler/tabler-icons/icons/outline/user.svg" alt="">
+        <span>Thông tin cá nhân</span>
+      </a>
+      <a href="public/user/edit_profile.php">
+        <img class="nav-icon" src="https://cdn.jsdelivr.net/gh/tabler/tabler-icons/icons/outline/pencil.svg" alt="">
+        <span>Chỉnh sửa thông tin</span>
+      </a>
+      <a href="public/user/change_password.php">
+        <img class="nav-icon" src="https://cdn.jsdelivr.net/gh/tabler/tabler-icons/icons/outline/lock.svg" alt="">
+        <span>Đổi mật khẩu</span>
+      </a>
+      <a href="public/user/orders.php">
+        <img class="nav-icon" src="https://cdn.jsdelivr.net/gh/tabler/tabler-icons/icons/outline/package.svg" alt="">
+        <span>Quản lý đơn hàng</span>
+      </a>
+      <a href="public/user/logout.php" class="logout">
+        <img class="nav-icon" src="https://cdn.jsdelivr.net/gh/tabler/tabler-icons/icons/outline/power.svg" alt="">
+        <span>Đăng xuất</span>
+      </a>
+    </nav>
   </aside>
-  
-  <section class="card">
-    <h2>Thông tin cá nhân</h2>
-    
-    <div class="field">
-      <label>Họ và tên</label>
-      <div class="field-value"><?= htmlspecialchars($user['name'], ENT_QUOTES) ?></div>
+
+  <!-- MAIN: THÔNG TIN TÀI KHOẢN -->
+  <section class="account-card account-main">
+    <header class="profile-header">
+      <div class="account-avatar">
+        <?php
+          $initial = mb_substr($user['name'] ?? 'T', 0, 1, 'UTF-8');
+          echo htmlspecialchars(mb_strtoupper($initial, 'UTF-8'), ENT_QUOTES);
+        ?>
+      </div>
+
+      <div>
+        <div class="profile-name">
+          <?= htmlspecialchars($user['name'] ?? 'User', ENT_QUOTES) ?>
+        </div>
+        <div class="account-meta">
+          <span class="badge member">Member</span>
+          <span class="badge verified">Đã xác minh</span>
+        </div>
+      </div>
+    </header>
+
+    <div class="profile-grid">
+      <!-- Cột trái: thông tin tài khoản -->
+      <div>
+        <h3 class="profile-section-title">Thông tin tài khoản</h3>
+
+        <div class="info-row">
+          <div class="info-label">Họ và tên</div>
+          <div class="info-value">
+            <?= htmlspecialchars($user['name'] ?? 'Chưa cập nhật', ENT_QUOTES) ?>
+          </div>
+        </div>
+
+        <div class="info-row">
+          <div class="info-label">Email</div>
+          <div class="info-value">
+            <?= htmlspecialchars($user['email'] ?? 'Chưa cập nhật', ENT_QUOTES) ?>
+          </div>
+        </div>
+
+        <div class="profile-actions">
+          <a href="public/user/edit_profile.php" class="btn btn-primary">
+            <img class="btn-icon" src="https://cdn.jsdelivr.net/gh/tabler/tabler-icons/icons/outline/pencil.svg" alt="">
+            <span>Chỉnh sửa thông tin</span>
+          </a>
+
+          <a href="public/user/change_password.php" class="btn btn-outline">
+            <img class="btn-icon" src="https://cdn.jsdelivr.net/gh/tabler/tabler-icons/icons/outline/lock.svg" alt="">
+            <span>Đổi mật khẩu</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Cột phải: thông tin khác -->
+      <div>
+        <h3 class="profile-section-title">Khác</h3>
+
+        <div class="info-row">
+          <div class="info-label">Ngày tham gia</div>
+          <div class="info-value">
+            <?= htmlspecialchars($user['created_at'] ?? '01/12/2025', ENT_QUOTES) ?>
+          </div>
+        </div>
+
+        <div class="info-row">
+          <div class="info-label">Số điện thoại</div>
+          <div class="info-value">
+            <?= htmlspecialchars($user['phone'] ?? 'Chưa cập nhật', ENT_QUOTES) ?>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="field">
-      <label>Email</label>
-      <div class="field-value"><?= htmlspecialchars($user['email'], ENT_QUOTES) ?></div>
-    </div>
-    
-    <a class="btn" href="public/user/edit_profile.php" style="margin-top: 12px;">Chỉnh sửa</a>
   </section>
 </main>
 

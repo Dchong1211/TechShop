@@ -3,6 +3,7 @@
 session_start();
 define('BASE_PATH', dirname(__DIR__));
 
+// Bảo vệ: chưa đăng nhập thì đá về trang chủ
 if (!isset($_SESSION['user'])) {
     header('Location: index.php');
     exit;
@@ -10,97 +11,108 @@ if (!isset($_SESSION['user'])) {
 
 $user = $_SESSION['user'];
 
+// XỬ LÝ SUBMIT FORM: tạm thời chỉ update SESSION, BE khác sẽ lo phần DB
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $name  = trim($_POST['name']  ?? '');
+    $email = trim($_POST['email'] ?? '');
+
+    if ($name !== '') {
+        $_SESSION['user']['name'] = $name;
+    }
+    if ($email !== '') {
+        $_SESSION['user']['email'] = $email;
+    }
+
+    // quay về trang profile để xem kết quả
+    header('Location: profile.php');
+    exit;
+}
+
 $PAGE_TITLE = 'Chỉnh sửa thông tin';
+
+// Nhúng CSS chung
 ob_start();
 ?>
-<style>
-  .page{max-width:960px;margin:24px auto;padding:0 16px;display:grid;grid-template-columns:240px 1fr;gap:24px}
-  .card{background:#fff;border:1px solid #eee;border-radius:10px;padding:16px}
-  .nav-list a{display:block;padding:10px;text-decoration:none;color:#333;border-radius:6px; margin-bottom: 4px;}
-  .nav-list a.active{background:#f0f6ff;color:#1677ff;font-weight:600}
-  .nav-list a:hover{background:#f5f5f5}
-  .field{margin-bottom:12px}
-  .field label{display:block;font-weight:600;margin-bottom:6px}
-  .field input{width:100%;padding:10px;border:1px solid #ddd;border-radius:8px}
-  .btn{display:inline-block;background:#1677ff;color:#fff;text-decoration:none;border:none;padding:10px 14px;border-radius:8px;cursor:pointer}
-  #form-message{margin-top:12px;padding:10px;border-radius:8px;display:none;}
-  #form-message.success{background:#f6ffed;border:1px solid #b7eb8f;color:#52c41a;}
-  #form-message.error{background:#fff1f0;border:1px solid #ffa39e;color:#ff4d4f;}
-</style>
+<link rel="stylesheet" href="public/assets/css/cssUser/account.css?v=2">
 <?php
-$ADDITIONAL_HEAD_CONTENT = ob_get_clean();
-include BASE_PATH . '/includes/User/header.php'; // ĐÃ SỬA
+$ADDITIONAL_BODY_END_CONTENT = ob_get_clean();
+
+include BASE_PATH . '/includes/User/header.php';
 ?>
 
-<main class="page">
-  <aside>
-    <div class="card">
-      <nav class="nav-list">
-        <a href="public/user/profile.php">Thông tin cá nhân</a>
-        <a href="public/user/edit_profile.php" class="active">Chỉnh sửa thông tin</a>
-        <a href="public/user/change_password.php">Đổi mật khẩu</a>
-        <a href="public/user/orders.php">Quản lý đơn hàng</a>
-        <a href="public/user/logout.php" style="color: #ff4d4f;">Đăng xuất</a>
-      </nav>
-    </div>
+<main class="account-page">
+  <!-- SIDEBAR -->
+  <aside class="account-card account-sidebar">
+    <h2>Tài khoản</h2>
+    <nav class="account-nav">
+      <a href="public/user/profile.php">
+        <img class="nav-icon" src="https://cdn.jsdelivr.net/gh/tabler/tabler-icons/icons/outline/user.svg" alt="">
+        <span>Thông tin cá nhân</span>
+      </a>
+      <a href="public/user/edit_profile.php" class="active">
+        <img class="nav-icon" src="https://cdn.jsdelivr.net/gh/tabler/tabler-icons/icons/outline/pencil.svg" alt="">
+        <span>Chỉnh sửa thông tin</span>
+      </a>
+      <a href="public/user/change_password.php">
+        <img class="nav-icon" src="https://cdn.jsdelivr.net/gh/tabler/tabler-icons/icons/outline/lock.svg" alt="">
+        <span>Đổi mật khẩu</span>
+      </a>
+      <a href="public/user/orders.php">
+        <img class="nav-icon" src="https://cdn.jsdelivr.net/gh/tabler/tabler-icons/icons/outline/package.svg" alt="">
+        <span>Quản lý đơn hàng</span>
+      </a>
+      <a href="public/user/logout.php" class="logout">
+        <img class="nav-icon" src="https://cdn.jsdelivr.net/gh/tabler/tabler-icons/icons/outline/power.svg" alt="">
+        <span>Đăng xuất</span>
+      </a>
+    </nav>
   </aside>
-  
-  <section class="card">
-    <h2>Chỉnh sửa thông tin</h2>
-    
-    <form id="edit-profile-form">
-      <div class="field">
-        <label for="email">Email</label>
-        <input type="email" id="email" name="email" value="<?= htmlspecialchars($user['email'], ENT_QUOTES) ?>" readonly disabled style="background:#f5f5f5">
+
+  <!-- MAIN: FORM CHỈNH SỬA -->
+  <section class="account-card account-main">
+    <div class="account-main-header">
+      <h1>Chỉnh sửa thông tin</h1>
+    </div>
+
+    <!-- action="" => submit lên đúng /public/user/edit_profile.php -->
+    <form class="account-form" action="" method="post">
+      <div class="form-group">
+        <label class="form-label" for="name">Họ và tên</label>
+        <input
+          id="name"
+          name="name"
+          type="text"
+          class="form-input"
+          value="<?= htmlspecialchars($user['name'] ?? '', ENT_QUOTES) ?>"
+          required
+        >
       </div>
-      <div class="field">
-        <label for="name">Họ và tên</label>
-        <input type="text" id="name" name="name" value="<?= htmlspecialchars($user['name'], ENT_QUOTES) ?>" required>
+
+      <div class="form-group">
+        <label class="form-label" for="email">Email</label>
+        <input
+          id="email"
+          name="email"
+          type="email"
+          class="form-input"
+          value="<?= htmlspecialchars($user['email'] ?? '', ENT_QUOTES) ?>"
+          required
+        >
       </div>
-      
-      <div id="form-message"></div>
-      <button class="btn" type="submit" style="margin-top: 12px;">Lưu thay đổi</button>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">
+          <img class="btn-icon" src="https://cdn.jsdelivr.net/gh/tabler/tabler-icons/icons/outline/device-floppy.svg" alt="">
+          <span>Lưu thay đổi</span>
+        </button>
+        <a href="profile.php" class="btn btn-ghost">
+          Hủy
+        </a>
+      </div>
     </form>
   </section>
 </main>
 
-<?php ob_start(); ?>
-<script>
-document.getElementById('edit-profile-form').addEventListener('submit', function(e) {
-  e.preventDefault();
-  
-  const form = this;
-  const messageDiv = document.getElementById('form-message');
-  const formData = new FormData(form);
-  
-  messageDiv.style.display = 'none';
-
-  // ĐÃ SỬA: Dùng đường dẫn tuyệt đối để tránh lỗi 404
-  fetch('/TechShop/app/api/update_profile.php', {
-    method: 'POST',
-    body: formData
-  })
-  .then(response => response.json())
-  .then(data => {
-    if (data.success) {
-      messageDiv.textContent = 'Cập nhật thành công!';
-      messageDiv.className = 'success';
-      messageDiv.style.display = 'block';
-    } else {
-      messageDiv.textContent = data.message || 'Đã xảy ra lỗi. Vui lòng thử lại.';
-      messageDiv.className = 'error';
-      messageDiv.style.display = 'block';
-    }
-  })
-  .catch(error => {
-    console.error('Error:', error);
-    messageDiv.textContent = 'Lỗi kết nối API. Vui lòng kiểm tra lại.';
-    messageDiv.className = 'error';
-    messageDiv.style.display = 'block';
-  });
-});
-</script>
 <?php
-$ADDITIONAL_BODY_END_CONTENT = ob_get_clean();
-include BASE_PATH . '/includes/User/footer.php'; // ĐÃ SỬA
+include BASE_PATH . '/includes/User/footer.php';
 ?>

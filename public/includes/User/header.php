@@ -21,6 +21,7 @@ $ADDITIONAL_HEAD_CONTENT = $ADDITIONAL_HEAD_CONTENT ?? '';
   <link rel="stylesheet" href="public/assets/css/cssUser/user.css?v=10005">
   <link rel="stylesheet" href="public/assets/css/cssUser/components.css?v=10005">
   <link rel="stylesheet" href="public/assets/css/cssUser/megamenu.css?v=10005">
+  <link rel="stylesheet" href="public/assets/css/cssUser/profile.css?v=1">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
   <style>
