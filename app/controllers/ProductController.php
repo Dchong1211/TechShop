@@ -3,6 +3,7 @@
 require_once __DIR__ . '/../models/product.php';
 require_once __DIR__ . '/../helpers/auth.php';
 require_once __DIR__ . '/../helpers/CSRF.php';
+require_once __DIR__ . '/../helpers/qr.php';
 
 class ProductController {
     private $model;
@@ -52,18 +53,34 @@ class ProductController {
             $_POST["chi_tiet"] ?? ""
         );
 
-        return $ok
-            ? ["success" => true, "message" => "Thêm thành công"]
-            : ["success" => false, "message" => "Thêm thất bại"];
+        if ($ok) {
+            // Lấy ID sản phẩm vừa tạo
+            $newId = $this->model->lastId();
+
+            // Tạo URL QR
+            $url = "http://localhost/TechShop/public/user/product_detail.php?id=" . $newId;
+
+            // Lưu QR vào public/qr/
+            $savePath = __DIR__ . "/../../public/qr/product_$newId.png";
+
+            QR::make($url, $savePath);
+
+            return ["success" => true, "message" => "Thêm thành công"];
+        }
+
+        return ["success" => false, "message" => "Thêm thất bại"];
     }
+
 
     // Admin: Cập nhật
     public function update() {
         requireAdmin();
         CSRF::requireToken();
 
+        $id = intval($_POST["id"]);
+
         $ok = $this->model->update(
-            intval($_POST["id"]),
+            $id,
             $_POST["id_dm"],
             $_POST["ten_sp"],
             floatval($_POST["gia"]),
@@ -75,10 +92,19 @@ class ProductController {
             intval($_POST["trang_thai"])
         );
 
-        return $ok
-            ? ["success" => true, "message" => "Cập nhật thành công"]
-            : ["success" => false, "message" => "Cập nhật thất bại"];
+        if ($ok) {
+            // QR URL
+            $url = "http://localhost/TechShop/public/user/product_detail.php?id=" . $id;
+            $savePath = __DIR__ . "/../../public/qr/product_$id.png";
+
+            QR::make($url, $savePath);
+
+            return ["success" => true, "message" => "Cập nhật thành công"];
+        }
+
+        return ["success" => false, "message" => "Cập nhật thất bại"];
     }
+
 
     // Admin: Xóa
     public function delete() {

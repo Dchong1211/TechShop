@@ -86,4 +86,7 @@ class Product {
         $stmt->bind_param("i", $id);
         return $stmt->execute();
     }
+    public function lastId() {
+        return $this->conn->insert_id;
+    }
 }

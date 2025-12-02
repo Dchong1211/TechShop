@@ -1,7 +1,7 @@
 -- phpMyAdmin SQL Export
 -- Host: 127.0.0.1
 -- Database: `techshop`
--- Exported at: 2025-12-02 17:35:20
+-- Exported at: 2025-12-02 18:39:04
 
 SET FOREIGN_KEY_CHECKS=0;
 
@@ -250,7 +250,7 @@ CREATE TABLE `san_pham` (
 
 -- Dumping data for table `san_pham`
 INSERT INTO `san_pham` (`id`,`id_dm`,`ten_sp`,`gia`,`gia_khuyen_mai`,`so_luong_ton`,`hinh_anh`,`mo_ta_ngan`,`chi_tiet`,`ngay_nhap`,`luot_xem`,`trang_thai`) VALUES
-  ('1','1','Laptop Gaming ASUS ROG Strix G16','35000000.00','32990000.00','14','0','Core i9, RAM 32GB, RTX 4080, Màn hình 240Hz','Chi tiết cấu hình: Core i9-13980HX, 32GB DDR5, 1TB SSD, RTX 4080 12GB, 16-inch QHD+ 240Hz.','2025-09-01 10:00:00','520','1'),
+  ('1','1','Laptop Gaming ASUS ROG Strix G16','35000000.00','32990000.00','14','0','Core i9, RAM 32GB, RTX 4080, Màn hình 240Hz','Chi tiết cấu hình: Core i9-13980HX, 32GB DDR5, 1TB SSD, RTX 4080 12GB, 16-inch QHD+ 240Hz.','2025-09-01 10:00:00','521','1'),
   ('2','1','Laptop Gaming Acer Nitro 5','21000000.00','19990000.00','25','https://cdn.tgdd.vn/Products/Images/44/293230/acer-nitro-5-an515-58-7694-i7-nhqgysv001-thumb-600x600.jpg','Core i5, RAM 16GB, RTX 3050, Màn hình 144Hz','Chi tiết cấu hình: Core i5-12500H, 16GB DDR4, 512GB SSD, RTX 3050 4GB, 15.6-inch FHD 144Hz.','2025-09-05 11:30:00','480','1'),
   ('3','2','Laptop Văn Phòng Dell Inspiron 14','18000000.00','16500000.00','30','https://cdn.tgdd.vn/Products/Images/44/302830/dell-inspiron-14-5430-i5-8002w1-thumb-600x600.jpg','Core i7, RAM 16GB, SSD 512GB, Màn hình OLED','Máy tính xách tay mỏng nhẹ, hiệu năng cao cho công việc, Core i7-1355U.','2025-09-10 14:00:00','350','1'),
   ('4','2','Laptop Văn Phòng HP Pavilion Aero 13','15500000.00',NULL,'18','https://cdn.tgdd.vn/Products/Images/44/278550/hp-pavilion-aero-13-be0229au-r7-64u91pa-thumb-600x600.jpg','Ryzen 5, RAM 8GB, Siêu nhẹ chỉ 0.9kg','Thiết kế cao cấp, thời lượng pin dài, Ryzen 5 7535U, 8GB DDR4, 512GB SSD.','2025-09-15 09:45:00','290','1'),
@@ -292,7 +292,7 @@ INSERT INTO `san_pham` (`id`,`id_dm`,`ten_sp`,`gia`,`gia_khuyen_mai`,`so_luong_t
   ('40','11','CPU Intel Core i9-14900K','15000000.00','14500000.00','10','https://cdn.tgdd.vn/Products/Images/571/311654/cpu-intel-core-i9-14900k-thumb-600x600.jpg','Bộ vi xử lý mạnh nhất thế giới','Dành cho các tác vụ nặng nhất.','2026-03-15 09:00:00','950','1'),
   ('41','15','Mesh Wifi TP-Link Deco X50 (3-Pack)','7000000.00','6500000.00','18','https://cdn.tgdd.vn/Products/Images/4619/271241/he-thong-wifi-mesh-tp-link-deco-x50-3-pack-thumb-600x600.jpg','Hệ thống Wifi Mesh diện tích lớn, chuẩn Wifi 6','Phủ sóng toàn bộ nhà nhiều tầng.','2026-03-20 11:10:00','420','1'),
   ('42','1','Laptop Gaming Dell Alienware m18','55000000.00','52000000.00','8','https://cdn.tgdd.vn/Products/Images/44/302831/dell-alienware-m18-r1-i9-5095w11-thumb-600x600.jpg','i9, RTX 4090, Màn hình 18-inch QHD+','Laptop gaming thay thế PC.','2026-03-25 14:50:00','700','1'),
-  ('43','2','Laptop MacBook Air M2 13 inch','25000000.00','23990000.00','20','https://cdn.tgdd.vn/Products/Images/44/288924/macbook-air-m2-2022-13-inch-thumb-600x600.jpg','Chip Apple M2, RAM 8GB, SSD 512GB','Thiết kế đẹp, hiệu năng tối ưu.','2026-04-01 10:00:00','800','1'),
+  ('43','2','Laptop MacBook Air M2 13 inch','25000000.00','23990000.00','20','https://cdn.tgdd.vn/Products/Images/44/288924/macbook-air-m2-2022-13-inch-thumb-600x600.jpg','Chip Apple M2, RAM 8GB, SSD 512GB','Thiết kế đẹp, hiệu năng tối ưu.','2026-04-01 10:00:00','801','1'),
   ('44','4','Màn Hình Chuyên Đồ Họa Dell UltraSharp U2723QE','18000000.00','16990000.00','15','https://cdn.tgdd.vn/Products/Images/55/285513/man-hinh-dell-ultrasharp-u2723qe-thumb-600x600.jpg','4K UHD, USB-C Power Delivery 90W','Màn hình màu sắc chuẩn xác cho thiết kế.','2026-04-05 13:20:00','520','1'),
   ('45','5','Bàn Phím Cơ Razer BlackWidow V4 Pro','5000000.00','4690000.00','25','https://cdn.tgdd.vn/Products/Images/58/306060/ban-phim-co-gaming-razer-blackwidow-v4-pro-thumb-600x600.jpg','Full size, Razer Green Switch, Dial đa năng','Bàn phím cơ cao cấp, nhiều tính năng.','2026-04-10 09:30:00','580','1'),
   ('46','6','Chuột Gaming Corsair Dark Core RGB Pro SE','2000000.00','1890000.00','30','https://cdn.tgdd.vn/Products/Images/86/284305/chuot-gaming-khong-day-corsair-dark-core-rgb-pro-se-thumb-600x600.jpg','Không dây, sạc không dây Qi, Cảm biến 18K DPI','Chuột gaming không dây, pin trâu.','2026-04-15 15:00:00','450','1'),
@@ -322,7 +322,7 @@ INSERT INTO `san_pham` (`id`,`id_dm`,`ten_sp`,`gia`,`gia_khuyen_mai`,`so_luong_t
   ('70','19','Ốp Lưng Điện Thoại iPhone 15 Pro Max','200000.00',NULL,'100','https://cdn.tgdd.vn/Products/Images/60/306068/op-lung-iphone-15-pro-max-thumb-600x600.jpg','Ốp lưng silicon bảo vệ','Chất liệu silicon cao cấp, chống sốc, ôm sát máy.','2026-08-15 09:00:00','150','0'),
   ('71','20','Đồng Hồ Thông Minh Samsung Galaxy Watch 6 Classic','8000000.00','7500000.00','15','https://cdn.tgdd.vn/Products/Images/7077/306069/samsung-galaxy-watch-6-classic-thumb-600x600.jpg','Mặt xoay vật lý, theo dõi sức khỏe chuyên sâu','Mặt 47mm, BIA Sensor, GPS, Wear OS.','2026-08-20 11:10:00','300','1'),
   ('72','1','Laptop Gaming Gigabyte AORUS 17H','40000000.00','38000000.00','10','https://cdn.tgdd.vn/Products/Images/44/306794/gigabyte-aorus-17h-thumb-600x600.jpg','Core i7, RTX 4070, Màn 240Hz','Thông số: i7-13700H, RTX 4070 8GB, 17.3-inch QHD 240Hz.','2026-08-25 14:50:00','500','1'),
-  ('73','2','Laptop HP EliteBook 840 G10','28000000.00',NULL,'15','https://cdn.tgdd.vn/Products/Images/44/302834/hp-elitebook-840-g10-i5-85g30pa-thumb-600x600.jpg','Core i5, RAM 16GB, Siêu bảo mật','Thiết kế kim loại, tính năng HP Sure View.','2026-09-01 10:00:00','350','1'),
+  ('73','2','Laptop HP EliteBook 840 G10','28000000.00',NULL,'15','https://cdn.tgdd.vn/Products/Images/44/302834/hp-elitebook-840-g10-i5-85g30pa-thumb-600x600.jpg','Core i5, RAM 16GB, Siêu bảo mật','Thiết kế kim loại, tính năng HP Sure View.','2026-09-01 10:00:00','351','1'),
   ('74','3','PC Đồ Họa Workstation Xeon E5','25000000.00','23500000.00','7','https://cdn.tgdd.vn/Products/Images/5012/306795/pc-do-hoa-workstation-xeon-e5-thumb-600x600.jpg','Xeon E5, RAM 64GB, Quadro P2000','Chuyên Render: CPU 12 Core, 64GB ECC RAM, SSD NVMe.','2026-09-05 13:20:00','400','1'),
   ('75','4','Màn Hình ViewSonic VX3276-2K-MHD 32 inch','6000000.00','5500000.00','40','https://cdn.tgdd.vn/Products/Images/55/306070/man-hinh-viewsonic-vx3276-2k-mhd-thumb-600x600.jpg','2K QHD, Tấm nền IPS, Thiết kế siêu mỏng','Độ phân giải 2560x1440, viền siêu mỏng.','2026-09-10 09:30:00','380','1'),
   ('76','6','Chuột Không Dây Xiaomi Silent Mouse','400000.00',NULL,'60','https://cdn.tgdd.vn/Products/Images/86/306071/chuot-khong-day-xiaomi-dual-mode-silent-mouse-thumb-600x600.jpg','Chuột văn phòng không dây, nút bấm im lặng','Kết nối 2.4GHz, 1200 DPI, thiết kế công thái học.','2026-09-15 15:00:00','300','1'),
