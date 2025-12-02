@@ -1,32 +1,52 @@
 @echo off
 cd /d C:\xampp\htdocs\TechShop
 
-:: ===== EXPORT DB=====
-echo Dang export database voi PHP...
+echo ==== EXPORT DATABASE ====
 php export_db.php
 echo Export thanh cong!
 echo.
 
-:: ===== GIT ADD / COMMIT / PUSH =====
+:: Lấy username Git
 for /f "delims=" %%a in ('git config user.name') do set username=%%a
 set datetime=%date%_%time%
 
-echo Dang commit code...
+echo ==== GIT ADD + COMMIT ====
 git add .
 git commit -m "Auto push by %username% at %datetime%"
 echo.
 
-echo Dang pull code moi nhat...
+echo ==== GIT PULL (REBASE) ====
 git pull origin main --rebase
+IF %ERRORLEVEL% NEQ 0 (
+    echo LOI: Dang co merge conflict hoac rebase that bai!
+    echo Hay sua conflict roi chay lai script nay.
+    pause
+    exit /b
+)
+echo Pull thanh cong!
 echo.
 
-echo Dang push len GitHub...
+echo ==== GIT PUSH ====
 git push origin main
+IF %ERRORLEVEL% NEQ 0 (
+    echo LOI: Push that bai! Branch dang bi behind hoac conflict.
+    pause
+    exit /b
+)
+echo Push thanh cong!
 echo.
 
-:: ===== IMPORT DB =====
+echo ==== IMPORT DATABASE ====
 C:\xampp\mysql\bin\mysql.exe -u root -e "SET FOREIGN_KEY_CHECKS=0;" techshop
 C:\xampp\mysql\bin\mysql.exe -u root techshop < database\techshop.sql
+IF %ERRORLEVEL% NEQ 0 (
+    echo LOI SQL: File techshop.sql bi loi, khong the import!
+    echo >> Vui long kiem tra xem co dong <<<<<<< HEAD khong!
+    pause
+    exit /b
+)
 C:\xampp\mysql\bin\mysql.exe -u root -e "SET FOREIGN_KEY_CHECKS=1;" techshop
 
-echo  DATABASE + CODE DA DONG BO THANH CONG
+echo ==== DONE ====
+echo DATABASE + CODE DA DONG BO THANH CONG!
+pause
