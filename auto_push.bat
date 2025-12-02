@@ -25,8 +25,8 @@ git push origin main
 echo.
 
 :: ===== IMPORT DB =====
-C:\xampp\mysql\bin\mysql.exe -u root -e "SET FOREIGN_KEY_CHECKS=0;" techshop
-C:\xampp\mysql\bin\mysql.exe -u root techshop < database\techshop.sql
-C:\xampp\mysql\bin\mysql.exe -u root -e "SET FOREIGN_KEY_CHECKS=1;" techshop
+@REM C:\xampp\mysql\bin\mysql.exe -u root -e "SET FOREIGN_KEY_CHECKS=0;" techshop
+@REM C:\xampp\mysql\bin\mysql.exe -u root techshop < database\techshop.sql
+@REM C:\xampp\mysql\bin\mysql.exe -u root -e "SET FOREIGN_KEY_CHECKS=1;" techshop
 
-echo  DATABASE + CODE DA DONG BO THANH CONG
+@REM echo  DATABASE + CODE DA DONG BO THANH CONG
