@@ -29,7 +29,7 @@ async function loadProducts() {
     }
 }
 
-// Render table (ĐÃ SỬA LỖI HIỂN THỊ ẢNH)
+// Render table
 function renderTable(products) {
     const tbody = document.getElementById('productTableBody');
 
@@ -101,5 +101,77 @@ async function deleteProduct(id) {
         loadProducts();
     } else {
         alert('Lỗi: ' + data.message);
+    }
+}
+
+async function handleAddProducts(e) {
+    e.preventDefault();
+    const form = e.target;
+    const btn = form.querySelector('button[type="submit"]')
+    const originalText = btn.innerHTML;
+
+    btn.innerHTML = '<i class="bi bi-hourglass-split"></i> Đang xử lý...';
+    btn.disable = true;
+    const formData = new FormData(form);
+
+    try {
+        const res = await fetch(form.action, {
+            method: 'POST',
+            body: formData
+        });
+        const data = await res.json();
+
+        if (data.success) {
+            alert('✅ ' + data.message);
+            window.location.href = '/TechShop/public/admin/products';
+        } else {
+            alert('Lỗi: ' + data.message);
+        }
+    } catch (err) {
+        console.error(err);
+        alert('Lỗi kết nối đến máy chủ!');
+    } finally {
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+    }
+}
+
+async function handleUpdateProduct(e) {
+    e.preventDefault();
+    const form = e.target;
+    const btn = form.querySelector('button[type="submit"]');
+    const originalText = btn.innerHTML;
+
+    btn.innerHTML = '<i class="bi bi-hourglass-split"></i> Đang lưu...';
+    btn.disabled = true;
+
+    const formData = new FormData(form);
+
+    try {
+        const res = await fetch(form.action, {
+            method: 'POST',
+            body: formData
+        });
+        const contentType = res.headers.get("content-type");
+        if (contentType && contentType.indexOf("application/json") !== -1) {
+            const data = await res.json();
+            if (data.success) {
+                alert('Cập nhật thành công!');
+                window.location.href = '/TechShop/public/admin/products';
+            } else {
+                alert('Lỗi' + data.message);
+            }
+        } else {
+            const text = await res.text();
+            console.error(text);
+            alert('Có lỗi xảy ra ở phía Server. Vui lòng kiểm tra console.');
+        }
+
+    } catch (err) {
+        console.error(err);
+        alert('Lỗi kết nối!');
+    } finally {
+        btn.innerHTML = originalText;
+        btn.disabled = false;
     }
 }
