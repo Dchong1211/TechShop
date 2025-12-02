@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="../assets/css/cssAdmin/admin_style.css"> 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <style>
-        /* CSS cho phần upload ảnh Avatar */
         .avatar-upload-container {
             display: flex;
             align-items: center;
@@ -31,8 +30,6 @@
         .avatar-input-group {
             flex-grow: 1;
         }
-        
-        /* CSS bố cục nút bấm */
         .card-footer {
             display: flex;
             justify-content: space-between;
@@ -57,7 +54,7 @@
         <main class="main-content">
             
             <div class="card">
-                <form action="users.php" method="POST" enctype="multipart/form-data" class="form-group-wrapper">
+                <form action="users.php" method="POST" class="form-group-wrapper">
                     <input type="hidden" name="user_id" value="3">
                     
                     <div class="card-header">
@@ -67,14 +64,16 @@
                     <div class="card-body">
                         
                         <div class="form-group">
-                            <label>Ảnh đại diện (Avatar)</label>
+                            <label>Link Ảnh đại diện (Avatar URL)</label>
                             <div class="avatar-upload-container">
                                 <div class="avatar-preview">
                                     <img id="avatarPreview" src="https://via.placeholder.com/150" alt="Avatar">
                                 </div>
                                 <div class="avatar-input-group">
-                                    <input type="file" name="avatar" id="avatarInput" class="form-control" accept="image/*" onchange="previewAvatar()">
-                                    <small class="text-muted">Chấp nhận file ảnh: jpg, png, jpeg</small>
+                                    <input type="text" name="avatar" id="avatarInput" 
+                                           class="form-control" 
+                                           placeholder="Dán link ảnh avatar..." 
+                                           oninput="previewAvatar(this.value)">
                                 </div>
                             </div>
                         </div>
@@ -142,17 +141,13 @@
     
     <script src="/public/assets/js/admin.js"></script>
     <script>
-        function previewAvatar() {
+        // JS xem trước avatar đơn giản qua URL
+        function previewAvatar(url) {
             const preview = document.getElementById('avatarPreview');
-            const file = document.getElementById('avatarInput').files[0];
-            const reader = new FileReader();
-
-            reader.addEventListener("load", function () {
-                preview.src = reader.result;
-            }, false);
-
-            if (file) {
-                reader.readAsDataURL(file);
+            if (url && url.length > 5) {
+                preview.src = url;
+            } else {
+                preview.src = "https://via.placeholder.com/150";
             }
         }
     </script>

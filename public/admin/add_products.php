@@ -15,6 +15,26 @@
 
     <link rel="stylesheet" href="/TechShop/public/assets/css/cssAdmin/admin_style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        .img-preview-box {
+            width: 150px;
+            height: 150px;
+            border: 2px dashed #ccc;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: #f9f9f9;
+            margin-bottom: 10px;
+        }
+        .img-preview-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+        }
+    </style>
 </head>
 
 <body>
@@ -31,7 +51,6 @@
         <div class="card">
             <form action="/TechShop/public/admin/products/add" 
                   method="POST" 
-                  enctype="multipart/form-data" 
                   class="product-form">
 
                 <input type="hidden" name="csrf" value="<?= $csrf ?>">
@@ -42,13 +61,11 @@
 
                 <div class="card-body">
 
-                    <!-- Tên sản phẩm -->
                     <div class="form-group">
                         <label for="ten_sp">Tên Sản phẩm <span class="required">*</span></label>
                         <input type="text" id="ten_sp" name="ten_sp" required placeholder="Nhập tên sản phẩm" class="form-control">
                     </div>
 
-                    <!-- Danh mục -->
                     <div class="form-group">
                         <label for="id_dm">Danh mục <span class="required">*</span></label>
                         <select id="id_dm" name="id_dm" required class="form-control">
@@ -59,7 +76,6 @@
                         </select>
                     </div>
 
-                    <!-- Giá & Giá khuyến mãi -->
                     <div class="form-group row-group">
                         <div class="col-4">
                             <label for="gia">Giá bán (VNĐ) <span class="required">*</span></label>
@@ -77,25 +93,30 @@
                         </div>
                     </div>
 
-                    <!-- Ảnh -->
                     <div class="form-group">
-                        <label for="hinh_anh">Hình ảnh sản phẩm <span class="required">*</span></label>
-                        <input type="file" id="hinh_anh" name="hinh_anh" accept="image/*" required class="form-control">
+                        <label for="hinh_anh">Link Hình ảnh (URL) <span class="required">*</span></label>
+                        
+                        <div class="img-preview-box">
+                            <img id="imgPreview" src="#" alt="Ảnh xem trước">
+                        </div>
+
+                        <input type="text" id="hinh_anh" name="hinh_anh" 
+                               placeholder="Ví dụ: https://i.imgur.com/example.jpg" 
+                               required class="form-control"
+                               oninput="previewUrl(this.value)">
+                        <small class="text-muted">Dán đường dẫn ảnh trực tiếp vào đây.</small>
                     </div>
 
-                    <!-- Mô tả ngắn -->
                     <div class="form-group">
                         <label for="mo_ta_ngan">Mô tả ngắn</label>
                         <textarea id="mo_ta_ngan" name="mo_ta_ngan" rows="2" class="form-control"></textarea>
                     </div>
 
-                    <!-- Chi tiết -->
                     <div class="form-group">
                         <label for="chi_tiet">Mô tả chi tiết</label>
                         <textarea id="chi_tiet" name="chi_tiet" rows="6" class="form-control"></textarea>
                     </div>
 
-                    <!-- Trạng thái -->
                     <div class="form-group">
                         <label>Trạng thái</label>
                         <select name="trang_thai" class="form-control">
@@ -119,6 +140,21 @@
 </div>
 
 <script src="/TechShop/public/assets/js/admin.js"></script>
+<script>
+    function previewUrl(url) {
+        const img = document.getElementById('imgPreview');
+        if (url && url.length > 5) {
+            img.src = url;
+            img.style.display = 'block';
+            
+            img.onerror = function() {
+                this.style.display = 'none';
+            };
+        } else {
+            img.style.display = 'none';
+        }
+    }
+</script>
 
 </body>
 </html>

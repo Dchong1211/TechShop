@@ -27,11 +27,6 @@ $sp = $res["data"];
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     
     <style>
-        .image-upload-container {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
         .img-preview-box {
             width: 150px;
             height: 150px;
@@ -42,7 +37,7 @@ $sp = $res["data"];
             justify-content: center;
             overflow: hidden;
             background: #f9f9f9;
-            position: relative;
+            margin-bottom: 10px;
         }
         .img-preview-box img {
             width: 100%;
@@ -51,7 +46,7 @@ $sp = $res["data"];
         }
         .card-footer {
             display: flex;
-            justify-content: space-between; /* Đẩy nút sang 2 bên */
+            justify-content: space-between;
             align-items: center;
         }
         .right-actions {
@@ -75,7 +70,6 @@ $sp = $res["data"];
         <div class="card">
             <form action="/TechShop/admin/products/update" 
                   method="POST" 
-                  enctype="multipart/form-data"
                   class="product-form" id="updateForm">
 
                 <input type="hidden" name="csrf" value="<?= $csrf ?>">
@@ -89,7 +83,7 @@ $sp = $res["data"];
                     <div class="form-group row-group">
                         <div class="col-6">
                             <label for="ten_sp">Tên Sản phẩm *</label>
-                            <input type="text" id="ten_sp" name="ten_sp" value="<?= $sp['ten_sp'] ?>" required class="form-control">
+                            <input type="text" id="ten_sp" name="ten_sp" value="<?= htmlspecialchars($sp['ten_sp']) ?>" required class="form-control">
                         </div>
                         <div class="col-6">
                             <label for="id_dm">Danh mục *</label>
@@ -102,21 +96,19 @@ $sp = $res["data"];
                     </div>
 
                     <div class="form-group">
-                        <label>Hình ảnh sản phẩm</label>
-                        <div class="image-upload-container">
-                            <div class="img-preview-box">
-                                <?php 
-                                    $currentImg = $sp['hinh_anh'];
-                                    if(!filter_var($currentImg, FILTER_VALIDATE_URL)){
-                                        $currentImg = "/TechShop/public/uploads/products/" . ($currentImg ?: 'placeholder.png');
-                                    }
-                                ?>
-                                <img id="imgPreview" src="<?= $currentImg ?>" alt="Preview">
-                            </div>
-                            
-                            <input type="file" name="hinh_anh" id="uploadImage" accept="image/*" class="form-control" onchange="previewFile()">
-                            <small class="text-muted">Chọn ảnh mới để thay thế (jpg, png, jpeg)</small>
+                        <label>Link Hình ảnh (URL)</label>
+                        
+                        <div class="img-preview-box">
+                            <img id="imgPreview" src="<?= htmlspecialchars($sp['hinh_anh']) ?>" 
+                                 onerror="this.src='https://via.placeholder.com/150?text=No+Image'" 
+                                 alt="Preview">
                         </div>
+                        
+                        <input type="text" name="hinh_anh" id="imgInput" 
+                               class="form-control" 
+                               value="<?= htmlspecialchars($sp['hinh_anh']) ?>" 
+                               placeholder="Nhập đường dẫn hình ảnh..."
+                               oninput="previewUrl(this.value)">
                     </div>
 
                     <div class="form-group row-group">
@@ -144,12 +136,12 @@ $sp = $res["data"];
 
                     <div class="form-group">
                         <label>Mô tả ngắn</label>
-                        <textarea name="mo_ta_ngan" class="form-control" rows="2"><?= $sp['mo_ta_ngan'] ?></textarea>
+                        <textarea name="mo_ta_ngan" class="form-control" rows="2"><?= htmlspecialchars($sp['mo_ta_ngan']) ?></textarea>
                     </div>
 
                     <div class="form-group">
                         <label>Mô tả chi tiết</label>
-                        <textarea name="chi_tiet" rows="5" class="form-control"><?= $sp['chi_tiet'] ?></textarea>
+                        <textarea name="chi_tiet" rows="5" class="form-control"><?= htmlspecialchars($sp['chi_tiet']) ?></textarea>
                     </div>
 
                 </div>
@@ -184,18 +176,13 @@ $sp = $res["data"];
 
 <script src="/TechShop/public/assets/js/admin.js"></script>
 <script>
-    // Hàm hiển thị ảnh xem trước
-    function previewFile() {
+    // Hàm hiển thị ảnh xem trước từ URL text
+    function previewUrl(url) {
         const preview = document.getElementById('imgPreview');
-        const file = document.getElementById('uploadImage').files[0];
-        const reader = new FileReader();
-
-        reader.addEventListener("load", function () {
-            preview.src = reader.result;
-        }, false);
-
-        if (file) {
-            reader.readAsDataURL(file);
+        if(url && url.trim() !== '') {
+            preview.src = url;
+        } else {
+            preview.src = 'https://via.placeholder.com/150?text=No+Image';
         }
     }
 
