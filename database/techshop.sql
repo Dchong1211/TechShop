@@ -1,10 +1,13 @@
+-- phpMyAdmin SQL Export
+-- Host: 127.0.0.1
 -- Database: `techshop`
--- Exported at: 2025-12-01 02:52:05
--- Exported at: 2025-12-02 03:50:05
+-- Exported at: 2025-12-02 16:29:15
 
 SET FOREIGN_KEY_CHECKS=0;
 
-@@ -11,364 +11,6 @@ SET time_zone = "+00:00";
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
 START TRANSACTION;
 /*!40101 SET NAMES utf8mb4 */;
 
