@@ -222,7 +222,7 @@ ob_start();
     }
     .card-actions .add-cart-btn {
         font-size: 14px;
-        padding: 10px 0;          /* cao hơn */
+        padding: 10px 0;
         border-radius: 999px;
         border: none;
         cursor: pointer;
@@ -230,7 +230,7 @@ ob_start();
         text-align: center;
         text-decoration: none;
         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
-        min-width: 120px;         /* tránh bị quá bé */
+        min-width: 120px;
     }
     .card-actions .add-cart-btn--primary {
         background: linear-gradient(135deg, #22c55e, #4ade80);
@@ -356,15 +356,13 @@ include BASE_PATH . '/includes/User/header.php';
               </div>
             </section>
 
-
-
             <!-- Danh mục nhanh -->
             <section class="quick-categories-section">
                 <div class="quick-categories-header">Danh mục sản phẩm</div>
                 <div class="quick-categories-grid">
                     <?php foreach ($quick_categories as $cat): ?>
                         <div class="quick-cat-item">
-                            <a href="public/user/product.php?cate=<?= htmlspecialchars($cat['code'], ENT_QUOTES) ?>">
+                            <a href="public/products?cate=<?= htmlspecialchars($cat['code'], ENT_QUOTES) ?>">
                                 <i class="<?= htmlspecialchars($cat['icon'], ENT_QUOTES) ?>"></i>
                                 <span><?= htmlspecialchars($cat['name']) ?></span>
                             </a>
@@ -421,7 +419,7 @@ function renderProductCard($row)
             <i class="fa-solid fa-heart"></i>
         </button>
 
-        <a href="public/user/product_detail.php?id=<?= (int)$row['id'] ?>" style="text-decoration:none; color:inherit;">
+        <a href="public/products/<?= (int)$row['id'] ?>" style="text-decoration:none; color:inherit;">
             <div class="product-thumb-wrap">
                 <?php if ($label): ?>
                     <span class="product-label"><?= $label ?></span>
@@ -470,7 +468,7 @@ function renderProductCard($row)
 
         <div class="card-actions">
             <!-- THÊM GIỎ HÀNG – đã đổi name field đúng theo cart.php -->
-            <form action="public/user/cart.php" method="POST" style="flex:1;">
+            <form action="public/cart" method="POST" style="flex:1;">
                 <input type="hidden" name="action" value="add">
                 <input type="hidden" name="id_san_pham" value="<?= (int)$row['id'] ?>">
                 <input type="hidden" name="so_luong" value="1">
@@ -480,7 +478,7 @@ function renderProductCard($row)
             </form>
 
             <!-- XEM CHI TIẾT – nút riêng như bạn yêu cầu -->
-            <a href="public/user/product_detail.php?id=<?= (int)$row['id'] ?>"
+            <a href="public/products/<?= (int)$row['id'] ?>"
                class="add-cart-btn add-cart-btn--secondary">
                 Xem chi tiết
             </a>
@@ -499,7 +497,7 @@ function renderProductSection(string $sliderId, string $title, string $cateCode,
         <div class="section-head">
             <h2><?= htmlspecialchars($title, ENT_QUOTES) ?></h2>
             <a class="view-all"
-               href="public/user/product.php?cate=<?= htmlspecialchars($cateCode, ENT_QUOTES) ?>">
+               href="public/products?cate=<?= htmlspecialchars($cateCode, ENT_QUOTES) ?>">
                 Xem tất cả
             </a>
         </div>
