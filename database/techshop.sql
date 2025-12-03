@@ -1,7 +1,7 @@
 -- phpMyAdmin SQL Export
 -- Host: 127.0.0.1
 -- Database: `techshop`
--- Exported at: 2025-12-03 14:12:48
+-- Exported at: 2025-12-03 14:18:33
 
 SET FOREIGN_KEY_CHECKS=0;
 
@@ -59,14 +59,14 @@ DROP TABLE IF EXISTS `chi_tiet_gio_hang`;
 
 CREATE TABLE `chi_tiet_gio_hang` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `id_nguoi_dung` int(11) NOT NULL COMMENT 'Khóa ngoại tới nguoi_dung',
+  `id_gio_hang` int(11) NOT NULL COMMENT 'Khóa ngoại tới gio_hang',
   `id_san_pham` int(11) NOT NULL COMMENT 'Khóa ngoại tới san_pham',
   `so_luong` int(11) NOT NULL COMMENT 'Số lượng sản phẩm trong giỏ',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `uc_user_product` (`id_nguoi_dung`,`id_san_pham`),
+  UNIQUE KEY `uc_cart_product` (`id_gio_hang`,`id_san_pham`),
   KEY `fk_cart_product` (`id_san_pham`),
-  CONSTRAINT `fk_cart_product` FOREIGN KEY (`id_san_pham`) REFERENCES `san_pham` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `fk_cart_user` FOREIGN KEY (`id_nguoi_dung`) REFERENCES `nguoi_dung` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `fk_cart_cart` FOREIGN KEY (`id_gio_hang`) REFERENCES `gio_hang` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_cart_product` FOREIGN KEY (`id_san_pham`) REFERENCES `san_pham` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Dumping data for table `chi_tiet_gio_hang`
@@ -183,6 +183,24 @@ INSERT INTO `don_hang` (`id`,`id_khach_hang`,`tong_tien`,`phuong_thuc_thanh_toan
 
 
 -- ------------------------------------
+-- Structure for table `gio_hang`
+-- ------------------------------------
+
+DROP TABLE IF EXISTS `gio_hang`;
+
+CREATE TABLE `gio_hang` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_nguoi_dung` int(11) NOT NULL COMMENT 'Khóa ngoại tới nguoi_dung (Chủ sở hữu giỏ hàng)',
+  `ngay_tao` datetime NOT NULL DEFAULT current_timestamp() COMMENT 'Thời gian tạo giỏ hàng',
+  `ngay_cap_nhat` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp() COMMENT 'Thời gian cập nhật gần nhất',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_nguoi_dung_unique` (`id_nguoi_dung`),
+  CONSTRAINT `fk_cart_user_explicit` FOREIGN KEY (`id_nguoi_dung`) REFERENCES `nguoi_dung` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Dumping data for table `gio_hang`
+
+-- ------------------------------------
 -- Structure for table `nguoi_dung`
 -- ------------------------------------
 
@@ -246,7 +264,7 @@ CREATE TABLE `san_pham` (
   UNIQUE KEY `ten_sp` (`ten_sp`),
   KEY `id_dm` (`id_dm`),
   CONSTRAINT `san_pham_ibfk_1` FOREIGN KEY (`id_dm`) REFERENCES `danh_muc` (`id`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=187 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=182 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Dumping data for table `san_pham`
 INSERT INTO `san_pham` (`id`,`id_dm`,`ten_sp`,`gia`,`gia_khuyen_mai`,`so_luong_ton`,`hinh_anh`,`mo_ta_ngan`,`chi_tiet`,`ngay_nhap`,`luot_xem`,`trang_thai`) VALUES
@@ -255,7 +273,7 @@ INSERT INTO `san_pham` (`id`,`id_dm`,`ten_sp`,`gia`,`gia_khuyen_mai`,`so_luong_t
   ('3','2','Laptop Văn Phòng Dell Inspiron 14','18000000.00','16500000.00','30','https://cdn.tgdd.vn/Products/Images/44/302830/dell-inspiron-14-5430-i5-8002w1-thumb-600x600.jpg','Core i7, RAM 16GB, SSD 512GB, Màn hình OLED','Máy tính xách tay mỏng nhẹ, hiệu năng cao cho công việc, Core i7-1355U.','2025-09-10 14:00:00','350','1'),
   ('4','2','Laptop Văn Phòng HP Pavilion Aero 13','15500000.00',NULL,'18','https://cdn.tgdd.vn/Products/Images/44/278550/hp-pavilion-aero-13-be0229au-r7-64u91pa-thumb-600x600.jpg','Ryzen 5, RAM 8GB, Siêu nhẹ chỉ 0.9kg','Thiết kế cao cấp, thời lượng pin dài, Ryzen 5 7535U, 8GB DDR4, 512GB SSD.','2025-09-15 09:45:00','290','1'),
   ('5','3','PC Gaming T-Rex i7 4070','45000000.00','42000000.00','10','https://cdn.tgdd.vn/Products/Images/5012/306786/pc-gaming-i7-13700kf-rtx-4070-12gb-thumb-600x600.jpg','PC chiến game mạnh mẽ: i7-14700K, RTX 4070 12GB','Cấu hình khủng, tản nhiệt nước AIO, 32GB RAM DDR5.','2025-09-20 16:15:00','600','1'),
-  ('6','3','PC Văn Phòng Mini i3','9500000.00','0.00','40','0','PC cỡ nhỏ, Core i3-13100, 8GB RAM, SSD 256GB','Máy tính nhỏ gọn cho các tác vụ văn phòng cơ bản.','2025-09-25 08:30:00','150','1'),
+  ('6','3','PC Văn Phòng Mini i3','9500000.00',NULL,'40','https://images.fpt.shop/unsafe/fit-in/600x600/filters:quality(90):fill(white)/fptshop.com.vn/Uploads/Originals/2023/12/28/638394464169542031_pc-dell-inspiron-3020s-den-thumb.jpg','PC cỡ nhỏ, Core i3-13100, 8GB RAM, SSD 256GB','Máy tính nhỏ gọn cho các tác vụ văn phòng cơ bản.','2025-09-25 08:30:00','150','1'),
   ('7','4','Màn Hình Gaming Samsung Odyssey G7 27 inch','14000000.00','12990000.00','50','https://cdn.tgdd.vn/Products/Images/55/244301/samsung-ls27bg750eexxv-thumb-600x600.jpeg','2K QHD, 240Hz, 1ms, Cong 1000R','Màn hình cao cấp cho trải nghiệm gaming tuyệt đỉnh.','2025-10-01 13:00:00','750','1'),
   ('8','4','Màn Hình Văn Phòng LG 24 inch IPS','3500000.00',NULL,'65','https://cdn.tgdd.vn/Products/Images/55/310619/lg-24gn60r-b-thumb-600x600.jpg','FHD, Tấm nền IPS, Thiết kế không viền','Màu sắc chính xác, góc nhìn rộng, lý tưởng cho công việc.','2025-10-05 15:20:00','310','1'),
   ('9','5','Bàn Phím Cơ AKKO 3098B Plus Multi-mode','2900000.00','2750000.00','70','https://cdn.tgdd.vn/Products/Images/58/284307/ban-phim-co-akko-3098b-plus-black-thumb-600x600.jpg','98 phím, Kết nối 3 chế độ (dây, Bluetooth, 2.4GHz), Switch Akko V3','Phím cơ chất lượng cao, LED RGB.','2025-10-10 10:40:00','820','1'),
@@ -321,7 +339,7 @@ INSERT INTO `san_pham` (`id`,`id_dm`,`ten_sp`,`gia`,`gia_khuyen_mai`,`so_luong_t
   ('69','18','Máy In HP LaserJet Pro M102a','3000000.00','2800000.00','10','https://cdn.tgdd.vn/Products/Images/2188/306067/may-in-laser-trang-den-hp-laserjet-pro-m102a-thumb-600x600.jpg','Máy in laser trắng đen, tốc độ in nhanh','Tốc độ in: 22 trang/phút, độ phân giải 600x600 dpi.','2026-08-10 10:40:00','180','1'),
   ('70','19','Ốp Lưng Điện Thoại iPhone 15 Pro Max','200000.00',NULL,'100','https://cdn.tgdd.vn/Products/Images/60/306068/op-lung-iphone-15-pro-max-thumb-600x600.jpg','Ốp lưng silicon bảo vệ','Chất liệu silicon cao cấp, chống sốc, ôm sát máy.','2026-08-15 09:00:00','150','0'),
   ('71','20','Đồng Hồ Thông Minh Samsung Galaxy Watch 6 Classic','8000000.00','7500000.00','15','https://cdn.tgdd.vn/Products/Images/7077/306069/samsung-galaxy-watch-6-classic-thumb-600x600.jpg','Mặt xoay vật lý, theo dõi sức khỏe chuyên sâu','Mặt 47mm, BIA Sensor, GPS, Wear OS.','2026-08-20 11:10:00','300','1'),
-  ('72','3','Laptop Gaming Gigabyte AORUS 17H','40000000.00','38000000.00','10','0','Core i7, RTX 4070, Màn 240Hz','Thông số: i7-13700H, RTX 4070 8GB, 17.3-inch QHD 240Hz.','2026-08-25 14:50:00','500','1'),
+  ('72','1','Laptop Gaming Gigabyte AORUS 17H','40000000.00','38000000.00','10','https://cdn.tgdd.vn/Products/Images/44/306794/gigabyte-aorus-17h-thumb-600x600.jpg','Core i7, RTX 4070, Màn 240Hz','Thông số: i7-13700H, RTX 4070 8GB, 17.3-inch QHD 240Hz.','2026-08-25 14:50:00','500','1'),
   ('73','2','Laptop HP EliteBook 840 G10','28000000.00',NULL,'15','https://cdn.tgdd.vn/Products/Images/44/302834/hp-elitebook-840-g10-i5-85g30pa-thumb-600x600.jpg','Core i5, RAM 16GB, Siêu bảo mật','Thiết kế kim loại, tính năng HP Sure View.','2026-09-01 10:00:00','350','1'),
   ('74','3','PC Đồ Họa Workstation Xeon E5','25000000.00','23500000.00','7','https://cdn.tgdd.vn/Products/Images/5012/306795/pc-do-hoa-workstation-xeon-e5-thumb-600x600.jpg','Xeon E5, RAM 64GB, Quadro P2000','Chuyên Render: CPU 12 Core, 64GB ECC RAM, SSD NVMe.','2026-09-05 13:20:00','400','1'),
   ('75','4','Màn Hình ViewSonic VX3276-2K-MHD 32 inch','6000000.00','5500000.00','40','https://cdn.tgdd.vn/Products/Images/55/306070/man-hinh-viewsonic-vx3276-2k-mhd-thumb-600x600.jpg','2K QHD, Tấm nền IPS, Thiết kế siêu mỏng','Độ phân giải 2560x1440, viền siêu mỏng.','2026-09-10 09:30:00','380','1'),
