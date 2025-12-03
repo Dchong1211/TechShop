@@ -5,6 +5,7 @@ require_once __DIR__ . '/../helpers/CSRF.php';
 require_once __DIR__ . '/../controllers/AuthController.php';
 require_once __DIR__ . '/../controllers/CartController.php';
 require_once __DIR__ . '/../controllers/ProductController.php';
+require_once __DIR__ . '/../controllers/UserController.php';
 
 
 /* =====================AUTH VIEWS===================== */
@@ -136,6 +137,7 @@ $router->post("/admin/products/delete", function () {
     CSRF::requireToken();
     echo json_encode((new ProductController())->delete(), JSON_UNESCAPED_UNICODE);
 }, ["admin"]);
+
 
 
 

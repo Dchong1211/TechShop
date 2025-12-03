@@ -1,7 +1,21 @@
 <?php
-    require_once __DIR__ . '/../../app/helpers/CSRF.php';
-    $csrf = CSRF::token();
-    requireAdmin();
+require_once __DIR__ . '/../../app/helpers/CSRF.php';
+require_once __DIR__ . '/../../app/helpers/auth.php';
+require_once __DIR__ . '/../../app/models/UserModel.php';
+
+requireAdmin();
+
+$csrf = CSRF::token();
+$keyword = $_GET['keyword'] ?? ''; // Khởi tạo biến keyword
+
+$model = new UserModel();
+
+// Nếu có từ khóa tìm kiếm
+if (!empty($keyword)) {
+    $users = $model->search($keyword);
+} else {
+    $users = $model->getAllCustomers();
+}
 ?>
 
 <!DOCTYPE html>
@@ -16,13 +30,11 @@
 </head>
 <body>
 
-    <div class="app-wrapper">
-        
-        <?php 
-        $active_page = 'users'; 
-        
-        include __DIR__ . '/../includes/Admin/layout_sidebar.php'; 
-        ?>
+<div class="app-wrapper">
+    <?php 
+    $active_page = 'users'; 
+    include __DIR__ . '/../includes/Admin/layout_sidebar.php'; 
+    ?>
 
     <main class="main-content">
         <div class="card">
@@ -36,13 +48,12 @@
                     <form method="GET" class="search-box">
                         <input type="hidden" name="controller" value="customer">
                         <input type="hidden" name="action" value="dashboard">
-                        <!-- Lỗi khai báo biến $keyword -->
                         <input type="text" name="keyword"
-                            placeholder="Tìm kiếm theo Tên / Email..."
-                            value="<?= htmlspecialchars($keyword) ?>">
+                               placeholder="Tìm kiếm theo Tên / Email..."
+                               value="<?= htmlspecialchars($keyword) ?>">
                         <button type="submit" class="btn btn-search">Tìm</button>
                     </form>
-                </div>--
+                </div>
             </div>
 
             <div class="card-body">
@@ -54,55 +65,46 @@
                                 <th>ID</th>
                                 <th>Tên Người dùng</th>
                                 <th>Email</th>
-                                <th>SĐT</th>
-                                <th>Ngày đăng ký</th>
+                                <th>Email xác minh</th>
                                 <th>Trạng thái</th>
                                 <th>Chức năng</th>
                             </tr>
                         </thead>
-
                         <tbody>
                             <?php if (!empty($users)): ?>
                                 <?php foreach ($users as $u): ?>
                                     <tr>
-                                        <td><?= htmlspecialchars($u['ten_khachhang']) ?></td>
+                                        <td><?= htmlspecialchars($u['id']) ?></td>
+                                        <td><?= htmlspecialchars($u['ho_ten']) ?></td>
                                         <td><?= htmlspecialchars($u['email']) ?></td>
-                                        <td><?= date("d/m/Y", strtotime($u['created_at'])) ?></td>
-
                                         <td>
-                                            <?php if ($u['status'] == 1): ?>
-                                                <span class="status status-active">Hoạt động</span>
+                                            <?php if ($u['email_verified']): ?>
+                                                <span style="color: green; font-weight: bold;">Đã xác minh</span>
                                             <?php else: ?>
-                                                <span class="status status-inactive">Khóa</span>
+                                                <span style="color: red; font-weight: bold;">Chưa xác minh</span>
                                             <?php endif; ?>
                                         </td>
 
-                                        <td class="action-buttons">
-                                            <a href="?controller=customer&action=edit&id=<?= $u['id'] ?>" class="btn btn-edit">
-                                                Chỉnh sửa
-                                            </a>
+                                        <td><?= $u['trang_thai'] ? '<span class="status-active">Hoạt động</span>' : '<span class="status-inactive">Khóa</span>' ?></td>
+                                        <td>
+                                            <a href="?controller=customer&action=edit&id=<?= $u['id'] ?>" class="btn btn-edit">Chỉnh sửa</a>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>
                             <?php else: ?>
                                 <tr>
-                                    <td colspan="7" style="text-align:center; padding:20px;">
-                                        Không tìm thấy khách hàng nào.
-                                    </td>
+                                    <td colspan="8" style="text-align:center; padding:20px;">Không tìm thấy người dùng nào.</td>
                                 </tr>
                             <?php endif; ?>
                         </tbody>
                     </table>
 
-
                 </div>
             </div>
         </div>
-</main>
+    </main>
+</div>
 
-    </div>
-
-    <script src="/TechShop/public/assets/js/admin.js"></script>
-
+<script src="/TechShop/public/assets/js/admin.js"></script>
 </body>
 </html>

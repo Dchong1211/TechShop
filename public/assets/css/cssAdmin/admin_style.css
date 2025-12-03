@@ -443,7 +443,8 @@ body.dark-mode .btn-search {
 }
 
 .status-active {
-    background: #2ecc71;
+    color: green;
+    font-weight: bold;
 }
 
 .status-inactive,
