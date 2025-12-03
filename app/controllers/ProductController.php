@@ -41,6 +41,13 @@ class ProductController {
     public function create() {
         requireAdmin();
         CSRF::requireToken();
+        require_once __DIR__ . '/../helpers/ImgBB.php';
+
+        // Xử lý ảnh
+        $imgUrl = "";
+        if (isset($_FILES["hinh_anh_file"]) && $_FILES["hinh_anh_file"]["error"] == 0) {
+            $imgUrl = ImgBB::upload($_FILES["hinh_anh_file"]["tmp_name"]);
+        }
 
         $ok = $this->model->create(
             $_POST["id_dm"],
@@ -48,19 +55,15 @@ class ProductController {
             floatval($_POST["gia"]),
             floatval($_POST["gia_khuyen_mai"] ?? 0),
             intval($_POST["so_luong_ton"]),
-            $_POST["hinh_anh"] ?? "",
+            $imgUrl,
             $_POST["mo_ta_ngan"] ?? "",
             $_POST["chi_tiet"] ?? ""
         );
 
         if ($ok) {
-            // Lấy ID sản phẩm vừa tạo
             $newId = $this->model->lastId();
 
-            // Tạo URL QR
             $url = "http://localhost/TechShop/product/" . $newId;
-
-            // Lưu QR vào public/qr/
             $savePath = __DIR__ . "/../../public/qr/product_$newId.png";
 
             QR::make($url, $savePath);
@@ -72,12 +75,23 @@ class ProductController {
     }
 
 
+
     // Admin: Cập nhật
     public function update() {
         requireAdmin();
         CSRF::requireToken();
+        require_once __DIR__ . '/../helpers/ImgBB.php';
 
         $id = intval($_POST["id"]);
+
+        // Lấy ảnh cũ
+        $old = $this->model->getById($id);
+        $imgUrl = $old["hinh_anh"];
+
+        // Nếu có upload file mới thì upload lên ImgBB
+        if (isset($_FILES["hinh_anh_file"]) && $_FILES["hinh_anh_file"]["error"] == 0) {
+            $imgUrl = ImgBB::upload($_FILES["hinh_anh_file"]["tmp_name"]);
+        }
 
         $ok = $this->model->update(
             $id,
@@ -86,14 +100,13 @@ class ProductController {
             floatval($_POST["gia"]),
             floatval($_POST["gia_khuyen_mai"] ?? 0),
             intval($_POST["so_luong_ton"]),
-            $_POST["hinh_anh"] ?? "",
+            $imgUrl,
             $_POST["mo_ta_ngan"] ?? "",
             $_POST["chi_tiet"] ?? "",
             intval($_POST["trang_thai"])
         );
 
         if ($ok) {
-            // QR URL
             $url = "http://localhost/TechShop/product/" . $id;
             $savePath = __DIR__ . "/../../public/qr/product_$id.png";
 
