@@ -1,7 +1,7 @@
 -- phpMyAdmin SQL Export
 -- Host: 127.0.0.1
 -- Database: `techshop`
--- Exported at: 2025-12-03 14:22:35
+-- Exported at: 2025-12-03 14:23:46
 
 SET FOREIGN_KEY_CHECKS=0;
 
@@ -59,14 +59,14 @@ DROP TABLE IF EXISTS `chi_tiet_gio_hang`;
 
 CREATE TABLE `chi_tiet_gio_hang` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `id_nguoi_dung` int(11) NOT NULL COMMENT 'Khóa ngoại tới nguoi_dung',
+  `id_gio_hang` int(11) NOT NULL COMMENT 'Khóa ngoại tới gio_hang',
   `id_san_pham` int(11) NOT NULL COMMENT 'Khóa ngoại tới san_pham',
   `so_luong` int(11) NOT NULL COMMENT 'Số lượng sản phẩm trong giỏ',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `uc_user_product` (`id_nguoi_dung`,`id_san_pham`),
+  UNIQUE KEY `uc_cart_product` (`id_gio_hang`,`id_san_pham`),
   KEY `fk_cart_product` (`id_san_pham`),
-  CONSTRAINT `fk_cart_product` FOREIGN KEY (`id_san_pham`) REFERENCES `san_pham` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `fk_cart_user` FOREIGN KEY (`id_nguoi_dung`) REFERENCES `nguoi_dung` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `fk_cart_cart` FOREIGN KEY (`id_gio_hang`) REFERENCES `gio_hang` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_cart_product` FOREIGN KEY (`id_san_pham`) REFERENCES `san_pham` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Dumping data for table `chi_tiet_gio_hang`
@@ -183,6 +183,24 @@ INSERT INTO `don_hang` (`id`,`id_khach_hang`,`tong_tien`,`phuong_thuc_thanh_toan
 
 
 -- ------------------------------------
+-- Structure for table `gio_hang`
+-- ------------------------------------
+
+DROP TABLE IF EXISTS `gio_hang`;
+
+CREATE TABLE `gio_hang` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_nguoi_dung` int(11) NOT NULL COMMENT 'Khóa ngoại tới nguoi_dung (Chủ sở hữu giỏ hàng)',
+  `ngay_tao` datetime NOT NULL DEFAULT current_timestamp() COMMENT 'Thời gian tạo giỏ hàng',
+  `ngay_cap_nhat` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp() COMMENT 'Thời gian cập nhật gần nhất',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_nguoi_dung_unique` (`id_nguoi_dung`),
+  CONSTRAINT `fk_cart_user_explicit` FOREIGN KEY (`id_nguoi_dung`) REFERENCES `nguoi_dung` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Dumping data for table `gio_hang`
+
+-- ------------------------------------
 -- Structure for table `nguoi_dung`
 -- ------------------------------------
 
@@ -217,7 +235,7 @@ INSERT INTO `nguoi_dung` (`id`,`ho_ten`,`email`,`mat_khau`,`vai_tro`,`email_veri
   ('4','Lê Văn C','vanc@outlook.com','$2y$10$iM3.Xn3O0wLgYcW5vY7gU.0d1o8e/mPqC1c3ZqW9o0b6mJ8yL7zY.','khach','0',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'1','2025-11-26 16:08:45'),
   ('5','Phạm Thị D','thid@hotmail.com','$2y$10$iM3.Xn3O0wLgYcW5vY7gU.0d1o8e/mPqC1c3ZqW9o0b6mJ8yL7zY.','khach','0',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'1','2025-11-26 16:08:45'),
   ('6','quyvuongbattu','nguyentrongthoi31@gmail.com','$2y$10$fZFJ.JyewveYEOsSR82/juGo71yv0M0X3lhj/goLJmKclaXqKEEfe','khach','1','2025-11-28 08:45:46',NULL,NULL,NULL,NULL,NULL,NULL,'1','2025-11-28 08:45:01'),
-  ('7','Dchong','vdinhtrong580@gmail.com','$2y$10$4fe2NSyffAS9h/sU4cOnHemYL8ZP9FVM.QC8/5U09x5yIpN50HDba','khach','1','2025-11-29 19:50:13',NULL,NULL,NULL,NULL,NULL,NULL,'1','2025-11-29 19:49:51'),
+  ('7','Dchong','vdinhtrong580@gmail.com','$2y$10$TmGiltoOT0jLSiBGgIllqurY7Uxhym55rPiB9JzS0R61WKbUnE5rW','khach','1','2025-11-29 19:50:13',NULL,NULL,NULL,NULL,NULL,NULL,'1','2025-11-29 19:49:51'),
   ('8','minhhung','hung.nm.64cntt@ntu.edu.vn','$2y$10$NjhMXNGZWoqpTuXDDSS8VO7D8ZJFKi9KJ2BApC6IDI668HvJeVI6q','khach','1','2025-11-29 19:55:19',NULL,NULL,NULL,NULL,NULL,NULL,'1','2025-11-29 19:54:51'),
   ('9','duykhanh','khanh.tdu.64cntt@ntu.edu.vn','$2y$10$FBUZG/khUCYDs8.8ROJ8UOXFieDiN/iSJeVsxktAQMsRWNf9/1NO6','khach','1','2025-11-29 19:59:51',NULL,NULL,NULL,NULL,NULL,NULL,'1','2025-11-29 19:57:25'),
   ('10','minhchau','chau.hm.64cntt@ntu.edu.vn','$2y$10$AMW3saXBRKwWJNvWWJ3pVOlpmMV45Ms68j/P5l/wMAVCKpTRYLMeq','khach','1','2025-11-29 20:05:57',NULL,NULL,NULL,NULL,NULL,NULL,'1','2025-11-29 20:03:36');
@@ -246,14 +264,14 @@ CREATE TABLE `san_pham` (
   UNIQUE KEY `ten_sp` (`ten_sp`),
   KEY `id_dm` (`id_dm`),
   CONSTRAINT `san_pham_ibfk_1` FOREIGN KEY (`id_dm`) REFERENCES `danh_muc` (`id`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=187 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=182 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Dumping data for table `san_pham`
 INSERT INTO `san_pham` (`id`,`id_dm`,`ten_sp`,`gia`,`gia_khuyen_mai`,`so_luong_ton`,`hinh_anh`,`mo_ta_ngan`,`chi_tiet`,`ngay_nhap`,`luot_xem`,`trang_thai`) VALUES
-  ('1','1','Laptop Gaming ASUS ROG Strix G16','35000000.00','32990000.00','14','0','Core i9, RAM 32GB, RTX 4080, Màn hình 240Hz','Chi tiết cấu hình: Core i9-13980HX, 32GB DDR5, 1TB SSD, RTX 4080 12GB, 16-inch QHD+ 240Hz.','2025-09-01 10:00:00','521','1'),
-  ('2','1','Laptop Gaming Acer Nitro 5','21000000.00','19990000.00','25','0','Core i5, RAM 16GB, RTX 3050, Màn hình 144Hz','Chi tiết cấu hình: Core i5-12500H, 16GB DDR4, 512GB SSD, RTX 3050 4GB, 15.6-inch FHD 144Hz.','2025-09-05 11:30:00','482','1'),
-  ('3','2','Laptop Văn Phòng Dell Inspiron 14','18000000.00','16500000.00','30','0','Core i7, RAM 16GB, SSD 512GB, Màn hình OLED','Máy tính xách tay mỏng nhẹ, hiệu năng cao cho công việc, Core i7-1355U.','2025-09-10 14:00:00','350','1'),
-  ('4','2','Laptop Văn Phòng HP Pavilion Aero 13','15500000.00','0.00','18','0','Ryzen 5, RAM 8GB, Siêu nhẹ chỉ 0.9kg','Thiết kế cao cấp, thời lượng pin dài, Ryzen 5 7535U, 8GB DDR4, 512GB SSD.','2025-09-15 09:45:00','290','1'),
+  ('1','1','Laptop Gaming ASUS ROG Strix G16','35000000.00','32990000.00','15','0','Core i9, RAM 32GB, RTX 4080, Màn hình 240Hz','Chi tiết cấu hình: Core i9-13980HX, 32GB DDR5, 1TB SSD, RTX 4080 12GB, 16-inch QHD+ 240Hz.','2025-09-01 10:00:00','520','1'),
+  ('2','1','Laptop Gaming Acer Nitro 5','21000000.00','19990000.00','25','https://cdn.tgdd.vn/Products/Images/44/293230/acer-nitro-5-an515-58-7694-i7-nhqgysv001-thumb-600x600.jpg','Core i5, RAM 16GB, RTX 3050, Màn hình 144Hz','Chi tiết cấu hình: Core i5-12500H, 16GB DDR4, 512GB SSD, RTX 3050 4GB, 15.6-inch FHD 144Hz.','2025-09-05 11:30:00','480','1'),
+  ('3','2','Laptop Văn Phòng Dell Inspiron 14','18000000.00','16500000.00','30','https://cdn.tgdd.vn/Products/Images/44/302830/dell-inspiron-14-5430-i5-8002w1-thumb-600x600.jpg','Core i7, RAM 16GB, SSD 512GB, Màn hình OLED','Máy tính xách tay mỏng nhẹ, hiệu năng cao cho công việc, Core i7-1355U.','2025-09-10 14:00:00','350','1'),
+  ('4','2','Laptop Văn Phòng HP Pavilion Aero 13','15500000.00',NULL,'18','https://cdn.tgdd.vn/Products/Images/44/278550/hp-pavilion-aero-13-be0229au-r7-64u91pa-thumb-600x600.jpg','Ryzen 5, RAM 8GB, Siêu nhẹ chỉ 0.9kg','Thiết kế cao cấp, thời lượng pin dài, Ryzen 5 7535U, 8GB DDR4, 512GB SSD.','2025-09-15 09:45:00','290','1'),
   ('5','3','PC Gaming T-Rex i7 4070','45000000.00','42000000.00','10','https://cdn.tgdd.vn/Products/Images/5012/306786/pc-gaming-i7-13700kf-rtx-4070-12gb-thumb-600x600.jpg','PC chiến game mạnh mẽ: i7-14700K, RTX 4070 12GB','Cấu hình khủng, tản nhiệt nước AIO, 32GB RAM DDR5.','2025-09-20 16:15:00','600','1'),
   ('6','3','PC Văn Phòng Mini i3','9500000.00',NULL,'40','https://images.fpt.shop/unsafe/fit-in/600x600/filters:quality(90):fill(white)/fptshop.com.vn/Uploads/Originals/2023/12/28/638394464169542031_pc-dell-inspiron-3020s-den-thumb.jpg','PC cỡ nhỏ, Core i3-13100, 8GB RAM, SSD 256GB','Máy tính nhỏ gọn cho các tác vụ văn phòng cơ bản.','2025-09-25 08:30:00','150','1'),
   ('7','4','Màn Hình Gaming Samsung Odyssey G7 27 inch','14000000.00','12990000.00','50','https://cdn.tgdd.vn/Products/Images/55/244301/samsung-ls27bg750eexxv-thumb-600x600.jpeg','2K QHD, 240Hz, 1ms, Cong 1000R','Màn hình cao cấp cho trải nghiệm gaming tuyệt đỉnh.','2025-10-01 13:00:00','750','1'),
@@ -292,7 +310,7 @@ INSERT INTO `san_pham` (`id`,`id_dm`,`ten_sp`,`gia`,`gia_khuyen_mai`,`so_luong_t
   ('40','11','CPU Intel Core i9-14900K','15000000.00','14500000.00','10','https://cdn.tgdd.vn/Products/Images/571/311654/cpu-intel-core-i9-14900k-thumb-600x600.jpg','Bộ vi xử lý mạnh nhất thế giới','Dành cho các tác vụ nặng nhất.','2026-03-15 09:00:00','950','1'),
   ('41','15','Mesh Wifi TP-Link Deco X50 (3-Pack)','7000000.00','6500000.00','18','https://cdn.tgdd.vn/Products/Images/4619/271241/he-thong-wifi-mesh-tp-link-deco-x50-3-pack-thumb-600x600.jpg','Hệ thống Wifi Mesh diện tích lớn, chuẩn Wifi 6','Phủ sóng toàn bộ nhà nhiều tầng.','2026-03-20 11:10:00','420','1'),
   ('42','1','Laptop Gaming Dell Alienware m18','55000000.00','52000000.00','8','https://cdn.tgdd.vn/Products/Images/44/302831/dell-alienware-m18-r1-i9-5095w11-thumb-600x600.jpg','i9, RTX 4090, Màn hình 18-inch QHD+','Laptop gaming thay thế PC.','2026-03-25 14:50:00','700','1'),
-  ('43','2','Laptop MacBook Air M2 13 inch','25000000.00','23990000.00','20','https://cdn.tgdd.vn/Products/Images/44/288924/macbook-air-m2-2022-13-inch-thumb-600x600.jpg','Chip Apple M2, RAM 8GB, SSD 512GB','Thiết kế đẹp, hiệu năng tối ưu.','2026-04-01 10:00:00','801','1'),
+  ('43','2','Laptop MacBook Air M2 13 inch','25000000.00','23990000.00','20','https://cdn.tgdd.vn/Products/Images/44/288924/macbook-air-m2-2022-13-inch-thumb-600x600.jpg','Chip Apple M2, RAM 8GB, SSD 512GB','Thiết kế đẹp, hiệu năng tối ưu.','2026-04-01 10:00:00','800','1'),
   ('44','4','Màn Hình Chuyên Đồ Họa Dell UltraSharp U2723QE','18000000.00','16990000.00','15','https://cdn.tgdd.vn/Products/Images/55/285513/man-hinh-dell-ultrasharp-u2723qe-thumb-600x600.jpg','4K UHD, USB-C Power Delivery 90W','Màn hình màu sắc chuẩn xác cho thiết kế.','2026-04-05 13:20:00','520','1'),
   ('45','5','Bàn Phím Cơ Razer BlackWidow V4 Pro','5000000.00','4690000.00','25','https://cdn.tgdd.vn/Products/Images/58/306060/ban-phim-co-gaming-razer-blackwidow-v4-pro-thumb-600x600.jpg','Full size, Razer Green Switch, Dial đa năng','Bàn phím cơ cao cấp, nhiều tính năng.','2026-04-10 09:30:00','580','1'),
   ('46','6','Chuột Gaming Corsair Dark Core RGB Pro SE','2000000.00','1890000.00','30','https://cdn.tgdd.vn/Products/Images/86/284305/chuot-gaming-khong-day-corsair-dark-core-rgb-pro-se-thumb-600x600.jpg','Không dây, sạc không dây Qi, Cảm biến 18K DPI','Chuột gaming không dây, pin trâu.','2026-04-15 15:00:00','450','1'),
@@ -314,7 +332,7 @@ INSERT INTO `san_pham` (`id`,`id_dm`,`ten_sp`,`gia`,`gia_khuyen_mai`,`so_luong_t
   ('62','10','VGA Inno3D RTX 4070 Twin X2 12GB','17000000.00','16500000.00','18','https://cdn.tgdd.vn/Products/Images/5391/306792/card-man-hinh-vga-inno3d-rtx-4070-twin-x2-12gb-thumb-600x600.jpg','Card đồ họa hiệu năng cao cho 2K gaming.','Thông số: 12GB GDDR6X, Tốc độ Boost Clock cao.','2026-07-05 11:30:00','580','1'),
   ('63','11','CPU Intel Core i7-13700F','10000000.00','9500000.00','25','https://cdn.tgdd.vn/Products/Images/571/311655/cpu-intel-core-i7-13700f-thumb-600x600.jpg','Bộ vi xử lý 16 nhân, không tích hợp đồ họa','Thông số: 8P+8E cores, 24 luồng, Max Turbo 5.2GHz.','2026-07-10 14:00:00','450','1'),
   ('64','12','Mainboard ASUS Prime B660M-A WIFI D4','3500000.00',NULL,'30','https://cdn.tgdd.vn/Products/Images/5842/306793/mainboard-asus-prime-b660m-a-wifi-d4-thumb-600x600.jpg','Hỗ trợ CPU Intel đời 12/13, RAM DDR4','Tính năng: Khe M.2 PCIe 4.0, LAN 2.5Gb.','2026-07-15 09:45:00','380','1'),
-  ('65','13','Webcam Rapoo C260 Full HD','500000.00','450000.00','50','https://cdn.tgdd.vn/Products/Images/5697/306065/webcam-rapoo-c260-thumb-600x600.jpg','Full HD 1080p, tích hợp mic','Độ phân giải video: 1920x1080 @ 30fps, góc nhìn rộng.','2026-07-20 16:15:00','201','1'),
+  ('65','13','Webcam Rapoo C260 Full HD','500000.00','450000.00','50','https://cdn.tgdd.vn/Products/Images/5697/306065/webcam-rapoo-c260-thumb-600x600.jpg','Full HD 1080p, tích hợp mic','Độ phân giải video: 1920x1080 @ 30fps, góc nhìn rộng.','2026-07-20 16:15:00','200','1'),
   ('66','15','Bộ Phát Wifi Di Động TP-Link M7350','2000000.00','1800000.00','20','https://cdn.tgdd.vn/Products/Images/4619/271242/bo-phat-wifi-di-dong-4g-tp-link-m7350-thumb-600x600.jpg','Phát Wifi từ Sim 4G, pin 8 giờ','Tốc độ 4G LTE-A Cat.4, hỗ trợ 10 thiết bị.','2026-07-25 08:30:00','150','1'),
   ('67','16','Sạc Dự Phòng Samsung 10000mAh 25W','800000.00','750000.00','45','https://cdn.tgdd.vn/Products/Images/5713/306066/pin-sac-du-phong-samsung-10000mah-25w-thumb-600x600.jpg','Sạc siêu nhanh 25W, nhỏ gọn','Công nghệ Super Fast Charging, bảo vệ đa lớp.','2026-08-01 13:00:00','300','1'),
   ('68','17','Loa Bluetooth Sony SRS-XB13','1500000.00','1390000.00','30','https://cdn.tgdd.vn/Products/Images/54/298417/loa-bluetooth-sony-srs-xb13-thumb-600x600.jpg','Âm thanh Extra Bass, Chống nước IP67','Pin 16 giờ, công nghệ DSP, âm thanh 360 độ.','2026-08-05 15:20:00','420','1'),
@@ -322,14 +340,13 @@ INSERT INTO `san_pham` (`id`,`id_dm`,`ten_sp`,`gia`,`gia_khuyen_mai`,`so_luong_t
   ('70','19','Ốp Lưng Điện Thoại iPhone 15 Pro Max','200000.00',NULL,'100','https://cdn.tgdd.vn/Products/Images/60/306068/op-lung-iphone-15-pro-max-thumb-600x600.jpg','Ốp lưng silicon bảo vệ','Chất liệu silicon cao cấp, chống sốc, ôm sát máy.','2026-08-15 09:00:00','150','0'),
   ('71','20','Đồng Hồ Thông Minh Samsung Galaxy Watch 6 Classic','8000000.00','7500000.00','15','https://cdn.tgdd.vn/Products/Images/7077/306069/samsung-galaxy-watch-6-classic-thumb-600x600.jpg','Mặt xoay vật lý, theo dõi sức khỏe chuyên sâu','Mặt 47mm, BIA Sensor, GPS, Wear OS.','2026-08-20 11:10:00','300','1'),
   ('72','1','Laptop Gaming Gigabyte AORUS 17H','40000000.00','38000000.00','10','https://cdn.tgdd.vn/Products/Images/44/306794/gigabyte-aorus-17h-thumb-600x600.jpg','Core i7, RTX 4070, Màn 240Hz','Thông số: i7-13700H, RTX 4070 8GB, 17.3-inch QHD 240Hz.','2026-08-25 14:50:00','500','1'),
-  ('73','2','Laptop HP EliteBook 840 G10','28000000.00',NULL,'15','https://cdn.tgdd.vn/Products/Images/44/302834/hp-elitebook-840-g10-i5-85g30pa-thumb-600x600.jpg','Core i5, RAM 16GB, Siêu bảo mật','Thiết kế kim loại, tính năng HP Sure View.','2026-09-01 10:00:00','351','1'),
+  ('73','2','Laptop HP EliteBook 840 G10','28000000.00',NULL,'15','https://cdn.tgdd.vn/Products/Images/44/302834/hp-elitebook-840-g10-i5-85g30pa-thumb-600x600.jpg','Core i5, RAM 16GB, Siêu bảo mật','Thiết kế kim loại, tính năng HP Sure View.','2026-09-01 10:00:00','350','1'),
   ('74','3','PC Đồ Họa Workstation Xeon E5','25000000.00','23500000.00','7','https://cdn.tgdd.vn/Products/Images/5012/306795/pc-do-hoa-workstation-xeon-e5-thumb-600x600.jpg','Xeon E5, RAM 64GB, Quadro P2000','Chuyên Render: CPU 12 Core, 64GB ECC RAM, SSD NVMe.','2026-09-05 13:20:00','400','1'),
   ('75','4','Màn Hình ViewSonic VX3276-2K-MHD 32 inch','6000000.00','5500000.00','40','https://cdn.tgdd.vn/Products/Images/55/306070/man-hinh-viewsonic-vx3276-2k-mhd-thumb-600x600.jpg','2K QHD, Tấm nền IPS, Thiết kế siêu mỏng','Độ phân giải 2560x1440, viền siêu mỏng.','2026-09-10 09:30:00','380','1'),
   ('76','6','Chuột Không Dây Xiaomi Silent Mouse','400000.00',NULL,'60','https://cdn.tgdd.vn/Products/Images/86/306071/chuot-khong-day-xiaomi-dual-mode-silent-mouse-thumb-600x600.jpg','Chuột văn phòng không dây, nút bấm im lặng','Kết nối 2.4GHz, 1200 DPI, thiết kế công thái học.','2026-09-15 15:00:00','300','1'),
   ('77','7','Tai Nghe Bluetooth Sennheiser Momentum 4 Wireless','8500000.00','7990000.00','10','https://cdn.tgdd.vn/Products/Images/54/298419/tai-nghe-sennheiser-momentum-4-wireless-thumb-600x600.jpg','Âm thanh Hi-Fi, Pin 60 giờ','ANC cao cấp, chất lượng âm thanh Audiophile.','2026-09-20 11:00:00','250','1'),
   ('78','8','SSD Samsung 870 EVO 1TB SATA III','2500000.00','2300000.00','55','https://cdn.tgdd.vn/Products/Images/5348/306072/ssd-samsung-870-evo-1tb-thumb-600x600.jpg','Ổ cứng SATA phổ thông, tốc độ 560MB/s','Độ bền 600 TBW, Controller Samsung V-NAND.','2026-09-25 14:10:00','450','1'),
-  ('79','10','VGA PNY RTX A4000 16GB','20000000.00',NULL,'5','https://cdn.tgdd.vn/Products/Images/5391/306796/card-man-hinh-vga-pny-rtx-a4000-16gb-thumb-600x600.jpg','Card đồ họa chuyên nghiệp cho thiết kế','Dành cho Workstation. GPU NVIDIA Ampere, 16GB GDDR6 ECC.','2026-10-01 10:20:00','300','1'),
-  ('80','1','Thêm mới nè lz hùng','363636.00','0.00','0','https://tse1.mm.bing.net/th/id/OIP.xqYunaXLEIiIBgbHGncjBQHaHa?rs=1&pid=ImgDetMain&o=7&rm=3','ádad','sdasdas','2025-12-03 19:46:29','0','1');
+  ('79','10','VGA PNY RTX A4000 16GB','20000000.00',NULL,'5','https://cdn.tgdd.vn/Products/Images/5391/306796/card-man-hinh-vga-pny-rtx-a4000-16gb-thumb-600x600.jpg','Card đồ họa chuyên nghiệp cho thiết kế','Dành cho Workstation. GPU NVIDIA Ampere, 16GB GDDR6 ECC.','2026-10-01 10:20:00','300','1');
 
 
 -- ------------------------------------
