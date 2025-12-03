@@ -103,4 +103,5 @@ class Product {
     public function lastId() {
         return $this->conn->insert_id;
     }
+    
 }

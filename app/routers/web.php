@@ -167,3 +167,5 @@ $router->get("/admin/products", function () {
 $router->get("/product/{id}", function($id) {
     require_once __DIR__ . "/../../public/user/product_detail.php";
 });
+
+
