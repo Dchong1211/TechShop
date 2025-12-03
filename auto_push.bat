@@ -1,21 +1,47 @@
-:: Bước 1: Di chuyển đến thư mục project
+@echo off
 cd /d C:\xampp\htdocs\TechShop
 
-:: Bước 2: Lấy tên người dùng từ cấu hình Git
+:: ===== EXPORT DB=====
+echo Dang export database voi PHP...
+php export_db.php
+echo Export thanh cong!
+echo.
+
+
+
+
+
+
+
+
+:: ===== GIT ADD / COMMIT / PUSH =====
 for /f "delims=" %%a in ('git config user.name') do set username=%%a
+set datetime=%date%_%time%
 
-:: Bước 3: Thêm toàn bộ file vào git
+echo Dang commit code...
+
+
+
+
+
+
+
+
 git add .
+git commit -m "Auto push by %username% at %datetime%"
+echo.
 
-:: Bước 4: Commit với thời gian tự động
-set datetime=%date% %time%
-git commit -m "Push by %username% on %datetime%"
+echo Dang pull code moi nhat...
+git pull origin main --rebase
+echo.
 
-:: Bước 5: Kéo code mới nhất về (tránh lỗi conflict)
-:: git pull origin main --rebase
-
-:: Bước 6: Push code lên GitHub
+echo Dang push len GitHub...
 git push origin main
+echo.
 
-:: Bước 7: Hiển thị thông báo hoàn tất
-echo PUSH COMPLETE!
+:: ===== IMPORT DB =====
+C:\xampp\mysql\bin\mysql.exe -u root -e "SET FOREIGN_KEY_CHECKS=0;" techshop
+C:\xampp\mysql\bin\mysql.exe -u root techshop < database\techshop.sql
+C:\xampp\mysql\bin\mysql.exe -u root -e "SET FOREIGN_KEY_CHECKS=1;" techshop
+
+echo  DATABASE + CODE DA DONG BO THANH CONG
