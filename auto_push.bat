@@ -1,21 +1,40 @@
-:: Bước 1: Di chuyển đến thư mục project
+@echo off
 cd /d C:\xampp\htdocs\TechShop
 
-:: Bước 2: Lấy tên người dùng từ cấu hình Git
+echo ==== EXPORT DATABASE (CLEAN DUMP) ====
+"C:\xampp\mysql\bin\mysqldump.exe" ^
+  --skip-comments ^
+  --skip-add-drop-table ^
+  --no-tablespaces ^
+  --order-by-primary ^
+  --compact ^
+  --extended-insert=FALSE ^
+  -u root techshop > database\techshop.sql
+
+echo Export OK!
+echo.
+
 for /f "delims=" %%a in ('git config user.name') do set username=%%a
+set datetime=%date%_%time%
 
-:: Bước 3: Thêm toàn bộ file vào git
+echo ==== GIT ADD + COMMIT ====
 git add .
+git commit -m "Auto push by %username% at %datetime%"
+echo.
 
-:: Bước 4: Commit với thời gian tự động
-set datetime=%date% %time%
-git commit -m "Push by %username% on %datetime%"
+echo ==== GIT PULL (REBASE) ====
+git pull origin main --rebase
+if %ERRORLEVEL% NEQ 0 (
+    echo LOI: Co conflict! Hay sua conflict roi chay lai.
+    pause
+    exit /b
+)
 
-:: Bước 5: Kéo code mới nhất về (tránh lỗi conflict)
-:: git pull origin main --rebase
-
-:: Bước 6: Push code lên GitHub
+echo ==== GIT PUSH ====
 git push origin main
+echo.
 
-:: Bước 7: Hiển thị thông báo hoàn tất
-echo PUSH COMPLETE!
+echo ==== IMPORT DATABASE ====
+"C:\xampp\mysql\bin\mysql.exe" -u root techshop < database\techshop.sql
+
+echo ==== DONE! ====
