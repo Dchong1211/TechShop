@@ -152,7 +152,7 @@ $sp = $res["data"];
                             <i class="bi bi-trash"></i> Xóa sản phẩm
                         </button>
 
-                        <button type="button" class="btn btn-primary" onclick="confirmUpdate()">
+                        <button type="submit" class="btn btn-primary" onclick="confirmUpdate()">
                             <i class="bi bi-save"></i> Cập nhật
                         </button>
                     </div>
@@ -279,11 +279,6 @@ $sp = $res["data"];
             });
         }
     }
-
-    document.getElementById('updateForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        confirmUpdate();
-    });
 </script>
 
 </body>

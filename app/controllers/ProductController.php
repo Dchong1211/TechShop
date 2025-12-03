@@ -62,54 +62,70 @@ public function adminList($page = 1, $limit = 5, $search = "") {
 
 
     // Admin: Tạo sản phẩm
-    public function create() {
-        requireAdmin();
-        CSRF::requireToken();
-        require_once __DIR__ . '/../helpers/ImgBB.php';
+        public function create() {
+            requireAdmin();
+            CSRF::requireToken();
 
-        $imgUrl = "";
-        if (isset($_FILES["hinh_anh_file"]) && $_FILES["hinh_anh_file"]["error"] == 0) {
-            $imgUrl = ImgBB::upload($_FILES["hinh_anh_file"]["tmp_name"]);
+            // URL ảnh đã upload từ imgbb (JS)
+            $imgUrl = $_POST["hinh_anh"] ?? "";
+
+            // Nếu không có URL => ảnh chưa upload
+            if (empty($imgUrl)) {
+                return [
+                    "success" => false,
+                    "message" => "Vui lòng chọn ảnh (upload imgbb bị lỗi)!"
+                ];
+            }
+
+            $ok = $this->model->create(
+                $_POST["id_dm"],
+                $_POST["ten_sp"],
+                floatval($_POST["gia"]),
+                floatval($_POST["gia_khuyen_mai"] ?? 0),
+                intval($_POST["so_luong_ton"] ?? 0),
+                $imgUrl,
+                $_POST["mo_ta_ngan"] ?? "",
+                $_POST["chi_tiet"] ?? ""
+            );
+
+            if ($ok) {
+                $newId = $this->model->lastId();
+
+                // Tạo QR
+                $url = "http://localhost/TechShop/product/" . $newId;
+                $savePath = __DIR__ . "/../../public/qr/product_$newId.png";
+                QR::make($url, $savePath);
+
+                return ["success" => true, "message" => "Thêm thành công"];
+            }
+
+            return ["success" => false, "message" => "Thêm thất bại"];
         }
 
-        $ok = $this->model->create(
-            $_POST["id_dm"],
-            $_POST["ten_sp"],
-            floatval($_POST["gia"]),
-            floatval($_POST["gia_khuyen_mai"] ?? 0),
-            intval($_POST["so_luong_ton"]),
-            $imgUrl,
-            $_POST["mo_ta_ngan"] ?? "",
-            $_POST["chi_tiet"] ?? ""
-        );
-
-        if ($ok) {
-            $newId = $this->model->lastId();
-
-            $url = "http://localhost/TechShop/product/" . $newId;
-            $savePath = __DIR__ . "/../../public/qr/product_$newId.png";
-
-            QR::make($url, $savePath);
-
-            return ["success" => true, "message" => "Thêm thành công"];
-        }
-
-        return ["success" => false, "message" => "Thêm thất bại"];
-    }
 
 
     // Admin: Cập nhật
     public function update() {
         requireAdmin();
         CSRF::requireToken();
-        require_once __DIR__ . '/../helpers/ImgBB.php';
 
         $id = intval($_POST["id"]);
         $old = $this->model->getById($id);
-        $imgUrl = $old["hinh_anh"];
 
-        if (isset($_FILES["hinh_anh_file"]) && $_FILES["hinh_anh_file"]["error"] == 0) {
-            $imgUrl = ImgBB::upload($_FILES["hinh_anh_file"]["tmp_name"]);
+        if (!$old) {
+            return [
+                "success" => false,
+                "message" => "Sản phẩm không tồn tại!"
+            ];
+        }
+
+        // Lấy URL ảnh từ hidden input
+        // Nếu không có thì dùng ảnh cũ
+        $imgUrl = $_POST["hinh_anh"] ?? $old["hinh_anh"];
+
+        // Nếu vì lý do gì ảnh rỗng → fallback lại ảnh cũ
+        if (empty($imgUrl)) {
+            $imgUrl = $old["hinh_anh"];
         }
 
         $ok = $this->model->update(
@@ -118,25 +134,30 @@ public function adminList($page = 1, $limit = 5, $search = "") {
             $_POST["ten_sp"],
             floatval($_POST["gia"]),
             floatval($_POST["gia_khuyen_mai"] ?? 0),
-            intval($_POST["so_luong_ton"]),
-            $imgUrl,
+            intval($_POST["so_luong_ton"] ?? 0),
+            $imgUrl, // Ảnh mới hoặc ảnh cũ
             $_POST["mo_ta_ngan"] ?? "",
             $_POST["chi_tiet"] ?? "",
             intval($_POST["trang_thai"])
         );
 
         if ($ok) {
+            // Tạo lại QR Code NẾU MUỐN
             $url = "http://localhost/TechShop/product/" . $id;
             $savePath = __DIR__ . "/../../public/qr/product_$id.png";
-
             QR::make($url, $savePath);
 
-            return ["success" => true, "message" => "Cập nhật thành công"];
+            return [
+                "success" => true,
+                "message" => "Cập nhật thành công"
+            ];
         }
 
-        return ["success" => false, "message" => "Cập nhật thất bại"];
+        return [
+            "success" => false,
+            "message" => "Cập nhật thất bại"
+        ];
     }
-
 
     // Admin: Xóa
     public function delete() {
