@@ -76,7 +76,7 @@ $sp = $res["data"];
                 <input type="hidden" name="id" value="<?= $sp['id'] ?>">
 
                 <div class="card-header">
-                    <h5 class="card-title">✍️ Chỉnh sửa sản phẩm: <?= htmlspecialchars($sp['ten_sp']) ?></h5>
+                    <h5 class="card-title">Chỉnh sửa sản phẩm: <?= htmlspecialchars($sp['ten_sp']) ?></h5>
                 </div>
 
                 <div class="card-body">
