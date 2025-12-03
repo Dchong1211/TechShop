@@ -1,17 +1,26 @@
 import { renderPagination } from './pagination.js';
-document.addEventListener('DOMContentLoaded', () => {
-    loadProducts(1);
 
-    // Search realtime (server-side)
+/* =======================================================
+    INIT
+======================================================= */
+document.addEventListener('DOMContentLoaded', () => {
+    loadProducts();
+
     const searchInput = document.getElementById('searchInput');
-    searchInput.addEventListener('input', () => {
-        loadProducts(1);
+    searchInput.addEventListener('input', (e) => {
+        const keyword = e.target.value.toLowerCase();
+        const rows = document.querySelectorAll('#productTableBody tr');
+
+        rows.forEach(row => {
+            const text = row.innerText.toLowerCase();
+            row.style.display = text.includes(keyword) ? '' : 'none';
+        });
     });
 });
 
 
 /* =======================================================
-    LOAD PRODUCTS + PAGINATION (ADMIN)
+    LOAD PRODUCTS + PAGINATION
 ======================================================= */
 async function loadProducts(page = 1) {
     const tbody = document.getElementById('productTableBody');
@@ -32,13 +41,12 @@ async function loadProducts(page = 1) {
         renderTable(json.data);
         renderPagination(json.meta, "loadProducts");
 
-
     } catch (err) {
         console.error("Lỗi:", err);
         tbody.innerHTML = `<tr><td colspan="7">Lỗi kết nối server!</td></tr>`;
     }
 }
-window.loadProducts = loadProducts; 
+window.loadProducts = loadProducts;
 
 
 /* =======================================================
@@ -54,10 +62,10 @@ function renderTable(products) {
 
     tbody.innerHTML = products.map(p => {
         const imagePath = p.hinh_anh;
-        const finalSrc = imagePath && (imagePath.startsWith('http') || imagePath.startsWith('https'))
-            ? imagePath 
+        const finalSrc = imagePath && (imagePath.startsWith('http'))
+            ? imagePath
             : `/TechShop/public/uploads/products/${imagePath || 'placeholder.png'}`;
-            
+
         return `
             <tr>
                 <td>${p.id}</td>
@@ -74,24 +82,91 @@ function renderTable(products) {
                 <td>${p.so_luong_ton > 0 ? 'Còn hàng' : 'Hết hàng'}</td>
 
                 <td class="action-buttons">
-                    <a href="/TechShop/public/admin/edit_products.php?id=${p.id}" class="btn btn-edit">Chỉnh sửa</a>
+                    <a href="/TechShop/public/admin/edit_products.php?id=${p.id}" 
+                       class="btn btn-edit">Chỉnh sửa</a>
                 </td>
             </tr>
         `;
     }).join('');
 }
 
-/* =======================================================
-    HELPERS
-======================================================= */
 
+/* =======================================================
+    PRICE FORMAT
+======================================================= */
 function formatPrice(num) {
-    return new Intl.NumberFormat('vi-VN', {style:'currency',currency:'VND'}).format(num);
+    return new Intl.NumberFormat('vi-VN', { 
+        style: 'currency', 
+        currency: 'VND' 
+    }).format(num);
 }
 
-function getCategoryName(id) {
-    const cats = {1:'Laptop',2:'PC',3:'Gear',4:'Phụ kiện'};
-    return cats[id] || 'Khác';
+
+/* =======================================================
+    ADD PRODUCT
+======================================================= */
+async function handleAddProducts(e) {
+    e.preventDefault();
+    const form = e.target;
+    const btn = form.querySelector('button[type="submit"]');
+    const original = btn.innerHTML;
+
+    btn.innerHTML = '<i class="bi bi-hourglass-split"></i> Đang xử lý...';
+    btn.disabled = true;
+
+    const formData = new FormData(form);
+
+    try {
+        const res = await fetch(form.action, { method: 'POST', body: formData });
+        const data = await res.json();
+
+        if (data.success) {
+            alert('Thêm thành công!');
+            window.location.href = '/TechShop/public/admin/products';
+        } else {
+            alert('Lỗi: ' + data.message);
+        }
+
+    } catch {
+        alert('Lỗi kết nối!');
+    }
+
+    btn.innerHTML = original;
+    btn.disabled = false;
+}
+
+
+/* =======================================================
+    UPDATE PRODUCT
+======================================================= */
+async function handleUpdateProduct(e) {
+    e.preventDefault();
+    const form = e.target;
+
+    const btn = form.querySelector('button[type="submit"]');
+    const original = btn.innerHTML;
+    btn.innerHTML = '<i class="bi bi-hourglass-split"></i> Đang lưu...';
+    btn.disabled = true;
+
+    const formData = new FormData(form);
+
+    try {
+        const res = await fetch(form.action, { method: "POST", body: formData });
+        const data = await res.json();
+
+        if (data.success) {
+            alert('Cập nhật thành công!');
+            window.location.href = '/TechShop/public/admin/products';
+        } else {
+            alert('Lỗi: ' + data.message);
+        }
+
+    } catch {
+        alert('Lỗi kết nối!');
+    }
+
+    btn.innerHTML = original;
+    btn.disabled = false;
 }
 
 
@@ -99,187 +174,50 @@ function getCategoryName(id) {
     DELETE PRODUCT
 ======================================================= */
 async function deleteProduct(id) {
-    if (!confirm(`Xóa sản phẩm ID: ${id}?`)) return;
+    if (!confirm("Bạn có chắc chắn muốn xóa sản phẩm này?")) return;
 
     const csrf = document.querySelector('meta[name="csrf-token"]').content;
+
     const formData = new FormData();
     formData.append('id', id);
     formData.append('csrf', csrf);
 
-    const res = await fetch('/TechShop/public/admin/products/delete', {
-        method: 'POST',
-        body: formData
-    });
-
-    const data = await res.json();
-
-    if (data.success) {
-        alert('Đã xóa!');
-        loadProducts();
-    } else {
-        alert('Lỗi: ' + data.message);
-    }
-}
-
-
-/* =======================================================
-    ADD / UPDATE — giữ nguyên toàn bộ code cũ
-======================================================= */
-
-async function handleAddProducts(e) {
-    e.preventDefault();
-    const form = e.target;
-    const btn = form.querySelector('button[type="submit"]')
-    const originalText = btn.innerHTML;
-
-    btn.innerHTML = '<i class="bi bi-hourglass-split"></i> Đang xử lý...';
-    btn.disable = true;
-    const formData = new FormData(form);
-
     try {
-        const res = await fetch(form.action, {
+        const res = await fetch('/TechShop/public/admin/products/delete', {
             method: 'POST',
             body: formData
         });
         const data = await res.json();
 
         if (data.success) {
-            alert('Thêm thành công: ' + data.message);
-            window.location.href = '/TechShop/public/admin/products';
+            alert('Đã xóa!');
+            loadProducts();
         } else {
             alert('Lỗi: ' + data.message);
         }
-    } catch (err) {
-        console.error(err);
-        alert('Lỗi kết nối đến máy chủ!');
-    } finally {
-        btn.innerHTML = originalText;
-        btn.disabled = false;
-    }
-}
 
-async function handleUpdateProduct(e) {
-    e.preventDefault();
-    const form = e.target;
-    const btn = form.querySelector('button[type="submit"]');
-    const originalText = btn.innerHTML;
-
-    btn.innerHTML = '<i class="bi bi-hourglass-split"></i> Đang lưu...';
-    btn.disabled = true;
-
-    const formData = new FormData(form);
-
-    try {
-        const res = await fetch(form.action, {
-            method: 'POST',
-            body: formData
-        });
-        const contentType = res.headers.get("content-type");
-        if (contentType && contentType.indexOf("application/json") !== -1) {
-            const data = await res.json();
-            if (data.success) {
-                alert('Cập nhật thành công!');
-                window.location.href = '/TechShop/public/admin/products';
-            } else {
-                alert('Lỗi' + data.message);
-            }
-        } else {
-            const text = await res.text();
-            console.error(text);
-            alert('Có lỗi xảy ra ở phía Server. Vui lòng kiểm tra console.');
-        }
-
-    } catch (err) {
-        console.error(err);
-        alert('Lỗi kết nối!');
-    } finally {
-        btn.innerHTML = originalText;
-        btn.disabled = false;
-    }
-}
-
-function confirmAddProduct(form) {
-    if (confirm("Bạn có chắc chắn muốn thêm sản phẩm mới này?")) {
-        
-        const btn = form.querySelector('button[type="submit"]');
-        const originalText = btn.textContent;
-        btn.textContent = 'Đang xử lý...';
-        btn.disabled = true;
-
-        const formData = new FormData(form);
-
-        fetch(form.action, {
-            method: 'POST',
-            body: formData
-        })
-        .then(res => res.json())
-        .then(data => {
-            if (data.success) {
-                alert('Thêm sản phẩm thành công!');
-                window.location.href = '/TechShop/public/admin/products';
-            } else {
-                alert('Lỗi: ' + data.message);
-            }
-        })
-        .catch(err => {
-            console.error(err);
-            alert('Lỗi kết nối máy chủ!');
-        })
-        .finally(() => {
-            btn.textContent = originalText;
-            btn.disabled = false;
-        });
-    }
-}
-
-function confirmUpdateProduct(form) {
-    if (confirm("Bạn có chắc chắn muốn lưu thay đổi cho sản phẩm này?")) {
-        
-        const btn = form.querySelector('button[type="submit"]');
-        const originalText = btn.textContent;
-        btn.textContent = 'Đang lưu...';
-        btn.disabled = true;
-
-        const formData = new FormData(form);
-
-        fetch(form.action, {
-            method: 'POST',
-            body: formData
-        })
-        .then(res => res.json())
-        .then(data => {
-            if (data.success) {
-                alert('Cập nhật thành công!');
-                window.location.href = '/TechShop/public/admin/products';
-            } else {
-                alert('❌ Lỗi: ' + data.message);
-            }
-        })
-        .catch(err => {
-            console.error(err);
-            alert('Lỗi kết nối máy chủ!');
-        })
-        .finally(() => {
-            btn.textContent = originalText;
-            btn.disabled = false;
-        });
+    } catch {
+        alert('Lỗi server!');
     }
 }
 
 
 /* =======================================================
-    PREVIEW IMAGE
+    PREVIEW URL IMAGE
 ======================================================= */
 function previewUrl(url) {
     const img = document.getElementById('imgPreview');
-    if (url && url.length > 5) {
+
+    if (url && url.trim().length > 5) {
         img.src = url;
         img.style.display = 'block';
-        
+
         img.onerror = function() {
             this.style.display = 'none';
         };
+
     } else {
         img.style.display = 'none';
     }
 }
+
