@@ -22,10 +22,17 @@
         </div>
         
         <div class="nav-item">
-            <a href="public/user/product.php?cate=hot-deal" style="color: #ffeb3b;">
+            <a href="public/user/about.php">
+                <i class="fa-solid fa-shield-halved"></i> Giới Thiệu
+            </a>
+        </div>
+
+        <div class="nav-item">
+            <a href="public/user/product.php?cate=hot-deal" style="color: #c73bffff;">
                 <i class="fa-solid fa-bolt"></i> Tổng hợp Khuyến mãi
             </a>
         </div>
+
 
         <div class="nav-item">
             <a href="public/user/orders.php">
@@ -35,15 +42,10 @@
         
         <div class="nav-item">
             <a href="#">
-                <i class="fa-solid fa-shield-halved"></i> Trung tâm bảo hành
+                <i class="fa-solid fa-shield-halved"></i> HotLine 1900 1234
             </a>
         </div>
-
-        <div class="nav-item">
-            <a href="#">
-                <i class="fa-solid fa-map-location-dot"></i> Hệ thống cửa hàng
-            </a>
-        </div>
+     
 
     </div>
 

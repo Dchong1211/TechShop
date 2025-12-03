@@ -1,0 +1,308 @@
+/* ==========================================================================
+   FILE: public/assets/css/cssUser/about.css
+   STYLE: High-Tech / Cyberpunk / Light Mode Support
+   ========================================================================== */
+
+:root {
+    /* --- DARK MODE (DEFAULT) --- */
+    --primary-neon: #00f3ff; /* Xanh Cyan */
+    --secondary-neon: #bc13fe; /* Tím */
+    --bg-dark: #05050a;        /* Nền trang */
+    --bg-card: #0f0f1a;        /* Nền card */
+    --bg-tech-visual: rgba(0,0,0,0.2);
+    --text-light: #e0e6ff;     /* Chữ chính */
+    --text-muted: #8a8a9b;     /* Chữ phụ */
+    --border-color: rgba(0, 243, 255, 0.1);
+    --hero-overlay-opacity: 0.15;
+    --card-shadow: rgba(0, 0, 0, 0.5);
+}
+
+/* --- LIGHT MODE OVERRIDES --- */
+[data-theme="light"] {
+    --bg-dark: #f0f2f5;        /* Nền trắng xám nhạt */
+    --bg-card: #ffffff;        /* Card trắng */
+    --bg-tech-visual: rgba(255,255,255,0.5);
+    --text-light: #1a1a2e;     /* Chữ đen đậm */
+    --text-muted: #555566;     /* Chữ xám đậm */
+    --border-color: rgba(0, 243, 255, 0.3); /* Viền đậm hơn chút */
+    --hero-overlay-opacity: 0.05; /* Giảm độ đậm gradient ở hero */
+    --card-shadow: rgba(0, 0, 0, 0.05);
+}
+
+/* Reset cơ bản */
+.about-page {
+    background-color: var(--bg-dark);
+    color: var(--text-light);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow-x: hidden;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.about-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px 60px;
+    position: relative;
+    z-index: 2;
+}
+
+/* --- 1. HERO SECTION --- */
+.about-hero {
+    position: relative;
+    padding: 120px 20px;
+    text-align: center;
+    overflow: hidden;
+    /* Gradient nền */
+    background: 
+        radial-gradient(circle at 20% 30%, rgba(0, 243, 255, var(--hero-overlay-opacity)) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(188, 19, 254, var(--hero-overlay-opacity)) 0%, transparent 50%);
+    background-color: var(--bg-dark);
+    border-bottom: 2px solid var(--border-color);
+    transition: background-color 0.3s ease;
+}
+
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    background-image: 
+        linear-gradient(var(--border-color) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border-color) 1px, transparent 1px);
+    background-size: 30px 30px;
+    background-position: center center;
+    opacity: 0.3;
+    z-index: 0;
+    animation: moveGrid 20s linear infinite;
+}
+@keyframes moveGrid { 0% { transform: translateY(0); } 100% { transform: translateY(30px); } }
+
+.about-hero-content { position: relative; z-index: 2; max-width: 800px; margin: 0 auto; }
+
+.about-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    color: var(--text-light); /* Màu chữ đổi theo theme */
+    text-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
+}
+/* Light mode: Giảm glow chữ tiêu đề để dễ đọc */
+[data-theme="light"] .about-title { text-shadow: none; color: #1a1a2e; }
+
+.about-title .highlight { color: var(--primary-neon); position: relative; display: inline-block; }
+.about-title .highlight::after {
+    content: ''; position: absolute; bottom: -5px; left: 0; width: 100%; height: 3px;
+    background: var(--primary-neon);
+    box-shadow: 0 0 15px var(--primary-neon);
+}
+
+.about-subtitle {
+    font-size: 1.2rem;
+    color: var(--text-muted);
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+/* --- 2. GENERAL ELEMENTS --- */
+.section-block { margin-bottom: 100px; }
+.section-heading { text-align: center; margin-bottom: 50px; }
+
+.neon-text {
+    font-size: 2rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--text-light);
+    position: relative;
+    display: inline-block;
+}
+[data-theme="light"] .neon-text { color: #333; }
+
+.divider-glow {
+    width: 80px; height: 4px;
+    background: linear-gradient(90deg, var(--secondary-neon), var(--primary-neon));
+    margin: 15px auto 0; border-radius: 2px;
+    box-shadow: 0 0 15px rgba(0, 243, 255, 0.5);
+}
+
+/* --- 3. STORY SECTION --- */
+.story-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+.story-content h3 { color: var(--primary-neon); margin-bottom: 20px; font-size: 1.8rem; }
+.story-content p { color: var(--text-muted); line-height: 1.8; margin-bottom: 20px; font-size: 1.05rem; }
+
+.story-tech-visual {
+    height: 350px; position: relative;
+    background: var(--bg-tech-visual);
+    border: 1px solid var(--border-color);
+    border-radius: 15px; overflow: hidden;
+    display: flex; justify-content: center; align-items: center;
+}
+.tech-circle {
+    width: 150px; height: 150px;
+    border: 3px solid transparent;
+    border-top-color: var(--primary-neon);
+    border-bottom-color: var(--secondary-neon);
+    border-radius: 50%;
+    animation: spinCircle 4s linear infinite;
+    box-shadow: 0 0 30px rgba(0, 243, 255, 0.2);
+}
+.tech-circle::before {
+    content: ''; position: absolute; inset: 15px;
+    border: 3px solid transparent;
+    border-left-color: var(--primary-neon);
+    border-right-color: var(--secondary-neon);
+    border-radius: 50%;
+    animation: spinCircle 2s linear infinite reverse;
+}
+@keyframes spinCircle { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+/* --- 4. STATS SECTION --- */
+.stats-section.glass-effect {
+    background: rgba(255, 255, 255, 0.02);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border-color);
+    padding: 60px; border-radius: 20px;
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px;
+    text-align: center; position: relative;
+}
+[data-theme="light"] .stats-section.glass-effect {
+    background: rgba(255, 255, 255, 0.7);
+    border-color: rgba(0,0,0,0.1);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+}
+
+.counter-glow {
+    font-size: 3.5rem; font-weight: 900; margin: 0; color: #fff;
+    text-shadow: 0 0 10px rgba(188, 19, 254, 0.8), 0 0 30px rgba(0, 243, 255, 0.3);
+}
+[data-theme="light"] .counter-glow { color: var(--secondary-neon); text-shadow: none; }
+
+.stat-item p {
+    color: var(--text-muted); text-transform: uppercase;
+    letter-spacing: 1px; font-weight: 600; margin-top: 10px;
+}
+
+/* --- 5. VALUES CARDS --- */
+.values-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
+
+.tech-card {
+    background: var(--bg-card);
+    padding: 40px 30px; border-radius: 15px; text-align: center;
+    position: relative; overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 5px 15px var(--card-shadow);
+}
+
+.card-border-glow {
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(0, 243, 255, 0.1), rgba(188, 19, 254, 0.1));
+    opacity: 0; transition: opacity 0.4s ease;
+}
+.tech-card:hover {
+    transform: translateY(-15px) scale(1.03);
+    border-color: var(--primary-neon);
+}
+[data-theme="light"] .tech-card:hover {
+    box-shadow: 0 20px 40px rgba(0, 243, 255, 0.15);
+}
+.tech-card:hover .card-border-glow { opacity: 1; }
+
+.value-icon {
+    font-size: 3.5rem; margin-bottom: 25px;
+    background: linear-gradient(135deg, var(--primary-neon), var(--secondary-neon));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    transition: all 0.4s ease;
+}
+.tech-card:hover .value-icon { transform: scale(1.1) rotate(5deg); }
+
+.tech-card h3 { font-size: 1.4rem; font-weight: 700; margin-bottom: 15px; color: var(--text-light); }
+.tech-card p { color: var(--text-muted); line-height: 1.6; }
+
+/* --- 6. TEAM SECTION (NEW) --- */
+.team-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
+
+.team-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 15px; padding: 30px; text-align: center;
+    transition: 0.3s; position: relative; overflow: hidden;
+}
+.team-card:hover {
+    transform: translateY(-10px);
+    border-color: var(--primary-neon);
+    box-shadow: 0 0 20px rgba(0, 243, 255, 0.15);
+}
+
+.member-avatar {
+    width: 80px; height: 80px; margin: 0 auto 20px;
+    background: linear-gradient(135deg, var(--primary-neon), var(--secondary-neon));
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-size: 35px; color: #fff;
+    box-shadow: 0 0 15px var(--primary-neon);
+}
+.team-card h3 { color: var(--text-light); margin: 0; font-size: 1.4rem; }
+.member-role { color: var(--primary-neon); font-size: 0.9rem; letter-spacing: 1px; text-transform: uppercase; display: block; margin-bottom: 20px; }
+
+.member-stats { text-align: left; background: rgba(0,0,0,0.1); padding: 15px; border-radius: 8px; }
+[data-theme="light"] .member-stats { background: #f0f2f5; }
+
+.stat-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; font-size: 0.85rem; color: var(--text-muted); }
+.stat-row .bar { width: 60%; height: 6px; background: rgba(128,128,128,0.3); border-radius: 3px; overflow: hidden; }
+.stat-row .bar div { height: 100%; background: linear-gradient(90deg, var(--secondary-neon), var(--primary-neon)); border-radius: 3px; }
+
+/* --- 7. PARTNERS MARQUEE (NEW) --- */
+.brand-marquee {
+    overflow: hidden; white-space: nowrap; position: relative;
+    background: linear-gradient(90deg, var(--bg-dark), transparent, var(--bg-dark));
+    padding: 20px 0;
+}
+.brand-marquee::before, .brand-marquee::after {
+    content: ''; position: absolute; top: 0; width: 100px; height: 100%; z-index: 2;
+    pointer-events: none;
+}
+.brand-marquee::before { left: 0; background: linear-gradient(to right, var(--bg-dark), transparent); }
+.brand-marquee::after { right: 0; background: linear-gradient(to left, var(--bg-dark), transparent); }
+
+.marquee-content { display: inline-block; animation: marquee 30s linear infinite; }
+.marquee-content span {
+    display: inline-block; font-size: 1.5rem; font-weight: 800;
+    color: var(--text-muted); opacity: 0.5;
+    margin: 0 40px; text-transform: uppercase; transition: 0.3s; cursor: default;
+}
+.marquee-content span:hover {
+    color: var(--primary-neon); opacity: 1;
+    text-shadow: 0 0 10px var(--primary-neon); transform: scale(1.1);
+}
+@keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+/* --- 8. CTA BUTTON (NEW) --- */
+.cta-container { text-align: center; margin-bottom: 80px; }
+.btn-neon-glitch {
+    display: inline-block; padding: 15px 40px;
+    font-size: 1.2rem; font-weight: bold;
+    color: #000; background: var(--primary-neon);
+    text-decoration: none; border-radius: 5px;
+    box-shadow: 0 0 20px var(--primary-neon);
+    transition: 0.3s; position: relative; overflow: hidden; text-transform: uppercase;
+}
+[data-theme="light"] .btn-neon-glitch { color: #fff; background: var(--secondary-neon); box-shadow: 0 0 15px var(--secondary-neon); }
+
+.btn-neon-glitch:hover {
+    background: #fff; color: #000;
+    box-shadow: 0 0 40px var(--primary-neon), 0 0 10px #fff;
+    transform: scale(1.05);
+}
+
+/* RESPONSIVE */
+@media (max-width: 991px) {
+    .about-title { font-size: 2.5rem; }
+    .story-grid, .values-grid, .team-grid { grid-template-columns: 1fr; }
+    .story-tech-visual { order: -1; height: 250px; }
+    .stats-section.glass-effect { grid-template-columns: repeat(2, 1fr); gap: 40px; }
+}
+@media (max-width: 576px) {
+    .about-hero { padding: 80px 20px; }
+    .about-title { font-size: 2rem; }
+    .counter-glow { font-size: 2.5rem; }
+}

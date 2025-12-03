@@ -121,147 +121,17 @@ $quick_categories = [
 // =========================
 ob_start();
 ?>
-<link rel="stylesheet" href="public/assets/css/cssUser/index.css?v=10005">
+<link rel="stylesheet" href="public/assets/css/cssUser/index.css?v=10006">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 <script src="public/assets/js/indexUser.js?v=9999" defer></script>
 
-<style>
-    /* Layout hero 2 cột */
-    .hero-section {
-        display: grid;
-        grid-template-columns: 280px 1fr;
-        gap: 20px;
-        margin-bottom: 40px;
-    }
-    .full-width-content { width: 100%; }
-
-    @media (max-width: 991px) {
-        .hero-section { grid-template-columns: 1fr; }
-        .col-left-sidebar { display: none; }
-    }
-
-    /* Tăng tương phản dark mode */
-    [data-theme="dark"] .product-card h3 {
-        color: #fff !important;
-        font-weight: 600;
-    }
-    [data-theme="dark"] .section-head h2 {
-        color: #fff !important;
-        text-shadow: 0 0 10px rgba(255,255,255,0.2);
-    }
-
-    /* ====== INDEX – CARD DETAIL, RATING & CHIP CẤU HÌNH ====== */
-    .product-card .product-thumb-wrap {
-        position: relative;
-        width: 100%;
-        height: 210px;
-        padding: 10px 10px 4px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    .product-card .product-thumb-wrap img {
-        max-height: 190px;
-        max-width: 100%;
-        width: auto;
-        object-fit: contain;
-        display: block;
-    }
-
-    .product-card .product-title {
-        font-size: 14px;
-        font-weight: 600;
-        margin: 4px 0 6px;
-        height: 40px;
-        overflow: hidden;
-    }
-
-    .product-card .price-block {
-        margin-bottom: 6px;
-    }
-
-    .product-config-row {
-        background: rgba(148, 163, 184, 0.15);
-        border-radius: 8px;
-        padding: 6px 8px;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 6px;
-        margin-bottom: 8px;
-        font-size: 12px;
-    }
-    .config-chip {
-        display: inline-flex;
-        align-items: center;
-        gap: 4px;
-        padding: 3px 6px;
-        border-radius: 999px;
-        background: rgba(15, 23, 42, 0.05);
-        color: #64748b;
-        white-space: nowrap;
-    }
-
-    .rating-row {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        font-size: 12px;
-        color: #64748b;
-        margin-bottom: 10px;
-    }
-    .rating-row .stars i {
-        color: #fbbf24;
-        font-size: 12px;
-        margin-right: 1px;
-    }
-
-    .card-actions {
-        display: flex;
-        gap: 6px;
-        margin-top: 4px;
-    }
-    .card-actions .add-cart-btn {
-        font-size: 14px;
-        padding: 10px 0;
-        border-radius: 999px;
-        border: none;
-        cursor: pointer;
-        font-weight: 600;
-        text-align: center;
-        text-decoration: none;
-        transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
-        min-width: 120px;
-    }
-    .card-actions .add-cart-btn--primary {
-        background: linear-gradient(135deg, #22c55e, #4ade80);
-        flex: 1.3;
-        color: #0f172a;
-        box-shadow: 0 0 0 1px rgba(34,197,94,.4),
-                    0 8px 18px rgba(34,197,94,.35);
-    }
-    .card-actions .add-cart-btn--secondary {
-        flex: 1;
-        background: #0f172a;
-        color: #e5e7eb;
-        box-shadow: 0 0 0 1px rgba(15,23,42,.5);
-    }
-    .card-actions .add-cart-btn:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 10px 24px rgba(15,23,42,.45);
-    }
-
-    [data-theme="dark"] .product-config-row {
-        background: rgba(15, 23, 42, 0.9);
-    }
-</style>
 <?php
 $ADDITIONAL_BODY_END_CONTENT = ob_get_clean();
 
-// HEADER
+// HEADER (logo Techshop trỏ về route public/ trong header.php)
 include BASE_PATH . '/includes/User/header.php';
 ?>
 
-<!-- Banner dọc 2 bên -->
 <div class="sticky-banner-container-left">
     <a href="#"><img loading="lazy" src="public/assets/images/banner_doc_1.jpg" alt="Banner Trái"></a>
 </div>
@@ -272,7 +142,6 @@ include BASE_PATH . '/includes/User/header.php';
 <main class="homepage" role="main">
     <div class="main-content">
 
-        <!-- ========== HERO: SIDEBAR + SLIDER ========== -->
         <div class="hero-section">
             <aside class="col-left-sidebar" aria-label="Danh mục sản phẩm">
                 <?php include BASE_PATH . '/includes/User/sidebar.php'; ?>
@@ -287,13 +156,13 @@ include BASE_PATH . '/includes/User/header.php';
                     </button>
 
                     <div class="product-slider full-width-slider" id="main-banner-slider">
-                        <a href="#" class="main-banner-slide">
+                        <a href="public/products?cate=laptop" class="main-banner-slide">
                             <img src="public/assets/images/main_banner1.jpg" alt="Banner 1">
                         </a>
-                        <a href="#" class="main-banner-slide">
+                        <a href="public/products?cate=pc" class="main-banner-slide">
                             <img src="public/assets/images/main_banner2.jpg" alt="Banner 2">
                         </a>
-                        <a href="#" class="main-banner-slide">
+                        <a href="public/products?cate=monitor" class="main-banner-slide">
                             <img src="public/assets/images/main_banner3.jpg" alt="Banner 3">
                         </a>
                     </div>
@@ -314,7 +183,6 @@ include BASE_PATH . '/includes/User/header.php';
             </div>
         </div>
 
-        <!-- ========== CÁC SECTION SẢN PHẨM ========== -->
         <div class="full-width-content">
 
             <?php if (!empty($list_laptop)): ?>
@@ -341,7 +209,6 @@ include BASE_PATH . '/includes/User/header.php';
                 <?php renderProductSection('slider-accessories', 'Phụ kiện công nghệ', 'accessories', $list_accessories); ?>
             <?php endif; ?>
 
-            <!-- Thương hiệu nổi bật -->
             <section class="product-section brand-section">
               <div class="section-head">
                 <h2>THƯƠNG HIỆU NỔI BẬT</h2>
@@ -356,7 +223,6 @@ include BASE_PATH . '/includes/User/header.php';
               </div>
             </section>
 
-            <!-- Danh mục nhanh -->
             <section class="quick-categories-section">
                 <div class="quick-categories-header">Danh mục sản phẩm</div>
                 <div class="quick-categories-grid">
@@ -467,7 +333,6 @@ function renderProductCard($row)
         </a>
 
         <div class="card-actions">
-            <!-- THÊM GIỎ HÀNG – đã đổi name field đúng theo cart.php -->
             <form action="public/cart" method="POST" style="flex:1;">
                 <input type="hidden" name="action" value="add">
                 <input type="hidden" name="id_san_pham" value="<?= (int)$row['id'] ?>">
@@ -477,7 +342,6 @@ function renderProductCard($row)
                 </button>
             </form>
 
-            <!-- XEM CHI TIẾT – nút riêng như bạn yêu cầu -->
             <a href="public/products/<?= (int)$row['id'] ?>"
                class="add-cart-btn add-cart-btn--secondary">
                 Xem chi tiết

@@ -94,7 +94,10 @@ $ADDITIONAL_HEAD_CONTENT = $ADDITIONAL_HEAD_CONTENT ?? '';
   <header class="main-header" role="banner">
     <div class="header-inner">
       
-      <a href="public/" class="logo" aria-label="Về trang chủ Techshop">Techshop</a>
+      <a href="public/user/index.php" class="logo" aria-label="Về trang chủ Techshop">
+    Techshop
+      </a>
+
       
       <?php if ($SHOW_SEARCH): ?>
       <form class="search-box" role="search" action="public/user/product.php" method="get">

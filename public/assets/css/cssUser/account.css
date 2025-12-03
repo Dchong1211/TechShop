@@ -401,3 +401,116 @@ img {
   overflow: hidden;
 }
 
+/* ===================================================
+   LIGHT THEME OVERRIDES CHO TRANG TÀI KHOẢN
+   (đặt ở CUỐI FILE account.css)
+   =================================================== */
+
+/* Nền chung light */
+html[data-theme="light"] body {
+  background: radial-gradient(circle at top, #f4f2ff 0%, #f8f5ff 30%, #ffffff 60%) !important;
+}
+
+/* Sidebar sáng */
+html[data-theme="light"] .account-sidebar {
+  background: #ffffff;
+  border-color: #e2e8f0;
+  box-shadow: 0 18px 45px rgba(15, 23, 42, 0.12);
+}
+
+html[data-theme="light"] .account-sidebar h2 {
+  color: #0f172a;
+}
+
+/* Link trong sidebar */
+html[data-theme="light"] .account-nav a {
+  color: #475569;
+}
+
+html[data-theme="light"] .account-nav a:hover {
+  background: #f1f5f9;
+  color: #0f172a;
+}
+
+/* Active vẫn giữ gradient nhưng nhìn rõ trên nền sáng */
+html[data-theme="light"] .account-nav a.active {
+  background: linear-gradient(135deg, #6366f1, #22c55e);
+  color: #ffffff;
+  box-shadow: 0 0 18px rgba(79, 70, 229, .45);
+}
+
+/* Logout trong light mode */
+html[data-theme="light"] .account-nav a.logout {
+  color: #dc2626;
+}
+
+html[data-theme="light"] .account-nav a.logout:hover {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+/* Card phải (khung Đổi mật khẩu / Hồ sơ) sáng */
+html[data-theme="light"] .account-card {
+  background: #ffffff;
+  border-color: #e5e7eb;
+  box-shadow:
+    0 18px 45px rgba(15, 23, 42, .10),
+    0 0 0 1px rgba(148, 163, 184, .15);
+}
+
+/* Tiêu đề, text trong card */
+html[data-theme="light"] .account-main-header h1,
+html[data-theme="light"] .profile-name {
+  color: #0f172a;
+}
+
+html[data-theme="light"] .info-value {
+  color: #111827;
+}
+
+/* Label form */
+html[data-theme="light"] .form-label {
+  color: #4b5563;
+}
+
+/* Input, select, textarea sáng */
+html[data-theme="light"] .account-card input,
+html[data-theme="light"] .account-card select,
+html[data-theme="light"] .account-card textarea,
+html[data-theme="light"] .form-input {
+  background: #f9fafb;
+  color: #0f172a;
+  border-color: #e5e7eb;
+}
+
+html[data-theme="light"] .account-card input:focus,
+html[data-theme="light"] .account-card select:focus,
+html[data-theme="light"] .account-card textarea:focus,
+html[data-theme="light"] .form-input:focus {
+  background: #ffffff;
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(129, 140, 248, .35);
+}
+
+/* Nút ghost (Hủy) trong light mode */
+html[data-theme="light"] .btn-ghost {
+  background: #f8fafc;
+  border-color: #cbd5f5;
+  color: #0f172a;
+}
+
+html[data-theme="light"] .btn-ghost:hover {
+  background: #e5e7eb;
+  border-color: #94a3b8;
+}
+
+/* Nút outline trong light mode */
+html[data-theme="light"] .btn-outline {
+  background: transparent;
+  border-color: #d1d5db;
+  color: #111827;
+}
+
+html[data-theme="light"] .btn-outline:hover {
+  background: #f3f4f6;
+}

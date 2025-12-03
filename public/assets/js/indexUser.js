@@ -1,9 +1,9 @@
 /* FILE: public/assets/js/indexUser.js
  * MỤC TIÊU:
- *  - Slider hero + slider sản phẩm dùng chung 1 engine
- *  - Tự tính scrollAmount dựa trên width container & card
- *  - Hạn chế layout thrashing (đo 1 lần, cache, update khi resize)
- *  - Giữ nguyên API: scrollSlider(sectionId, direction)
+ * - Slider hero + slider sản phẩm dùng chung 1 engine
+ * - Tự tính scrollAmount dựa trên width container & card
+ * - Hạn chế layout thrashing (đo 1 lần, cache, update khi resize)
+ * - Giữ nguyên API: scrollSlider(sectionId, direction)
  */
 
 (function () {

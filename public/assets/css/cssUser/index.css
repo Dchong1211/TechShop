@@ -15,11 +15,11 @@
 }
 
 /* =========================================================
-   HERO SECTION: SIDEBAR + MAIN BANNER
+   HERO SECTION: SIDEBAR + MAIN BANNER (STYLE CŨ - CHỜ GHI ĐÈ Ở CUỐI FILE)
    ========================================================= */
 
 .hero-section {
-  display: flex;
+  display: flex; /* Sẽ bị ghi đè bởi grid ở dưới */
   gap: 20px;
   margin-bottom: 40px;
   transition: gap 0.5s cubic-bezier(0.25, 1, 0.5, 1);
@@ -51,7 +51,7 @@
   transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-/* Trạng thái ẩn sidebar (nếu JS có set class body.desktop-sidebar-hidden) */
+/* Trạng thái ẩn sidebar */
 body.desktop-sidebar-hidden .hero-section {
   gap: 0 !important;
 }
@@ -127,7 +127,7 @@ body.desktop-sidebar-hidden .hero-content {
   display: none;
 }
 
-/* card trong slider – kế thừa từ .product-card nhưng có width riêng */
+/* card trong slider */
 .product-slider .product-card {
   width: calc(25% - 15px);
   min-width: 260px;
@@ -386,7 +386,7 @@ body.desktop-sidebar-hidden .product-slider .product-card {
 }
 
 /* =========================================================
-   DARK MODE – CHỈ CHO INDEX
+   DARK MODE – CHUNG
    ========================================================= */
 
 [data-theme="dark"] .quick-categories-section,
@@ -596,4 +596,136 @@ body.desktop-sidebar-hidden .product-slider .product-card {
     border-radius: 12px;
     padding: 30px;
     border: 1px solid rgba(0,0,0,0.04);
+}
+
+/* =========================================================================
+   PHẦN CSS ĐƯỢC TÁCH RA TỪ INDEX.PHP (GHI ĐÈ & BỔ SUNG)
+   ========================================================================= */
+
+/* Layout hero 2 cột (Ghi đè display: flex ở trên thành grid) */
+.hero-section {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 20px;
+    margin-bottom: 40px;
+}
+.full-width-content { width: 100%; }
+
+@media (max-width: 991px) {
+    .hero-section { grid-template-columns: 1fr; }
+    .col-left-sidebar { display: none; }
+}
+
+/* Tăng tương phản dark mode - Bổ sung */
+[data-theme="dark"] .product-card h3 {
+    color: #fff !important;
+    font-weight: 600;
+}
+[data-theme="dark"] .section-head h2 {
+    color: #fff !important;
+    text-shadow: 0 0 10px rgba(255,255,255,0.2);
+}
+
+/* ====== INDEX – CARD DETAIL, RATING & CHIP CẤU HÌNH ====== */
+.product-card .product-thumb-wrap {
+    position: relative;
+    width: 100%;
+    height: 210px;
+    padding: 10px 10px 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.product-card .product-thumb-wrap img {
+    max-height: 190px;
+    max-width: 100%;
+    width: auto;
+    object-fit: contain;
+    display: block;
+}
+
+.product-card .product-title {
+    font-size: 14px;
+    font-weight: 600;
+    margin: 4px 0 6px;
+    height: 40px;
+    overflow: hidden;
+}
+
+.product-card .price-block {
+    margin-bottom: 6px;
+}
+
+.product-config-row {
+    background: rgba(148, 163, 184, 0.15);
+    border-radius: 8px;
+    padding: 6px 8px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 8px;
+    font-size: 12px;
+}
+.config-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 6px;
+    border-radius: 999px;
+    background: rgba(15, 23, 42, 0.05);
+    color: #64748b;
+    white-space: nowrap;
+}
+
+.rating-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: #64748b;
+    margin-bottom: 10px;
+}
+.rating-row .stars i {
+    color: #fbbf24;
+    font-size: 12px;
+    margin-right: 1px;
+}
+
+.card-actions {
+    display: flex;
+    gap: 6px;
+    margin-top: 4px;
+}
+.card-actions .add-cart-btn {
+    font-size: 14px;
+    padding: 10px 0;
+    border-radius: 999px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+    transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+    min-width: 120px;
+}
+.card-actions .add-cart-btn--primary {
+    background: linear-gradient(135deg, #22c55e, #4ade80);
+    flex: 1.3;
+    color: #0f172a;
+    box-shadow: 0 0 0 1px rgba(34,197,94,.4),
+                0 8px 18px rgba(34,197,94,.35);
+}
+.card-actions .add-cart-btn--secondary {
+    flex: 1;
+    background: #0f172a;
+    color: #e5e7eb;
+    box-shadow: 0 0 0 1px rgba(15,23,42,.5);
+}
+.card-actions .add-cart-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 24px rgba(15,23,42,.45);
+}
+
+[data-theme="dark"] .product-config-row {
+    background: rgba(15, 23, 42, 0.9);
 }

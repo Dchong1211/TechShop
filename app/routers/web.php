@@ -54,7 +54,7 @@ $router->post("/logout", function () {
     );
 }, ["login"]);
 
-$router->get("/profile", [AuthController::class, "get_current_user"], ["login"]);
+$router->get("/api/profile", [AuthController::class, "get_current_user"], ["login"]);
 
 
 /* =====================RESET PASSWORD===================== */
@@ -174,3 +174,67 @@ $router->get("/admin/products/list", function () {
         JSON_UNESCAPED_UNICODE
     );
 }, ["admin"]);
+
+$router->get("/product/{id}", function($id) {
+    require_once __DIR__ . "/../../public/user/product_detail.php";
+});
+
+/* ===================== USER PAGES (FE) ===================== */
+
+// Trang chủ (alias cho cả '' và '/')
+$router->get("", function () {
+    require_once __DIR__ . "/../../public/user/index.php";
+});
+$router->get("/", function () {
+    require_once __DIR__ . "/../../public/user/index.php";
+});
+
+// Danh sách sản phẩm
+$router->get("/products", function () {
+    require_once __DIR__ . "/../../public/user/product.php";
+});
+
+// Chi tiết sản phẩm
+$router->get("/products/{id}", function ($id) {
+    $_GET['id'] = $id;
+    require_once __DIR__ . "/../../public/user/product_detail.php";
+});
+
+// Giỏ hàng (xem)
+$router->get("/cart", function () {
+    require_once __DIR__ . "/../../public/user/cart.php";
+}, ["login"]);
+
+// Giỏ hàng (POST thêm vào giỏ)
+$router->post("/cart", function () {
+    require_once __DIR__ . "/../../public/user/cart.php";
+}, ["login"]);
+
+// Thanh toán
+$router->get("/checkout", function () {
+    require_once __DIR__ . "/../../public/user/checkout.php";
+}, ["login"]);
+
+// Đơn hàng
+$router->get("/orders", function () {
+    require_once __DIR__ . "/../../public/user/orders.php";
+}, ["login"]);
+
+$router->get("/orders/{id}", function ($id) {
+    $_GET['id'] = $id;
+    require_once __DIR__ . "/../../public/user/orders_detail.php";
+}, ["login"]);
+
+// Profile
+$router->get("/profile", function () {
+    require_once __DIR__ . "/../../public/user/profile.php";
+}, ["login"]);
+
+$router->get("/profile/edit", function () {
+    require_once __DIR__ . "/../../public/user/edit_profile.php";
+}, ["login"]);
+
+$router->get("/profile/password", function () {
+    require_once __DIR__ . "/../../public/user/change_password.php";
+}, ["login"]);
+

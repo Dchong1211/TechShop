@@ -1,7 +1,10 @@
 <?php
 declare(strict_types=1);
 
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 define('BASE_PATH', dirname(__DIR__)); // C:\xampp\htdocs\TechShop\public
 
 // =============== KẾT NỐI DATABASE ===============
