@@ -1,26 +1,4 @@
--- phpMyAdmin SQL Dump
--- version 5.2.1
--- https://www.phpmyadmin.net/
---
--- Host: localhost
--- Generation Time: 2025-12-03 15:35:26
--- Server version: 10.4.28-MariaDB
--- PHP Version: 8.2.12
-
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-START TRANSACTION;
-SET time_zone = "+00:00";
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `chi_tiet_don_hang`
---
+SET FOREIGN_KEY_CHECKS = 0;
 
 DROP TABLE IF EXISTS `chi_tiet_don_hang`;
 CREATE TABLE `chi_tiet_don_hang` (
@@ -36,13 +14,6 @@ CREATE TABLE `chi_tiet_don_hang` (
   CONSTRAINT `chi_tiet_don_hang_ibfk_1` FOREIGN KEY (`id_don_hang`) REFERENCES `don_hang` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `chi_tiet_don_hang_ibfk_2` FOREIGN KEY (`id_san_pham`) REFERENCES `san_pham` (`id`) ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `chi_tiet_don_hang`
---
-
-LOCK TABLES `chi_tiet_don_hang` WRITE;
-/*!40000 ALTER TABLE `chi_tiet_don_hang` DISABLE KEYS */;
 
 INSERT INTO `chi_tiet_don_hang` (`id`,`id_don_hang`,`id_san_pham`,`so_luong`,`don_gia`,`gia_von`) VALUES
 ('1','1','1','1','32990000.00','0.00'),
@@ -62,15 +33,6 @@ INSERT INTO `chi_tiet_don_hang` (`id`,`id_don_hang`,`id_san_pham`,`so_luong`,`do
 ('15','4','57','1','650000.00','0.00'),
 ('16','4','58','2','2350000.00','0.00');
 
-/*!40000 ALTER TABLE `chi_tiet_don_hang` ENABLE KEYS */;
-UNLOCK TABLES;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `chi_tiet_gio_hang`
---
-
 DROP TABLE IF EXISTS `chi_tiet_gio_hang`;
 CREATE TABLE `chi_tiet_gio_hang` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -84,22 +46,6 @@ CREATE TABLE `chi_tiet_gio_hang` (
   CONSTRAINT `fk_cart_product` FOREIGN KEY (`id_san_pham`) REFERENCES `san_pham` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `chi_tiet_gio_hang`
---
-
-LOCK TABLES `chi_tiet_gio_hang` WRITE;
-/*!40000 ALTER TABLE `chi_tiet_gio_hang` DISABLE KEYS */;
-
-/*!40000 ALTER TABLE `chi_tiet_gio_hang` ENABLE KEYS */;
-UNLOCK TABLES;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `danh_muc`
---
-
 DROP TABLE IF EXISTS `danh_muc`;
 CREATE TABLE `danh_muc` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -109,13 +55,6 @@ CREATE TABLE `danh_muc` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `ten_dm` (`ten_dm`)
 ) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `danh_muc`
---
-
-LOCK TABLES `danh_muc` WRITE;
-/*!40000 ALTER TABLE `danh_muc` DISABLE KEYS */;
 
 INSERT INTO `danh_muc` (`id`,`ten_dm`,`mo_ta`,`trang_thai`) VALUES
 ('1','Laptop Gaming','Máy tính xách tay cấu hình cao chuyên chơi game.','1'),
@@ -139,15 +78,6 @@ INSERT INTO `danh_muc` (`id`,`ten_dm`,`mo_ta`,`trang_thai`) VALUES
 ('19','Phụ Kiện Điện Thoại','Ốp lưng, dán màn hình, cáp sạc.','1'),
 ('20','Thiết Bị Đeo Thông Minh','Đồng hồ thông minh, vòng tay sức khỏe.','1');
 
-/*!40000 ALTER TABLE `danh_muc` ENABLE KEYS */;
-UNLOCK TABLES;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `danh_sach_yeu_thich`
---
-
 DROP TABLE IF EXISTS `danh_sach_yeu_thich`;
 CREATE TABLE `danh_sach_yeu_thich` (
   `id_nguoi_dung` int(11) NOT NULL COMMENT 'Khóa ngoại tới nguoi_dung',
@@ -159,22 +89,6 @@ CREATE TABLE `danh_sach_yeu_thich` (
   CONSTRAINT `fk_wishlist_product` FOREIGN KEY (`id_san_pham`) REFERENCES `san_pham` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_wishlist_user` FOREIGN KEY (`id_nguoi_dung`) REFERENCES `nguoi_dung` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `danh_sach_yeu_thich`
---
-
-LOCK TABLES `danh_sach_yeu_thich` WRITE;
-/*!40000 ALTER TABLE `danh_sach_yeu_thich` DISABLE KEYS */;
-
-/*!40000 ALTER TABLE `danh_sach_yeu_thich` ENABLE KEYS */;
-UNLOCK TABLES;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `dia_chi`
---
 
 DROP TABLE IF EXISTS `dia_chi`;
 CREATE TABLE `dia_chi` (
@@ -189,24 +103,8 @@ CREATE TABLE `dia_chi` (
   CONSTRAINT `fk_diachi_nguoidung` FOREIGN KEY (`id_nguoi_dung`) REFERENCES `nguoi_dung` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `dia_chi`
---
-
-LOCK TABLES `dia_chi` WRITE;
-/*!40000 ALTER TABLE `dia_chi` DISABLE KEYS */;
-
 INSERT INTO `dia_chi` (`id`,`id_nguoi_dung`,`ho_ten_nguoi_nhan`,`dien_thoai_nguoi_nhan`,`dia_chi_chi_tiet`,`mac_dinh`) VALUES
 ('1','1','Địa chỉ mặc định','0000000000','Địa chỉ chờ cập nhật','1');
-
-/*!40000 ALTER TABLE `dia_chi` ENABLE KEYS */;
-UNLOCK TABLES;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `don_hang`
---
 
 DROP TABLE IF EXISTS `don_hang`;
 CREATE TABLE `don_hang` (
@@ -224,28 +122,12 @@ CREATE TABLE `don_hang` (
   CONSTRAINT `fk_order_address` FOREIGN KEY (`id_dia_chi`) REFERENCES `dia_chi` (`id`) ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `don_hang`
---
-
-LOCK TABLES `don_hang` WRITE;
-/*!40000 ALTER TABLE `don_hang` DISABLE KEYS */;
-
 INSERT INTO `don_hang` (`id`,`id_khach_hang`,`tong_tien`,`phuong_thuc_thanh_toan`,`trang_thai_don`,`ngay_dat_hang`,`id_dia_chi`) VALUES
 ('1','2','53280000.00','Chuyển khoản','da_giao','2025-10-26 10:00:00','1'),
 ('2','3','26980000.00','COD','dang_giao','2025-11-01 14:30:00','1'),
 ('3','4','18270000.00','Thẻ Tín Dụng','cho_xac_nhan','2025-11-10 11:15:00','1'),
 ('4','5','47790000.00','Chuyển khoản','da_xac_nhan','2025-11-12 09:40:00','1'),
 ('5','2','1090000.00','COD','huy','2025-11-13 10:30:00','1');
-
-/*!40000 ALTER TABLE `don_hang` ENABLE KEYS */;
-UNLOCK TABLES;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `gio_hang`
---
 
 DROP TABLE IF EXISTS `gio_hang`;
 CREATE TABLE `gio_hang` (
@@ -257,22 +139,6 @@ CREATE TABLE `gio_hang` (
   UNIQUE KEY `id_nguoi_dung_unique` (`id_nguoi_dung`),
   CONSTRAINT `fk_cart_user_explicit` FOREIGN KEY (`id_nguoi_dung`) REFERENCES `nguoi_dung` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `gio_hang`
---
-
-LOCK TABLES `gio_hang` WRITE;
-/*!40000 ALTER TABLE `gio_hang` DISABLE KEYS */;
-
-/*!40000 ALTER TABLE `gio_hang` ENABLE KEYS */;
-UNLOCK TABLES;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `nguoi_dung`
---
 
 DROP TABLE IF EXISTS `nguoi_dung`;
 CREATE TABLE `nguoi_dung` (
@@ -296,13 +162,6 @@ CREATE TABLE `nguoi_dung` (
   UNIQUE KEY `email_2` (`email`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `nguoi_dung`
---
-
-LOCK TABLES `nguoi_dung` WRITE;
-/*!40000 ALTER TABLE `nguoi_dung` DISABLE KEYS */;
-
 INSERT INTO `nguoi_dung` (`id`,`ho_ten`,`email`,`mat_khau`,`vai_tro`,`email_verified`,`email_verified_at`,`otp`,`otp_expires_at`,`reset_token`,`reset_expires_at`,`reset_otp`,`reset_otp_expires`,`trang_thai`,`ngay_tao`) VALUES
 ('1','Admin','techshopNT@gmail.com','$2y$10$sseAAOmARUnwvDgQk5ajWuliRMlZ71bMTV6NElq/1Nd/LGLhQwuAe','admin','1',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'1','2025-11-26 16:08:45'),
 ('2','Nguyễn Văn A','vana@gmail.com','$2y$10$iM3.Xn3O0wLgYcW5vY7gU.0d1o8e/mPqC1c3ZqW9o0b6mJ8yL7zY.','khach','0',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'1','2025-11-26 16:08:45'),
@@ -314,15 +173,6 @@ INSERT INTO `nguoi_dung` (`id`,`ho_ten`,`email`,`mat_khau`,`vai_tro`,`email_veri
 ('8','minhhung','hung.nm.64cntt@ntu.edu.vn','$2y$10$NjhMXNGZWoqpTuXDDSS8VO7D8ZJFKi9KJ2BApC6IDI668HvJeVI6q','khach','1','2025-11-29 19:55:19',NULL,NULL,NULL,NULL,NULL,NULL,'1','2025-11-29 19:54:51'),
 ('9','duykhanh','khanh.tdu.64cntt@ntu.edu.vn','$2y$10$FBUZG/khUCYDs8.8ROJ8UOXFieDiN/iSJeVsxktAQMsRWNf9/1NO6','khach','1','2025-11-29 19:59:51',NULL,NULL,NULL,NULL,NULL,NULL,'1','2025-11-29 19:57:25'),
 ('10','minhchau','chau.hm.64cntt@ntu.edu.vn','$2y$10$AMW3saXBRKwWJNvWWJ3pVOlpmMV45Ms68j/P5l/wMAVCKpTRYLMeq','khach','1','2025-11-29 20:05:57',NULL,NULL,NULL,NULL,NULL,NULL,'1','2025-11-29 20:03:36');
-
-/*!40000 ALTER TABLE `nguoi_dung` ENABLE KEYS */;
-UNLOCK TABLES;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `san_pham`
---
 
 DROP TABLE IF EXISTS `san_pham`;
 CREATE TABLE `san_pham` (
@@ -343,13 +193,6 @@ CREATE TABLE `san_pham` (
   KEY `id_dm` (`id_dm`),
   CONSTRAINT `san_pham_ibfk_1` FOREIGN KEY (`id_dm`) REFERENCES `danh_muc` (`id`) ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=182 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `san_pham`
---
-
-LOCK TABLES `san_pham` WRITE;
-/*!40000 ALTER TABLE `san_pham` DISABLE KEYS */;
 
 INSERT INTO `san_pham` (`id`,`id_dm`,`ten_sp`,`gia`,`gia_khuyen_mai`,`so_luong_ton`,`hinh_anh`,`mo_ta_ngan`,`chi_tiet`,`ngay_nhap`,`luot_xem`,`trang_thai`) VALUES
 ('1','1','Laptop Gaming ASUS ROG Strix G16','35000000.00','32990000.00','15','0','Core i9, RAM 32GB, RTX 4080, Màn hình 240Hz','Chi tiết cấu hình: Core i9-13980HX, 32GB DDR5, 1TB SSD, RTX 4080 12GB, 16-inch QHD+ 240Hz.','2025-09-01 10:00:00','520','1'),
@@ -432,15 +275,6 @@ INSERT INTO `san_pham` (`id`,`id_dm`,`ten_sp`,`gia`,`gia_khuyen_mai`,`so_luong_t
 ('78','8','SSD Samsung 870 EVO 1TB SATA III','2500000.00','2300000.00','55','https://cdn.tgdd.vn/Products/Images/5348/306072/ssd-samsung-870-evo-1tb-thumb-600x600.jpg','Ổ cứng SATA phổ thông, tốc độ 560MB/s','Độ bền 600 TBW, Controller Samsung V-NAND.','2026-09-25 14:10:00','450','1'),
 ('79','10','VGA PNY RTX A4000 16GB','20000000.00',NULL,'5','https://cdn.tgdd.vn/Products/Images/5391/306796/card-man-hinh-vga-pny-rtx-a4000-16gb-thumb-600x600.jpg','Card đồ họa chuyên nghiệp cho thiết kế','Dành cho Workstation. GPU NVIDIA Ampere, 16GB GDDR6 ECC.','2026-10-01 10:20:00','300','1');
 
-/*!40000 ALTER TABLE `san_pham` ENABLE KEYS */;
-UNLOCK TABLES;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `thong_bao`
---
-
 DROP TABLE IF EXISTS `thong_bao`;
 CREATE TABLE `thong_bao` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -454,22 +288,6 @@ CREATE TABLE `thong_bao` (
   CONSTRAINT `fk_notification_user` FOREIGN KEY (`id_nguoi_dung`) REFERENCES `nguoi_dung` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `thong_bao`
---
-
-LOCK TABLES `thong_bao` WRITE;
-/*!40000 ALTER TABLE `thong_bao` DISABLE KEYS */;
-
-/*!40000 ALTER TABLE `thong_bao` ENABLE KEYS */;
-UNLOCK TABLES;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `thong_ke_doanh_thu`
---
-
 DROP TABLE IF EXISTS `thong_ke_doanh_thu`;
 CREATE TABLE `thong_ke_doanh_thu` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -481,18 +299,4 @@ CREATE TABLE `thong_ke_doanh_thu` (
   UNIQUE KEY `ngay_thong_ke` (`ngay_thong_ke`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `thong_ke_doanh_thu`
---
-
-LOCK TABLES `thong_ke_doanh_thu` WRITE;
-/*!40000 ALTER TABLE `thong_ke_doanh_thu` DISABLE KEYS */;
-
-/*!40000 ALTER TABLE `thong_ke_doanh_thu` ENABLE KEYS */;
-UNLOCK TABLES;
-
-COMMIT;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+SET FOREIGN_KEY_CHECKS = 1;
