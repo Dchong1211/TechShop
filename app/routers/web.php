@@ -144,6 +144,9 @@ $router->post("/admin/products/delete", function () {
 $router->get("/admin/products/add", function () {
     require_once __DIR__ . "/../../public/admin/add_products.php";
 }, ["admin"]);
+$router->get("/admin/products/edit", function () {
+    require_once __DIR__ . "/../../public/admin/edit_products.php";
+}, ["admin"]);
 
 $router->get("/admin/dashboard", function() {
     require_once __DIR__ . "/../../public/admin/dashboard.php";
@@ -175,17 +178,10 @@ $router->get("/admin/products/list", function () {
     );
 }, ["admin"]);
 
-$router->get("/products/{id}", function($id) {
-    require_once __DIR__ . "/../../public/user/product_detail.php";
-});
-
 /* ===================== USER PAGES (FE) ===================== */
 
 // Trang chủ (alias cho cả '' và '/')
 $router->get("", function () {
-    require_once __DIR__ . "/../../public/user/index.php";
-});
-$router->get("/", function () {
     require_once __DIR__ . "/../../public/user/index.php";
 });
 

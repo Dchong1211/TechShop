@@ -68,7 +68,7 @@ $sp = $res["data"];
     <main class="main-content">
  
         <div class="card">
-            <form action="/TechShop/public/admin/products/update" method="POST" enctype="multipart/form-data" id="updateForm">
+            <form action="/TechShop/admin/products/update" method="POST" enctype="multipart/form-data" id="updateForm">
 
                 <input type="hidden" name="csrf" value="<?= $csrf ?>">
                 <input type="hidden" name="id" value="<?= $sp['id'] ?>">
@@ -150,7 +150,7 @@ $sp = $res["data"];
                             <i class="bi bi-trash"></i> Xóa sản phẩm
                         </button>
 
-                        <button type="submit" class="btn btn-primary" onclick="confirmUpdate()">
+                        <button type="button" class="btn btn-primary" onclick="confirmUpdate()">
                             <i class="bi bi-save"></i> Cập nhật
                         </button>
                     </div>
@@ -247,7 +247,8 @@ $sp = $res["data"];
         }
 
         if (confirm("Bạn có chắc chắn muốn lưu thay đổi?")) {
-            const btn = form.querySelector('button[type="button"].btn-primary');
+            const btn = form.querySelector('.btn-primary');
+
             const originalText = btn.innerHTML;
             btn.innerHTML = '<i class="bi bi-hourglass-split"></i> Đang lưu...';
             btn.disabled = true;
@@ -280,4 +281,4 @@ $sp = $res["data"];
 </script>
 
 </body>
-</html>
+</html>z

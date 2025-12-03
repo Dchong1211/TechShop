@@ -49,8 +49,7 @@
     <main class="main-content">
 
         <div class="card">
-            <form action="/TechShop/public/admin/products/add" 
-            method="POST" class="product-form" id="addForm">
+            <form action="/TechShop/admin/products/add" method="POST" enctype="multipart/form-data" id="addForm">
 
                 <input type="hidden" name="csrf" value="<?= $csrf ?>">
 
@@ -95,13 +94,11 @@
                     <div class="form-group">
                         <label>Ảnh</label>
                         <div class="img-preview-box">
-                            <img id="imgPreview" src="<?= htmlspecialchars($sp['hinh_anh']) ?>" 
-                                onerror="this.src='https://via.placeholder.com/150?text=No+Image'" 
-                                alt="Preview">
+                            <img id="imgPreview" src="" style="display:none;" alt="Preview">
                         </div>
                         <input type="file" name="hinh_anh_file" id="imgInput" accept="image/*" class="form-control"
                             onchange="previewFile(this)">
-                        <input type="hidden" name="hinh_anh" id="imgUrl" value="<?= htmlspecialchars($sp['hinh_anh']) ?>">
+                        <input type="hidden" name="hinh_anh" id="imgUrl" value="">
                     </div>
 
                     <div class="form-group">

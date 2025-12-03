@@ -196,11 +196,11 @@ CREATE TABLE `san_pham` (
 ) ENGINE=InnoDB AUTO_INCREMENT=182 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 INSERT INTO `san_pham` (`id`,`id_dm`,`ten_sp`,`gia`,`gia_khuyen_mai`,`so_luong_ton`,`hinh_anh`,`mo_ta_ngan`,`chi_tiet`,`ngay_nhap`,`luot_xem`,`trang_thai`) VALUES
-('1','1','Laptop Gaming ASUS ROG Strix G16','35000000.00','32990000.00','15','0','Core i9, RAM 32GB, RTX 4080, Màn hình 240Hz','Chi tiết cấu hình: Core i9-13980HX, 32GB DDR5, 1TB SSD, RTX 4080 12GB, 16-inch QHD+ 240Hz.','2025-09-01 10:00:00','521','1'),
-('2','1','Laptop Gaming Acer Nitro 5','21000000.00','19990000.00','25','0','Core i5, RAM 16GB, RTX 3050, Màn hình 144Hz','Chi tiết cấu hình: Core i5-12500H, 16GB DDR4, 512GB SSD, RTX 3050 4GB, 15.6-inch FHD 144Hz.','2025-09-05 11:30:00','480','1'),
-('3','2','Laptop Văn Phòng Dell Inspiron 14','18000000.00','16500000.00','30','https://cdn.tgdd.vn/Products/Images/44/302830/dell-inspiron-14-5430-i5-8002w1-thumb-600x600.jpg','Core i7, RAM 16GB, SSD 512GB, Màn hình OLED','Máy tính xách tay mỏng nhẹ, hiệu năng cao cho công việc, Core i7-1355U.','2025-09-10 14:00:00','350','1'),
-('4','2','Laptop Văn Phòng HP Pavilion Aero 13','15500000.00',NULL,'18','https://cdn.tgdd.vn/Products/Images/44/278550/hp-pavilion-aero-13-be0229au-r7-64u91pa-thumb-600x600.jpg','Ryzen 5, RAM 8GB, Siêu nhẹ chỉ 0.9kg','Thiết kế cao cấp, thời lượng pin dài, Ryzen 5 7535U, 8GB DDR4, 512GB SSD.','2025-09-15 09:45:00','290','1'),
-('5','3','PC Gaming T-Rex i7 4070','45000000.00','42000000.00','10','https://cdn.tgdd.vn/Products/Images/5012/306786/pc-gaming-i7-13700kf-rtx-4070-12gb-thumb-600x600.jpg','PC chiến game mạnh mẽ: i7-14700K, RTX 4070 12GB','Cấu hình khủng, tản nhiệt nước AIO, 32GB RAM DDR5.','2025-09-20 16:15:00','600','1'),
+('1','1','Laptop Gaming ASUS ROG Strix G16','35000000.00','32990000.00','16','https://i.ibb.co/Zz1PYg4v/z7217340136694-92ac5c4eabbb98871574dbc434a8790e.jpg','','','2025-09-01 10:00:00','521','1'),
+('2','1','Laptop Gaming Acer Nitro 5','21000000.00','19990000.00','25','https://i.ibb.co/jP5hNB4G/avt-bua-dang-yeu-044342197.jpg','','','2025-09-05 11:30:00','480','1'),
+('3','2','Laptop Văn Phòng Dell Inspiron 14','18000000.00','16500000.00','30','https://i.ibb.co/4n9zxNtX/z7215657518204-c71fe7594b12236def8f0dba8d7aa670.jpg','Core i7, RAM 16GB, SSD 512GB, Màn hình OLED','Máy tính xách tay mỏng nhẹ, hiệu năng cao cho công việc, Core i7-1355U.','2025-09-10 14:00:00','350','1'),
+('4','2','Laptop Văn Phòng HP Pavilion Aero 13','15500000.00','0.00','18','0','Ryzen 5, RAM 8GB, Siêu nhẹ chỉ 0.9kg','Thiết kế cao cấp, thời lượng pin dài, Ryzen 5 7535U, 8GB DDR4, 512GB SSD.','2025-09-15 09:45:00','290','1'),
+('5','3','PC Gaming T-Rex i7 4070','45000000.00','42000000.00','10','0','PC chiến game mạnh mẽ: i7-14700K, RTX 4070 12GB','Cấu hình khủng, tản nhiệt nước AIO, 32GB RAM DDR5.','2025-09-20 16:15:00','600','1'),
 ('6','3','PC Văn Phòng Mini i3','9500000.00',NULL,'40','https://images.fpt.shop/unsafe/fit-in/600x600/filters:quality(90):fill(white)/fptshop.com.vn/Uploads/Originals/2023/12/28/638394464169542031_pc-dell-inspiron-3020s-den-thumb.jpg','PC cỡ nhỏ, Core i3-13100, 8GB RAM, SSD 256GB','Máy tính nhỏ gọn cho các tác vụ văn phòng cơ bản.','2025-09-25 08:30:00','150','1'),
 ('7','4','Màn Hình Gaming Samsung Odyssey G7 27 inch','14000000.00','12990000.00','50','https://cdn.tgdd.vn/Products/Images/55/244301/samsung-ls27bg750eexxv-thumb-600x600.jpeg','2K QHD, 240Hz, 1ms, Cong 1000R','Màn hình cao cấp cho trải nghiệm gaming tuyệt đỉnh.','2025-10-01 13:00:00','750','1'),
 ('8','4','Màn Hình Văn Phòng LG 24 inch IPS','3500000.00',NULL,'65','https://cdn.tgdd.vn/Products/Images/55/310619/lg-24gn60r-b-thumb-600x600.jpg','FHD, Tấm nền IPS, Thiết kế không viền','Màu sắc chính xác, góc nhìn rộng, lý tưởng cho công việc.','2025-10-05 15:20:00','310','1'),
@@ -275,7 +275,7 @@ INSERT INTO `san_pham` (`id`,`id_dm`,`ten_sp`,`gia`,`gia_khuyen_mai`,`so_luong_t
 ('77','7','Tai Nghe Bluetooth Sennheiser Momentum 4 Wireless','8500000.00','7990000.00','10','https://cdn.tgdd.vn/Products/Images/54/298419/tai-nghe-sennheiser-momentum-4-wireless-thumb-600x600.jpg','Âm thanh Hi-Fi, Pin 60 giờ','ANC cao cấp, chất lượng âm thanh Audiophile.','2026-09-20 11:00:00','250','1'),
 ('78','8','SSD Samsung 870 EVO 1TB SATA III','2500000.00','2300000.00','55','https://cdn.tgdd.vn/Products/Images/5348/306072/ssd-samsung-870-evo-1tb-thumb-600x600.jpg','Ổ cứng SATA phổ thông, tốc độ 560MB/s','Độ bền 600 TBW, Controller Samsung V-NAND.','2026-09-25 14:10:00','450','1'),
 ('79','10','VGA PNY RTX A4000 16GB','20000000.00',NULL,'5','https://cdn.tgdd.vn/Products/Images/5391/306796/card-man-hinh-vga-pny-rtx-a4000-16gb-thumb-600x600.jpg','Card đồ họa chuyên nghiệp cho thiết kế','Dành cho Workstation. GPU NVIDIA Ampere, 16GB GDDR6 ECC.','2026-10-01 10:20:00','300','1'),
-('80','1','mowis','123000.00','12.00','1','0','đá','adasdasda','2025-12-03 23:37:52','0','1');
+('80','1','mowis','123000.00','12.00','0','https://i.ibb.co/C5nQYLbW/image.jpg','qưeqwe','qưeqe','2025-12-04 03:41:58','0','1');
 
 DROP TABLE IF EXISTS `thong_bao`;
 CREATE TABLE `thong_bao` (

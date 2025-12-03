@@ -87,7 +87,7 @@ class Product {
         ";
 
         $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("isddiissii",
+        $stmt->bind_param("isddisssii",
             $dm, $ten, $gia, $gia_km, $sl, $img, $mo_ta_ngan, $chi_tiet, $trang_thai, $id
         );
         return $stmt->execute();
@@ -104,10 +104,6 @@ class Product {
         return $this->conn->insert_id;
     }
 
-
-    /* ============================================================
-     *   HÀM DÙNG CHUNG CHO ADMIN LIST (KẾT HỢP SEARCH / SORT)
-     * ============================================================ */
     public function adminQuery($search = "", $sort = "id ASC") {
         $search = $this->conn->real_escape_string($search);
         $allowedSort = ["id ASC", "id ASC", "gia ASC", "gia DESC", "so_luong_ton ASC", "so_luong_ton DESC"];
