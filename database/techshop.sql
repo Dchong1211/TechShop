@@ -1,7 +1,7 @@
 -- phpMyAdmin SQL Export
 -- Host: 127.0.0.1
 -- Database: `techshop`
--- Exported at: 2025-12-03 13:27:08
+-- Exported at: 2025-12-03 13:27:28
 
 SET FOREIGN_KEY_CHECKS=0;
 
