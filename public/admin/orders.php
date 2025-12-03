@@ -146,5 +146,6 @@ if (isset($_GET['action'])) {
 </div>
 
 <script src="/TechShop/public/assets/js/orders.js"></script>
+<script src="/TechShop/public/assets/js/admin.js"></script>
 </body>
 </html>
