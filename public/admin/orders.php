@@ -99,9 +99,10 @@ if (isset($_GET['action'])) {
                                         <td><?= htmlspecialchars($o['id']) ?></td>
                                         <td><?= htmlspecialchars($o['ten_khach']) ?></td>
                                         <td><?= number_format($o['tong_tien'], 0, ',', '.') ?></td>
-                                        <td><?= htmlspecialchars($o['ten_nguoi_nhan']) ?></td>
-                                        <td><?= htmlspecialchars($o['sdt_nguoi_nhan']) ?></td>
-                                        <td><?= htmlspecialchars($o['dia_chi_giao_hang']) ?></td>
+                                        <td><?= htmlspecialchars($o['ten_nguoi_nhan'] ?? 'N/A') ?></td>
+                                        <td><?= htmlspecialchars($o['sdt_nguoi_nhan'] ?? 'N/A') ?></td>
+                                        <td><?= htmlspecialchars($o['dia_chi_giao_hang'] ?? 'N/A') ?></td>
+
 
                                         <td>
                                             <?php
@@ -126,7 +127,7 @@ if (isset($_GET['action'])) {
                                         </td>
 
                                         <td>
-                                            <a href="/TechShop/public/admin/edit_order.php?id=<?= $o['id'] ?>" class="btn btn-edit">Chỉnh sửa</a>
+                                            <a href="/TechShop/public/admin/edit_orders.php?id=<?= $o['id'] ?>" class="btn btn-edit">Chỉnh sửa</a>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>

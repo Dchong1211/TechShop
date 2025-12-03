@@ -27,13 +27,17 @@ if (!empty($keyword)) {
     <meta name="csrf-token" content="<?= $csrf ?>">
     <link rel="stylesheet" href="../assets/css/cssAdmin/admin_style.css"> 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        .status-active { color: green; font-weight: bold; }
+        .status-inactive { color: red; font-weight: bold; }
+    </style>
 </head>
 <body>
 
 <div class="app-wrapper">
     <?php 
-    $active_page = 'users'; 
-    include __DIR__ . '/../includes/Admin/layout_sidebar.php'; 
+        $active_page = 'users'; 
+        include __DIR__ . '/../includes/Admin/layout_sidebar.php'; 
     ?>
 
     <main class="main-content">
@@ -44,11 +48,8 @@ if (!empty($keyword)) {
                 <div class="table-actions">
                     <a href="/TechShop/public/admin/add_users.php" class="btn btn-primary">Thêm Người dùng Mới</a>
 
-
                     <!-- SEARCH BOX -->
-                    <form method="GET" class="search-box">
-                        <input type="hidden" name="controller" value="customer">
-                        <input type="hidden" name="action" value="dashboard">
+                    <form method="GET" class="search-box" action="/TechShop/admin/users">
                         <input type="text" name="keyword"
                                placeholder="Tìm kiếm theo Tên / Email..."
                                value="<?= htmlspecialchars($keyword) ?>">
@@ -85,17 +86,19 @@ if (!empty($keyword)) {
                                                 <span style="color: red; font-weight: bold;">Chưa xác minh</span>
                                             <?php endif; ?>
                                         </td>
-
-                                        <td><?= $u['trang_thai'] ? '<span class="status-active">Hoạt động</span>' : '<span class="status-inactive">Khóa</span>' ?></td>
+                                        <td>
+                                            <?= $u['trang_thai'] 
+                                                ? '<span class="status-active">Hoạt động</span>' 
+                                                : '<span class="status-inactive">Khóa</span>' ?>
+                                        </td>
                                         <td>
                                             <a href="/TechShop/public/admin/edit_user.php?id=<?= $u['id'] ?>" class="btn btn-edit">Chỉnh sửa</a>
-
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>
                             <?php else: ?>
                                 <tr>
-                                    <td colspan="8" style="text-align:center; padding:20px;">Không tìm thấy người dùng nào.</td>
+                                    <td colspan="6" style="text-align:center; padding:20px;">Không tìm thấy người dùng nào.</td>
                                 </tr>
                             <?php endif; ?>
                         </tbody>

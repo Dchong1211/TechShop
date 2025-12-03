@@ -66,9 +66,9 @@ class CustomerController {
         $id = $this->model->create($data);
 
         if ($id) {
-            header("Location: /TechShop/public/admin/users.php?created=1&id={$id}");
+            header("Location: /TechShop/public/admin/add_users.php?created=1&id={$id}");
         } else {
-            header("Location: /TechShop/public/admin/users.php?created=0");
+            header("Location: /TechShop/public/admin/add_users.php?created=0");
         }
         exit;
     }
