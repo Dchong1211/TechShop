@@ -103,7 +103,7 @@ async function deleteProduct(id) {
         alert('Lỗi: ' + data.message);
     }
 }
-
+// Thêm sản phẩm
 async function handleAddProducts(e) {
     e.preventDefault();
     const form = e.target;
@@ -122,7 +122,7 @@ async function handleAddProducts(e) {
         const data = await res.json();
 
         if (data.success) {
-            alert('✅ ' + data.message);
+            alert('Thêm thành công: ' + data.message);
             window.location.href = '/TechShop/public/admin/products';
         } else {
             alert('Lỗi: ' + data.message);
@@ -135,7 +135,7 @@ async function handleAddProducts(e) {
         btn.disabled = false;
     }
 }
-
+// Cập nhật sản phẩm
 async function handleUpdateProduct(e) {
     e.preventDefault();
     const form = e.target;
