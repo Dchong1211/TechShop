@@ -7,50 +7,42 @@ $database = "techshop";
 $backup_file = __DIR__ . "/database/techshop.sql";
 
 $conn = new mysqli($host, $user, $pass, $database);
-if ($conn->connect_error) die("Lỗi kết nối MySQL");
 $conn->set_charset("utf8mb4");
+
+$sql  = "SET NAMES utf8mb4;\n";
+$sql .= "SET FOREIGN_KEY_CHECKS=0;\n\n";
 
 $tables = [];
 $res = $conn->query("SHOW TABLES");
-while ($row = $res->fetch_array()) $tables[] = $row[0];
-
-$sql = "";
-$sql .= "SET FOREIGN_KEY_CHECKS = 0;\n\n";
+while ($r = $res->fetch_array()) $tables[] = $r[0];
 
 foreach ($tables as $table) {
 
-    // DROP TABLE
     $sql .= "DROP TABLE IF EXISTS `$table`;\n";
 
-    // CREATE TABLE
     $res = $conn->query("SHOW CREATE TABLE `$table`");
     $row = $res->fetch_assoc();
     $sql .= $row["Create Table"] . ";\n\n";
 
-    // DATA
-    $result = $conn->query("SELECT * FROM `$table`");
-    if ($result->num_rows > 0) {
-        $rows = [];
-        while ($r = $result->fetch_assoc()) $rows[] = $r;
+    $rs = $conn->query("SELECT * FROM `$table`");
+    if ($rs->num_rows > 0) {
+        $cols = array_keys($rs->fetch_assoc());
+        $rs->data_seek(0);
 
-        $columns = array_keys($rows[0]);
-        $sql .= "INSERT INTO `$table` (`" . implode("`,`", $columns) . "`) VALUES\n";
+        $sql .= "INSERT INTO `$table` (`" . implode("`,`", $cols) . "`) VALUES\n";
 
-        foreach ($rows as $i => $rowData) {
-            $vals = array_values($rowData);
-
-            foreach ($vals as &$val) {
-                if ($val === null) $val = "NULL";
-                else $val = "'" . $conn->real_escape_string($val) . "'";
+        while ($row = $rs->fetch_assoc()) {
+            $vals = [];
+            foreach ($row as $v) {
+                $vals[] = ($v === null ? "NULL" : "'" . $conn->real_escape_string($v) . "'");
             }
-
-            $sql .= "(" . implode(",", $vals) . ")";
-            $sql .= ($i < count($rows) - 1) ? ",\n" : ";\n\n";
+            $sql .= "(" . implode(",", $vals) . "),\n";
         }
+        $sql = rtrim($sql, ",\n") . ";\n\n";
     }
 }
 
-$sql .= "SET FOREIGN_KEY_CHECKS = 1;\n";
+$sql .= "SET FOREIGN_KEY_CHECKS=1;\n";
 
 file_put_contents($backup_file, $sql);
 echo "OK";

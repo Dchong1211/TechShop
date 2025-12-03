@@ -1,4 +1,5 @@
-SET FOREIGN_KEY_CHECKS = 0;
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS=0;
 
 DROP TABLE IF EXISTS `chi_tiet_don_hang`;
 CREATE TABLE `chi_tiet_don_hang` (
@@ -299,4 +300,4 @@ CREATE TABLE `thong_ke_doanh_thu` (
   UNIQUE KEY `ngay_thong_ke` (`ngay_thong_ke`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-SET FOREIGN_KEY_CHECKS = 1;
+SET FOREIGN_KEY_CHECKS=1;
