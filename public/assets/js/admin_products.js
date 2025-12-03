@@ -38,6 +38,7 @@ async function loadProducts(page = 1) {
         tbody.innerHTML = `<tr><td colspan="7">Lỗi kết nối server!</td></tr>`;
     }
 }
+window.loadProducts = loadProducts; 
 
 
 /* =======================================================
