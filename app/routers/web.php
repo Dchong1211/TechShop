@@ -194,11 +194,6 @@ $router->get("/products", function () {
     require_once __DIR__ . "/../../public/user/product.php";
 });
 
-// Chi tiết sản phẩm
-$router->get("/products/{id}", function ($id) {
-    $_GET['id'] = $id;
-    require_once __DIR__ . "/../../public/user/product_detail.php";
-});
 
 // Giỏ hàng (xem)
 $router->get("/cart", function () {
