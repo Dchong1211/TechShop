@@ -1,6 +1,6 @@
 <?php
 // controllers/OrderController.php
-require_once __DIR__ . '/../models/Order.php';
+require_once __DIR__ . '/../models/order.php';
 require_once __DIR__ . '/../helpers/auth.php';
 require_once __DIR__ . '/../helpers/CSRF.php';
 
