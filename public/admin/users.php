@@ -42,7 +42,8 @@ if (!empty($keyword)) {
                 <h5 class="card-title">Quản lý Người dùng</h5>
 
                 <div class="table-actions">
-                    <a href="?controller=customer&action=add" class="btn btn-primary">Thêm Người dùng Mới</a>
+                    <a href="/TechShop/public/admin/add_users.php" class="btn btn-primary">Thêm Người dùng Mới</a>
+
 
                     <!-- SEARCH BOX -->
                     <form method="GET" class="search-box">
@@ -87,7 +88,8 @@ if (!empty($keyword)) {
 
                                         <td><?= $u['trang_thai'] ? '<span class="status-active">Hoạt động</span>' : '<span class="status-inactive">Khóa</span>' ?></td>
                                         <td>
-                                            <a href="?controller=customer&action=edit&id=<?= $u['id'] ?>" class="btn btn-edit">Chỉnh sửa</a>
+                                            <a href="/TechShop/public/admin/edit_user.php?id=<?= $u['id'] ?>" class="btn btn-edit">Chỉnh sửa</a>
+
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>

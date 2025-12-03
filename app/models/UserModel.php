@@ -35,20 +35,24 @@ class UserModel {
     }
 
     // Tạo user mới
-    public function create(array $data) {
-        $sql = "INSERT INTO nguoi_dung (ho_ten, email, mat_khau, vai_tro, trang_thai) VALUES (?, ?, ?, ?, ?)";
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param(
-            "ssssi",
-            $data['ho_ten'],
-            $data['email'],
-            $data['mat_khau'],
-            $data['vai_tro'],
-            $data['trang_thai']
-        );
-        $stmt->execute();
-        return $stmt->insert_id;
-    }
+    public function create($data) {
+    $sql = "INSERT INTO nguoi_dung (ho_ten, email, password, avatar, vai_tro, trang_thai)
+            VALUES (?, ?, ?, ?, ?, ?)";
+
+    $stmt = $this->conn->prepare($sql);
+    $stmt->bind_param(
+        "sssssi",
+        $data['ho_ten'],
+        $data['email'],
+        $data['password'],
+        $data['avatar'],
+        $data['vai_tro'],
+        $data['trang_thai']
+    );
+    $stmt->execute();
+    return $this->conn->insert_id;
+}
+
 
     // Cập nhật user
     public function update($id, array $data) {

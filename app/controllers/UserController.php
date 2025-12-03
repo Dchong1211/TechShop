@@ -9,7 +9,7 @@ class CustomerController {
 
     public function __construct() {
         $this->model = new UserModel();
-        requireAdmin();// Chỉ cần đăng nhập, không cần admin
+        requireLogin();// Chỉ cần đăng nhập, không cần admin
     }
 
     // Danh sách khách hàng (có thể dùng cho admin hoặc quản lý)
@@ -37,6 +37,43 @@ class CustomerController {
         ];
     }
 
+    // Hiển thị form thêm user (GET)
+    public function createForm() {
+        $csrf = CSRF::token();
+        include __DIR__ . '/../../public/admin/add_users.php';
+    }
+
+    // Xử lý POST thêm user
+    public function create() {
+        CSRF::requireToken(); // kiểm tra token CSRF
+
+        // Lấy dữ liệu từ form
+        $data = [
+            'ho_ten' => $_POST['full_name'] ?? '',
+            'email' => $_POST['email'] ?? '',
+            'password' => $_POST['password'] ?? '',
+            'avatar' => $_POST['avatar'] ?? '',
+            'vai_tro' => $_POST['role'] ?? 'user',
+            'trang_thai' => $_POST['status'] ?? 1
+        ];
+
+        // Hash password nếu có
+        if (!empty($data['password'])) {
+            $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
+        }
+
+        // Thêm user
+        $id = $this->model->create($data);
+
+        if ($id) {
+            header("Location: /TechShop/public/admin/users.php?created=1&id={$id}");
+        } else {
+            header("Location: /TechShop/public/admin/users.php?created=0");
+        }
+        exit;
+    }
+
+
     // Khách hàng tự tạo tài khoản
     public function register() {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') return ["success"=>false,"message"=>"Phải dùng POST"];
@@ -55,6 +92,19 @@ class CustomerController {
             ? ["success" => true, "message" => "Đăng ký thành công", "id" => $id]
             : ["success" => false, "message" => "Đăng ký thất bại"];
     }
+
+    public function edit_user(): void {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            CSRF::requireToken();
+            $id = intval($_POST['id']);
+            // ... xử lý cập nhật
+        } else {
+            $id = intval($_GET['id']);
+            $user = $this->model->getById($id);
+            // ... hiển thị form edit
+        }
+    }
+
 
     // Khách hàng cập nhật thông tin cá nhân
     public function updateProfile() {
