@@ -50,8 +50,7 @@
 
         <div class="card">
             <form action="/TechShop/public/admin/products/add" 
-                  method="POST" 
-                  class="product-form">
+            method="POST" class="product-form" id="addForm">
 
                 <input type="hidden" name="csrf" value="<?= $csrf ?>">
 
@@ -129,7 +128,8 @@
 
                 <div class="card-footer">
                     <a href="/TechShop/public/admin/products" class="btn btn-secondary">Hủy bỏ</a>
-                    <button type="submit" class="btn btn-primary">Lưu Sản phẩm</button>
+                    
+                    <button type="button" class="btn btn-primary" onclick="confirmAdd()">Lưu Sản phẩm</button>
                 </div>
 
             </form>
@@ -140,6 +140,7 @@
 </div>
 
 <script src="/TechShop/public/assets/js/admin.js"></script>
+<script src="/TechShop/public/assets/js/admin_products.js"></script>
 <script>
     function previewUrl(url) {
         const img = document.getElementById('imgPreview');
@@ -152,6 +153,44 @@
             };
         } else {
             img.style.display = 'none';
+        }
+    }
+    // Hàm xác nhận Thêm sản phẩm
+    function confirmAdd() {
+        const form = document.getElementById('addForm');
+        if (!form.checkValidity()) {
+            form.reportValidity();
+            return;
+        }
+
+        if (confirm("Bạn có chắc chắn muốn thêm sản phẩm mới này?")) {
+            const btn = form.querySelector('.btn-primary');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = 'Đang xử lý...';
+            btn.disabled = true;
+
+            const formData = new FormData(form);
+            fetch(form.action, {
+                method: 'POST',
+                body: formData
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Thêm sản phẩm thành công!');
+                    window.location.href = '/TechShop/public/admin/products';
+                } else {
+                    alert('Lỗi: ' + data.message);
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                alert('Lỗi kết nối máy chủ (Vui lòng kiểm tra lại đường dẫn hoặc server)!');
+            })
+            .finally(() => {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            });
         }
     }
 </script>

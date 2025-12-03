@@ -175,3 +175,124 @@ async function handleUpdateProduct(e) {
         btn.disabled = false;
     }
 }
+// Hàm xác nhận Thêm
+function confirmAddProduct(form) {
+    if (confirm("Bạn có chắc chắn muốn thêm sản phẩm mới này?")) {
+        
+        const btn = form.querySelector('button[type="submit"]');
+        const originalText = btn.textContent;
+        btn.textContent = 'Đang xử lý...';
+        btn.disabled = true;
+
+        const formData = new FormData(form);
+
+        fetch(form.action, {
+            method: 'POST',
+            body: formData
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                alert('Thêm sản phẩm thành công!');
+                window.location.href = '/TechShop/public/admin/products';
+            } else {
+                alert('Lỗi: ' + data.message);
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            alert('Lỗi kết nối máy chủ!');
+        })
+        .finally(() => {
+            btn.textContent = originalText;
+            btn.disabled = false;
+        });
+    }
+}
+
+// Hàm xác nhận Cập nhật
+function confirmUpdateProduct(form) {
+    if (confirm("Bạn có chắc chắn muốn lưu thay đổi cho sản phẩm này?")) {
+        
+        const btn = form.querySelector('button[type="submit"]');
+        const originalText = btn.textContent;
+        btn.textContent = 'Đang lưu...';
+        btn.disabled = true;
+
+        const formData = new FormData(form);
+
+        fetch(form.action, {
+            method: 'POST',
+            body: formData
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                alert('Cập nhật thành công!');
+                window.location.href = '/TechShop/public/admin/products';
+            } else {
+                alert('❌ Lỗi: ' + data.message);
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            alert('Lỗi kết nối máy chủ!');
+        })
+        .finally(() => {
+            btn.textContent = originalText;
+            btn.disabled = false;
+        });
+    }
+}
+
+// Hàm xóa sản phẩm
+async function deleteProduct(id) {
+    if (confirm("Bạn có chắc chắn muốn xóa sản phẩm này vĩnh viễn?")) {
+        const csrfMeta = document.querySelector('meta[name="csrf-token"]');
+        const csrf = csrfMeta ? csrfMeta.content : '';
+        
+        const formData = new FormData();
+        formData.append('id', id);
+        formData.append('csrf', csrf);
+
+        try {
+            const res = await fetch('/TechShop/public/admin/products/delete', {
+                method: 'POST',
+                body: formData
+            });
+            const data = await res.json();
+
+            if (data.success) {
+                alert('Đã xóa thành công!');
+                loadProducts();
+            } else {
+                alert('❌ Lỗi: ' + data.message);
+            }
+        } catch (err) {
+            alert('Lỗi kết nối server!');
+        }
+    }
+}
+// Hàm hiển thị ảnh xem trước từ URL text
+function previewUrl(url) {
+    const preview = document.getElementById('imgPreview');
+    if(url && url.trim() !== '') {
+        preview.src = url;
+    } else {
+        preview.src = 'https://via.placeholder.com/150?text=No+Image';
+    }
+}
+// Hàm hiển thị ảnh xem trước từ URL text
+function previewUrl(url) {
+    const img = document.getElementById('imgPreview');
+    if (url && url.length > 5) {
+        img.src = url;
+        img.style.display = 'block';
+        
+        img.onerror = function() {
+            this.style.display = 'none';
+        };
+    } else {
+        img.style.display = 'none';
+    }
+}

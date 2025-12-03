@@ -771,3 +771,28 @@ body.dark-mode .filter-group select:focus {
         flex: 1;
     }
 }
+
+/* Revenue Chart Container */
+.revenue-chart {
+    max-height: 350px;
+    min-height: 250px;
+}
+
+/* Card Body for Chart */
+.card-body {
+    padding: var(--content-padding);
+    min-height: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.card-body canvas {
+    width: 100% !important;
+    height: auto !important;
+}
+
+/* Chart styling for dark mode */
+body.dark-mode .revenue-chart {
+    filter: brightness(0.95);
+}

@@ -156,7 +156,7 @@ $sp = $res["data"];
                             <i class="bi bi-trash"></i> Xóa sản phẩm
                         </button>
 
-                        <button type="submit" class="btn btn-primary">
+                        <button type="submit" class="btn btn-primary" onclick="confirmUpdate()">
                             <i class="bi bi-save"></i> Cập nhật
                         </button>
                     </div>
@@ -175,6 +175,7 @@ $sp = $res["data"];
 </form>
 
 <script src="/TechShop/public/assets/js/admin.js"></script>
+<script src="/TechShop/public/assets/js/admin_products.js"></script>
 <script>
     // Hàm hiển thị ảnh xem trước từ URL text
     function previewUrl(url) {
@@ -189,14 +190,12 @@ $sp = $res["data"];
     // Hàm xác nhận xóa
     function confirmDelete(id) {
         if (confirm("Bạn có chắc chắn muốn xóa sản phẩm này vĩnh viễn?")) {
-            document.getElementById('deleteId').value = id;
             
             const csrf = document.querySelector('input[name="csrf"]').value;
             const formData = new FormData();
             formData.append('id', id);
             formData.append('csrf', csrf);
-
-            fetch('/TechShop/public/admin/products/delete', {
+            fetch('/TechShop/public/admin/products/delete', { 
                 method: 'POST',
                 body: formData
             })
@@ -209,7 +208,51 @@ $sp = $res["data"];
                     alert('Lỗi: ' + data.message);
                 }
             })
-            .catch(err => alert('Lỗi kết nối server'));
+            .catch(err => {
+                console.error(err);
+                alert('Lỗi kết nối server!');
+            });
+        }
+    }
+
+    // 2. HÀM XÁC NHẬN CẬP NHẬT (Mới)
+    function confirmUpdate() {
+        const form = document.getElementById('updateForm');
+        
+        if (!form.checkValidity()) {
+            form.reportValidity();
+            return;
+        }
+
+        if (confirm("Bạn có chắc chắn muốn lưu thay đổi?")) {
+            const btn = form.querySelector('button[type="button"].btn-primary');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="bi bi-hourglass-split"></i> Đang lưu...';
+            btn.disabled = true;
+
+            const formData = new FormData(form);
+
+            fetch(form.action, {
+                method: 'POST',
+                body: formData
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Cập nhật thành công!');
+                    window.location.href = '/TechShop/public/admin/products';
+                } else {
+                    alert('Lỗi: ' + data.message);
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                alert('Lỗi kết nối server!');
+            })
+            .finally(() => {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            });
         }
     }
 </script>

@@ -1,7 +1,7 @@
 -- phpMyAdmin SQL Export
 -- Host: 127.0.0.1
 -- Database: `techshop`
--- Exported at: 2025-12-03 05:31:17
+-- Exported at: 2025-12-03 09:54:50
 
 SET FOREIGN_KEY_CHECKS=0;
 
@@ -246,11 +246,11 @@ CREATE TABLE `san_pham` (
   UNIQUE KEY `ten_sp` (`ten_sp`),
   KEY `id_dm` (`id_dm`),
   CONSTRAINT `san_pham_ibfk_1` FOREIGN KEY (`id_dm`) REFERENCES `danh_muc` (`id`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=182 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=186 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Dumping data for table `san_pham`
 INSERT INTO `san_pham` (`id`,`id_dm`,`ten_sp`,`gia`,`gia_khuyen_mai`,`so_luong_ton`,`hinh_anh`,`mo_ta_ngan`,`chi_tiet`,`ngay_nhap`,`luot_xem`,`trang_thai`) VALUES
-  ('1','3','Laptop Gaming ASUS ROG Strix G16','35000000.00','32990000.00','15','0','Core i9, RAM 32GB, RTX 4080, Màn hình 240Hz','Chi tiết cấu hình: Core i9-13980HX, 32GB DDR5, 1TB SSD, RTX 4080 12GB, 16-inch QHD+ 240Hz.','2025-09-01 10:00:00','520','1'),
+  ('1','1','Laptop Gaming ASUS ROG Strix G16','35000000.00','32990000.00','15','0','Core i9, RAM 32GB, RTX 4080, Màn hình 240Hz','Chi tiết cấu hình: Core i9-13980HX, 32GB DDR5, 1TB SSD, RTX 4080 12GB, 16-inch QHD+ 240Hz.','2025-09-01 10:00:00','520','1'),
   ('2','1','Laptop Gaming Acer Nitro 5','21000000.00','19990000.00','25','https://cdn.tgdd.vn/Products/Images/44/293230/acer-nitro-5-an515-58-7694-i7-nhqgysv001-thumb-600x600.jpg','Core i5, RAM 16GB, RTX 3050, Màn hình 144Hz','Chi tiết cấu hình: Core i5-12500H, 16GB DDR4, 512GB SSD, RTX 3050 4GB, 15.6-inch FHD 144Hz.','2025-09-05 11:30:00','480','1'),
   ('3','2','Laptop Văn Phòng Dell Inspiron 14','18000000.00','16500000.00','30','https://cdn.tgdd.vn/Products/Images/44/302830/dell-inspiron-14-5430-i5-8002w1-thumb-600x600.jpg','Core i7, RAM 16GB, SSD 512GB, Màn hình OLED','Máy tính xách tay mỏng nhẹ, hiệu năng cao cho công việc, Core i7-1355U.','2025-09-10 14:00:00','350','1'),
   ('4','2','Laptop Văn Phòng HP Pavilion Aero 13','15500000.00',NULL,'18','https://cdn.tgdd.vn/Products/Images/44/278550/hp-pavilion-aero-13-be0229au-r7-64u91pa-thumb-600x600.jpg','Ryzen 5, RAM 8GB, Siêu nhẹ chỉ 0.9kg','Thiết kế cao cấp, thời lượng pin dài, Ryzen 5 7535U, 8GB DDR4, 512GB SSD.','2025-09-15 09:45:00','290','1'),
