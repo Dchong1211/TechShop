@@ -66,11 +66,9 @@ $sp = $res["data"];
     ?>
 
     <main class="main-content">
-
+ 
         <div class="card">
-            <form action="/TechShop/admin/products/update" 
-                  method="POST" 
-                  class="product-form" id="updateForm" enctype="multipart/form-data">
+            <form action="/TechShop/public/admin/products/update" method="POST" enctype="multipart/form-data" id="updateForm">
 
                 <input type="hidden" name="csrf" value="<?= $csrf ?>">
                 <input type="hidden" name="id" value="<?= $sp['id'] ?>">
