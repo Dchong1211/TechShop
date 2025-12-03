@@ -39,7 +39,8 @@ echo.
 echo ==== IMPORT DATABASE ====
 "C:\xampp\mysql\bin\mysql.exe" -u root -e "SET FOREIGN_KEY_CHECKS=0;" techshop
 "C:\xampp\mysql\bin\mysql.exe" -u root techshop < "database\techshop.sql"
-IF %ERRORLEVEL% NEQ 0 (
+IF %ERRORLEVEL% NEQ 0 (git rebase --continue
+
     echo LOI SQL: File techshop.sql bi loi, khong the import!
     echo Vui long kiem tra xem co dong ^<^<^<^<^<^< HEAD khong!
     pause
