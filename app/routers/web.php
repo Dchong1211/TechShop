@@ -175,7 +175,7 @@ $router->get("/admin/products/list", function () {
     );
 }, ["admin"]);
 
-$router->get("/product/{id}", function($id) {
+$router->get("/products/{id}", function($id) {
     require_once __DIR__ . "/../../public/user/product_detail.php";
 });
 
