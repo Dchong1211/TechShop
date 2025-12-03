@@ -1,4 +1,3 @@
-
 @echo off
 cd /d C:\xampp\htdocs\TechShop
 
