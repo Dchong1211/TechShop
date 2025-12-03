@@ -275,7 +275,7 @@ INSERT INTO `san_pham` (`id`,`id_dm`,`ten_sp`,`gia`,`gia_khuyen_mai`,`so_luong_t
 ('77','7','Tai Nghe Bluetooth Sennheiser Momentum 4 Wireless','8500000.00','7990000.00','10','https://cdn.tgdd.vn/Products/Images/54/298419/tai-nghe-sennheiser-momentum-4-wireless-thumb-600x600.jpg','Âm thanh Hi-Fi, Pin 60 giờ','ANC cao cấp, chất lượng âm thanh Audiophile.','2026-09-20 11:00:00','250','1'),
 ('78','8','SSD Samsung 870 EVO 1TB SATA III','2500000.00','2300000.00','55','https://cdn.tgdd.vn/Products/Images/5348/306072/ssd-samsung-870-evo-1tb-thumb-600x600.jpg','Ổ cứng SATA phổ thông, tốc độ 560MB/s','Độ bền 600 TBW, Controller Samsung V-NAND.','2026-09-25 14:10:00','450','1'),
 ('79','10','VGA PNY RTX A4000 16GB','20000000.00',NULL,'5','https://cdn.tgdd.vn/Products/Images/5391/306796/card-man-hinh-vga-pny-rtx-a4000-16gb-thumb-600x600.jpg','Card đồ họa chuyên nghiệp cho thiết kế','Dành cho Workstation. GPU NVIDIA Ampere, 16GB GDDR6 ECC.','2026-10-01 10:20:00','300','1'),
-('80','1','mowis','123000.00','12.00','0','https://i.ibb.co/RGX6ndbW/z7217340136694-92ac5c4eabbb98871574dbc434a8790e.jpg','đá','adasdasda','2025-12-03 23:37:52','0','1');
+('80','1','mowis','123000.00','12.00','1','0','đá','adasdasda','2025-12-03 23:37:52','0','1');
 
 DROP TABLE IF EXISTS `thong_bao`;
 CREATE TABLE `thong_bao` (
