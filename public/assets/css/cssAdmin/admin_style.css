@@ -793,7 +793,55 @@ body.dark-mode .filter-group select:focus {
     height: auto !important;
 }
 
-/* Chart styling for dark mode */
 body.dark-mode .revenue-chart {
     filter: brightness(0.95);
+}
+
+/* 6. DASHBOARD SPECIFIC STYLES */
+
+.dashboard-top-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    margin-bottom: 24px;
+}
+
+.dashboard-bottom-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+}
+
+.stat-card {
+    min-height: 140px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.stat-label {
+    color: var(--text-muted);
+    font-size: 1rem;
+    margin-top: 4px;
+}
+
+.revenue-chart {
+    width: 100% !important;
+    min-height: 340px;
+}
+
+@media (max-width: 1200px) {
+    .dashboard-top-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboard-top-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .revenue-chart {
+        min-height: 250px;
+    }
 }

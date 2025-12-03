@@ -70,7 +70,7 @@ $sp = $res["data"];
         <div class="card">
             <form action="/TechShop/admin/products/update" 
                   method="POST" 
-                  class="product-form" id="updateForm">
+                  class="product-form" id="updateForm" enctype="multipart/form-data">
 
                 <input type="hidden" name="csrf" value="<?= $csrf ?>">
                 <input type="hidden" name="id" value="<?= $sp['id'] ?>">
@@ -96,19 +96,15 @@ $sp = $res["data"];
                     </div>
 
                     <div class="form-group">
-                        <label>Link Hình ảnh (URL)</label>
-                        
+                        <label>Ảnh</label>
                         <div class="img-preview-box">
                             <img id="imgPreview" src="<?= htmlspecialchars($sp['hinh_anh']) ?>" 
                                  onerror="this.src='https://via.placeholder.com/150?text=No+Image'" 
                                  alt="Preview">
                         </div>
-                        
-                        <input type="text" name="hinh_anh" id="imgInput" 
-                               class="form-control" 
-                               value="<?= htmlspecialchars($sp['hinh_anh']) ?>" 
-                               placeholder="Nhập đường dẫn hình ảnh..."
-                               oninput="previewUrl(this.value)">
+                        <input type="file" name="hinh_anh_file" id="imgInput" accept="image/*" class="form-control"
+                               onchange="previewFile(this)">
+                        <input type="hidden" name="hinh_anh" id="imgUrl" value="<?= htmlspecialchars($sp['hinh_anh']) ?>">
                     </div>
 
                     <div class="form-group row-group">
@@ -187,6 +183,35 @@ $sp = $res["data"];
         }
     }
 
+    // Hàm hiển thị ảnh xem trước từ file
+    function previewFile(input) {
+        const file = input.files[0];
+        const preview = document.getElementById('imgPreview');
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                preview.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+            const formData = new FormData();
+            formData.append('image', file);
+
+            fetch('https://api.imgbb.com/1/upload?key=0275912d6d120a13546bea4af61d67e2', {
+                method: 'POST',
+                body: formData
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data && data.data && data.data.url) {
+                    document.getElementById('imgUrl').value = data.data.url;
+                } else {
+                    alert('Upload ảnh thất bại!');
+                }
+            })
+            .catch(() => alert('Lỗi upload ảnh!'));
+        }
+    }
+
     // Hàm xác nhận xóa
     function confirmDelete(id) {
         if (confirm("Bạn có chắc chắn muốn xóa sản phẩm này vĩnh viễn?")) {
@@ -215,7 +240,6 @@ $sp = $res["data"];
         }
     }
 
-    // 2. HÀM XÁC NHẬN CẬP NHẬT (Mới)
     function confirmUpdate() {
         const form = document.getElementById('updateForm');
         

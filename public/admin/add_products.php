@@ -93,17 +93,15 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="hinh_anh">Link Hình ảnh (URL) <span class="required">*</span></label>
-                        
+                        <label>Ảnh</label>
                         <div class="img-preview-box">
-                            <img id="imgPreview" src="#" alt="Ảnh xem trước">
+                            <img id="imgPreview" src="<?= htmlspecialchars($sp['hinh_anh']) ?>" 
+                                onerror="this.src='https://via.placeholder.com/150?text=No+Image'" 
+                                alt="Preview">
                         </div>
-
-                        <input type="text" id="hinh_anh" name="hinh_anh" 
-                               placeholder="Ví dụ: https://i.imgur.com/example.jpg" 
-                               required class="form-control"
-                               oninput="previewUrl(this.value)">
-                        <small class="text-muted">Dán đường dẫn ảnh trực tiếp vào đây.</small>
+                        <input type="file" name="hinh_anh_file" id="imgInput" accept="image/*" class="form-control"
+                            onchange="previewFile(this)">
+                        <input type="hidden" name="hinh_anh" id="imgUrl" value="<?= htmlspecialchars($sp['hinh_anh']) ?>">
                     </div>
 
                     <div class="form-group">
@@ -193,6 +191,34 @@
             });
         }
     }
+    function previewFile(input) {
+    const file = input.files[0];
+    const preview = document.getElementById('imgPreview');
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            preview.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+
+        const formData = new FormData();
+        formData.append('image', file);
+
+        fetch('https://api.imgbb.com/1/upload?key=0275912d6d120a13546bea4af61d67e2', {
+            method: 'POST',
+            body: formData
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data && data.data && data.data.url) {
+                document.getElementById('imgUrl').value = data.data.url;
+            } else {
+                alert('Upload ảnh thất bại!');
+            }
+        })
+        .catch(() => alert('Lỗi upload ảnh!'));
+    }
+}
 </script>
 
 </body>

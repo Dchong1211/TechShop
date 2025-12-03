@@ -7,7 +7,7 @@
     require_once __DIR__ . '/../../app/helpers/DB.php';
     $pdo = DB::getInstance()->getConnection();
 
-    // Sản phẩm bán chạy nhất (loại trừ đơn huỷ)
+    // Query 1: Sản phẩm bán chạy nhất
     $stmt = $pdo->prepare("
         SELECT sp.id, sp.ten_sp, COALESCE(SUM(ct.so_luong),0) AS total_sold
         FROM chi_tiet_don_hang ct
@@ -21,7 +21,7 @@
     $stmt->execute();
     $best = $stmt->fetch();
 
-    // Tổng doanh thu (loại trừ đơn huỷ)
+    // Query 2: Tổng doanh thu
     $stmt = $pdo->prepare("
         SELECT COALESCE(SUM(ct.so_luong * ct.don_gia),0) AS total_revenue
         FROM chi_tiet_don_hang ct
@@ -31,7 +31,7 @@
     $stmt->execute();
     $totalRevenue = $stmt->fetchColumn() ?: 0;
 
-    // Doanh thu theo tháng (12 tháng gần nhất)
+    // Query 3: Doanh thu theo tháng
     $stmt = $pdo->prepare("
         SELECT DATE_FORMAT(dh.ngay_dat_hang, '%Y-%m') AS month, COALESCE(SUM(ct.so_luong * ct.don_gia),0) AS revenue
         FROM don_hang dh
@@ -42,8 +42,6 @@
     ");
     $stmt->execute();
     $rows = $stmt->fetchAll();
-
-    // đảm bảo đủ 12 tháng (nếu cần)
     $months = [];
     for ($i = 11; $i >= 0; $i--) {
         $m = date('Y-m', strtotime("-{$i} months"));
@@ -52,6 +50,16 @@
     foreach ($rows as $r) {
         $months[$r['month']] = (float)$r['revenue'];
     }
+
+    // Query thống kê tổng
+    $stmt = $pdo->query("SELECT COUNT(*) FROM nguoi_dung");
+    $totalUsers = $stmt->fetchColumn();
+
+    $stmt = $pdo->query("SELECT COUNT(*) FROM don_hang WHERE trang_thai_don != 'huy'");
+    $totalOrders = $stmt->fetchColumn();
+
+    $stmt = $pdo->query("SELECT COUNT(*) FROM san_pham");
+    $totalProducts = $stmt->fetchColumn();
 ?>
 <!DOCTYPE html>
 <html lang="vi">
@@ -70,16 +78,52 @@
         
         <?php 
         $active_page = 'dashboard'; 
-        
         include __DIR__ . '/../includes/Admin/layout_sidebar.php'; 
         ?>
 
         <main class="main-content">
             
-            <div class="dashboard-grid">
-
-                <!-- Card: Sản phẩm bán chạy nhất -->
-                <div class="card card-span-1">
+            <div class="dashboard-top-grid">
+                <div class="card stat-card">
+                    <div class="card-header">
+                        <h5 class="card-title">Người dùng</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="stat-main">
+                            <div>
+                                <div class="stat-number"><?= (int)$totalUsers ?></div>
+                                <div class="stat-label">Tổng số người dùng</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card stat-card">
+                    <div class="card-header">
+                        <h5 class="card-title">Đơn hàng</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="stat-main">
+                            <div>
+                                <div class="stat-number"><?= (int)$totalOrders ?></div>
+                                <div class="stat-label">Tổng số đơn hàng</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card stat-card">
+                    <div class="card-header">
+                        <h5 class="card-title">Sản phẩm</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="stat-main">
+                            <div>
+                                <div class="stat-number"><?= (int)$totalProducts ?></div>
+                                <div class="stat-label">Tổng số sản phẩm</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card stat-card">
                     <div class="card-header">
                         <h5 class="card-title">Sản phẩm bán chạy nhất</h5>
                     </div>
@@ -88,50 +132,43 @@
                             <div class="stat-main">
                                 <div>
                                     <div class="stat-number"><?= htmlspecialchars($best['ten_sp']) ?></div>
-                                    <div class="stat-change positive"><?= (int)$best['total_sold'] ?> sản phẩm</div>
+                                    <div class="stat-label"><?= (int)$best['total_sold'] ?> sản phẩm</div>
                                 </div>
                             </div>
                         <?php else: ?>
-                            <div>Chưa có dữ liệu bán hàng</div>
+                            <div class="stat-label">Chưa có dữ liệu bán hàng</div>
                         <?php endif; ?>
                     </div>
                 </div>
+            </div>
 
-                <!-- Card: Tổng doanh thu -->
-                <div class="card card-span-1">
-                    <div class="card-header">
+            <div class="dashboard-bottom-grid">
+                <div class="card">
+                    <div class="card-header" style="display:flex;justify-content:space-between;align-items:center;">
                         <h5 class="card-title">Tổng doanh thu</h5>
+                        <span class="stat-number"><?= number_format($totalRevenue, 0, ',', '.') ?>₫</span>
                     </div>
                     <div class="card-body">
-                        <div class="stat-main">
-                            <div>
-                                <div class="stat-number"><?= number_format($totalRevenue, 0, ',', '.') ?>₫</div>
-                                <div class="stat-chart-small">Tổng từ đơn đã hoàn tất</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Card: Doanh thu theo tháng -->
-                <div class="card card-span-2">
-                    <div class="card-header">
-                        <h5 class="card-title">Doanh thu theo tháng (12 tháng)</h5>
-                    </div>
-                    <div class="card-body">
+                        <div class="stat-label" style="margin-bottom:16px;">Tổng từ đơn đã hoàn tất</div>
+                        <h5 class="card-title" style="margin-bottom:12px;">Doanh thu theo tháng (12 tháng)</h5>
                         <canvas id="revenueChart" class="revenue-chart"></canvas>
                     </div>
                 </div>
-
+            </div>
         </main>
     </div>
 
     <script>
-        // Chuẩn bị dữ liệu từ PHP
         const revenueLabels = <?= json_encode(array_keys($months)) ?>;
         const revenueData = <?= json_encode(array_values($months)) ?>;
 
-        // Khởi tạo Chart.js khi DOM đã sẵn sàng
         (function(){
+            // Lấy màu từ biến CSS để đồng bộ với theme (Light/Dark)
+            const styles = getComputedStyle(document.body);
+            const textColor = styles.getPropertyValue('--text-color').trim() || '#58687a';
+            const textMuted = styles.getPropertyValue('--text-muted').trim() || '#6c757d';
+            const borderColor = 'rgba(200, 200, 200, 0.1)';
+
             const ctx = document.getElementById('revenueChart').getContext('2d');
             new Chart(ctx, {
                 type: 'line',
@@ -162,7 +199,7 @@
                         legend: { 
                             display: true,
                             labels: {
-                                color: getComputedStyle(document.body).getPropertyValue('--text-color').trim() || '#58687a',
+                                color: textColor,
                                 font: { size: 13, weight: '600' },
                                 padding: 15,
                                 usePointStyle: true
@@ -189,25 +226,25 @@
                                 maxRotation: 45,
                                 minRotation: 0,
                                 autoSkip: false,
-                                color: getComputedStyle(document.body).getPropertyValue('--text-muted').trim() || '#6c757d',
+                                color: textMuted,
                                 font: { size: 12 }
                             },
                             grid: {
-                                color: 'rgba(200, 200, 200, 0.1)',
+                                color: borderColor,
                                 drawBorder: false
                             }
                         },
                         y: {
                             beginAtZero: true,
                             ticks: {
-                                color: getComputedStyle(document.body).getPropertyValue('--text-muted').trim() || '#6c757d',
+                                color: textMuted,
                                 font: { size: 12 },
                                 callback: function(value) {
                                     return Number(value).toLocaleString('vi-VN') + ' ₫';
                                 }
                             },
                             grid: {
-                                color: 'rgba(200, 200, 200, 0.1)',
+                                color: borderColor,
                                 drawBorder: false
                             }
                         }
