@@ -4,3 +4,9 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 
 RewriteRule ^(.+)$ index.php?url=$1 [QSA,L]
+
+# Route sản phẩm: /TechShop/product?id=2
+RewriteRule ^product/?$ user/product_detail.php [L,QSA]
+
+# Route chi tiết sản phẩm dạng đẹp hơn: /TechShop/product/2
+RewriteRule ^product/([0-9]+)/?$ user/product_detail.php?id=$1 [L,QSA]

@@ -58,7 +58,7 @@ class ProductController {
             $newId = $this->model->lastId();
 
             // Tạo URL QR
-            $url = "http://localhost/TechShop/public/user/product_detail.php?id=" . $newId;
+            $url = "http://localhost/TechShop/product/" . $newId;
 
             // Lưu QR vào public/qr/
             $savePath = __DIR__ . "/../../public/qr/product_$newId.png";
@@ -94,7 +94,7 @@ class ProductController {
 
         if ($ok) {
             // QR URL
-            $url = "http://localhost/TechShop/public/user/product_detail.php?id=" . $id;
+            $url = "http://localhost/TechShop/product/" . $id;
             $savePath = __DIR__ . "/../../public/qr/product_$id.png";
 
             QR::make($url, $savePath);
