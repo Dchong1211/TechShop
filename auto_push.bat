@@ -1,17 +1,21 @@
 @echo off
 cd /d C:\xampp\htdocs\TechShop
 
-echo ==== EXPORT DATABASE (CLEAN DUMP) ====
+echo ==== EXPORT DATABASE (FULL LIKE PHPMYADMIN) ====
 "C:\xampp\mysql\bin\mysqldump.exe" ^
+  --add-drop-table ^
+  --add-locks ^
+  --create-options ^
+  --disable-keys ^
+  --extended-insert ^
+  --quick ^
+  --set-charset ^
   --skip-comments ^
-  --skip-add-drop-table ^
   --no-tablespaces ^
   --order-by-primary ^
-  --compact ^
-  --extended-insert=FALSE ^
   -u root techshop > database\techshop.sql
 
-echo Export OK!
+echo Export FULL SQL OK!
 echo.
 
 for /f "delims=" %%a in ('git config user.name') do set username=%%a
@@ -25,7 +29,7 @@ echo.
 echo ==== GIT PULL (REBASE) ====
 git pull origin main --rebase
 if %ERRORLEVEL% NEQ 0 (
-    echo LOI: Co conflict! Hay sua conflict roi chay lai.
+    echo LOI: Conflict! Hay fix conflict roi chay lai script.
     pause
     exit /b
 )
@@ -37,4 +41,4 @@ echo.
 echo ==== IMPORT DATABASE ====
 "C:\xampp\mysql\bin\mysql.exe" -u root techshop < database\techshop.sql
 
-echo ==== DONE! ====
+echo ==== DONE! FULL SQL SYNCHRONIZED ====
