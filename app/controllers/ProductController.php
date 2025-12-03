@@ -4,6 +4,7 @@ require_once __DIR__ . '/../models/product.php';
 require_once __DIR__ . '/../helpers/auth.php';
 require_once __DIR__ . '/../helpers/CSRF.php';
 require_once __DIR__ . '/../helpers/qr.php';
+require_once __DIR__ . '/../helpers/pagination.php'; // CHỈNH LẠI TÊN FILE CHUẨN
 
 class ProductController {
     private $model;
@@ -12,7 +13,7 @@ class ProductController {
         $this->model = new Product();
     }
 
-    // Lấy toàn bộ sản phẩm
+    // Lấy toàn bộ sản phẩm (client)
     public function list() {
         return [
             "success" => true,
@@ -37,13 +38,35 @@ class ProductController {
         ];
     }
 
+public function adminList($page = 1, $limit = 5, $search = "") {
+    requireAdmin();
+
+    $search = $this->model->conn->real_escape_string($search);
+
+    $sql = "
+        SELECT sp.*, dm.ten_dm AS category_name
+        FROM san_pham sp
+        LEFT JOIN danh_muc dm ON sp.id_dm = dm.id
+        WHERE sp.ten_sp LIKE '%$search%'
+        ORDER BY sp.id ASC
+    ";
+
+    $result = Pagination::query($this->model->conn, $sql, $page, $limit);
+
+    return [
+        "success" => true,
+        "meta"    => $result["meta"],
+        "data"    => $result["data"]
+    ];
+}
+
+
     // Admin: Tạo sản phẩm
     public function create() {
         requireAdmin();
         CSRF::requireToken();
         require_once __DIR__ . '/../helpers/ImgBB.php';
 
-        // Xử lý ảnh
         $imgUrl = "";
         if (isset($_FILES["hinh_anh_file"]) && $_FILES["hinh_anh_file"]["error"] == 0) {
             $imgUrl = ImgBB::upload($_FILES["hinh_anh_file"]["tmp_name"]);
@@ -75,7 +98,6 @@ class ProductController {
     }
 
 
-
     // Admin: Cập nhật
     public function update() {
         requireAdmin();
@@ -83,12 +105,9 @@ class ProductController {
         require_once __DIR__ . '/../helpers/ImgBB.php';
 
         $id = intval($_POST["id"]);
-
-        // Lấy ảnh cũ
         $old = $this->model->getById($id);
         $imgUrl = $old["hinh_anh"];
 
-        // Nếu có upload file mới thì upload lên ImgBB
         if (isset($_FILES["hinh_anh_file"]) && $_FILES["hinh_anh_file"]["error"] == 0) {
             $imgUrl = ImgBB::upload($_FILES["hinh_anh_file"]["tmp_name"]);
         }
@@ -130,5 +149,5 @@ class ProductController {
             ? ["success" => true, "message" => "Xóa thành công"]
             : ["success" => false, "message" => "Xóa thất bại"];
     }
-    
+
 }

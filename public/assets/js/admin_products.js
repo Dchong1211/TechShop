@@ -1,39 +1,52 @@
+import { renderPagination } from './pagination.js';
 document.addEventListener('DOMContentLoaded', () => {
-    loadProducts();
+    loadProducts(1);
 
+    // Search realtime (server-side)
     const searchInput = document.getElementById('searchInput');
-    searchInput.addEventListener('input', (e) => {
-        const keyword = e.target.value.toLowerCase();
-        const rows = document.querySelectorAll('#productTableBody tr');
-
-        rows.forEach(row => {
-            const text = row.innerText.toLowerCase();
-            row.style.display = text.includes(keyword) ? '' : 'none';
-        });
+    searchInput.addEventListener('input', () => {
+        loadProducts(1);
     });
 });
 
-// Load danh sách
-async function loadProducts() {
+
+/* =======================================================
+    LOAD PRODUCTS + PAGINATION (ADMIN)
+======================================================= */
+async function loadProducts(page = 1) {
     const tbody = document.getElementById('productTableBody');
+    const search = document.getElementById('searchInput').value || "";
 
     try {
-        const res = await fetch('/TechShop/public/api/products');
-        const data = await res.json();
+        const res = await fetch(
+            `/TechShop/admin/products/list?page=${page}&limit=5&search=${encodeURIComponent(search)}`
+        );
 
-        if (data.success) renderTable(data.data);
-        else tbody.innerHTML = `<tr><td colspan="7">${data.message}</td></tr>`;
+        const json = await res.json();
 
-    } catch {
+        if (!json.success) {
+            tbody.innerHTML = `<tr><td colspan="7">Không có sản phẩm.</td></tr>`;
+            return;
+        }
+
+        renderTable(json.data);
+        renderPagination(json.meta, "loadProducts");
+
+
+    } catch (err) {
+        console.error("Lỗi:", err);
         tbody.innerHTML = `<tr><td colspan="7">Lỗi kết nối server!</td></tr>`;
     }
 }
 
-// Render table
+
+/* =======================================================
+    RENDER TABLE
+======================================================= */
 function renderTable(products) {
     const tbody = document.getElementById('productTableBody');
 
-    if (products.length === 0) {
+    if (!products || products.length === 0) {
         tbody.innerHTML = `<tr><td colspan="7">Không có sản phẩm nào.</td></tr>`;
         return;
     }
@@ -55,11 +68,8 @@ function renderTable(products) {
                 </td>
 
                 <td>${p.ten_sp}</td>
-
                 <td>${p.category_name || 'Không có danh mục'}</td>
-
                 <td>${formatPrice(Number(p.gia))}</td>
-
                 <td>${p.so_luong_ton > 0 ? 'Còn hàng' : 'Hết hàng'}</td>
 
                 <td class="action-buttons">
@@ -70,17 +80,23 @@ function renderTable(products) {
     }).join('');
 }
 
+/* =======================================================
+    HELPERS
+======================================================= */
 
-// Helper
-function getCategoryName(id) {
-    const cats = {1:'Laptop',2:'PC',3:'Gear',4:'Phụ kiện'};
-    return cats[id] || 'Khác';
-}
 function formatPrice(num) {
     return new Intl.NumberFormat('vi-VN', {style:'currency',currency:'VND'}).format(num);
 }
 
-// Xóa sản phẩm
+function getCategoryName(id) {
+    const cats = {1:'Laptop',2:'PC',3:'Gear',4:'Phụ kiện'};
+    return cats[id] || 'Khác';
+}
+
+
+/* =======================================================
+    DELETE PRODUCT
+======================================================= */
 async function deleteProduct(id) {
     if (!confirm(`Xóa sản phẩm ID: ${id}?`)) return;
 
@@ -103,7 +119,12 @@ async function deleteProduct(id) {
         alert('Lỗi: ' + data.message);
     }
 }
-// Thêm sản phẩm
+
+
+/* =======================================================
+    ADD / UPDATE — giữ nguyên toàn bộ code cũ
+======================================================= */
+
 async function handleAddProducts(e) {
     e.preventDefault();
     const form = e.target;
@@ -135,7 +156,7 @@ async function handleAddProducts(e) {
         btn.disabled = false;
     }
 }
-// Cập nhật sản phẩm
+
 async function handleUpdateProduct(e) {
     e.preventDefault();
     const form = e.target;
@@ -175,7 +196,7 @@ async function handleUpdateProduct(e) {
         btn.disabled = false;
     }
 }
-// Hàm xác nhận Thêm
+
 function confirmAddProduct(form) {
     if (confirm("Bạn có chắc chắn muốn thêm sản phẩm mới này?")) {
         
@@ -210,7 +231,6 @@ function confirmAddProduct(form) {
     }
 }
 
-// Hàm xác nhận Cập nhật
 function confirmUpdateProduct(form) {
     if (confirm("Bạn có chắc chắn muốn lưu thay đổi cho sản phẩm này?")) {
         
@@ -245,44 +265,10 @@ function confirmUpdateProduct(form) {
     }
 }
 
-// Hàm xóa sản phẩm
-async function deleteProduct(id) {
-    if (confirm("Bạn có chắc chắn muốn xóa sản phẩm này vĩnh viễn?")) {
-        const csrfMeta = document.querySelector('meta[name="csrf-token"]');
-        const csrf = csrfMeta ? csrfMeta.content : '';
-        
-        const formData = new FormData();
-        formData.append('id', id);
-        formData.append('csrf', csrf);
 
-        try {
-            const res = await fetch('/TechShop/public/admin/products/delete', {
-                method: 'POST',
-                body: formData
-            });
-            const data = await res.json();
-
-            if (data.success) {
-                alert('Đã xóa thành công!');
-                loadProducts();
-            } else {
-                alert('❌ Lỗi: ' + data.message);
-            }
-        } catch (err) {
-            alert('Lỗi kết nối server!');
-        }
-    }
-}
-// Hàm hiển thị ảnh xem trước từ URL text
-function previewUrl(url) {
-    const preview = document.getElementById('imgPreview');
-    if(url && url.trim() !== '') {
-        preview.src = url;
-    } else {
-        preview.src = 'https://via.placeholder.com/150?text=No+Image';
-    }
-}
-// Hàm hiển thị ảnh xem trước từ URL text
+/* =======================================================
+    PREVIEW IMAGE
+======================================================= */
 function previewUrl(url) {
     const img = document.getElementById('imgPreview');
     if (url && url.length > 5) {

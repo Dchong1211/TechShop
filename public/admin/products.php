@@ -11,7 +11,7 @@
     <title>Quản lý Sản phẩm</title>
 
     <meta name="csrf-token" content="<?= $csrf ?>">
-    <script src="/TechShop/public/assets/js/admin_products.js"></script>
+
     <link rel="stylesheet" href="/TechShop/public/assets/css/cssAdmin/admin_style.css"> 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 </head>
@@ -33,15 +33,15 @@
                 <h5 class="card-title">Quản lý Sản phẩm</h5>
 
                 <div class="table-actions">
-                <a href="/TechShop/admin/products/add" class="btn btn-primary">
-                    Thêm Sản phẩm Mới
-                </a>
+                    <a href="/TechShop/admin/products/add" class="btn btn-primary">
+                        Thêm Sản phẩm Mới
+                    </a>
 
-                <div class="search-box">
-                    <input id="searchInput" type="text" placeholder="Tìm kiếm sản phẩm...">
-                    <button class="btn btn-search">Tìm</button>
+                    <div class="search-box">
+                        <input id="searchInput" type="text" placeholder="Tìm kiếm sản phẩm...">
+                        <button class="btn btn-search">Tìm</button>
+                    </div>
                 </div>
-            </div>
             </div>
 
             <div class="card-body">
@@ -61,10 +61,11 @@
                         </thead>
 
                         <tbody id="productTableBody"></tbody>
-
                     </table>
 
                 </div>
+                <div id="paginationBox" class="pagination"></div>
+
             </div>
 
         </div>
@@ -72,6 +73,7 @@
     </main>
 </div>
 
+<script type="module" src="/TechShop/public/assets/js/admin_products.js"></script>
 <script src="/TechShop/public/assets/js/admin.js"></script>
 
 </body>

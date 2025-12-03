@@ -3,7 +3,7 @@
 require_once __DIR__ . '/../config/database.php';
 
 class Product {
-    private $conn;
+    public $conn;
 
     public function __construct() {
         $this->conn = (new Database())->getConnection();
@@ -14,7 +14,6 @@ class Product {
         $row = $res->fetch_assoc();
         return $row["max_id"] ? $row["max_id"] + 1 : 1;
     }
-
 
     // Lấy tất cả sản phẩm đang bán
     public function getAll() {
@@ -100,8 +99,37 @@ class Product {
         $stmt->bind_param("i", $id);
         return $stmt->execute();
     }
+
     public function lastId() {
         return $this->conn->insert_id;
     }
-    
+
+
+    /* ============================================================
+     *   HÀM DÙNG CHUNG CHO ADMIN LIST (KẾT HỢP SEARCH / SORT)
+     * ============================================================ */
+    public function adminQuery($search = "", $sort = "id ASC") {
+        $search = $this->conn->real_escape_string($search);
+        $allowedSort = ["id ASC", "id ASC", "gia ASC", "gia DESC", "so_luong_ton ASC", "so_luong_ton DESC"];
+
+        // Validate sort input
+        if (!in_array($sort, $allowedSort)) {
+            $sort = "id ASC";
+        }
+
+        $sql = "
+            SELECT sp.*, dm.ten_dm AS category_name
+            FROM san_pham sp
+            LEFT JOIN danh_muc dm ON sp.id_dm = dm.id
+            WHERE 1
+        ";
+
+        if ($search !== "") {
+            $sql .= " AND sp.ten_sp LIKE '%$search%'";
+        }
+
+        $sql .= " ORDER BY $sort";
+
+        return $sql;
+    }
 }

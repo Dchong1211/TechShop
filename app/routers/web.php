@@ -161,11 +161,16 @@ $router->get("/admin/products", function () {
     require_once __DIR__ . "/../../public/admin/products.php";
 }, ["admin"]);
 
-$router->get("/admin/products", function () {
-    require_once __DIR__ . "/../../public/admin/products.php";
+
+$router->get("/admin/products/list", function () {
+    requireAdmin();
+
+    $page = $_GET["page"] ?? 1;
+    $limit = $_GET["limit"] ?? 10;
+    $search = $_GET["search"] ?? "";
+
+    echo json_encode(
+        (new ProductController())->adminList($page, $limit, $search),
+        JSON_UNESCAPED_UNICODE
+    );
 }, ["admin"]);
-$router->get("/product/{id}", function($id) {
-    require_once __DIR__ . "/../../public/user/product_detail.php";
-});
-
-
