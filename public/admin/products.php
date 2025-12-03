@@ -65,7 +65,6 @@
 
                 </div>
                 <div id="paginationBox" class="pagination"></div>
-
             </div>
 
         </div>
