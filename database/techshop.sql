@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: 2025-12-03 14:54:55
+-- Generation Time: 2025-12-03 15:03:16
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.12
 
@@ -430,7 +430,8 @@ INSERT INTO `san_pham` (`id`,`id_dm`,`ten_sp`,`gia`,`gia_khuyen_mai`,`so_luong_t
 ('76','6','Chuột Không Dây Xiaomi Silent Mouse','400000.00',NULL,'60','https://cdn.tgdd.vn/Products/Images/86/306071/chuot-khong-day-xiaomi-dual-mode-silent-mouse-thumb-600x600.jpg','Chuột văn phòng không dây, nút bấm im lặng','Kết nối 2.4GHz, 1200 DPI, thiết kế công thái học.','2026-09-15 15:00:00','300','1'),
 ('77','7','Tai Nghe Bluetooth Sennheiser Momentum 4 Wireless','8500000.00','7990000.00','10','https://cdn.tgdd.vn/Products/Images/54/298419/tai-nghe-sennheiser-momentum-4-wireless-thumb-600x600.jpg','Âm thanh Hi-Fi, Pin 60 giờ','ANC cao cấp, chất lượng âm thanh Audiophile.','2026-09-20 11:00:00','250','1'),
 ('78','8','SSD Samsung 870 EVO 1TB SATA III','2500000.00','2300000.00','55','https://cdn.tgdd.vn/Products/Images/5348/306072/ssd-samsung-870-evo-1tb-thumb-600x600.jpg','Ổ cứng SATA phổ thông, tốc độ 560MB/s','Độ bền 600 TBW, Controller Samsung V-NAND.','2026-09-25 14:10:00','450','1'),
-('79','10','VGA PNY RTX A4000 16GB','20000000.00',NULL,'5','https://cdn.tgdd.vn/Products/Images/5391/306796/card-man-hinh-vga-pny-rtx-a4000-16gb-thumb-600x600.jpg','Card đồ họa chuyên nghiệp cho thiết kế','Dành cho Workstation. GPU NVIDIA Ampere, 16GB GDDR6 ECC.','2026-10-01 10:20:00','300','1');
+('79','10','VGA PNY RTX A4000 16GB','20000000.00',NULL,'5','https://cdn.tgdd.vn/Products/Images/5391/306796/card-man-hinh-vga-pny-rtx-a4000-16gb-thumb-600x600.jpg','Card đồ họa chuyên nghiệp cho thiết kế','Dành cho Workstation. GPU NVIDIA Ampere, 16GB GDDR6 ECC.','2026-10-01 10:20:00','300','1'),
+('80','11','Bàn Phím Cơ AKKO 3068B Plus','1900000.00','1750000.00','25','https://cdn.tgdd.vn/Products/Images/86/306073/ban-phim-co-akko-3068b-plus-thumb-600x600.jpg','Bàn phím cơ 68 phím, Bluetooth 5.0 & 2.4GHz','Switch AKKO CS Jelly Pink, hỗ trợ hot-swap, pin 3000mAh.','2026-10-05 16:40:00','320','1');
 
 /*!40000 ALTER TABLE `san_pham` ENABLE KEYS */;
 UNLOCK TABLES;
