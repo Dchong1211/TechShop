@@ -160,7 +160,7 @@ function pageLink($baseUrl, $pageNum) {
 
                 <div class="product-header-block-right">
                     <!-- SORT CŨNG ĐI QUA ROUTE /products -->
-                    <form method="get" action="public/products" class="product-sort">
+                    <form method="get" action="public/product" class="product-sort">
                         <?php if ($cate !== ''): ?>
                             <input type="hidden" name="cate" value="<?= htmlspecialchars($cate) ?>">
                         <?php endif; ?>
