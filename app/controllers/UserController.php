@@ -9,27 +9,22 @@ class CustomerController {
 
     public function __construct() {
         $this->model = new UserModel();
-        requireLogin();// Chỉ cần đăng nhập, không cần admin
+        requireAdmin(); // Admin mới được dùng các API này
     }
 
-    // Danh sách khách hàng (có thể dùng cho admin hoặc quản lý)
+    /* ============================
+       LẤY TẤT CẢ USERS (CUSTOMER)
+    ============================ */
     public function list() {
         return [
             "success" => true,
-            "data" => $this->model->getAllCustomers() // giả sử có method này
+            "data" => $this->model->getAllCustomers()
         ];
     }
 
-    // Xem chi tiết khách hàng
-    public function detail($id) {
-        $item = $this->model->getById($id);
-
-        return $item
-            ? ["success" => true, "data" => $item]
-            : ["success" => false, "message" => "Không tìm thấy khách hàng!"];
-    }
-
-    // Tìm khách hàng theo email hoặc tên
+    /* ============================
+            TÌM KIẾM USER
+    ============================ */
     public function search($query) {
         return [
             "success" => true,
@@ -37,105 +32,89 @@ class CustomerController {
         ];
     }
 
-    // Hiển thị form thêm user (GET)
-    public function createForm() {
-        $csrf = CSRF::token();
-        include __DIR__ . '/../../public/admin/add_users.php';
-    }
+    public function detail($id) {
+        $user = $this->model->getById($id);
 
-    // Xử lý POST thêm user
+        return [
+            "success" => $user ? true : false,
+            "data" => $user,
+            "message" => $user ? "" : "Không tìm thấy người dùng!"
+        ];
+}
+
+
+    /* ============================
+              THÊM USER
+    ============================ */
     public function create() {
-        CSRF::requireToken(); // kiểm tra token CSRF
-
-        // Lấy dữ liệu từ form
-        $data = [
-            'ho_ten' => $_POST['full_name'] ?? '',
-            'email' => $_POST['email'] ?? '',
-            'password' => $_POST['password'] ?? '',
-            'avatar' => $_POST['avatar'] ?? '',
-            'vai_tro' => $_POST['role'] ?? 'user',
-            'trang_thai' => $_POST['status'] ?? 1
-        ];
-
-        // Hash password nếu có
-        if (!empty($data['password'])) {
-            $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
-        }
-
-        // Thêm user
-        $id = $this->model->create($data);
-
-        if ($id) {
-            header("Location: /TechShop/public/admin/add_users.php?created=1&id={$id}");
-        } else {
-            header("Location: /TechShop/public/admin/add_users.php?created=0");
-        }
-        exit;
-    }
-
-
-    // Khách hàng tự tạo tài khoản
-    public function register() {
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST') return ["success"=>false,"message"=>"Phải dùng POST"];
         CSRF::requireToken();
 
         $data = [
-            'ho_ten'   => $_POST['ho_ten'] ?? '',
-            'email'    => $_POST['email'] ?? '',
-            'mat_khau' => password_hash($_POST['mat_khau'] ?? '', PASSWORD_BCRYPT),
-            'vai_tro'  => 'khach',
-            'trang_thai'=> 1
+            'ho_ten'     => $_POST['ho_ten'] ?? '',
+            'email'      => $_POST['email'] ?? '',
+            'mat_khau'   => password_hash($_POST['mat_khau'] ?? '', PASSWORD_BCRYPT),
+            'vai_tro'    => $_POST['vai_tro'] ?? 'user',
+            'trang_thai' => $_POST['trang_thai'] ?? 1,
+            'avatar'     => $_POST['avatar'] ?? ''
         ];
 
         $id = $this->model->create($data);
-        return $id 
-            ? ["success" => true, "message" => "Đăng ký thành công", "id" => $id]
-            : ["success" => false, "message" => "Đăng ký thất bại"];
+
+        echo json_encode([
+            "success" => $id ? true : false,
+            "id" => $id
+        ], JSON_UNESCAPED_UNICODE);
     }
 
-    public function edit_user(): void {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            CSRF::requireToken();
-            $id = intval($_POST['id']);
-            // ... xử lý cập nhật
+    /* ============================
+              CẬP NHẬT USER
+    ============================ */
+    public function update($id, $data) {
+        // Hash password nếu có nhập
+        if (!empty($data['mat_khau'])) {
+            $data['mat_khau'] = password_hash($data['mat_khau'], PASSWORD_BCRYPT);
         } else {
-            $id = intval($_GET['id']);
-            $user = $this->model->getById($id);
-            // ... hiển thị form edit
+            unset($data['mat_khau']); // Không overwrite nếu bỏ trống
         }
-    }
-
-
-    // Khách hàng cập nhật thông tin cá nhân
-    public function updateProfile() {
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST') return ["success"=>false,"message"=>"Phải dùng POST"];
-        CSRF::requireToken();
-
-        $id = $_SESSION['user_id'] ?? 0; // Lấy ID người đang đăng nhập
-        if (!$id) return ["success"=>false,"message"=>"Chưa đăng nhập"];
-
-        $data = [
-            'ho_ten' => $_POST['ho_ten'] ?? '',
-            'email'  => $_POST['email'] ?? ''
-        ];
 
         $ok = $this->model->update($id, $data);
-        return $ok
-            ? ["success" => true, "message" => "Cập nhật thành công"]
-            : ["success" => false, "message" => "Cập nhật thất bại"];
+
+        return [
+            "success" => $ok ? true : false,
+            "message" => $ok ? "Cập nhật thành công" : "Cập nhật thất bại"
+        ];
     }
 
-    // Khách hàng xóa tài khoản (tùy chọn)
-    public function delete() {
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST') return ["success"=>false,"message"=>"Phải dùng POST"];
+    /* ============================
+         UPDATE USER - ROUTER CALL
+    ============================ */
+    public function updateFromPost() {
         CSRF::requireToken();
 
-        $id = $_SESSION['user_id'] ?? 0; // Hoặc admin xóa
-        if (!$id) return ["success"=>false,"message"=>"Chưa đăng nhập"];
+        $id = $_POST['id'];
+        $data = [
+            'ho_ten'     => $_POST['ho_ten'] ?? '',
+            'email'      => $_POST['email'] ?? '',
+            'mat_khau'   => $_POST['mat_khau'] ?? '',
+            'vai_tro'    => $_POST['vai_tro'] ?? 'user',
+            'trang_thai' => $_POST['trang_thai'] ?? 1
+        ];
 
-        $ok = $this->model->delete($id);
-        return $ok
-            ? ["success" => true, "message" => "Xóa tài khoản thành công"]
-            : ["success" => false, "message" => "Xóa thất bại"];
+        echo json_encode(
+            $this->update($id, $data),
+            JSON_UNESCAPED_UNICODE
+        );
+    }
+
+    /* ============================
+        ĐỔI TRẠNG THÁI USER
+    ============================ */
+    public function changeStatus($id, $status) {
+        $ok = $this->model->changeStatus($id, $status);
+
+        return [
+            "success" => $ok,
+            "message" => $ok ? "Đã cập nhật trạng thái" : "Cập nhật thất bại"
+        ];
     }
 }
