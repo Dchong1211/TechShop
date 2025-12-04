@@ -96,7 +96,7 @@
 
                         <div class="input-group">
                             <label for="otp">Nhập mã OTP</label>
-                            <input type="text" id="otp" name="otp" required placeholder="123456" maxlength="6" style="text-align: center; letter-spacing: 5px; font-weight: bold; font-size: 1.5rem;">
+                            <input type="text" id="otp" name="otp" required placeholder="123456" maxlength="7" style="text-align: center; letter-spacing: 5px; font-weight: bold; font-size: 1.5rem;">
                         </div>
                         <input type="hidden" name="csrf" value="<?= $csrf ?>">
                         <button type="submit" class="register-button">Xác Minh</button>
