@@ -242,16 +242,17 @@ $router->get("/admin/users/edit", function () {
 
 $router->post("/admin/users/update", function () {
     CSRF::requireToken();
-    (new CustomerController())->updateFromPost();
-}, ["admin"]);
+    requireAdmin();
+    echo json_encode((new CustomerController())->updateFromPost());
+});
+
 
 $router->post("/admin/users/delete", function () {
     CSRF::requireToken();
-    echo json_encode(
-        (new CustomerController())->delete($_POST['id']),
-        JSON_UNESCAPED_UNICODE
-    );
-}, ["admin"]);
+    requireAdmin();
+    echo json_encode((new CustomerController())->delete($_POST['id']));
+});
+
 
 $router->get("/admin/users/list", function () {
     requireAdmin();
