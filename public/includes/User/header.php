@@ -100,10 +100,10 @@ $ADDITIONAL_HEAD_CONTENT = $ADDITIONAL_HEAD_CONTENT ?? '';
 
       
       <?php if ($SHOW_SEARCH): ?>
-      <form class="search-box" role="search" action="public/user/product.php" method="get">
-        <input type="hidden" name="cate" value="search">
-        <input type="text" name="q" placeholder="Bạn cần tìm gì?" aria-label="Từ khóa tìm kiếm">
-        <button type="submit">Tìm</button>
+      <form class="search-box" role="search" action="public/product" method="get">
+          <input type="hidden" name="cate" value="search">
+          <input type="text" name="q" placeholder="Bạn cần tìm gì?" aria-label="Từ khóa tìm kiếm">
+          <button type="submit">Tìm</button>
       </form>
       <?php endif; ?>
 

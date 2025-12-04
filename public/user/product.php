@@ -1,5 +1,8 @@
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 define('PUBLIC_PATH', dirname(__DIR__)); // C:\xampp\htdocs\TechShop\public
 
 // ================== KẾT NỐI DATABASE ==================
@@ -15,15 +18,28 @@ if ($conn->connect_error) {
 $conn->set_charset('utf8mb4');
 
 // ================== INPUT TỪ URL ==================
-$cate = isset($_GET['cate']) ? trim($_GET['cate']) : '';   // có thể là id_dm
+$cate = isset($_GET['cate']) ? trim($_GET['cate']) : '';   // co the la id_dm hoac 'search'
 $sort = isset($_GET['sort']) ? trim($_GET['sort']) : '';
 $page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
+$q    = isset($_GET['q'])    ? trim($_GET['q'])    : '';   // tu khoa tim kiem
 
 // ================== WHERE LỌC SẢN PHẨM ==================
-$where = " WHERE sp.trang_thai = 1 ";
-$categoryTitle = 'Tất cả sản phẩm';
+$where          = " WHERE sp.trang_thai = 1 ";
+$categoryTitle  = 'Tất cả sản phẩm';
 
-if ($cate !== '') {
+// --- TRƯỜNG HỢP TÌM KIẾM ---
+if ($cate === 'search') {
+    if ($q !== '') {
+        $safeQ = $conn->real_escape_string($q);
+        // tim trong ten_sp + mo_ta_ngan
+        $where .= " AND (sp.ten_sp LIKE '%{$safeQ}%' OR sp.mo_ta_ngan LIKE '%{$safeQ}%') ";
+        $categoryTitle = "Kết quả tìm kiếm cho: " . $q;
+    } else {
+        $categoryTitle = "Tìm kiếm sản phẩm";
+    }
+}
+// --- LỌC THEO DANH MỤC BÌNH THƯỜNG ---
+elseif ($cate !== '') {
     if (ctype_digit($cate)) {
         $idDm = (int)$cate;
         $where .= " AND sp.id_dm = {$idDm} ";
@@ -77,16 +93,19 @@ $sqlProducts = "
 ";
 $rsProducts = $conn->query($sqlProducts);
 
-$rsTotal   = $conn->query("SELECT FOUND_ROWS() AS total");
-$rowTotal  = $rsTotal ? $rsTotal->fetch_assoc() : ['total' => 0];
-$totalRows = (int)$rowTotal['total'];
+$rsTotal    = $conn->query("SELECT FOUND_ROWS() AS total");
+$rowTotal   = $rsTotal ? $rsTotal->fetch_assoc() : ['total' => 0];
+$totalRows  = (int)$rowTotal['total'];
 $totalPages = max(1, (int)ceil($totalRows / $perPage));
 
-// Build base URL giữ cate + sort
+// Build base URL GIỮ cate + sort + q (để phân trang)
 $baseQuery = [];
 if ($cate !== '') $baseQuery['cate'] = $cate;
+if ($q    !== '') $baseQuery['q']    = $q;
 if ($sort !== '') $baseQuery['sort'] = $sort;
-$baseUrl = 'public/user/product.php';
+
+// DÙNG ROUTE /products THAY VÌ GỌI THẲNG FILE
+$baseUrl = 'public/products';
 if (!empty($baseQuery)) {
     $baseUrl .= '?' . http_build_query($baseQuery);
 }
@@ -127,7 +146,11 @@ function pageLink($baseUrl, $pageNum) {
                     <span class="sub-text">
                         <?php
                         if ($totalRows > 0) {
-                            echo "Tìm thấy {$totalRows} sản phẩm";
+                            if ($cate === 'search' && $q !== '') {
+                                echo "Tìm thấy {$totalRows} sản phẩm cho \"".htmlspecialchars($q)."\"";
+                            } else {
+                                echo "Tìm thấy {$totalRows} sản phẩm";
+                            }
                         } else {
                             echo "Không tìm thấy sản phẩm nào";
                         }
@@ -136,10 +159,15 @@ function pageLink($baseUrl, $pageNum) {
                 </div>
 
                 <div class="product-header-block-right">
-                    <form method="get" action="public/user/product.php" class="product-sort">
+                    <!-- SORT CŨNG ĐI QUA ROUTE /products -->
+                    <form method="get" action="public/products" class="product-sort">
                         <?php if ($cate !== ''): ?>
                             <input type="hidden" name="cate" value="<?= htmlspecialchars($cate) ?>">
                         <?php endif; ?>
+                        <?php if ($q !== ''): ?>
+                            <input type="hidden" name="q" value="<?= htmlspecialchars($q) ?>">
+                        <?php endif; ?>
+
                         <label for="sort">Sắp xếp</label>
                         <select name="sort" id="sort" onchange="this.form.submit()">
                             <option value="">Mặc định</option>
@@ -175,29 +203,25 @@ function pageLink($baseUrl, $pageNum) {
                                 $discountPercent = round(100 - $displayPrice * 100 / $oldPrice);
                             }
 
-                            // chỉnh path ảnh theo project – tạm thời dùng assets/images
-                            // Xu ly duong dan anh
+                            // xử lý ảnh sản phẩm
                             $rawThumb = trim((string)$p['hinh_anh']);
 
                             if ($rawThumb === '' || $rawThumb === null) {
-                                // khong co anh -> anh mac dinh
                                 $thumb = 'public/assets/images/TechShop.jpg';
                             } elseif (preg_match('~^https?://~i', $rawThumb)) {
-                                // neu la URL day du thi dung luon
                                 $thumb = $rawThumb;
                             } else {
-                                // chi la ten file thi noi voi thu muc anh
+                                // tuỳ cấu trúc project, tạm để trong assets/images
                                 $thumb = 'public/assets/images/' . $rawThumb;
                             }
-
                             ?>
                             <div class="product-card">
                                 <?php if ($discountPercent > 0): ?>
                                     <div class="product-label">-<?= $discountPercent ?>%</div>
                                 <?php endif; ?>
 
-                                <!-- ẢNH + TÊN: click vào sẽ tới chi tiết -->
-                                <a href="public/user/product_detail.php?id=<?= $id ?>">
+                                <!-- ẢNH + TÊN: click vào sẽ tới chi tiết (qua route /products/{id}) -->
+                                <a href="public/products/<?= $id ?>">
                                     <img src="<?= htmlspecialchars($thumb) ?>" alt="<?= htmlspecialchars($name) ?>">
                                     <h3><?= htmlspecialchars($name) ?></h3>
                                 </a>
@@ -215,8 +239,8 @@ function pageLink($baseUrl, $pageNum) {
                                 </div>
 
                                 <div class="card-actions">
-                                    <!-- THÊM GIỎ HÀNG (nút xanh, chỉ hiện khi hover card) -->
-                                    <form method="post" action="public/user/cart.php">
+                                    <!-- THÊM GIỎ HÀNG: POST tới route /cart -->
+                                    <form method="post" action="public/cart">
                                         <input type="hidden" name="action" value="add">
                                         <input type="hidden" name="id_san_pham" value="<?= $id ?>">
                                         <input type="hidden" name="so_luong" value="1">
@@ -225,9 +249,8 @@ function pageLink($baseUrl, $pageNum) {
                                         </button>
                                     </form>
 
-                                    <!-- XEM CHI TIẾT (nút đen, luôn hiện) -->
-                                    <a href="public/user/product_detail.php?id=<?= $id ?>"
-                                       class="add-cart-btn">
+                                    <!-- XEM CHI TIẾT: cũng dùng route /products/{id} -->
+                                    <a href="public/products/<?= $id ?>" class="add-cart-btn">
                                         Xem chi tiết
                                     </a>
                                 </div>
