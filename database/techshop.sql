@@ -171,7 +171,6 @@ INSERT INTO `nguoi_dung` (`id`,`ho_ten`,`email`,`mat_khau`,`vai_tro`,`email_veri
 ('5','Phạm Thị D','thid@hotmail.com','$2y$10$iM3.Xn3O0wLgYcW5vY7gU.0d1o8e/mPqC1c3ZqW9o0b6mJ8yL7zY.','khach','0',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'1','2025-11-26 16:08:45'),
 ('6','quyvuongbattu','nguyentrongthoi31@gmail.com','$2y$10$fZFJ.JyewveYEOsSR82/juGo71yv0M0X3lhj/goLJmKclaXqKEEfe','khach','1','2025-11-28 08:45:46',NULL,NULL,NULL,NULL,NULL,NULL,'1','2025-11-28 08:45:01'),
 ('7','Dchong','vdinhtrong580@gmail.com','$2y$10$TmGiltoOT0jLSiBGgIllqurY7Uxhym55rPiB9JzS0R61WKbUnE5rW','khach','1','2025-11-29 19:50:13',NULL,NULL,NULL,NULL,NULL,NULL,'1','2025-11-29 19:49:51'),
-('8','minhhung','hung.nm.64cntt@ntu.edu.vn','$2y$10$NjhMXNGZWoqpTuXDDSS8VO7D8ZJFKi9KJ2BApC6IDI668HvJeVI6q','khach','1','2025-11-29 19:55:19',NULL,NULL,NULL,NULL,NULL,NULL,'1','2025-11-29 19:54:51'),
 ('9','duykhanh','khanh.tdu.64cntt@ntu.edu.vn','$2y$10$FBUZG/khUCYDs8.8ROJ8UOXFieDiN/iSJeVsxktAQMsRWNf9/1NO6','khach','1','2025-11-29 19:59:51',NULL,NULL,NULL,NULL,NULL,NULL,'1','2025-11-29 19:57:25'),
 ('10','minhchau','chau.hm.64cntt@ntu.edu.vn','$2y$10$AMW3saXBRKwWJNvWWJ3pVOlpmMV45Ms68j/P5l/wMAVCKpTRYLMeq','khach','1','2025-11-29 20:05:57',NULL,NULL,NULL,NULL,NULL,NULL,'1','2025-11-29 20:03:36');
 

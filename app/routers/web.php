@@ -240,21 +240,33 @@ $router->get("/admin/users/edit", function () {
     require_once __DIR__ . "/../../public/admin/edit_user.php";
 }, ["admin"]);
 
+/* ============= USERS ADMIN API ============= */
 $router->post("/admin/users/update", function () {
     CSRF::requireToken();
-    requireAdmin();
-    echo json_encode((new CustomerController())->updateFromPost());
-});
-
+    echo json_encode(
+        (new CustomerController())->update(),
+        JSON_UNESCAPED_UNICODE
+    );
+}, ["admin"]);
 
 $router->post("/admin/users/delete", function () {
     CSRF::requireToken();
-    requireAdmin();
-    echo json_encode((new CustomerController())->delete($_POST['id']));
-});
+    echo json_encode(
+        (new CustomerController())->delete(),
+        JSON_UNESCAPED_UNICODE
+    );
+}, ["admin"]);
 
-
+/* nếu dùng UserController thì đổi tên class cho đúng */
+/* ============= USERS ADMIN API ============= */
 $router->get("/admin/users/list", function () {
     requireAdmin();
-    echo json_encode((new CustomerController())->list());
+    $page   = $_GET["page"] ?? 1;
+    $limit  = $_GET["limit"] ?? 10;
+    $search = $_GET["search"] ?? "";
+
+    echo json_encode(
+        (new CustomerController())->adminList($page, $limit, $search),
+        JSON_UNESCAPED_UNICODE
+    );
 }, ["admin"]);
