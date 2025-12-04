@@ -9,9 +9,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quản lý Sản phẩm</title>
-
     <meta name="csrf-token" content="<?= $csrf ?>">
-
     <link rel="stylesheet" href="/TechShop/public/assets/css/cssAdmin/admin_style.css"> 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 </head>
@@ -64,7 +62,8 @@
                     </table>
 
                 </div>
-                <div id="paginationBox" class="pagination"></div>
+                <div id="paginationBox" class="pagination" style="margin-top: 20px; text-align: end;"></div>
+
             </div>
 
         </div>
