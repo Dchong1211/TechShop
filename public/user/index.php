@@ -256,7 +256,19 @@ function renderProductCard($row)
     $price_show = ($sale_price > 0 && $sale_price < $price) ? $sale_price : $price;
     $has_sale   = ($sale_price > 0 && $sale_price < $price);
     $label      = get_discount_label($price, $sale_price);
-    $img_url    = "public/assets/images/" . $row['hinh_anh'];
+    $rawThumb = trim((string)$row['hinh_anh']);
+
+        if ($rawThumb === '' || $rawThumb === null) {
+            // Không có ảnh -> dùng ảnh mặc định
+            $img_url = 'public/assets/images/TechShop.jpg';
+        } elseif (preg_match('~^https?://~i', $rawThumb)) {
+            // Nếu là URL đầy đủ thì dùng luôn
+            $img_url = $rawThumb;
+        } else {
+            // Nếu chỉ là tên file thì ghép với thư mục ảnh của project
+            $img_url = 'public/assets/images/' . $rawThumb;
+        }
+
 
     // Tách mo_ta_ngan thành các chip cấu hình
     $configChips = [];

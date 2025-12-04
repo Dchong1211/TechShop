@@ -176,9 +176,20 @@ function pageLink($baseUrl, $pageNum) {
                             }
 
                             // chỉnh path ảnh theo project – tạm thời dùng assets/images
-                            $thumb = $p['hinh_anh']
-                                ? 'public/assets/images/' . $p['hinh_anh']
-                                : 'public/assets/images/TechShop.jpg';
+                            // Xu ly duong dan anh
+                            $rawThumb = trim((string)$p['hinh_anh']);
+
+                            if ($rawThumb === '' || $rawThumb === null) {
+                                // khong co anh -> anh mac dinh
+                                $thumb = 'public/assets/images/TechShop.jpg';
+                            } elseif (preg_match('~^https?://~i', $rawThumb)) {
+                                // neu la URL day du thi dung luon
+                                $thumb = $rawThumb;
+                            } else {
+                                // chi la ten file thi noi voi thu muc anh
+                                $thumb = 'public/assets/images/' . $rawThumb;
+                            }
+
                             ?>
                             <div class="product-card">
                                 <?php if ($discountPercent > 0): ?>

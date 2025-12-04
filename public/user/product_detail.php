@@ -5,7 +5,8 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-define('BASE_PATH', dirname(__DIR__)); // C:\xampp\htdocs\TechShop\public
+// BASE_PATH trỏ về thư mục gốc project: C:\xampp\htdocs\TechShop
+define('BASE_PATH', dirname(__DIR__, 1));
 
 // =============== KẾT NỐI DATABASE ===============
 $host   = 'localhost';
@@ -42,6 +43,35 @@ if (!$rs || $rs->num_rows == 0) {
 }
 $p = $rs->fetch_assoc();
 
+// =============== HÀM XỬ LÝ ĐƯỜNG DẪN ẢNH ===============
+function build_product_image_url(array $row): string
+{
+    $path = trim($row['hinh_anh'] ?? '');
+
+    if ($path === '') {
+        // ảnh fallback
+        return 'public/assets/images/TechShop.jpg';
+    }
+
+    // Nếu là URL tuyệt đối
+    if (preg_match('~^https?://~i', $path)) {
+        return $path;
+    }
+
+    // Nếu đã có prefix public/
+    if (strpos($path, 'public/') === 0) {
+        return $path;
+    }
+
+    // Nếu bắt đầu bằng uploads/
+    if (strpos($path, 'uploads/') === 0) {
+        return 'public/' . $path;
+    }
+
+    // Mặc định: lưu file ở public/uploads/products
+    return 'public/uploads/products/' . $path;
+}
+
 // Chuẩn bị dữ liệu
 $name      = $p['ten_sp'];
 $gia       = (float)$p['gia'];
@@ -54,10 +84,8 @@ if ($oldPrice > 0) {
     $discountPercent = (int)round(100 - $display * 100 / $oldPrice);
 }
 
-// Ảnh (tuỳ cậu đặt, tớ lấy trong assets/images cho đơn giản)
-$thumb = $p['hinh_anh']
-    ? 'public/assets/images/' . $p['hinh_anh']
-    : 'public/assets/images/TechShop.jpg';
+// Ảnh chính
+$thumb = build_product_image_url($p);
 
 $moTaNgan = $p['mo_ta_ngan'];
 $chiTiet  = $p['chi_tiet'];
@@ -86,7 +114,10 @@ if ($moTaNgan) {
 <head>
     <meta charset="UTF-8">
     <title><?= htmlspecialchars($name, ENT_QUOTES) ?> | TechShop</title>
+
+    <!-- base giống các trang FE khác -->
     <base href="/TechShop/">
+
     <link rel="stylesheet" href="public/assets/css/cssUser/user.css?v=1">
     <link rel="stylesheet" href="public/assets/css/cssUser/product_detail.css?v=1">
 </head>
@@ -100,7 +131,11 @@ if ($moTaNgan) {
         <div class="pdp-left">
             <div class="pdp-media-card">
                 <div class="pdp-image-main">
-                    <img src="<?= htmlspecialchars($thumb, ENT_QUOTES) ?>" alt="<?= htmlspecialchars($name, ENT_QUOTES) ?>">
+                    <img
+                        src="<?= htmlspecialchars($thumb, ENT_QUOTES) ?>"
+                        alt="<?= htmlspecialchars($name, ENT_QUOTES) ?>"
+                        onerror="this.src='https://via.placeholder.com/400x400?text=TechShop';"
+                    >
                 </div>
 
                 <div class="pdp-meta-strip">
@@ -169,7 +204,8 @@ if ($moTaNgan) {
 
             <!-- HỘP MUA HÀNG -->
             <div class="pdp-purchase-box">
-                <form method="post" action="public/user/cart.php" class="pdp-form">
+                <!-- dùng route /cart thay vì gọi trực tiếp file -->
+                <form method="post" action="public/cart" class="pdp-form">
                     <label for="qty">Số lượng</label>
                     <input type="hidden" name="action" value="add">
                     <input type="hidden" name="id_san_pham" value="<?= (int)$p['id'] ?>">
