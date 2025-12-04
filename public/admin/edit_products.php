@@ -180,7 +180,7 @@ $sp = $res["data"];
             preview.src = 'https://via.placeholder.com/150?text=No+Image';
         }
     }
-
+c
     // Hàm hiển thị ảnh xem trước từ file
     function previewFile(input) {
         const file = input.files[0];
