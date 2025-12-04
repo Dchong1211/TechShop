@@ -105,7 +105,7 @@ if ($q    !== '') $baseQuery['q']    = $q;
 if ($sort !== '') $baseQuery['sort'] = $sort;
 
 // DÙNG ROUTE /products THAY VÌ GỌI THẲNG FILE
-$baseUrl = 'public/products';
+$baseUrl = 'public/product';
 if (!empty($baseQuery)) {
     $baseUrl .= '?' . http_build_query($baseQuery);
 }
@@ -221,7 +221,7 @@ function pageLink($baseUrl, $pageNum) {
                                 <?php endif; ?>
 
                                 <!-- ẢNH + TÊN: click vào sẽ tới chi tiết (qua route /products/{id}) -->
-                                <a href="public/products/<?= $id ?>">
+                                <a href="public/product/<?= $id ?>">
                                     <img src="<?= htmlspecialchars($thumb) ?>" alt="<?= htmlspecialchars($name) ?>">
                                     <h3><?= htmlspecialchars($name) ?></h3>
                                 </a>
@@ -250,7 +250,7 @@ function pageLink($baseUrl, $pageNum) {
                                     </form>
 
                                     <!-- XEM CHI TIẾT: cũng dùng route /products/{id} -->
-                                    <a href="public/products/<?= $id ?>" class="add-cart-btn">
+                                    <a href="public/product/<?= $id ?>" class="add-cart-btn">
                                         Xem chi tiết
                                     </a>
                                 </div>
