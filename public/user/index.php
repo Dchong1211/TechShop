@@ -285,7 +285,7 @@ function renderProductCard($row)
             <i class="fa-solid fa-heart"></i>
         </button>
 
-        <a href="public/products/<?= (int)$row['id'] ?>" style="text-decoration:none; color:inherit;">
+        <a href="public/product/<?= (int)$row['id'] ?>" style="text-decoration:none; color:inherit;">
             <div class="product-thumb-wrap">
                 <?php if ($label): ?>
                     <span class="product-label"><?= $label ?></span>
@@ -342,7 +342,7 @@ function renderProductCard($row)
                 </button>
             </form>
 
-            <a href="public/products/<?= (int)$row['id'] ?>"
+            <a href="public/product/<?= (int)$row['id'] ?>"
                class="add-cart-btn add-cart-btn--secondary">
                 Xem chi tiết
             </a>
