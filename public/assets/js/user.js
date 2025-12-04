@@ -129,7 +129,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           }
 
           searchTimeout = setTimeout(() => {
-              fetch(`/TechShop/public/api/live_search.php?q=${keyword}`)
+              fetch(`/TechShop/api/live_search?q=${keyword}`)
                   .then(res => res.json())
                   .then(data => {
                       if (data.length > 0) {
