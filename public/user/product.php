@@ -27,6 +27,18 @@ $q    = isset($_GET['q'])    ? trim($_GET['q'])    : '';   // tu khoa tim kiem
 $where          = " WHERE sp.trang_thai = 1 ";
 $categoryTitle  = 'Tất cả sản phẩm';
 
+// Map cate dạng slug -> danh sách id_dm + tiêu đề hiển thị
+$cateMap = [
+    'laptop'         => ['ids' => [1, 2],           'title' => 'Laptop'],
+    'laptop-gaming'  => ['ids' => [1],              'title' => 'Laptop Gaming'],
+    'pc'             => ['ids' => [3],              'title' => 'PC GVN'],
+    'monitor'        => ['ids' => [4],              'title' => 'Màn hình'],
+    'gear'           => ['ids' => [5, 6, 7],        'title' => 'Gaming Gear'],
+    'components'     => ['ids' => [9, 10, 11, 12],  'title' => 'Linh kiện PC'],
+    'accessories'    => ['ids' => [13, 17, 19, 20], 'title' => 'Phụ kiện'],
+    // cần thêm cate khác thì nhét vào đây
+];
+
 // --- TRƯỜNG HỢP TÌM KIẾM ---
 if ($cate === 'search') {
     if ($q !== '') {
@@ -41,6 +53,7 @@ if ($cate === 'search') {
 // --- LỌC THEO DANH MỤC BÌNH THƯỜNG ---
 elseif ($cate !== '') {
     if (ctype_digit($cate)) {
+        // cate là ID danh mục trực tiếp
         $idDm = (int)$cate;
         $where .= " AND sp.id_dm = {$idDm} ";
 
@@ -51,8 +64,16 @@ elseif ($cate !== '') {
                 $categoryTitle = $rowDm['ten_dm'];
             }
         }
+    } elseif (isset($cateMap[$cate])) {
+        // cate là slug: laptop-gaming, pc, gear, ...
+        $ids   = array_map('intval', $cateMap[$cate]['ids']);
+        $idStr = implode(',', $ids);
+
+        $where .= " AND sp.id_dm IN ({$idStr}) ";
+        $categoryTitle = $cateMap[$cate]['title'];
     } else {
-        $categoryTitle = ucfirst($cate);
+        // fallback: chỉ đổi tiêu đề cho đỡ trống
+        $categoryTitle = ucfirst(str_replace('-', ' ', $cate));
     }
 }
 
@@ -104,7 +125,7 @@ if ($cate !== '') $baseQuery['cate'] = $cate;
 if ($q    !== '') $baseQuery['q']    = $q;
 if ($sort !== '') $baseQuery['sort'] = $sort;
 
-// DÙNG ROUTE /products THAY VÌ GỌI THẲNG FILE
+// DÙNG ROUTE /product THAY VÌ GỌI THẲNG FILE
 $baseUrl = 'public/product';
 if (!empty($baseQuery)) {
     $baseUrl .= '?' . http_build_query($baseQuery);
@@ -159,7 +180,7 @@ function pageLink($baseUrl, $pageNum) {
                 </div>
 
                 <div class="product-header-block-right">
-                    <!-- SORT CŨNG ĐI QUA ROUTE /products -->
+                    <!-- SORT CŨNG ĐI QUA ROUTE /product -->
                     <form method="get" action="public/product" class="product-sort">
                         <?php if ($cate !== ''): ?>
                             <input type="hidden" name="cate" value="<?= htmlspecialchars($cate) ?>">
@@ -220,7 +241,7 @@ function pageLink($baseUrl, $pageNum) {
                                     <div class="product-label">-<?= $discountPercent ?>%</div>
                                 <?php endif; ?>
 
-                                <!-- ẢNH + TÊN: click vào sẽ tới chi tiết (qua route /products/{id}) -->
+                                <!-- ẢNH + TÊN: click vào sẽ tới chi tiết (qua route /product/{id}) -->
                                 <a href="public/product/<?= $id ?>">
                                     <img src="<?= htmlspecialchars($thumb) ?>" alt="<?= htmlspecialchars($name) ?>">
                                     <h3><?= htmlspecialchars($name) ?></h3>
@@ -249,7 +270,7 @@ function pageLink($baseUrl, $pageNum) {
                                         </button>
                                     </form>
 
-                                    <!-- XEM CHI TIẾT: cũng dùng route /products/{id} -->
+                                    <!-- XEM CHI TIẾT: cũng dùng route /product/{id} -->
                                     <a href="public/product/<?= $id ?>" class="add-cart-btn">
                                         Xem chi tiết
                                     </a>
