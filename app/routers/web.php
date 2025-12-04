@@ -246,22 +246,18 @@ $router->get("/admin/users", function () {
     require_once __DIR__ . "/../../public/admin/users.php";
 }, ["admin"]);
 
-
 // Trang thêm user
 $router->get("/admin/users/add", function () {
     requireAdmin();
     require_once __DIR__ . "/../../public/admin/add_users.php";
 }, ["admin"]);
 
-
 // API thêm user
 $router->post("/admin/users/add", function () {
     CSRF::requireToken();
     requireAdmin();
-
-    (new CustomerController())->create(); // tự echo JSON response
+    (new CustomerController())->create();
 }, ["admin"]);
-
 
 // Trang sửa user
 $router->get("/admin/users/edit", function () {
@@ -269,29 +265,34 @@ $router->get("/admin/users/edit", function () {
     require_once __DIR__ . "/../../public/admin/edit_user.php";
 }, ["admin"]);
 
-
 // API cập nhật user
 $router->post("/admin/users/update", function () {
     CSRF::requireToken();
     requireAdmin();
-
-    (new CustomerController())->updateFromPost(); 
+    (new CustomerController())->updateFromPost();
 }, ["admin"]);
 
-
-// API đổi trạng thái user (active / lock)
+// API đổi trạng thái user
 $router->post("/admin/users/change-status", function () {
     CSRF::requireToken();
     requireAdmin();
-
     echo json_encode(
         (new CustomerController())->changeStatus($_POST['id'], $_POST['status']),
         JSON_UNESCAPED_UNICODE
     );
 }, ["admin"]);
 
+// API xóa user
+$router->post("/admin/users/delete", function () {
+    CSRF::requireToken();
+    requireAdmin();
+    echo json_encode(
+        (new CustomerController())->delete($_POST['id']),
+        JSON_UNESCAPED_UNICODE
+    );
+}, ["admin"]);
 
-// API lấy danh sách user JSON (optional - cần cho live search AJAX)
+// API list JSON (nếu sau này cần AJAX)
 $router->get("/admin/users/list", function () {
     requireAdmin();
     echo json_encode(
@@ -299,4 +300,3 @@ $router->get("/admin/users/list", function () {
         JSON_UNESCAPED_UNICODE
     );
 }, ["admin"]);
-
