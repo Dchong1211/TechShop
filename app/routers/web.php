@@ -191,12 +191,6 @@ $router->get("/product", function () {
     require_once __DIR__ . "/../../public/user/product.php";
 });
 
-$router->get("/products/{id}", function ($id) {
-    $_GET['id'] = $id; // file product_detail.php dùng $_GET['id']
-
-    require_once __DIR__ . "/../../public/user/product_detail.php";
-});
-
 
 // Giỏ hàng (xem)
 $router->get("/cart", function () {
@@ -236,67 +230,30 @@ $router->get("/profile/password", function () {
     require_once __DIR__ . "/../../public/user/change_password.php";
 }, ["login"]);
 
-/* ============================================================
-   ADMIN - USER MANAGEMENT
-   ============================================================ */
-
-// Trang danh sách user
 $router->get("/admin/users", function () {
     requireAdmin();
     require_once __DIR__ . "/../../public/admin/users.php";
 }, ["admin"]);
 
-// Trang thêm user
-$router->get("/admin/users/add", function () {
-    requireAdmin();
-    require_once __DIR__ . "/../../public/admin/add_users.php";
-}, ["admin"]);
-
-// API thêm user
-$router->post("/admin/users/add", function () {
-    CSRF::requireToken();
-    requireAdmin();
-    (new CustomerController())->create();
-}, ["admin"]);
-
-// Trang sửa user
 $router->get("/admin/users/edit", function () {
     requireAdmin();
     require_once __DIR__ . "/../../public/admin/edit_user.php";
 }, ["admin"]);
 
-// API cập nhật user
 $router->post("/admin/users/update", function () {
     CSRF::requireToken();
-    requireAdmin();
     (new CustomerController())->updateFromPost();
 }, ["admin"]);
 
-// API đổi trạng thái user
-$router->post("/admin/users/change-status", function () {
-    CSRF::requireToken();
-    requireAdmin();
-    echo json_encode(
-        (new CustomerController())->changeStatus($_POST['id'], $_POST['status']),
-        JSON_UNESCAPED_UNICODE
-    );
-}, ["admin"]);
-
-// API xóa user
 $router->post("/admin/users/delete", function () {
     CSRF::requireToken();
-    requireAdmin();
     echo json_encode(
         (new CustomerController())->delete($_POST['id']),
         JSON_UNESCAPED_UNICODE
     );
 }, ["admin"]);
 
-// API list JSON (nếu sau này cần AJAX)
 $router->get("/admin/users/list", function () {
     requireAdmin();
-    echo json_encode(
-        (new CustomerController())->list(),
-        JSON_UNESCAPED_UNICODE
-    );
+    echo json_encode((new CustomerController())->list());
 }, ["admin"]);
